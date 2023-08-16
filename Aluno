@@ -1,0 +1,72 @@
+//classe de modelo Aluno
+package vo;
+import javax.swing.*;
+import java.awt.*;
+
+public class Aluno {
+	private String nomeCompleto;
+	private String nomeUsuario;
+	private String email;
+	private String senha;
+	
+	public Aluno(String nomeCompleto, String nomeUsuario, String email, String senha) {
+		setNomeCompleto(nomeCompleto);
+		setNomeUsuario(nomeUsuario);
+		setEmail(email);
+		setSenha(senha);
+	}
+	
+	public boolean verificar(String email, String senha, String usuario) {
+		if(this.email.equals(email) && this.senha.equals(senha)&& usuario.equals("Aluno")) {
+			return true;
+		}else return false;
+	}
+
+	private void alteraNomeCompleto(String nomeCompleto) {
+		setNomeCompleto(nomeCompleto);
+	}
+	
+	private void alteraNomeUsuario(String nomeUsuario) {
+		setNomeUsuario(nomeUsuario);
+	}
+	
+	private void alteraEmail(String email) {
+		setEmail(email);
+	}
+	
+	private void alteraSenha(String senha) {
+		setSenha(senha);
+	}
+	
+	public String getNomeCompleto() {
+		return nomeCompleto;
+	}
+
+	public void setNomeCompleto(String nomeCompleto) {
+		this.nomeCompleto = nomeCompleto;
+	}
+
+	public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}	
+}
