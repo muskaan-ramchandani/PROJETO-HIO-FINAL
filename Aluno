@@ -16,12 +16,6 @@ public class Aluno {
 		setSenha(senha);
 	}
 	
-	public boolean verificar(String email, String senha, String usuario) {
-		if(this.email.equals(email) && this.senha.equals(senha)&& usuario.equals("Aluno")) {
-			return true;
-		}else return false;
-	}
-
 	private void alteraNomeCompleto(String nomeCompleto) {
 		setNomeCompleto(nomeCompleto);
 	}
