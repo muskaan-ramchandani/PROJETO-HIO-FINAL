@@ -25,9 +25,7 @@ public class SplashScreen extends JFrame{
 		setBounds(0, 0, screenSize.width, screenSize.height-40);
 		
 		//Configurações básicas
-		String nomeLogo = "logoHIOsf";
-		JLabel lblLogo = new JLabel(new ImageIcon("C:\\Users\\maria\\Downloads\\Imagens HIO\\"+nomeLogo+".png"));
-        //JLabel lblLogo = new JLabel(new ImageIcon("logoHIO.png")); guardando no diretório
+        JLabel lblLogo = new JLabel(new ImageIcon("logoHIOsf.png"));
 		content.add(lblLogo, BorderLayout.CENTER);
 		
 		//Tornar visível e espera os recursos serem carregados
