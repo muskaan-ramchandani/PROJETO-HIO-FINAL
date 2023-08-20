@@ -1,0 +1,109 @@
+package view;
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class TelaAlunoProfessor extends JFrame{
+	private Container contentPane;
+	private JLabel lblVoceE;
+	private JLabel lblAluno1;
+	private JLabel lblAluno2;
+	private JLabel lblAluno3;
+	private JLabel lblProfessor;
+	private JButton btnAluno;
+	private JButton btnProfessor;
+	
+	public TelaAlunoProfessor() {
+		inicializarComponentes();;
+		definirEventos();
+	}
+
+	private void inicializarComponentes() {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+        contentPane=getContentPane();
+        contentPane.setBackground(Color.white);
+        setLayout(null);
+        
+        //inicializar componentes
+        lblVoceE = new JLabel("Você é...");
+        lblAluno1 = new JLabel("Acessa materiais como vídeos, livros");
+        lblAluno2= new JLabel(" e artigos, além de poder montar");
+        lblAluno3 = new JLabel("cronogramas para organizar seus estudos");
+        lblProfessor= new JLabel("Recomenda vídeos, livros e outros materiais");
+        btnAluno = new JButton("Aluno");
+        btnProfessor = new JButton("Professor");
+        
+        //cores e fonte
+        Color roxoEscuro=new Color(75,0,130); //código da cor desejada
+        btnAluno.setBackground(roxoEscuro);
+        btnProfessor.setBackground(roxoEscuro);
+        btnAluno.setForeground(Color.white);
+        btnProfessor.setForeground(Color.white);
+        lblVoceE.setForeground(Color.black);
+        lblAluno1.setForeground(Color.black);
+        lblAluno2.setForeground(Color.black);
+        lblAluno3.setForeground(Color.black);
+        lblProfessor.setForeground(Color.black);
+        
+        
+	    Font fonteTamanhoBotao = new Font( "Trebuchet MS", Font.PLAIN, 30);
+	    btnAluno.setFont(fonteTamanhoBotao);
+	    btnProfessor.setFont(fonteTamanhoBotao);
+	    
+	    Font fonteLabelsDesc = new Font( "Trebuchet MS", Font.PLAIN, 25);
+	    lblProfessor.setFont(fonteLabelsDesc);
+	    lblAluno1.setFont(fonteLabelsDesc);
+	    lblAluno2.setFont(fonteLabelsDesc);
+	    lblAluno3.setFont(fonteLabelsDesc);
+	    
+	    Font fonteTamanho = new Font( "Trebuchet MS", Font.PLAIN, 65);
+	    lblVoceE.setFont(fonteTamanho);
+	    
+	    //coordenadas
+        btnAluno.setBounds(320, 250, 170, 70);
+        btnProfessor.setBounds(850,250 ,170, 70);
+        lblVoceE.setBounds(550, 90, 650, 120);
+        lblAluno1.setBounds(195, 310, 900, 100);
+        lblAluno2.setBounds(210, 360, 900, 100);
+        lblAluno3.setBounds(180, 410, 900, 100);
+        lblProfessor.setBounds(720, 310, 900, 100);
+   
+        add(lblVoceE);
+        add(btnAluno);
+        add(btnProfessor);
+        add(lblAluno1);
+        add(lblAluno2);
+        add(lblAluno3);
+        add(lblProfessor);
+        
+	    setVisible(true);
+	}
+
+	private void definirEventos() {
+		btnAluno.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaCadastroAluno telaCad1= new TelaCadastroAluno();
+				contentPane.removeAll();
+	    		contentPane.add(telaCad1);
+	    		contentPane.validate();
+			}
+			 
+		 });
+		
+		btnProfessor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaCadastraProf telaCad1= new TelaCadastraProf();
+				contentPane.removeAll();
+	    		contentPane.add(telaCad1);
+	    		contentPane.validate();
+			}
+			 
+		 });
+	}
+}
