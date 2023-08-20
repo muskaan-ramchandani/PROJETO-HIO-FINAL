@@ -1,0 +1,203 @@
+//package 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+
+import controller.AlunoCONTROLLER;
+import dao.AlunoDAO;
+import view.SplashScreen;
+import view.TelaAlunoProfessor;
+import vo.Aluno;
+
+public class TelaBoasVindas extends JFrame{
+	 //teste aluno
+	private JLabel lblBemVindo;
+	private JLabel lblAoHIO;
+	private JLabel lblEmail;
+	private JTextField txtEmail;
+	private JLabel lblSenha;
+    private JPasswordField pfSenha;   
+    private JLabel lblTipoUser;
+    private JTextField txtTipoUser;
+	private JLabel lblMedalha;
+	private JMenuBar menuBar;
+	private JMenu mnMais;
+	private JMenuItem miSobreNos;
+	private JButton btnLogin;
+	private JButton btnCadastreSe;
+	private JLabel lblOu;
+	private JLabel lblMensagem;
+	
+    private Container contentPane;
+	private String nomeLogo;
+	private String nomeMedalha;
+	
+	public TelaBoasVindas() {
+		SplashScreen splashHIO = new SplashScreen(3000);
+		inicializarComponentes();
+		definirEventos();
+	}
+	
+	private void inicializarComponentes() {
+        //configuração da janela
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+        contentPane=getContentPane();
+        contentPane.setBackground(Color.white);
+        setLayout(null);
+        
+        
+        //instancia componentes
+        lblBemVindo = new JLabel("Bem vindo(a)");
+        lblBemVindo.setFont(getFont());
+        lblAoHIO = new JLabel ("ao HIO");
+        lblEmail = new JLabel ("Email:");
+        txtEmail = new JTextField(254);
+        lblSenha = new JLabel("Senha:");
+        pfSenha = new JPasswordField (10);
+        mnMais= new JMenu("Mais...");
+        miSobreNos = new JMenuItem("Sobre nós");
+        btnLogin = new JButton("Login");
+        btnCadastreSe = new JButton("Cadastre-se");
+        lblOu= new JLabel("ou");
+        lblTipoUser= new JLabel("Informe o tipo de usuário (Aluno ou Professor):");
+        txtTipoUser = new JTextField(9);
+        
+        menuBar = new JMenuBar();
+    	Color roxoEscuro=new Color(75,0,130); //código da cor desejada
+		menuBar.setBackground(roxoEscuro);	        
+
+        nomeMedalha = "medalha";
+        lblMedalha = new JLabel(new ImageIcon("C:\\Users\\maria\\Downloads\\Imagens HIO\\"+nomeMedalha+".png"));
+        //JLabel lblMedalha = new JLabel(new ImageIcon("medalha.png")); guardando no diretório	
+		
+	    //Configurações de fonte/cor
+        mnMais.setForeground(Color.white);
+	    miSobreNos.setForeground(roxoEscuro);
+	    btnLogin.setBackground(roxoEscuro);
+	    btnCadastreSe.setBackground(roxoEscuro);
+	    btnLogin.setForeground(Color.white);
+	    btnCadastreSe.setForeground(Color.white);
+	    
+	    Font fonteTamanhoBV = new Font( "Trebuchet MS", Font.PLAIN, 70);
+        lblBemVindo.setFont(fonteTamanhoBV);
+        lblAoHIO.setFont(fonteTamanhoBV);
+        
+	    Font fonteTamanhoES = new Font( "Trebuchet MS", Font.PLAIN, 28);
+	    lblEmail.setFont(fonteTamanhoES);
+	    lblSenha.setFont(fonteTamanhoES);
+	    lblTipoUser.setFont(fonteTamanhoES);
+
+	    Font fonteTamanhoTP = new Font( "Trebuchet MS", Font.PLAIN, 25);
+	    txtEmail.setFont(fonteTamanhoTP);
+	    pfSenha.setFont(fonteTamanhoTP);
+	    txtTipoUser.setFont(fonteTamanhoTP);
+	    
+	    Font fonteTamanhoBotao = new Font( "Trebuchet MS", Font.PLAIN, 22);
+	    btnLogin.setFont(fonteTamanhoBotao);
+	    btnCadastreSe.setFont(fonteTamanhoBotao);
+	    lblOu.setFont(fonteTamanhoBotao);
+	    
+        //Posições na tela
+        lblBemVindo.setBounds(20,30,650,120);
+        lblAoHIO.setBounds(20,90, 650, 120);
+        lblEmail.setBounds(670, 100, 300, 100);
+        txtEmail.setBounds(670, 180, (screenSize.width/2)-50, 50);
+        lblSenha.setBounds(670,215, 300, 100);
+        pfSenha.setBounds(670, 295, (screenSize.width/2)-50, 50);
+        lblTipoUser.setBounds(670, 330, 600, 100);
+        txtTipoUser.setBounds(670, 410, (screenSize.width/2)-50, 50);
+        
+        btnLogin.setBounds(900, 475, 150, 50);
+        lblOu.setBounds(963, 525, 150, 50);
+        btnCadastreSe.setBounds(900, 575, 155, 50);
+        menuBar.setBounds(0,0, screenSize.width,40);
+        lblMedalha.setBounds(20, 130, (screenSize.width/2)-130, screenSize.height-200);
+
+        
+        //Adiciona componentes
+        mnMais.add(miSobreNos);
+        menuBar.add(mnMais);
+        add(menuBar);
+        add(lblBemVindo);
+        add(lblAoHIO);
+        add(lblEmail);
+        add(txtEmail);
+        add(lblSenha);
+        add(pfSenha);
+        add(lblTipoUser);
+        add(txtTipoUser);
+        add(btnLogin);
+        add(lblOu);
+        add(btnCadastreSe);
+        add(lblMedalha);
+
+        setVisible(true);
+	}
+	
+	private void definirEventos() {
+		 miSobreNos.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	            	TelaSobreNos telaSB= new TelaSobreNos();
+					contentPane.removeAll();
+		    		contentPane.add(telaSB);
+		    		contentPane.validate();
+	            }
+	        });
+		 
+		 btnLogin.addActionListener(new ActionListener() {
+			 @Override
+			 public void actionPerformed(ActionEvent e) {
+				 
+				 boolean retorna=false;
+				 String tipo =txtTipoUser.getText();
+				 
+				 do{
+					 if(tipo.equals("Aluno")){
+
+						 String email= txtEmail.getText();
+						 String senha = String.valueOf(pfSenha.getPassword());						 
+						 
+						 AlunoCONTROLLER controla = new AlunoCONTROLLER();
+						 boolean resposta=controla.consultar(email, senha);
+						 
+						 if(resposta==true) {
+							 JOptionPane.showMessageDialog(null, "Login realizado com sucesso!");
+							 TelaInicialAluno telaInicialA = new TelaInicialAluno();
+						 }else {
+							 JOptionPane.showMessageDialog(null, "Login não realizado, por favor, tente novamente!");
+						 }
+						 retorna=true;
+					 }else if(txtTipoUser.getText().equals("Professor")){
+
+						 TelaInicialProf telaInicialP = new TelaInicialProf();
+						 retorna=true;
+						 
+					 }else if(txtTipoUser.getText()!=("Professor")&&txtTipoUser.getText()!=("Aluno")){
+						 JOptionPane.showMessageDialog(null, "Tipo de usuário inválido!");
+						 txtTipoUser.setText(null);
+						 tipo =txtTipoUser.getText();
+						 retorna=false;
+						 return;
+					 }
+
+				}while(retorna==false);
+				
+			 }
+		 });
+
+		 btnCadastreSe.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaAlunoProfessor telaCad1= new TelaAlunoProfessor();
+				telaCad1.setVisible(true);
+			}
+			 
+		 });
+	       
+	}
+}
