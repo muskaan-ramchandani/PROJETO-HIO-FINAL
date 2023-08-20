@@ -1,0 +1,158 @@
+package view;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import vo.Aluno;
+import javax.swing.JOptionPane;
+import controller.AlunoCONTROLLER;
+
+import conexaoBD.Conexao;
+
+import javax.swing.*;
+
+public class TelaCadastroAluno extends JFrame {
+
+	private JLabel lblNomeCompleto;
+	private JLabel lblNomeUsuario;
+	private JLabel lblEmail;
+	private JLabel lblSenha;
+	private JLabel lblConfirmeSenha;
+	private JLabel lblInsiraDados;
+	private JTextField txtNomeCompleto;
+	private JTextField txtNomeUsuario;
+	private JTextField txtEmail;
+	private JPasswordField pfSenha;
+	private JPasswordField pfConfirmaSenha;
+	private JButton btnFinalizarCadastro;
+	
+	public TelaCadastroAluno() {
+		inicializarComp();
+		definirEventos();
+	}
+	
+	public void inicializarComp() {
+		setLayout(null);
+		setTitle("Cadastro do Aluno");
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+		getContentPane().setBackground(Color.WHITE);
+		
+		//caixas de texto
+		txtNomeCompleto = new JTextField(200);
+		txtNomeUsuario = new JTextField(64);
+		txtEmail = new JTextField(256);
+		pfSenha = new JPasswordField(100);
+		pfConfirmaSenha = new JPasswordField(100);
+		
+		//JLabels
+		lblInsiraDados = new JLabel("Insira seus dados");
+		lblNomeCompleto = new JLabel("Nome completo:");
+		lblNomeUsuario = new JLabel("Nome de usuário:");
+		lblEmail = new JLabel("Email:");
+		lblSenha = new JLabel("Senha:");
+		lblConfirmeSenha = new JLabel("Confirme sua senha:");
+
+		
+		//Botão
+		btnFinalizarCadastro = new JButton("Finalizar cadastro");
+		
+		Color roxoEscuro=new Color(75,0,130);
+		btnFinalizarCadastro.setBackground(roxoEscuro);
+		btnFinalizarCadastro.setForeground(Color.white);
+		
+		Font fonteLabelsDesc = new Font( "Trebuchet MS", Font.PLAIN, 20);
+		lblNomeCompleto.setFont(fonteLabelsDesc);
+		lblNomeUsuario.setFont(fonteLabelsDesc);
+		lblEmail.setFont(fonteLabelsDesc);
+		lblSenha.setFont(fonteLabelsDesc);
+		lblConfirmeSenha.setFont(fonteLabelsDesc);	
+
+		
+		Font fonteTamanho = new Font( "Trebuchet MS", Font.PLAIN, 60);
+		lblInsiraDados.setFont(fonteTamanho);
+	    
+	    Font fonteTamanhoBotao = new Font( "Trebuchet MS", Font.PLAIN, 25);
+	    btnFinalizarCadastro.setFont(fonteTamanhoBotao);
+		
+	    //caixas de texto
+		txtNomeCompleto.setBounds(200,140,1000,30);
+		txtNomeUsuario.setBounds(200,240,1000,30);
+		txtEmail.setBounds(200,340,1000,30);
+		pfSenha.setBounds(200,440,1000,30);
+		pfConfirmaSenha.setBounds(200,540,1000,30);
+		
+		//JLabels
+		lblInsiraDados.setBounds(470,0,800,100);
+		lblNomeCompleto.setBounds(200,100,400,30);
+		lblNomeUsuario.setBounds(200,200,400,40);
+		lblEmail.setBounds(200,300,400,40);
+		lblSenha.setBounds(200,400,400,40);
+		lblConfirmeSenha.setBounds(200,500,400,40);
+		
+		//JButton
+		btnFinalizarCadastro.setBounds(575,590,255,50);
+		
+		//caixas de text
+		add(txtNomeCompleto);
+		add(txtNomeUsuario);
+		add(txtEmail);
+		add(pfSenha);
+		add(pfConfirmaSenha);
+		
+		//Jlabels
+		add(lblInsiraDados);
+		add(lblNomeCompleto);
+		add(lblNomeUsuario);
+		add(lblEmail);
+		add(lblSenha);
+		add(lblConfirmeSenha);
+		
+		//Jbutton
+		add(btnFinalizarCadastro);
+		
+		setVisible(true);
+	}
+	
+	private void definirEventos() {
+		 btnFinalizarCadastro.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String senha;
+					String confirma;
+					boolean retorna=false;
+					
+					while(retorna==false){
+						senha = String.valueOf(pfSenha.getPassword());
+						confirma = String.valueOf(pfConfirmaSenha.getPassword());
+						
+							if(senha.equals(confirma)){
+								String nomeCompleto = txtNomeCompleto.getText();
+								String nomeUsuario = txtNomeUsuario.getText();
+								String email = txtEmail.getText();
+								
+								AlunoCONTROLLER controla = new AlunoCONTROLLER();
+								controla.cadastrar(nomeCompleto, nomeUsuario, email, senha);
+								retorna=true;
+								
+							}else{
+									JOptionPane.showMessageDialog(null, "Valor inserido em 'Confirma Senha' é diferente"
+											+" do valor de 'Senha'! \nDigite novamente!");
+									pfConfirmaSenha.setText(null);
+									confirma = String.valueOf(pfConfirmaSenha.getPassword());
+									retorna=false;
+									return;
+							}
+
+						}					
+				
+				}
+				 
+		 });
+	}
+	
+}
