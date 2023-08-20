@@ -1,0 +1,17 @@
+package controller;
+import javax.swing.*;
+import java.awt.*;
+import bo.AlunoBO;
+
+public class AlunoCONTROLLER {
+	
+	public void cadastrar(String nomeCompleto, String nomeUsuario, String email,String senha) {
+		AlunoBO bo = new AlunoBO();
+		bo.cadastrar(nomeCompleto, nomeUsuario, email, senha);
+	}
+	
+	public boolean consultar(String email, String senha) {
+		AlunoBO bo = new AlunoBO();
+		return bo.consultar(email, senha);
+	}
+}
