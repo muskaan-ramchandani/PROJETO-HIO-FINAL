@@ -1,0 +1,11 @@
+import javax.swing.*;
+
+import view.SplashScreen;
+
+import java.awt.*;
+
+public class PrincipalTeste extends JFrame{
+	public static void main(String[]args) {
+		TelaBoasVindas telaBV = new TelaBoasVindas();
+	}
+}
