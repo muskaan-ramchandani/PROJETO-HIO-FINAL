@@ -48,7 +48,8 @@ public class TelaAlunoProfessor extends JFrame{
 		lblVoceE = new JLabel("Você é...");
 		btnAluno= new JButton("Aluno");
 		btnProfessor = new JButton("Professor");
-		lblImagem = new JLabel(new ImageIcon("estudante1.png"));
+		lblImagem = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estudante1.png"));
 		
 		jLabel3 = new JLabel("montar seu plano de estudo");
 		jLabel4 = new JLabel("determinada olimpíada");
@@ -145,7 +146,7 @@ public class TelaAlunoProfessor extends JFrame{
 		btnProfessor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TelaCadastraProf telaCad1= new TelaCadastraProf();
+				TelaCadastroProf telaCad1= new TelaCadastroProf();
 				contentPane.removeAll();
 				contentPane.add(telaCad1);
 				contentPane.validate();

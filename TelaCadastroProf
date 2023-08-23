@@ -1,8 +1,203 @@
 package view;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import vo.Professor;
+import controller.ProfessorCONTROLLER;
+
+import conexaoBD.Conexao;
 
 import javax.swing.*;
-import java.awt.*;
 
-public class TelaCadastraProf extends JFrame{
-	 public TelaCadastraProf() {}
+public class TelaCadastroProf extends JFrame {
+	private JLabel lblBemVindo;
+	private JLabel lblMsg;
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JPanel panelRoxo;
+	private JPanel panelBranco;
+	private JLabel lblNomeCompleto;
+	private JLabel lblNomeUsuario;
+	private JLabel lblEmail;
+	private JLabel lblSenha;
+	private JLabel lblConfirmeSenha;
+	private JLabel lblInsiraDados;
+	private JTextField txtNomeCompleto;
+	private JTextField txtNomeUsuario;
+	private JTextField txtEmail;
+	private JPasswordField pfSenha;
+	private JPasswordField pfConfirmaSenha;
+	private JButton btnFinalizarCadastro;
+	private JLabel lblImagem;
+	
+	public TelaCadastroProf() {
+		inicializarComp();
+		definirEventos();
+	}
+	
+	public void inicializarComp() {
+		setLayout(null);
+		setTitle("Cadastro do Professor");
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+		contentPane=getContentPane();
+        contentPane.setBackground(Color.white);
+		
+		lp = new JLayeredPane();
+		panelRoxo = new JPanel();
+		panelBranco= new JPanel();
+		
+		Color roxoEscuro=new Color(75,0,130);
+		panelBranco.setBackground(Color.WHITE);
+		panelRoxo.setBackground(roxoEscuro);
+		
+		//caixas de texto
+		txtNomeCompleto = new JTextField(200);
+		txtNomeUsuario = new JTextField(64);
+		txtEmail = new JTextField(256);
+		pfSenha = new JPasswordField(100);
+		pfConfirmaSenha = new JPasswordField(100);
+		
+		//JLabels
+		lblInsiraDados = new JLabel("Insira seus dados");
+		lblNomeCompleto = new JLabel("Nome completo:");
+		lblNomeUsuario = new JLabel("Nome de usuário:");
+		lblEmail = new JLabel("Email:");
+		lblSenha = new JLabel("Senha:");
+		lblConfirmeSenha = new JLabel("Confirme sua senha:");
+		lblBemVindo =new JLabel("Seja bem vindo!");
+		lblMsg = new JLabel("Finalize seu cadastro e desfrute de nossa aplicação.");
+		
+		//Botão
+		btnFinalizarCadastro = new JButton("Finalizar cadastro");	
+			
+		String nomeImagem ="professor1";
+		lblImagem = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//"+nomeImagem+".png"));
+		
+		
+		btnFinalizarCadastro.setBackground(roxoEscuro);
+		btnFinalizarCadastro.setForeground(Color.white);
+		
+		Font fonteLabelsDesc = new Font( "Trebuchet MS", Font.PLAIN, 20);
+		lblNomeCompleto.setFont(fonteLabelsDesc);
+		lblNomeUsuario.setFont(fonteLabelsDesc);
+		lblEmail.setFont(fonteLabelsDesc);
+		lblSenha.setFont(fonteLabelsDesc);
+		lblConfirmeSenha.setFont(fonteLabelsDesc);	
+
+		
+		Font fonteTamanho = new Font( "Trebuchet MS", Font.PLAIN, 50);
+		lblInsiraDados.setFont(fonteTamanho);
+	    
+	    Font fonteTamanhoBotao = new Font( "Trebuchet MS", Font.PLAIN, 25);
+	    btnFinalizarCadastro.setFont(fonteTamanhoBotao);
+	    
+	    lblBemVindo.setFont(new Font("Trebuchet MS", Font.BOLD, 40));
+	    lblBemVindo.setForeground(Color.WHITE);
+	    
+	    lblMsg.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+	    lblMsg.setForeground(Color.WHITE);
+		
+	    //caixas de texto
+		txtNomeCompleto.setBounds(15,140,770,35);
+		txtNomeUsuario.setBounds(15,240,770,35);
+		txtEmail.setBounds(15,340,770,35);
+		pfSenha.setBounds(15,440,770,35);
+		pfConfirmaSenha.setBounds(15,540,770,35);
+		
+		//JLabels
+		lblInsiraDados.setBounds(200,0,800,100);
+		lblNomeCompleto.setBounds(15,100,400,30);
+		lblNomeUsuario.setBounds(15,200,400,40);
+		lblEmail.setBounds(15,300,400,40);
+		lblSenha.setBounds(15,400,400,40);
+		lblConfirmeSenha.setBounds(15,500,400,40);
+        lblImagem.setBounds((screenSize.width/2)+40,75, 700,screenSize.height-40);
+        lblBemVindo.setBounds((screenSize.width/2)+250,10, 450, 200);
+        lblMsg.setBounds((screenSize.width/2)+160, 50, 500, 200);
+		
+		//JButton
+		btnFinalizarCadastro.setBounds(250,590,255,50);
+		
+		//panels
+		panelRoxo.setBounds(800,0, (screenSize.width/2)-100, screenSize.height-40);
+		panelBranco.setBounds(0, 0, screenSize.width, screenSize.height-40);
+		
+		contentPane.add(lp);
+		lp.add(panelBranco, new Integer(1));
+		lp.add(panelRoxo, new Integer(2));
+		lp.add(lblImagem, new Integer(3));
+		
+		//caixas de text
+		lp.add(txtNomeCompleto, new Integer(4));
+		lp.add(txtNomeUsuario, new Integer(5));
+		lp.add(txtEmail, new Integer(6));
+		lp.add(pfSenha, new Integer(7));
+		lp.add(pfConfirmaSenha, new Integer(8));
+		
+		//Jlabels
+		lp.add(lblInsiraDados, new Integer(9));
+		lp.add(lblNomeCompleto, new Integer(10));
+		lp.add(lblNomeUsuario, new Integer(11));
+		lp.add(lblEmail, new Integer(12));
+		lp.add(lblSenha, new Integer(13));
+		lp.add(lblConfirmeSenha, new Integer(14));
+		lp.add(lblBemVindo, new Integer(16));
+		lp.add(lblMsg, new Integer(17));
+		
+		//Jbutton
+		lp.add(btnFinalizarCadastro, new Integer(15));
+		
+		setLayout(new BorderLayout());
+        add(lp, BorderLayout.CENTER);
+        
+		
+        setVisible(true);
+	}
+	
+	private void definirEventos() {
+		 btnFinalizarCadastro.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String senha;
+					String confirma;
+					boolean retorna=false;
+					
+					while(retorna==false){
+						senha = String.valueOf(pfSenha.getPassword());
+						confirma = String.valueOf(pfConfirmaSenha.getPassword());
+						
+							if(senha.equals(confirma)){
+								String nomeCompleto = txtNomeCompleto.getText();
+								String nomeUsuario = txtNomeUsuario.getText();
+								String email = txtEmail.getText();
+								
+								ProfessorCONTROLLER controla = new ProfessorCONTROLLER();
+								controla.cadastrar(nomeCompleto, nomeUsuario, email, senha);
+								JOptionPane.showMessageDialog(null, "Cadastro finalizado com sucesso!");
+								TelaInicialProf telaOlimp=new TelaInicialProf();
+								retorna=true;
+								
+							}else{
+									JOptionPane.showMessageDialog(null, "Valor inserido em 'Confirma Senha' é diferente"
+											+" do valor de 'Senha'! \nDigite novamente!");
+									pfConfirmaSenha.setText(null);
+									confirma = String.valueOf(pfConfirmaSenha.getPassword());
+									retorna=false;
+									return;
+							}
+
+						}					
+				
+				}
+				 
+		 });
+	}
+	
 }

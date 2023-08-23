@@ -1,0 +1,36 @@
+package controller;
+import javax.swing.*;
+import java.awt.*;
+
+import bo.AlunoBO;
+import bo.ProfessorBO;
+import vo.Aluno;
+import vo.Professor;
+
+public class ProfessorCONTROLLER {
+	
+	public void cadastrar(String nomeCompleto, String nomeUsuario, String email, String senha) {
+		ProfessorBO bo = new ProfessorBO();
+		bo.cadastrar(nomeCompleto, nomeUsuario, email, senha);
+	}
+	
+	public boolean consultar(String email, String senha) {
+		ProfessorBO bo = new ProfessorBO();
+		return bo.consultar(email, senha);
+	}
+	
+	public boolean atualizar(Professor prof, String email, String senha) {
+		ProfessorBO bo = new ProfessorBO();
+		return bo.atualizar(prof, email, senha);
+	}
+	
+	public void remover(String email, String senha) {
+		ProfessorBO bo = new ProfessorBO();
+
+	        if (bo.remover(email, senha)==true) {
+	        	JOptionPane.showMessageDialog(null, "Conta excluída com sucesso!");
+	        } else {
+	        	JOptionPane.showMessageDialog(null, "Erro ao excluir conta!");
+	        }
+	 }
+}

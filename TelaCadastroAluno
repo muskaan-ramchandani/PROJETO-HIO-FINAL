@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import vo.Aluno;
-import javax.swing.JOptionPane;
 import controller.AlunoCONTROLLER;
 
 import conexaoBD.Conexao;
@@ -15,7 +14,12 @@ import conexaoBD.Conexao;
 import javax.swing.*;
 
 public class TelaCadastroAluno extends JFrame {
-
+	private JLabel lblBemVindo;
+	private JLabel lblMsg;
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JPanel panelRoxo;
+	private JPanel panelBranco;
 	private JLabel lblNomeCompleto;
 	private JLabel lblNomeUsuario;
 	private JLabel lblEmail;
@@ -28,6 +32,7 @@ public class TelaCadastroAluno extends JFrame {
 	private JPasswordField pfSenha;
 	private JPasswordField pfConfirmaSenha;
 	private JButton btnFinalizarCadastro;
+	private JLabel lblImagem;
 	
 	public TelaCadastroAluno() {
 		inicializarComp();
@@ -40,7 +45,16 @@ public class TelaCadastroAluno extends JFrame {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = toolkit.getScreenSize();
 		setBounds(0, 0, screenSize.width, screenSize.height-40);
-		getContentPane().setBackground(Color.WHITE);
+		contentPane=getContentPane();
+        contentPane.setBackground(Color.white);
+		
+		lp = new JLayeredPane();
+		panelRoxo = new JPanel();
+		panelBranco= new JPanel();
+		
+		Color roxoEscuro=new Color(75,0,130);
+		panelBranco.setBackground(Color.WHITE);
+		panelRoxo.setBackground(roxoEscuro);
 		
 		//caixas de texto
 		txtNomeCompleto = new JTextField(200);
@@ -56,12 +70,17 @@ public class TelaCadastroAluno extends JFrame {
 		lblEmail = new JLabel("Email:");
 		lblSenha = new JLabel("Senha:");
 		lblConfirmeSenha = new JLabel("Confirme sua senha:");
-
+		lblBemVindo =new JLabel("Seja bem vindo!");
+		lblMsg = new JLabel("Finalize seu cadastro e desfrute de nossa aplicação.");
 		
 		//Botão
-		btnFinalizarCadastro = new JButton("Finalizar cadastro");
+		btnFinalizarCadastro = new JButton("Finalizar cadastro");	
+			
+		String nomeImagem ="pessoaLapis";
+		lblImagem = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//"+nomeImagem+".png"));
 		
-		Color roxoEscuro=new Color(75,0,130);
+		
 		btnFinalizarCadastro.setBackground(roxoEscuro);
 		btnFinalizarCadastro.setForeground(Color.white);
 		
@@ -73,49 +92,73 @@ public class TelaCadastroAluno extends JFrame {
 		lblConfirmeSenha.setFont(fonteLabelsDesc);	
 
 		
-		Font fonteTamanho = new Font( "Trebuchet MS", Font.PLAIN, 60);
+		Font fonteTamanho = new Font( "Trebuchet MS", Font.PLAIN, 50);
 		lblInsiraDados.setFont(fonteTamanho);
 	    
 	    Font fonteTamanhoBotao = new Font( "Trebuchet MS", Font.PLAIN, 25);
 	    btnFinalizarCadastro.setFont(fonteTamanhoBotao);
+	    
+	    lblBemVindo.setFont(new Font("Trebuchet MS", Font.BOLD, 40));
+	    lblBemVindo.setForeground(Color.WHITE);
+	    
+	    lblMsg.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+	    lblMsg.setForeground(Color.WHITE);
 		
 	    //caixas de texto
-		txtNomeCompleto.setBounds(200,140,1000,30);
-		txtNomeUsuario.setBounds(200,240,1000,30);
-		txtEmail.setBounds(200,340,1000,30);
-		pfSenha.setBounds(200,440,1000,30);
-		pfConfirmaSenha.setBounds(200,540,1000,30);
+		txtNomeCompleto.setBounds(15,140,770,35);
+		txtNomeUsuario.setBounds(15,240,770,35);
+		txtEmail.setBounds(15,340,770,35);
+		pfSenha.setBounds(15,440,770,35);
+		pfConfirmaSenha.setBounds(15,540,770,35);
 		
 		//JLabels
-		lblInsiraDados.setBounds(470,0,800,100);
-		lblNomeCompleto.setBounds(200,100,400,30);
-		lblNomeUsuario.setBounds(200,200,400,40);
-		lblEmail.setBounds(200,300,400,40);
-		lblSenha.setBounds(200,400,400,40);
-		lblConfirmeSenha.setBounds(200,500,400,40);
+		lblInsiraDados.setBounds(200,0,800,100);
+		lblNomeCompleto.setBounds(15,100,400,30);
+		lblNomeUsuario.setBounds(15,200,400,40);
+		lblEmail.setBounds(15,300,400,40);
+		lblSenha.setBounds(15,400,400,40);
+		lblConfirmeSenha.setBounds(15,500,400,40);
+        lblImagem.setBounds((screenSize.width/2)+40,75, 700,screenSize.height-40);
+        lblBemVindo.setBounds((screenSize.width/2)+250,10, 450, 200);
+        lblMsg.setBounds((screenSize.width/2)+160, 50, 500, 200);
 		
 		//JButton
-		btnFinalizarCadastro.setBounds(575,590,255,50);
+		btnFinalizarCadastro.setBounds(250,590,255,50);
+		
+		//panels
+		panelRoxo.setBounds(800,0, (screenSize.width/2)-100, screenSize.height-40);
+		panelBranco.setBounds(0, 0, screenSize.width, screenSize.height-40);
+		
+		contentPane.add(lp);
+		lp.add(panelBranco, new Integer(1));
+		lp.add(panelRoxo, new Integer(2));
+		lp.add(lblImagem, new Integer(3));
 		
 		//caixas de text
-		add(txtNomeCompleto);
-		add(txtNomeUsuario);
-		add(txtEmail);
-		add(pfSenha);
-		add(pfConfirmaSenha);
+		lp.add(txtNomeCompleto, new Integer(4));
+		lp.add(txtNomeUsuario, new Integer(5));
+		lp.add(txtEmail, new Integer(6));
+		lp.add(pfSenha, new Integer(7));
+		lp.add(pfConfirmaSenha, new Integer(8));
 		
 		//Jlabels
-		add(lblInsiraDados);
-		add(lblNomeCompleto);
-		add(lblNomeUsuario);
-		add(lblEmail);
-		add(lblSenha);
-		add(lblConfirmeSenha);
+		lp.add(lblInsiraDados, new Integer(9));
+		lp.add(lblNomeCompleto, new Integer(10));
+		lp.add(lblNomeUsuario, new Integer(11));
+		lp.add(lblEmail, new Integer(12));
+		lp.add(lblSenha, new Integer(13));
+		lp.add(lblConfirmeSenha, new Integer(14));
+		lp.add(lblBemVindo, new Integer(16));
+		lp.add(lblMsg, new Integer(17));
 		
 		//Jbutton
-		add(btnFinalizarCadastro);
+		lp.add(btnFinalizarCadastro, new Integer(15));
 		
-		setVisible(true);
+		setLayout(new BorderLayout());
+        add(lp, BorderLayout.CENTER);
+        
+		
+        setVisible(true);
 	}
 	
 	private void definirEventos() {
@@ -137,6 +180,8 @@ public class TelaCadastroAluno extends JFrame {
 								
 								AlunoCONTROLLER controla = new AlunoCONTROLLER();
 								controla.cadastrar(nomeCompleto, nomeUsuario, email, senha);
+								JOptionPane.showMessageDialog(null, "Cadastro finalizado com sucesso!");
+								TelaOlimpiadas telaOlimp=new TelaOlimpiadas();
 								retorna=true;
 								
 							}else{

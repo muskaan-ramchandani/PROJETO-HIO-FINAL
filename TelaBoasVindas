@@ -1,4 +1,5 @@
-//package 
+package view;
+//package  
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,13 +7,12 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import controller.AlunoCONTROLLER;
+import controller.ProfessorCONTROLLER;
 import dao.AlunoDAO;
-import view.SplashScreen;
-import view.TelaAlunoProfessor;
 import vo.Aluno;
 
 public class TelaBoasVindas extends JFrame{
-	 //teste aluno
+	private JLayeredPane lp;
 	private JLabel lblBemVindo;
 	private JLabel lblAoHIO;
 	private JLabel lblEmail;
@@ -22,9 +22,10 @@ public class TelaBoasVindas extends JFrame{
     private JLabel lblTipoUser;
     private JTextField txtTipoUser;
 	private JLabel lblMedalha;
+	private JLabel lblLogo;
+	private JLabel lblHIO;
 	private JMenuBar menuBar;
-	private JMenu mnMais;
-	private JMenuItem miSobreNos;
+	private JButton btnSobreNos;
 	private JButton btnLogin;
 	private JButton btnCadastreSe;
 	private JLabel lblOu;
@@ -51,6 +52,7 @@ public class TelaBoasVindas extends JFrame{
         
         
         //instancia componentes
+        lp=new JLayeredPane();
         lblBemVindo = new JLabel("Bem vindo(a)");
         lblBemVindo.setFont(getFont());
         lblAoHIO = new JLabel ("ao HIO");
@@ -58,8 +60,7 @@ public class TelaBoasVindas extends JFrame{
         txtEmail = new JTextField(254);
         lblSenha = new JLabel("Senha:");
         pfSenha = new JPasswordField (10);
-        mnMais= new JMenu("Mais...");
-        miSobreNos = new JMenuItem("Sobre nós");
+        btnSobreNos = new JButton("Sobre nós");
         btnLogin = new JButton("Login");
         btnCadastreSe = new JButton("Cadastre-se");
         lblOu= new JLabel("ou");
@@ -70,13 +71,17 @@ public class TelaBoasVindas extends JFrame{
     	Color roxoEscuro=new Color(75,0,130); //código da cor desejada
 		menuBar.setBackground(roxoEscuro);	        
 
-        nomeMedalha = "medalha";
+        String nomeMedalha = "medalha";
         lblMedalha = new JLabel(new ImageIcon("C:\\Users\\maria\\Downloads\\Imagens HIO\\"+nomeMedalha+".png"));
         //JLabel lblMedalha = new JLabel(new ImageIcon("medalha.png")); guardando no diretório	
+        String nomeLogo = "bonequinhoSF";
+        lblLogo = new JLabel(new ImageIcon("C:\\Users\\maria\\Downloads\\Imagens HIO\\"+nomeLogo+".png"));
+        String nomeHIO = "nomeSF";
+        lblHIO = new JLabel(new ImageIcon("C:\\Users\\maria\\Downloads\\Imagens HIO\\"+nomeHIO+".png"));
 		
 	    //Configurações de fonte/cor
-        mnMais.setForeground(Color.white);
-	    miSobreNos.setForeground(roxoEscuro);
+        btnSobreNos.setForeground(Color.WHITE);
+        btnSobreNos.setBackground(roxoEscuro);
 	    btnLogin.setBackground(roxoEscuro);
 	    btnCadastreSe.setBackground(roxoEscuro);
 	    btnLogin.setForeground(Color.white);
@@ -101,6 +106,8 @@ public class TelaBoasVindas extends JFrame{
 	    btnCadastreSe.setFont(fonteTamanhoBotao);
 	    lblOu.setFont(fonteTamanhoBotao);
 	    
+	    btnSobreNos.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+	    
         //Posições na tela
         lblBemVindo.setBounds(20,30,650,120);
         lblAoHIO.setBounds(20,90, 650, 120);
@@ -116,11 +123,11 @@ public class TelaBoasVindas extends JFrame{
         btnCadastreSe.setBounds(900, 575, 155, 50);
         menuBar.setBounds(0,0, screenSize.width,40);
         lblMedalha.setBounds(20, 130, (screenSize.width/2)-130, screenSize.height-200);
-
+        btnSobreNos.setBounds(1235, 0, 125, 35);
+        lblLogo.setBounds(0,0,130, 35);
+        lblHIO.setBounds(131, 0, 130,35);
         
         //Adiciona componentes
-        mnMais.add(miSobreNos);
-        menuBar.add(mnMais);
         add(menuBar);
         add(lblBemVindo);
         add(lblAoHIO);
@@ -134,12 +141,19 @@ public class TelaBoasVindas extends JFrame{
         add(lblOu);
         add(btnCadastreSe);
         add(lblMedalha);
-
+        lp.add(btnSobreNos, JLayeredPane.DEFAULT_LAYER);//a camada mais acima de todas
+        lp.add(lblLogo, JLayeredPane.PALETTE_LAYER);
+        lp.add(lblHIO, JLayeredPane.MODAL_LAYER);
+        
+        setLayout(new BorderLayout());
+        add(lp, BorderLayout.CENTER);
+        btnSobreNos.setBorderPainted(false);
+        
         setVisible(true);
 	}
 	
 	private void definirEventos() {
-		 miSobreNos.addActionListener(new ActionListener() {
+		 btnSobreNos.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	            	TelaSobreNos telaSB= new TelaSobreNos();
@@ -172,9 +186,21 @@ public class TelaBoasVindas extends JFrame{
 							 JOptionPane.showMessageDialog(null, "Login não realizado, por favor, tente novamente!");
 						 }
 						 retorna=true;
+						 
 					 }else if(txtTipoUser.getText().equals("Professor")){
 
-						 TelaInicialProf telaInicialP = new TelaInicialProf();
+						 String email= txtEmail.getText();
+						 String senha = String.valueOf(pfSenha.getPassword());						 
+						 
+						 ProfessorCONTROLLER controla = new ProfessorCONTROLLER();
+						 boolean resposta=controla.consultar(email, senha);
+						 
+						 if(resposta==true) {
+							 JOptionPane.showMessageDialog(null, "Login realizado com sucesso!");
+							 TelaInicialProf telaInicialA = new TelaInicialProf();
+						 }else {
+							 JOptionPane.showMessageDialog(null, "Login não realizado, por favor, tente novamente!");
+						 }
 						 retorna=true;
 						 
 					 }else if(txtTipoUser.getText()!=("Professor")&&txtTipoUser.getText()!=("Aluno")){
