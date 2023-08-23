@@ -19,4 +19,23 @@ public class AlunoBO {
 		return dao.consultar(email, senha);
 	}
 	
+	public boolean atualizar(Aluno aluno, String email, String senha) {
+		AlunoDAO dao = new AlunoDAO();
+
+		if (dao.consultar(email, senha)==false) {
+            return false; // email e senha invalidos, não pode alterar
+        }else {
+    	    return dao.atualizar(aluno);
+        }
+	}
+	
+	public boolean remover(String email, String senha) {
+		AlunoDAO dao = new AlunoDAO();
+
+        if (dao.consultar(email, senha)==false) {
+            return false; // email e senha invalidos, não pode apagar
+        }else {
+            return dao.remover(email);
+        }
+    }
 }

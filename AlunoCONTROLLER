@@ -2,6 +2,8 @@ package controller;
 import javax.swing.*;
 import java.awt.*;
 import bo.AlunoBO;
+import vo.Aluno;
+import vo.Professor;
 
 public class AlunoCONTROLLER {
 	
@@ -14,4 +16,19 @@ public class AlunoCONTROLLER {
 		AlunoBO bo = new AlunoBO();
 		return bo.consultar(email, senha);
 	}
+	
+	public boolean atualizar(Aluno aluno, String email, String senha) {
+		AlunoBO bo = new AlunoBO();
+		return bo.atualizar(aluno, email, senha);
+	}
+	
+	 public void remover(String email, String senha) {
+		 AlunoBO bo = new AlunoBO();
+
+	        if (bo.remover(email, senha)==true) {
+	        	JOptionPane.showMessageDialog(null, "Conta excluída com sucesso!");
+	        } else {
+	        	JOptionPane.showMessageDialog(null, "Erro ao excluir conta!");
+	        }
+	 }
 }
