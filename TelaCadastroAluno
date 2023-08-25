@@ -20,6 +20,8 @@ public class TelaCadastroAluno extends JFrame {
 	private JLayeredPane lp;
 	private JPanel panelRoxo;
 	private JPanel panelBranco;
+	private JLabel lblFundo2;
+	private JLabel lblFundo;
 	private JLabel lblNomeCompleto;
 	private JLabel lblNomeUsuario;
 	private JLabel lblEmail;
@@ -46,8 +48,8 @@ public class TelaCadastroAluno extends JFrame {
 		Dimension screenSize = toolkit.getScreenSize();
 		setBounds(0, 0, screenSize.width, screenSize.height-40);
 		contentPane=getContentPane();
-        contentPane.setBackground(Color.white);
-		
+        contentPane.setBackground(Color.black);
+        		
 		lp = new JLayeredPane();
 		panelRoxo = new JPanel();
 		panelBranco= new JPanel();
@@ -55,6 +57,7 @@ public class TelaCadastroAluno extends JFrame {
 		Color roxoEscuro=new Color(75,0,130);
 		panelBranco.setBackground(Color.WHITE);
 		panelRoxo.setBackground(roxoEscuro);
+		
 		
 		//caixas de texto
 		txtNomeCompleto = new JTextField(200);
@@ -79,7 +82,12 @@ public class TelaCadastroAluno extends JFrame {
 		String nomeImagem ="pessoaLapis";
 		lblImagem = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//"+nomeImagem+".png"));
-		
+		String nomeFundo = "fundoTela";
+		lblFundo = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//"+nomeFundo+".png"));
+		String fundo2 = "fundo2Tela";
+		lblFundo2 =new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//"+fundo2+".png"));
 		
 		btnFinalizarCadastro.setBackground(roxoEscuro);
 		btnFinalizarCadastro.setForeground(Color.white);
@@ -92,67 +100,78 @@ public class TelaCadastroAluno extends JFrame {
 		lblConfirmeSenha.setFont(fonteLabelsDesc);	
 
 		
-		Font fonteTamanho = new Font( "Trebuchet MS", Font.PLAIN, 50);
+		Font fonteTamanho = new Font( "Trebuchet MS", Font.PLAIN, 45);
 		lblInsiraDados.setFont(fonteTamanho);
 	    
-	    Font fonteTamanhoBotao = new Font( "Trebuchet MS", Font.PLAIN, 25);
+	    Font fonteTamanhoBotao = new Font( "Trebuchet MS", Font.PLAIN, 20);
 	    btnFinalizarCadastro.setFont(fonteTamanhoBotao);
 	    
-	    lblBemVindo.setFont(new Font("Trebuchet MS", Font.BOLD, 40));
+	    lblBemVindo.setFont(new Font("Trebuchet MS", Font.BOLD, 35));
 	    lblBemVindo.setForeground(Color.WHITE);
 	    
-	    lblMsg.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+	    lblMsg.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
 	    lblMsg.setForeground(Color.WHITE);
 		
-	    //caixas de texto
-		txtNomeCompleto.setBounds(15,140,770,35);
-		txtNomeUsuario.setBounds(15,240,770,35);
-		txtEmail.setBounds(15,340,770,35);
-		pfSenha.setBounds(15,440,770,35);
-		pfConfirmaSenha.setBounds(15,540,770,35);
+	    //caixas de texto e jlabels
+		lblInsiraDados.setBounds(252,55,800,100);
+
+		lblNomeCompleto.setBounds(205,150,400,30);
+		txtNomeCompleto.setBounds(205,190,425,30);
+
+		lblNomeUsuario.setBounds(205,240,400,40);
+		txtNomeUsuario.setBounds(205,280,425,30);
+
+		lblEmail.setBounds(205,330,400,40);
+		txtEmail.setBounds(205,370,425,30);
+
+		lblSenha.setBounds(205,420,400,40);
+		pfSenha.setBounds(205,460,425,30);
 		
-		//JLabels
-		lblInsiraDados.setBounds(200,0,800,100);
-		lblNomeCompleto.setBounds(15,100,400,30);
-		lblNomeUsuario.setBounds(15,200,400,40);
-		lblEmail.setBounds(15,300,400,40);
-		lblSenha.setBounds(15,400,400,40);
-		lblConfirmeSenha.setBounds(15,500,400,40);
-        lblImagem.setBounds((screenSize.width/2)+40,75, 700,screenSize.height-40);
-        lblBemVindo.setBounds((screenSize.width/2)+250,10, 450, 200);
-        lblMsg.setBounds((screenSize.width/2)+160, 50, 500, 200);
+		lblConfirmeSenha.setBounds(205,510,400,40);
+		pfConfirmaSenha.setBounds(205,550,425,30);
 		
+	
+        lblImagem.setBounds((screenSize.width/2)-40,50, 550,screenSize.height-45);
+        lblBemVindo.setBounds((screenSize.width/2)+110,10, 450, 200);
+        lblMsg.setBounds((screenSize.width/2)+70, 50, 500, 200);
+		lblFundo.setBounds(0, 0, screenSize.width, screenSize.height-40);
+		lblFundo2.setBounds(680,60, (screenSize.width/2)-205, screenSize.height-190);
+
+        
 		//JButton
-		btnFinalizarCadastro.setBounds(250,590,255,50);
+		btnFinalizarCadastro.setBounds(285,590,245,45);
 		
 		//panels
-		panelRoxo.setBounds(800,0, (screenSize.width/2)-100, screenSize.height-40);
-		panelBranco.setBounds(0, 0, screenSize.width, screenSize.height-40);
+		panelRoxo.setBounds(680,60, (screenSize.width/2)-205, screenSize.height-190);
+		panelBranco.setBounds(155, 60, screenSize.width-520, screenSize.height-190);
+
 		
 		contentPane.add(lp);
-		lp.add(panelBranco, new Integer(1));
-		lp.add(panelRoxo, new Integer(2));
-		lp.add(lblImagem, new Integer(3));
+		lp.add(lblFundo, new Integer(1));
+		lp.add(panelBranco, new Integer(2));
+		lp.add(panelRoxo, new Integer(3));
+		lp.add(lblFundo2, new Integer(4));
+		lp.add(lblImagem, new Integer(5));
 		
 		//caixas de text
-		lp.add(txtNomeCompleto, new Integer(4));
-		lp.add(txtNomeUsuario, new Integer(5));
-		lp.add(txtEmail, new Integer(6));
-		lp.add(pfSenha, new Integer(7));
-		lp.add(pfConfirmaSenha, new Integer(8));
+		lp.add(txtNomeCompleto, new Integer(6));
+		lp.add(txtNomeUsuario, new Integer(7));
+		lp.add(txtEmail, new Integer(8));
+		lp.add(pfSenha, new Integer(9));
+		lp.add(pfConfirmaSenha, new Integer(10));
 		
 		//Jlabels
-		lp.add(lblInsiraDados, new Integer(9));
-		lp.add(lblNomeCompleto, new Integer(10));
-		lp.add(lblNomeUsuario, new Integer(11));
-		lp.add(lblEmail, new Integer(12));
-		lp.add(lblSenha, new Integer(13));
-		lp.add(lblConfirmeSenha, new Integer(14));
-		lp.add(lblBemVindo, new Integer(16));
-		lp.add(lblMsg, new Integer(17));
+		lp.add(lblInsiraDados, new Integer(11));
+		lp.add(lblNomeCompleto, new Integer(12));
+		lp.add(lblNomeUsuario, new Integer(13));
+		lp.add(lblEmail, new Integer(14));
+		lp.add(lblSenha, new Integer(15));
+		lp.add(lblConfirmeSenha, new Integer(16));
+		lp.add(lblBemVindo, new Integer(18));
+		lp.add(lblMsg, new Integer(19));
 		
 		//Jbutton
-		lp.add(btnFinalizarCadastro, new Integer(15));
+		lp.add(btnFinalizarCadastro, new Integer(17));
 		
 		setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
