@@ -1,8 +1,153 @@
+package view;
+import vo.Aluno;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class TelaInicialAluno extends JFrame{
-	public TelaInicialAluno() {
-		
+	Color roxoEscuro=new Color(75,0,130);
+	
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JMenuBar barra;
+	private JButton btnPerfil;
+	private JButton btnFavoritos;
+	private JButton btnCronogramas;
+	private JButton btnAdicionarOlimp;
+	private JLabel lblEstatisticas;
+	private JLabel lblAcertos;
+	private JLabel lblErros;
+	private JLabel lblQuestoesHj;
+	private JLabel lblQuestoesPeriodo;
+	private JLabel lblAdicionarOlimp;
+	private JLabel lblFundoAcertos;
+	private JLabel lblFundoErros;
+	private JLabel lblFundoQuestoesHj;
+	private JLabel lblFundoQuestoesPeriodo;
+	
+	
+	
+	public TelaInicialAluno(Aluno aluno) {
+		inicializarComponentes(aluno);
+		definirEventos();
 	}
+
+	private void inicializarComponentes(Aluno aluno) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+        contentPane=getContentPane();
+        contentPane.setBackground(Color.white);
+		
+        //inicializa
+        lp= new JLayeredPane();
+        barra= new JMenuBar();
+        btnFavoritos = new JButton("Favoritos");
+        btnCronogramas = new JButton("Cronograma");
+        lblEstatisticas = new JLabel("Estatísticas (últimos 7 dias):");
+        lblAcertos = new JLabel("Acertos");
+        lblErros = new JLabel("Erros");
+        
+        
+        
+        //cores e fontes
+        barra.setBackground(roxoEscuro);
+        btnFavoritos.setBackground(roxoEscuro);
+        btnFavoritos.setForeground(Color.WHITE);
+        btnCronogramas.setBackground(roxoEscuro);
+        btnCronogramas.setForeground(Color.WHITE);
+        lblEstatisticas.setBackground(Color.white);
+        lblEstatisticas.setForeground(Color.BLACK);
+        lblAcertos.setBackground(Color.white);
+        lblAcertos.setForeground(Color.BLACK);
+        lblErros.setBackground(Color.white);
+        lblErros.setForeground(Color.BLACK);
+        
+        Font fonteBarra = new Font( "Trebuchet MS", Font.PLAIN, 20);
+		btnFavoritos.setFont(fonteBarra);
+		btnCronogramas.setFont(fonteBarra);
+		
+		Font fonteLabels = new Font("Trebuchet MS", Font.PLAIN, 25);
+		lblEstatisticas.setFont(fonteLabels);
+		
+		lblErros.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+		lblAcertos.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+
+		
+        //coordenadas
+        lp.setBounds(0, 0, screenSize.width, screenSize.height-40);
+        barra.setBounds(0,0,screenSize.width, 50);
+        btnFavoritos.setBounds(50, 10, 160, 35);
+       // lblLogo.setBounds(10,0,45, 45); PERFIL
+        btnCronogramas.setBounds(220, 10, 160, 35);
+        lblEstatisticas.setBounds(30, 80, 350, 25);
+        lblAcertos.setBounds(30, 120, 100, 20);
+        lblErros.setBounds(150, 120, 100, 20);
+
+        
+        //adiciona
+        contentPane.add(lp);
+        lp.add(barra, new Integer(1));
+        lp.add(btnFavoritos, new Integer(2));
+       // lp.add(lblLogo, new Integer(3)); PERFIL
+        lp.add(btnCronogramas, new Integer(4));
+        lp.add(lblEstatisticas, new Integer(5));
+        lp.add(lblAcertos, new Integer(6));
+        lp.add(lblErros, new Integer(7));
+        
+        
+        setLayout(new BorderLayout());
+        add(lp, BorderLayout.CENTER);
+        btnFavoritos.setBorderPainted(false);
+        btnCronogramas.setBorderPainted(false);
+
+        
+		setVisible(true);
+	}
+
+	private void definirEventos() {
+		btnPerfil.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				contentPane.removeAll();
+	    		//contentPane.add(tela);
+				contentPane.validate();
+			}
+			 
+		 });
+		
+		btnFavoritos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				contentPane.removeAll();
+	    		//contentPane.add(tela);
+				contentPane.validate();
+			}
+			 
+		 });
+		
+		btnCronogramas.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				contentPane.removeAll();
+	    		//contentPane.add(tela);
+				contentPane.validate();
+			}
+			 
+		 });
+		
+		btnAdicionarOlimp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				contentPane.removeAll();
+	    		//contentPane.add(tela);
+				contentPane.validate();
+			}
+			 
+		 });
+	}
+	
+	
 }
