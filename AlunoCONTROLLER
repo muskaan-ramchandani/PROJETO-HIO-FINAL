@@ -2,6 +2,7 @@ package controller;
 import javax.swing.*;
 import java.awt.*;
 import bo.AlunoBO;
+import dao.AlunoDAO;
 import vo.Aluno;
 import vo.Professor;
 
@@ -10,6 +11,11 @@ public class AlunoCONTROLLER {
 	public void cadastrar(String nomeCompleto, String nomeUsuario, String email,String senha) {
 		AlunoBO bo = new AlunoBO();
 		bo.cadastrar(nomeCompleto, nomeUsuario, email, senha);
+	}
+	
+	public void adicionarOlimpiadas(Aluno aluno, String olimpiada) {
+		AlunoBO bo = new AlunoBO();
+		bo.adicionarOlimpiadas(aluno, olimpiada);
 	}
 	
 	public boolean consultar(String email, String senha) {
@@ -31,4 +37,9 @@ public class AlunoCONTROLLER {
 	        	JOptionPane.showMessageDialog(null, "Erro ao excluir conta!");
 	        }
 	 }
+	 
+	 public static Aluno obterAlunoExistente(String email) {
+			AlunoBO bo = new AlunoBO();
+			return bo.obterAlunoExistente(email);
+		}
 }
