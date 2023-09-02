@@ -40,12 +40,12 @@ public class TelaOlimpiadas extends JFrame{
 	private JCheckBox cbOMU;
 	private JCheckBox cbOIMSF;
 	
-	public TelaOlimpiadas(Aluno aluno) {
-		inicializarComponentes(aluno);
-		definirEventos(aluno);
+	public TelaOlimpiadas(Aluno aluno, boolean retorna) {
+		inicializarComponentes(aluno, retorna);
+		definirEventos(aluno, retorna);
 	}
 
-	private void inicializarComponentes(Aluno aluno) {
+	private void inicializarComponentes(Aluno aluno, boolean retorna) {
 		setTitle("Seleção de olimpíadas");
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = toolkit.getScreenSize();
@@ -82,7 +82,7 @@ public class TelaOlimpiadas extends JFrame{
     	cbONC= new JCheckBox("ONC");
     	cbONHB= new JCheckBox("ONHB");
     	cbOBQ= new JCheckBox("OBQ");
-    	cbOBB= new JCheckBox("OBMEP");
+    	cbOBB= new JCheckBox("OBB");
     	cbOBA= new JCheckBox("OBA");
     	cbOBF= new JCheckBox("OBF");
     	cbOBG= new JCheckBox("OBG");
@@ -154,6 +154,25 @@ public class TelaOlimpiadas extends JFrame{
         btnFinalizar.setBounds(245, 400, 150, 50);
         
         
+        
+        if(retorna==true) {//foi pressionado botao de adicionar mais olimps 
+	            ArrayList<String> olimpiadas = new ArrayList<String>();
+				olimpiadas = controla.retornaOlimpiadasSelecionadas(aluno); 
+				
+				for(String nomeLista : olimpiadas) {//percorre lista de olimpiadas selecionadas anteriormente
+		            Component[] components = lp.getComponentsInLayer(JLayeredPane.DEFAULT_LAYER);
+		            for (Component component : components) {
+		                     if (component instanceof JCheckBox) {
+		                         JCheckBox checkBox = (JCheckBox) component;
+							if(checkBox.getText().equals(nomeLista)) { //verifica de a cb possui o valor de algo da lista
+								checkBox.setSelected(true);
+							}
+						}
+					}
+				}
+		}
+        
+        
         //adiciona
         contentPane.add(lp);
         lp.add(panelBranco, new Integer(1));
@@ -179,6 +198,7 @@ public class TelaOlimpiadas extends JFrame{
         lp.add(cbOIMSF, new Integer(21));
         lp.add(btnFinalizar, new Integer(22));
         
+        
         setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
         
@@ -186,66 +206,105 @@ public class TelaOlimpiadas extends JFrame{
         setVisible(true);
 	}
 	
-	private void definirEventos(Aluno aluno) {
+	private void definirEventos(Aluno aluno, boolean retorna) {
 		
-		btnFinalizar.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(cbOBMEP.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno, cbOBMEP.getText());
+		if(retorna==true) {//foi pressionado botao de adicionar mais olimps	
+			btnFinalizar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ArrayList<String> olimpiadas = new ArrayList<String>();
+					olimpiadas = controla.retornaOlimpiadasSelecionadas(aluno); 
+					
+					for(String nomeLista : olimpiadas) {//percorre lista de olimpiadas selecionadas anteriormente
+			            Component[] components = lp.getComponentsInLayer(JLayeredPane.DEFAULT_LAYER);
+			            for (Component component : components) {
+			                     if (component instanceof JCheckBox) {
+			                         JCheckBox checkBox = (JCheckBox) component;
+								if(checkBox.getText().equals(nomeLista)) { //verifica de a cb possui o valor de algo da lista
+									//nada
+								}else {
+									if(checkBox.isSelected()==true) {
+										controla.adicionarOlimpiadas(aluno, checkBox.getText());
+									}
+							   }
+							}
+						}
+					}
+					
+					int qntdOlimpiadas = (controla.retornaOlimpiadasSelecionadas(aluno)).size();
+					if(qntdOlimpiadas>0) {
+						JOptionPane.showMessageDialog(null, qntdOlimpiadas +" olimpíadas selecionadas com sucesso!");
+						TelaInicialAluno tela = new TelaInicialAluno(aluno, true);
+					}else {
+						JOptionPane.showMessageDialog(null, "Você deve selecionar uma olimpíada! Tente novamente!");
+					}
+					
 				}
-				if(cbOBC.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOBC.getText());
+			});
+			
+			
+		}else{//falso, não foi pressionado botao de adicionar mais olimps, direto do cadastro
+			btnFinalizar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(cbOBMEP.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno, cbOBMEP.getText());
+					}
+					if(cbOBC.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBC.getText());
+					}
+					if(cbONC.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbONC.getText());
+					}
+					if(cbONHB.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbONHB.getText());
+					}
+					if(cbOBQ.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBQ.getText());
+					}
+					if(cbOBB.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBB.getText());
+					}
+					if(cbOBA.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBA.getText());
+					}
+					if(cbOBF.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBF.getText());
+					}
+					if(cbOBG.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBG.getText());
+					}
+					if(cbOBI.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBI.getText());
+					}
+					if(cbOBL.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBL.getText());
+					}
+					if(cbOBR.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBR.getText());
+					}
+					if(cbOLAA.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOLAA.getText());
+					}
+					if(cbOMU.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOMU.getText());
+					}
+					if(cbOIMSF.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOIMSF.getText());
+					}
+					
+					int qntdOlimpiadas = (aluno.getOlimpiadasSelecionadas()).size();
+					if(qntdOlimpiadas>0) {
+						JOptionPane.showMessageDialog(null, qntdOlimpiadas +" olimpíadas selecionadas com sucesso!");
+						TelaInicialAluno tela = new TelaInicialAluno(aluno, false);
+					}else {
+						JOptionPane.showMessageDialog(null, "Você deve selecionar uma olimpíada! Tente novamente!");
+					}
 				}
-				if(cbONC.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbONC.getText());
-				}
-				if(cbONHB.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbONHB.getText());
-				}
-				if(cbOBQ.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOBQ.getText());
-				}
-				if(cbOBB.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOBB.getText());
-				}
-				if(cbOBA.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOBA.getText());
-				}
-				if(cbOBF.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOBF.getText());
-				}
-				if(cbOBG.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOBG.getText());
-				}
-				if(cbOBI.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOBI.getText());
-				}
-				if(cbOBL.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOBL.getText());
-				}
-				if(cbOBR.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOBR.getText());
-				}
-				if(cbOLAA.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOLAA.getText());
-				}
-				if(cbOMU.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOMU.getText());
-				}
-				if(cbOIMSF.isSelected()==true) {
-					controla.adicionarOlimpiadas(aluno,cbOIMSF.getText());
-				}
-				
-				int qntdOlimpiadas = (aluno.getOlimpiadasSelecionadas()).size();
-				if(qntdOlimpiadas>0) {
-					JOptionPane.showMessageDialog(null, qntdOlimpiadas +" olimpíadas selecionadas com sucesso!");
-					TelaInicialAluno tela = new TelaInicialAluno(aluno);
-				}else {
-					JOptionPane.showMessageDialog(null, "Você deve selecionar uma olimpíada! Tente novamente!");
-				}
-			}
-		});
+			});
+		}
+		
+		
 		
 		
 		
