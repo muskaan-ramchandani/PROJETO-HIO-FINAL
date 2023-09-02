@@ -5,6 +5,8 @@ import javax.swing.*;
 import dao.AlunoDAO;
 
 import java.awt.*;
+import java.util.ArrayList;
+
 import vo.Aluno;
 
 public class AlunoBO {
