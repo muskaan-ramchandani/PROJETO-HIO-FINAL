@@ -1,31 +1,37 @@
 package controller;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 import bo.AlunoBO;
-import bo.ProfessorBO;
+import dao.AlunoDAO;
 import vo.Aluno;
 import vo.Professor;
 
-public class ProfessorCONTROLLER {
+public class AlunoCONTROLLER {
 	
-	public void cadastrar(String nomeCompleto, String nomeUsuario, String email, String senha) {
-		ProfessorBO bo = new ProfessorBO();
+	public void cadastrar(String nomeCompleto, String nomeUsuario, String email,String senha) {
+		AlunoBO bo = new AlunoBO();
 		bo.cadastrar(nomeCompleto, nomeUsuario, email, senha);
 	}
 	
+	public void adicionarOlimpiadas(Aluno aluno, String olimpiada) {
+		AlunoBO bo = new AlunoBO();
+		bo.adicionarOlimpiadas(aluno, olimpiada);
+	}
+	
 	public boolean consultar(String email, String senha) {
-		ProfessorBO bo = new ProfessorBO();
+		AlunoBO bo = new AlunoBO();
 		return bo.consultar(email, senha);
 	}
 	
-	public boolean atualizar(Professor prof, String email, String senha) {
-		ProfessorBO bo = new ProfessorBO();
-		return bo.atualizar(prof, email, senha);
+	public boolean atualizar(Aluno aluno, String email, String senha) {
+		AlunoBO bo = new AlunoBO();
+		return bo.atualizar(aluno, email, senha);
 	}
 	
-	public void remover(String email, String senha) {
-		ProfessorBO bo = new ProfessorBO();
+	 public void remover(String email, String senha) {
+		 AlunoBO bo = new AlunoBO();
 
 	        if (bo.remover(email, senha)==true) {
 	        	JOptionPane.showMessageDialog(null, "Conta excluída com sucesso!");
@@ -33,4 +39,9 @@ public class ProfessorCONTROLLER {
 	        	JOptionPane.showMessageDialog(null, "Erro ao excluir conta!");
 	        }
 	 }
+	 
+	 public static Aluno obterAlunoExistente(String email) {
+			AlunoBO bo = new AlunoBO();
+			return bo.obterAlunoExistente(email);
+		}
 }
