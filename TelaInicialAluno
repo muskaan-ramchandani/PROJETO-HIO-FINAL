@@ -1,6 +1,9 @@
 package view;
 import vo.Aluno;
 import javax.swing.*;
+
+import controller.AlunoCONTROLLER;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,12 +39,12 @@ public class TelaInicialAluno extends JFrame{
 
 
 	
-	public TelaInicialAluno(Aluno aluno) {
-		inicializarComponentes(aluno);
-		definirEventos();
+	public TelaInicialAluno(Aluno aluno, boolean login) {
+		inicializarComponentes(aluno, login);
+		definirEventos(aluno);
 	}
 
-	private void inicializarComponentes(Aluno aluno) {
+	private void inicializarComponentes(Aluno aluno, boolean login) {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = toolkit.getScreenSize();
 		setBounds(0, 0, screenSize.width, screenSize.height-40);
@@ -195,52 +198,104 @@ public class TelaInicialAluno extends JFrame{
         lp.add(lblAOlimp, new Integer(19));
         
       //botões olimpiadas
-        //botoesOlimp
-		ArrayList<String> lista = new ArrayList<String>();
-		lista = aluno.getOlimpiadasSelecionadas();
-		int x= 30;
-		int y=350;
-		int largura=100;
-		int altura=80;
-		int camada=20;
-		int cont=0, qntd=5;
+        if(login==true) {
+        	ArrayList<String> lista = new ArrayList<String>();
+    		AlunoCONTROLLER controla = new AlunoCONTROLLER();
+    		lista = controla.retornaOlimpiadasSelecionadas(aluno);
+    		int x= 30;
+    		int y=350;
+    		int largura=100;
+    		int altura=80;
+    		int camada=20;
+    		int cont=0, qntd=5;
 
-		for(String nomes : lista) {
-	         	cont++;
-				JButton novaOlimp = new JButton(nomes);
-				novaOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
-				novaOlimp.setForeground(Color.white);
-				novaOlimp.setBackground(roxoEscuro);
-				novaOlimp.setBounds(x, y, largura, altura);
-				
-				novaOlimp.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						GuiOlimpiadas olimpiada = new GuiOlimpiadas(nomes);
-						contentPane.removeAll();
-			    		contentPane.add(olimpiada);
-						contentPane.validate();
-					}
-				});
-				
-				
-				botoesOlimp.add(novaOlimp);
-				lp.add(novaOlimp, new Integer(camada));
-				contentPane.revalidate();
-		        contentPane.repaint();
-		        
-		        camada+=1;
-		      //após 5 olimpiadas, as outras devem se locomover para baixo
-		        if(cont==qntd) {
-		        	y+=90;
-		        	x=30;
-		        	cont=0;
-		        }else{
-			        x+=150;
-		        }
+    		for(String nomes : lista) {
+    	         	cont++;
+    				JButton novaOlimp = new JButton(nomes);
+    				novaOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+    				novaOlimp.setForeground(Color.white);
+    				novaOlimp.setBackground(roxoEscuro);
+    				novaOlimp.setBounds(x, y, largura, altura);
+    				
+    				novaOlimp.addActionListener(new ActionListener() {
+    					@Override
+    					public void actionPerformed(ActionEvent e) {
+    						GuiOlimpiadas olimpiada = new GuiOlimpiadas(nomes);
+    						contentPane.removeAll();
+    			    		contentPane.add(olimpiada);
+    						contentPane.validate();
+    					}
+    				});
+    				
+    				
+    				botoesOlimp.add(novaOlimp);
+    				lp.add(novaOlimp, new Integer(camada));
+    				contentPane.revalidate();
+    		        contentPane.repaint();
+    		        
+    		        camada+=1;
+    		      //após 5 olimpiadas, as outras devem se locomover para baixo
+    		        if(cont==qntd) {
+    		        	y+=90;
+    		        	x=30;
+    		        	cont=0;
+    		        }else{
+    			        x+=150;
+    		        }
 
+    		
+    		}
+        	
+        	
+        }else {
+        	ArrayList<String> lista = new ArrayList<String>();
+    		AlunoCONTROLLER controla = new AlunoCONTROLLER();
+    		lista = aluno.getOlimpiadasSelecionadas();
+    		int x= 30;
+    		int y=350;
+    		int largura=100;
+    		int altura=80;
+    		int camada=20;
+    		int cont=0, qntd=5;
+
+    		for(String nomes : lista) {
+    	         	cont++;
+    				JButton novaOlimp = new JButton(nomes);
+    				novaOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+    				novaOlimp.setForeground(Color.white);
+    				novaOlimp.setBackground(roxoEscuro);
+    				novaOlimp.setBounds(x, y, largura, altura);
+    				
+    				novaOlimp.addActionListener(new ActionListener() {
+    					@Override
+    					public void actionPerformed(ActionEvent e) {
+    						GuiOlimpiadas olimpiada = new GuiOlimpiadas(nomes);
+    						contentPane.removeAll();
+    			    		contentPane.add(olimpiada);
+    						contentPane.validate();
+    					}
+    				});
+    				
+    				
+    				botoesOlimp.add(novaOlimp);
+    				lp.add(novaOlimp, new Integer(camada));
+    				contentPane.revalidate();
+    		        contentPane.repaint();
+    		        
+    		        camada+=1;
+    		      //após 5 olimpiadas, as outras devem se locomover para baixo
+    		        if(cont==qntd) {
+    		        	y+=90;
+    		        	x=30;
+    		        	cont=0;
+    		        }else{
+    			        x+=150;
+    		        }
+
+    		
+    		}
+        }
 		
-		}
         
         setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
@@ -250,7 +305,7 @@ public class TelaInicialAluno extends JFrame{
 		setVisible(true);
 	}
 
-	private void definirEventos() {
+	private void definirEventos(Aluno aluno) {
 		btnPerfil.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -284,8 +339,9 @@ public class TelaInicialAluno extends JFrame{
 		btnAdicionarOlimp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				TelaOlimpiadas tela = new TelaOlimpiadas(aluno, true);
 				contentPane.removeAll();
-	    		//contentPane.add(tela);
+	    		contentPane.add(tela);
 				contentPane.validate();
 			}
 			 
