@@ -55,9 +55,34 @@ public class AlunoDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
+	
+	public ArrayList retornaOlimpiadasSelecionadas(Aluno aluno) {
+		ArrayList<String> olimpiadas = new ArrayList<String>();
+
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    		 
+            String selectQuery = "SELECT * FROM olimpiadasSelecionadas WHERE emailAluno = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setString(1, aluno.getEmail());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+            	 String nomeOlimp = resultSet.getString("nome");
+                 olimpiadas.add(nomeOlimp);
+            }
+            
+        
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return olimpiadas;
+    }
+	
 	
 	public boolean consultar(String email, String senha) {
 		 try {
