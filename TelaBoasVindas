@@ -184,7 +184,7 @@ public class TelaBoasVindas extends JFrame{
 							 
 						       Aluno aluno = controla.obterAlunoExistente(email);
 							 
-							 TelaInicialAluno telaInicialA = new TelaInicialAluno(aluno);
+							 TelaInicialAluno telaInicialA = new TelaInicialAluno(aluno, true);
 						 }else {
 							 JOptionPane.showMessageDialog(null, "Login não realizado, por favor, tente novamente!");
 						 }
