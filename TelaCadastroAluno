@@ -202,7 +202,7 @@ public class TelaCadastroAluno extends JFrame {
 								JOptionPane.showMessageDialog(null, "Cadastro finalizado com sucesso!");
 								
 								Aluno aluno = new Aluno(nomeCompleto, nomeUsuario, email, senha);
-								TelaOlimpiadas telaOlimp=new TelaOlimpiadas(aluno);
+								TelaOlimpiadas telaOlimp=new TelaOlimpiadas(aluno, false);
 								retorna=true;
 								
 							}else{
