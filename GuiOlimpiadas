@@ -1,0 +1,11 @@
+package view;
+import javax.swing.*;
+import java.awt.*;
+
+public class GuiOlimpiadas extends JPanel{
+
+	
+	public GuiOlimpiadas(String nome) {
+		
+	}
+}
