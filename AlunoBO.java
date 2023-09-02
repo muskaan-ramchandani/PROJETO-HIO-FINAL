@@ -2,9 +2,14 @@ package bo;
 import dao.AlunoDAO;
 import javax.swing.*;
 
+import conexaoBD.Conexao;
 import dao.AlunoDAO;
 
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vo.Aluno;
@@ -20,6 +25,12 @@ public class AlunoBO {
 		AlunoDAO dao = new AlunoDAO();
 		dao.adicionarOlimpiadas(aluno, olimpiada);
 	}
+	
+	public ArrayList retornaOlimpiadasSelecionadas(Aluno aluno) {
+		AlunoDAO dao = new AlunoDAO();
+        return dao.retornaOlimpiadasSelecionadas(aluno);
+    }
+
 	
 	public boolean consultar(String email, String senha) {
 		AlunoDAO dao = new AlunoDAO();
