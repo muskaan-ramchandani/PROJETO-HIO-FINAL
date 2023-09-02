@@ -1,6 +1,8 @@
 package controller;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+
 import bo.AlunoBO;
 import dao.AlunoDAO;
 import vo.Aluno;
@@ -17,6 +19,10 @@ public class AlunoCONTROLLER {
 		AlunoBO bo = new AlunoBO();
 		bo.adicionarOlimpiadas(aluno, olimpiada);
 	}
+	public ArrayList retornaOlimpiadasSelecionadas(Aluno aluno) {
+		AlunoBO bo = new AlunoBO();
+        return bo.retornaOlimpiadasSelecionadas(aluno);
+    }
 	
 	public boolean consultar(String email, String senha) {
 		AlunoBO bo = new AlunoBO();
