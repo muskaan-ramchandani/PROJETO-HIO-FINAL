@@ -159,19 +159,55 @@ public class TelaOlimpiadas extends JFrame{
 	            ArrayList<String> olimpiadas = new ArrayList<String>();
 				olimpiadas = controla.retornaOlimpiadasSelecionadas(aluno); 
 				
-				for(String nomeLista : olimpiadas) {//percorre lista de olimpiadas selecionadas anteriormente
-		            Component[] components = lp.getComponentsInLayer(JLayeredPane.DEFAULT_LAYER);
-		            for (Component component : components) {
-		                     if (component instanceof JCheckBox) {
-		                         JCheckBox checkBox = (JCheckBox) component;
-							if(checkBox.getText().equals(nomeLista)) { //verifica de a cb possui o valor de algo da lista
-								checkBox.setSelected(true);
-							}
-						}
+				
+				for(String nomeLista : olimpiadas) {
+					if(cbOBMEP.getText().equals(nomeLista)) {
+						cbOBMEP.setSelected(true);
+					}
+					if(cbOBC.getText().equals(nomeLista)) {
+						cbOBC.setSelected(true);
+					}
+					if(cbONC.getText().equals(nomeLista)) {
+						cbONC.setSelected(true);
+					}
+					if(cbONHB.getText().equals(nomeLista)) {
+						cbONHB.setSelected(true);
+					}
+					if(cbOBQ.getText().equals(nomeLista)) {
+						cbOBQ.setSelected(true);
+					}
+					if(cbOBB.getText().equals(nomeLista)) {
+						cbOBB.setSelected(true);
+					}
+					if(cbOBA.getText().equals(nomeLista)) {
+						cbOBA.setSelected(true);
+					}
+					if(cbOBF.getText().equals(nomeLista)) {
+						cbOBF.setSelected(true);
+					}
+					if(cbOBG.getText().equals(nomeLista)) {
+						cbOBG.setSelected(true);
+					}
+					if(cbOBI.getText().equals(nomeLista)) {
+						cbOBI.setSelected(true);
+					}
+					if(cbOBL.getText().equals(nomeLista)) {
+						cbOBL.setSelected(true);
+					}
+					if(cbOBR.getText().equals(nomeLista)) {
+						cbOBR.setSelected(true);
+					}
+					if(cbOLAA.getText().equals(nomeLista)) {
+						cbOLAA.setSelected(true);
+					}
+					if(cbOMU.getText().equals(nomeLista)) {
+						cbOMU.setSelected(true);
+					}
+					if(cbOIMSF.getText().equals(nomeLista)) {
+						cbOIMSF.setSelected(true);
 					}
 				}
-		}
-        
+        }
         
         //adiciona
         contentPane.add(lp);
@@ -209,28 +245,57 @@ public class TelaOlimpiadas extends JFrame{
 	private void definirEventos(Aluno aluno, boolean retorna) {
 		
 		if(retorna==true) {//foi pressionado botao de adicionar mais olimps	
+			
 			btnFinalizar.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					ArrayList<String> olimpiadas = new ArrayList<String>();
-					olimpiadas = controla.retornaOlimpiadasSelecionadas(aluno); 
-					
-					for(String nomeLista : olimpiadas) {//percorre lista de olimpiadas selecionadas anteriormente
-			            Component[] components = lp.getComponentsInLayer(JLayeredPane.DEFAULT_LAYER);
-			            for (Component component : components) {
-			                     if (component instanceof JCheckBox) {
-			                         JCheckBox checkBox = (JCheckBox) component;
-								if(checkBox.getText().equals(nomeLista)) { //verifica de a cb possui o valor de algo da lista
-									//nada
-								}else {
-									if(checkBox.isSelected()==true) {
-										controla.adicionarOlimpiadas(aluno, checkBox.getText());
-									}
-							   }
-							}
-						}
+					if(cbOBMEP.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBC.getText());
+					}
+					if(cbOBC.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBC.getText());
+					}
+					if(cbONC.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbONC.getText());
+					}
+					if(cbONHB.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbONHB.getText());
+					}
+					if(cbOBQ.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBQ.getText());
+					}
+					if(cbOBB.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBB.getText());
+					}
+					if(cbOBA.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBA.getText());
+					}
+					if(cbOBF.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBF.getText());
+					}
+					if(cbOBG.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBG.getText());
+					}
+					if(cbOBI.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBI.getText());
+					}
+					if(cbOBL.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBL.getText());
+					}
+					if(cbOBR.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOBR.getText());
+					}
+					if(cbOLAA.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOLAA.getText());
+					}
+					if(cbOMU.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOMU.getText());
+					}
+					if(cbOIMSF.isSelected()==true) {
+						controla.adicionarOlimpiadas(aluno,cbOIMSF.getText());
 					}
 					
+					AlunoCONTROLLER controla = new AlunoCONTROLLER();
 					int qntdOlimpiadas = (controla.retornaOlimpiadasSelecionadas(aluno)).size();
 					if(qntdOlimpiadas>0) {
 						JOptionPane.showMessageDialog(null, qntdOlimpiadas +" olimpíadas selecionadas com sucesso!");
@@ -238,10 +303,8 @@ public class TelaOlimpiadas extends JFrame{
 					}else {
 						JOptionPane.showMessageDialog(null, "Você deve selecionar uma olimpíada! Tente novamente!");
 					}
-					
 				}
 			});
-			
 			
 		}else{//falso, não foi pressionado botao de adicionar mais olimps, direto do cadastro
 			btnFinalizar.addActionListener(new ActionListener() {
