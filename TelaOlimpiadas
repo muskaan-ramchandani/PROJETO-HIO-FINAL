@@ -250,7 +250,7 @@ public class TelaOlimpiadas extends JFrame{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if(cbOBMEP.isSelected()==true) {
-						controla.adicionarOlimpiadas(aluno,cbOBC.getText());
+						controla.adicionarOlimpiadas(aluno,cbOBMEP.getText());
 					}
 					if(cbOBC.isSelected()==true) {
 						controla.adicionarOlimpiadas(aluno,cbOBC.getText());
