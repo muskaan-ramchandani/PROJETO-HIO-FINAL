@@ -79,7 +79,7 @@ public class TelaCadastroProf extends JFrame {
 		//Botão
 		btnFinalizarCadastro = new JButton("Finalizar cadastro");	
 			
-		String nomeImagem ="professor1";
+		String nomeImagem ="bonequinhoSF";
 		lblImagem = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//"+nomeImagem+".png"));
 		String nomeFundo = "fundoTela";
@@ -131,9 +131,9 @@ public class TelaCadastroProf extends JFrame {
 		pfConfirmaSenha.setBounds(205,550,425,30);
 		
 	
-        lblImagem.setBounds((screenSize.width/2)-40,37, 550,screenSize.height-45);
-        lblBemVindo.setBounds((screenSize.width/2)+110,10, 450, 200);
-        lblMsg.setBounds((screenSize.width/2)+70, 50, 500, 200);
+		lblImagem.setBounds((screenSize.width/2)-35,50, 550,screenSize.height-45);
+        lblBemVindo.setBounds((screenSize.width/2)+110,100, 450, 200);
+        lblMsg.setBounds((screenSize.width/2)+70, 140, 500, 200);
 		lblFundo.setBounds(0, 0, screenSize.width, screenSize.height-40);
 		lblFundo2.setBounds(680,60, (screenSize.width/2)-205, screenSize.height-190);
 
