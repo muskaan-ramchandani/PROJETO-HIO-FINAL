@@ -1,112 +1,153 @@
-importar javax.swing.*;
-importar javax.swing.border.AbstractBorder;
+package Projeto_testes;
 
-importar java.awt.*;
-importar java.awt.event.ActionEvent;
-importar java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.border.AbstractBorder;
 
-classe pública Tela_Inicial_Prof estende JFrame{
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-	painel de conteúdo do contêiner privado;
-	privada JLabel LivrosR;
-	vídeos JLabel privadosR;
-	privado JLabel Pesquisa;
-	privado JLabel OlimpR;
-	privado JLabel PesquisaIm;
-	Barra JToolBar privada;
-	privado JButton Livros;
-	vídeos JButton privados;
+public class Tela_Inicial_Prof extends JFrame{
+	
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JLabel LivrosR;
+	private JLabel VideosR;
+	private JLabel Pesquisa;
+	private JLabel OlimpR;
+	private JLabel PesquisaIm; 
+	private JLabel VideoRecente1;
+	private JMenuBar Barra;
+	private JButton Livros;
+	private JButton Videos;
 	private JTextField PesOlimpiadas;
-
+	
 	public Tela_Inicial_Prof() {
 		inicializarComponentes();
 		//definirEventos();
 	}
 
 	private void inicializarComponentes() {
-		Kit de ferramentas kit de ferramentas = Toolkit.getDefaultToolkit();
-		Dimensão screenSize = toolkit.getScreenSize();
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
 		setBounds(0, 0, screenSize.width, screenSize.height-40);
         contentPane=getContentPane();
-        contentPane.setBackground(Color.branco);
-        setLayout(nulo);
-
-        LivrosR = new JLabel("<html>Livros postados<br> recentemente");        
-        VídeosR = new JLabel("<html>Vídeos postados<br> recentemente");  
-        OlimpR = new JLabel("<html>Olimpiadas acessadas <br> anteriomente");
+        contentPane.setBackground(Color.white);
+        //setLayout(null);
+        
+        lp = new JLayeredPane();
+        Barra = new JMenuBar();
+        LivrosR = new JLabel("<html>Livros postados recentemente:");        
+        VideosR = new JLabel("<html>Vídeos postados recentemente: ");  
+        OlimpR = new JLabel("<html>Olimpiadas acessadas anteriomente: ");
         PesquisaIm = new JLabel(new ImageIcon("C:\\Breno\\lupa.png"));
-        Barra = new JToolBar();
         Livros = new JButton("Livros");
-        Vídeos = new JButton("Vídeos");
+        Videos = new JButton("Videos");
         PesOlimpiadas = new JTextField("Pesquisa Olimpíadas");
-
-
+        VideoRecente1 = new JLabel("aqui");
+        
+        Livros.setFocusPainted(false);
+        Videos.setFocusPainted(false);
+        
+        
         PesOlimpiadas.setBorder( new BordaCantoArredondado() );
-
-        Cor roxoEscuro=nova Cor(75,0,130);
-        LivrosR.setForeground(Color.preto);
-        VídeosR.setForeground(Color.black);
-        OlimpR.setForeground(Color.preto);
-
-
-        Fonte fonteLabelsDesc = new Font( "Trebuchet MS", Font.PLAIN, 35);
+        
+        Color roxoEscuro=new Color(75,0,130);
+        Barra.setBackground(roxoEscuro);
+        LivrosR.setForeground(Color.black);
+        VideosR.setForeground(Color.black);
+        OlimpR.setForeground(Color.black);
+        Livros.setBackground(roxoEscuro);
+        Livros.setForeground(Color.WHITE);
+        Videos.setBackground(roxoEscuro);
+        Videos.setForeground(Color.WHITE);
+        VideoRecente1.setBackground(Color.white);
+        VideoRecente1.setForeground(Color.BLACK);
+        
+        VideoRecente1.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura em preto
+        VideoRecente1.setHorizontalAlignment(SwingConstants.CENTER); 
+        
+       
+        
+        Font fonteLabelsDesc = new Font( "Trebuchet MS", Font.PLAIN, 30);
         LivrosR.setFont(fonteLabelsDesc);
-        VídeosR.setFont(fonteLabelsDesc);
+        VideosR.setFont(fonteLabelsDesc);
         OlimpR.setFont(fonteLabelsDesc);
         PesOlimpiadas.setFont(fonteLabelsDesc);
-
-
-        LivrosR.setBounds(200,-20.400.300);
-        VídeosR.setBounds(200.250.400.300);
-        OlimpR.setBounds(950.50.400.300);
+       
+        
+        Font fonteBarra = new Font( "Trebuchet MS", Font.PLAIN, 20);
+		Livros.setFont(fonteBarra);
+		Videos.setFont(fonteBarra);
+        
+        
+        lp.setBounds(0, 0, screenSize.width, screenSize.height-40);
+        Barra.setBounds(0,0,screenSize.width, 50);
+        LivrosR.setBounds(100,100,430,60);
+        VideosR.setBounds(100,350,430,60);
+        OlimpR.setBounds(900,180,390,60);
         PesquisaIm.setBounds(500,-210,(screenSize.width/2)-130, screenSize.height-200);
-        PesOlimpiadas.setBounds(880.100.550,50);
-
-
-        add(LivrosR);
-        add(VídeosR);
-        add(OlimpR);
-        add(PesquisaIm);
-        add(PesOlimpiadas);
-        Barra.add(Livros);
-        Barra.add(Vídeos);
-        add(Barra, BorderLayout.NORTH);
-
-		this.setVisible(verdadeiro);
+        PesOlimpiadas.setBounds(880,100,550,50);
+        Livros.setBounds(50, 7, 150, 35);
+        Videos.setBounds(220, 7, 150, 35);
+        VideoRecente1.setBounds(180, 185, 150, 150);
+        
+        contentPane.add(lp);
+        lp.add(Barra, new Integer(1));
+        lp.add(LivrosR, new Integer(2));
+        lp.add(VideosR, new Integer(3));
+        lp.add(OlimpR,  new Integer(4));
+        lp.add(PesquisaIm, new Integer(5));
+        lp.add(PesOlimpiadas, new Integer(6));
+        lp.add(Livros, new Integer(7));
+        lp.add(Videos, new Integer(8));
+        lp.add(VideoRecente1, new Integer(9));
+        
+        /*Barra.add(Livros);
+        Barra.add(Videos);
+        add(Barra, BorderLayout.NORTH);*/
+        
+        setLayout(new BorderLayout());
+        add(lp, BorderLayout.CENTER);
+        
+		setVisible(true);
 	}
 	public static void abrir() {
-		Quadro Tela_Inicial_Prof = new Tela_Inicial_Prof();
+		Tela_Inicial_Prof frame = new Tela_Inicial_Prof();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimensão tela = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation((tela.width - frame.getSize().width)/2,(tela.height - frame.getSize().height)/2);
-        frame.setVisible (verdadeiro);
+        frame.setVisible(true);
     }
-
+   
     public static void main(String[] args) {
         abrir();
     }
-
-classe privada BordaCantoArredondado estende AbstractBorder {
-
+    
+private class BordaCantoArredondado extends AbstractBorder {
+        
         private static final BasicStroke CONTORNO = new BasicStroke( 2 );
-
-        @Sobrepor
-        public void paintBorder(Componente c, Gráficos g, int x, int y, int largura, int altura) {
-
-            super.paintBorder(c, g, x, y, largura, altura);
-
-            Gráficos2D g2d = (Gráficos2D) g.create();
+                
+        @Override
+        public void paintBorder( Component c, Graphics g, int x, int y, int width, int height ) {
+            
+            super.paintBorder( c, g, x, y, width, height );
+            
+            Graphics2D g2d = (Graphics2D) g.create();
             g2d.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
             g2d.setStroke( CONTORNO );
-
-            g2d.setColor(Color.BLACK);
-            g2d.drawRoundRect(x, y, largura-1, altura-1, 20, 20);
-
+            
+            g2d.setColor( Color.BLACK );
+            g2d.drawRoundRect( x, y, width-1, height-1, 20, 20 );
+            
             g2d.dispose();
-
+            
         }
-
+        
     }
+	
+
+}
 
 
 }
