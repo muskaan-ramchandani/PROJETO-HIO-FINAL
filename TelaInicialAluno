@@ -35,6 +35,7 @@ public class TelaInicialAluno extends JFrame{
 	private JLabel lblEstrela;
 	private JLabel lblCronograma;
 	private JLabel lblOlimpiadas;
+	//private JLabel lblImagem;
     private ArrayList<JButton> botoesOlimp = new ArrayList<>();
 
 
@@ -78,6 +79,8 @@ public class TelaInicialAluno extends JFrame{
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//cronogramaPequeno.png"));
         imagemMais = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//botaoMaisPequeno.png");
+        //lblImagem = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+        //+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//fundoPessoas.png"));
         
         btnAdicionarOlimp= new JButton(imagemMais);
         btnAdicionarOlimp.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
@@ -173,6 +176,7 @@ public class TelaInicialAluno extends JFrame{
         btnAdicionarOlimp.setBounds(930, 525, 60, 61);
         lblAdicionar.setBounds(920, 600, 100, 20);
         lblAOlimp.setBounds(920, 625, 100, 20);
+        //lblImagem.setBounds(30,380, 637,361);
         
         
         //adiciona
@@ -196,6 +200,7 @@ public class TelaInicialAluno extends JFrame{
         lp.add(btnAdicionarOlimp, new Integer(17));
         lp.add(lblAdicionar, new Integer(18));
         lp.add(lblAOlimp, new Integer(19));
+        //lp.add(lblImagem, new Integer(20));
         
       //botões olimpiadas
         if(login==true) {
@@ -206,7 +211,7 @@ public class TelaInicialAluno extends JFrame{
     		int y=150;
     		int largura=100;
     		int altura=80;
-    		int camada=20;
+    		int camada=21;
     		int cont=0, qntd=5;
 
     		for(String nomes : lista) {
@@ -255,7 +260,7 @@ public class TelaInicialAluno extends JFrame{
     		int y=150;
     		int largura=100;
     		int altura=80;
-    		int camada=20;
+    		int camada=21;
     		int cont=0, qntd=5;
 
     		for(String nomes : lista) {
