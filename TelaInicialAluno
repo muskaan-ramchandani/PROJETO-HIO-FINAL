@@ -154,10 +154,10 @@ public class TelaInicialAluno extends JFrame{
         //coordenadas
         lp.setBounds(0, 0, screenSize.width, screenSize.height-40);
         barra.setBounds(0,0,screenSize.width, 50);
-        btnFavoritos.setBounds(50, 7, 160, 35);
+        btnFavoritos.setBounds(50, 7, 150, 35);
         lblEstrela.setBounds(180, 10, 20, 20);
     	btnPerfil.setBounds(10,0,45, 45);
-        btnCronogramas.setBounds(220, 7, 160, 35);
+        btnCronogramas.setBounds(220, 7, 150, 35);
         lblCronograma.setBounds(360, 15, 20, 20);
         lblEstatisticas.setBounds(30, 80, 350, 25);
         lblAcertos.setBounds(30, 120, 100, 20);
@@ -165,14 +165,14 @@ public class TelaInicialAluno extends JFrame{
         lblErros.setBounds(210, 120, 100, 20);
         lblContaErros.setBounds(210, 150, 100, 35);
         lblEstrela.setBounds(180, 13, 20, 20);
-        lblQuestoesHj.setBounds(500, 110, 150, 20);
-        lblFundoQuestoesHj.setBounds(500, 150, 150, 35);
-        lblQuestoesPeriodo.setBounds(950, 110, 250, 20);
-        lblFundoQuestoesPeriodo.setBounds(950, 150, 185, 35);
-        lblOlimpiadas.setBounds(30, 300, 200,35);
-        btnAdicionarOlimp.setBounds(1000, 400, 60, 61);
-        lblAdicionar.setBounds(990, 475, 100, 20);
-        lblAOlimp.setBounds(990, 500, 100, 20);
+        lblQuestoesHj.setBounds(30, 225, 150, 20);
+        lblFundoQuestoesHj.setBounds(30, 255, 150, 35);
+        lblQuestoesPeriodo.setBounds(30, 325, 250, 20);
+        lblFundoQuestoesPeriodo.setBounds(30, 355, 185, 35);
+        lblOlimpiadas.setBounds(600, 100, 200,35);
+        btnAdicionarOlimp.setBounds(930, 525, 60, 61);
+        lblAdicionar.setBounds(920, 600, 100, 20);
+        lblAOlimp.setBounds(920, 625, 100, 20);
         
         
         //adiciona
@@ -202,8 +202,8 @@ public class TelaInicialAluno extends JFrame{
         	ArrayList<String> lista = new ArrayList<String>();
     		AlunoCONTROLLER controla = new AlunoCONTROLLER();
     		lista = controla.retornaOlimpiadasSelecionadas(aluno);
-    		int x= 30;
-    		int y=350;
+    		int x= 600;
+    		int y=150;
     		int largura=100;
     		int altura=80;
     		int camada=20;
@@ -237,7 +237,7 @@ public class TelaInicialAluno extends JFrame{
     		      //após 5 olimpiadas, as outras devem se locomover para baixo
     		        if(cont==qntd) {
     		        	y+=90;
-    		        	x=30;
+    		        	x=600;
     		        	cont=0;
     		        }else{
     			        x+=150;
@@ -250,9 +250,9 @@ public class TelaInicialAluno extends JFrame{
         }else {
         	ArrayList<String> lista = new ArrayList<String>();
     		AlunoCONTROLLER controla = new AlunoCONTROLLER();
-    		lista = aluno.getOlimpiadasSelecionadas();
-    		int x= 30;
-    		int y=350;
+    		lista = controla.retornaOlimpiadasSelecionadas(aluno);
+    		int x= 600;
+    		int y=150;
     		int largura=100;
     		int altura=80;
     		int camada=20;
@@ -286,7 +286,7 @@ public class TelaInicialAluno extends JFrame{
     		      //após 5 olimpiadas, as outras devem se locomover para baixo
     		        if(cont==qntd) {
     		        	y+=90;
-    		        	x=30;
+    		        	x=600;
     		        	cont=0;
     		        }else{
     			        x+=150;
@@ -309,9 +309,8 @@ public class TelaInicialAluno extends JFrame{
 		btnPerfil.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				contentPane.removeAll();
-	    		//contentPane.add(tela);
-				contentPane.validate();
+				TelaPerfilAluno tela = new TelaPerfilAluno(aluno);
+				
 			}
 			 
 		 });
