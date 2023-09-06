@@ -1,0 +1,53 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class TelaPerfilAluno extends JFrame{
+	private JLayeredPane lp;
+	private JLabel lblLogo;
+	private JLabel lblIconePerfil;
+	private JLabel lblSeta;
+	private JLabel lblDuvida;
+	private JLabel lblComp;
+	private JLabel lblPorta;
+	private JLabel lblEngrenagem;
+	private JLabel lblUser;
+	private JButton btnPincel;
+	private JButton btnMeusDados;
+	private JButton btnComoFunciona;
+	private JButton btnSuporte;
+	private JButton btnSair;
+	private JButton btnVoltar;
+	public TelaPerfilAluno (Aluno aluno){
+		inicializarComponentes(aluno);
+	    definirEventos();
+}
+
+	private void definirEventos() {
+	}
+
+	private void inicializarComponentes(Aluno aluno) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+		Container contentPane = getContentPane();
+		//inicializar componentes
+		contentPane =  new Container();
+		lblLogo  = new JLabel(new ImageIcon());
+		lp  = new JLayeredPane ();
+		lblIconePerfil = new JLabel(new ImageIcon());
+		lblSeta  = new JLabel(new ImageIcon());
+		lblDuvida  = new JLabel(new ImageIcon());
+		lblComp  = new JLabel (new ImageIcon());
+		lblPorta  = new JLabel (new ImageIcon());
+		lblEngrenagem  = new JLabel (new ImageIcon());
+		 lblUser  = new JLabel (new ImageIcon());
+		 btnPincel = new  JButton (new ImageIcon());
+		 btnMeusDados  = new JButton("Meus dados");
+		 btnComoFunciona  = new JButton ("Como funciona");
+		 btnSuporte  = new JButton ("Suporte");
+		 btnSair  = new JButton ("Sair");
+		 btnVoltar  = new JButton("Voltar");
+	}
+
+}
