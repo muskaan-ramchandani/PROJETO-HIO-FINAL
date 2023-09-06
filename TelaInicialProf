@@ -6,6 +6,7 @@ import javax.swing.border.AbstractBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Tela_Inicial_Prof extends JFrame{
 	
@@ -16,12 +17,36 @@ public class Tela_Inicial_Prof extends JFrame{
 	private JLabel Pesquisa;
 	private JLabel OlimpR;
 	private JLabel PesquisaIm; 
-	private JLabel VideoRecente1;
+	private JLabel ImVideo1;
+	private JLabel ImVideo2;
+	private JLabel LivrosRecente1;
+	private JLabel LivrosRecente2;
+	private JLabel VideosRecente1;
+	private JLabel VideosRecente2;
+	
+	private JLabel Play;
+	private JLabel Livro;
+	private JLabel Perfil;
+	private JLabel Voltar;
+	
+	private JButton btLivrosRecente1;
+	private JButton btLivrosRecente2;
+	private JButton btVideosRecente1;
+	private JButton btVideosRecente2;
+	
+	private JButton btVoltar;
+	
 	private JMenuBar Barra;
 	private JButton Livros;
 	private JButton Videos;
+	
+	private JButton OlimpiadasR;
+	
 	private JTextField PesOlimpiadas;
 	
+	//private ArrayList<JButton> botoesOlimp = new ArrayList<>();
+
+	 
 	public Tela_Inicial_Prof() {
 		inicializarComponentes();
 		//definirEventos();
@@ -39,15 +64,38 @@ public class Tela_Inicial_Prof extends JFrame{
         Barra = new JMenuBar();
         LivrosR = new JLabel("<html>Livros postados recentemente:");        
         VideosR = new JLabel("<html>Vídeos postados recentemente: ");  
-        OlimpR = new JLabel("<html>Olimpiadas acessadas anteriomente: ");
-        PesquisaIm = new JLabel(new ImageIcon("C:\\Breno\\lupa.png"));
+        OlimpR = new JLabel("<html>Olimpíadas acessadas anteriomente: ");
         Livros = new JButton("Livros");
-        Videos = new JButton("Videos");
+        Videos = new JButton("Vídeos");
+        btVoltar = new JButton("Voltar");
         PesOlimpiadas = new JTextField("Pesquisa Olimpíadas");
-        VideoRecente1 = new JLabel("aqui");
+        LivrosRecente1 = new JLabel("algo");
+        LivrosRecente2 = new JLabel("algo");
+        VideosRecente1 = new JLabel("");
+        VideosRecente2 = new JLabel("");
+        
+        
+        btLivrosRecente1 = new JButton("Botão");
+        btLivrosRecente2 = new JButton("Botão");
+        btVideosRecente1 = new JButton("Botão");
+        btVideosRecente2 = new JButton("Botão");
+        
+        Play = new JLabel(new ImageIcon("C:\\Breno\\play.png"));
+        Livro = new JLabel(new ImageIcon("C:\\Breno\\livro.png"));
+        Perfil = new JLabel(new ImageIcon("C:\\Breno\\perfil.png"));
+        Voltar = new JLabel(new ImageIcon("C:\\Breno\\voltar.png"));
+        PesquisaIm = new JLabel(new ImageIcon("C:\\Breno\\lupa.png"));
+        ImVideo1 = new JLabel(new ImageIcon("C:\\Breno\\seta.png"));
+        ImVideo2 = new JLabel(new ImageIcon("C:\\Breno\\seta.png"));
         
         Livros.setFocusPainted(false);
         Videos.setFocusPainted(false);
+        btVoltar.setFocusPainted(false);
+        btLivrosRecente1.setFocusPainted(false);
+        btLivrosRecente2.setFocusPainted(false);
+        btVideosRecente1.setFocusPainted(false);
+        btVideosRecente2.setFocusPainted(false);
+        
         
         
         PesOlimpiadas.setBorder( new BordaCantoArredondado() );
@@ -59,13 +107,46 @@ public class Tela_Inicial_Prof extends JFrame{
         OlimpR.setForeground(Color.black);
         Livros.setBackground(roxoEscuro);
         Livros.setForeground(Color.WHITE);
+        btVoltar.setBackground(roxoEscuro);
+        btVoltar.setForeground(Color.WHITE);
         Videos.setBackground(roxoEscuro);
         Videos.setForeground(Color.WHITE);
-        VideoRecente1.setBackground(Color.white);
-        VideoRecente1.setForeground(Color.BLACK);
         
-        VideoRecente1.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura em preto
-        VideoRecente1.setHorizontalAlignment(SwingConstants.CENTER); 
+        Livros.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+        Videos.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+        btLivrosRecente1.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+        btLivrosRecente2.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+        btVideosRecente1.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+        btVideosRecente2.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+        
+        
+        
+        btLivrosRecente1.setBackground(Color.WHITE);
+        btLivrosRecente1.setForeground(Color.BLACK);
+        btLivrosRecente2.setBackground(Color.WHITE);
+        btLivrosRecente2.setForeground(Color.BLACK);
+        btVideosRecente1.setBackground(Color.WHITE);
+        btVideosRecente1.setForeground(Color.BLACK);
+        btVideosRecente2.setBackground(Color.WHITE);
+        btVideosRecente2.setForeground(Color.BLACK);
+        
+        LivrosRecente1.setBackground(Color.white);
+        LivrosRecente1.setForeground(Color.BLACK);
+        LivrosRecente2.setBackground(Color.white);
+        LivrosRecente2.setForeground(Color.BLACK);
+        VideosRecente1.setBackground(Color.white);
+        VideosRecente1.setForeground(Color.BLACK);
+        VideosRecente2.setBackground(Color.white);
+        VideosRecente2.setForeground(Color.BLACK);
+        
+        LivrosRecente1.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura em preto
+        LivrosRecente1.setHorizontalAlignment(SwingConstants.CENTER); 
+        LivrosRecente2.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura em preto
+        LivrosRecente2.setHorizontalAlignment(SwingConstants.CENTER); 
+        VideosRecente1.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura em preto
+        VideosRecente1.setHorizontalAlignment(SwingConstants.CENTER); 
+        VideosRecente2.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura em preto
+        VideosRecente2.setHorizontalAlignment(SwingConstants.CENTER); 
         
        
         
@@ -74,7 +155,8 @@ public class Tela_Inicial_Prof extends JFrame{
         VideosR.setFont(fonteLabelsDesc);
         OlimpR.setFont(fonteLabelsDesc);
         PesOlimpiadas.setFont(fonteLabelsDesc);
-       
+        btVoltar.setFont(fonteLabelsDesc);
+
         
         Font fonteBarra = new Font( "Trebuchet MS", Font.PLAIN, 20);
 		Livros.setFont(fonteBarra);
@@ -90,7 +172,23 @@ public class Tela_Inicial_Prof extends JFrame{
         PesOlimpiadas.setBounds(880,100,550,50);
         Livros.setBounds(50, 7, 150, 35);
         Videos.setBounds(220, 7, 150, 35);
-        VideoRecente1.setBounds(180, 185, 150, 150);
+        LivrosRecente1.setBounds(150, 165, 150, 150);
+        LivrosRecente2.setBounds(350, 165, 150, 150);
+        VideosRecente1.setBounds(150, 430, 150, 150);
+        VideosRecente2.setBounds(350, 430, 150, 150);
+        btVoltar.setBounds(0,740,200,70);
+        ImVideo1.setBounds(193,480,60,60);
+        ImVideo2.setBounds(395,480,60,60);
+        Play.setBounds(340,3,40,40);
+        Perfil.setBounds(10,0,50,50);
+        Livro.setBounds(170,3,40,40);
+        Voltar.setBounds(3,750,50,50);
+        
+        btLivrosRecente1.setBounds(150,315,150,40);
+        btLivrosRecente2.setBounds(350,315,150,40);
+        btVideosRecente1.setBounds(150,580,150,40);
+        btVideosRecente2.setBounds(350,580,150,40);
+        
         
         contentPane.add(lp);
         lp.add(Barra, new Integer(1));
@@ -101,16 +199,29 @@ public class Tela_Inicial_Prof extends JFrame{
         lp.add(PesOlimpiadas, new Integer(6));
         lp.add(Livros, new Integer(7));
         lp.add(Videos, new Integer(8));
-        lp.add(VideoRecente1, new Integer(9));
+        lp.add(LivrosRecente1, new Integer(9));
+        lp.add(LivrosRecente2, new Integer(10));
+        lp.add(VideosRecente1, new Integer(11));
+        lp.add(VideosRecente2, new Integer(12));
+        lp.add(btVoltar, new Integer(13));
+        lp.add(ImVideo1, new Integer(14));
+        lp.add(ImVideo2, new Integer(15));
         
-        /*Barra.add(Livros);
-        Barra.add(Videos);
-        add(Barra, BorderLayout.NORTH);*/
+        lp.add(btLivrosRecente1, new Integer(16));
+        lp.add(btLivrosRecente2, new Integer(17));
+        lp.add(btVideosRecente1, new Integer(18));
+        lp.add(btVideosRecente2, new Integer(19));
+        lp.add(Play, new Integer(20));
+        lp.add(Perfil, new Integer(20));
+        lp.add(Livro, new Integer(20));
+        lp.add(Voltar, new Integer(20));
         
         setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
         
 		setVisible(true);
+		
+		
 	}
 	public static void abrir() {
 		Tela_Inicial_Prof frame = new Tela_Inicial_Prof();
@@ -123,6 +234,9 @@ public class Tela_Inicial_Prof extends JFrame{
     public static void main(String[] args) {
         abrir();
     }
+    
+    
+    
     
 private class BordaCantoArredondado extends AbstractBorder {
         
@@ -147,7 +261,10 @@ private class BordaCantoArredondado extends AbstractBorder {
     }
 	
 
+
+
 }
+
 
 
 }
