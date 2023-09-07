@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import vo.Aluno;
 import vo.Professor;
 import controller.ProfessorCONTROLLER;
 
@@ -200,7 +201,9 @@ public class TelaCadastroProf extends JFrame {
 								ProfessorCONTROLLER controla = new ProfessorCONTROLLER();
 								controla.cadastrar(nomeCompleto, nomeUsuario, email, senha);
 								JOptionPane.showMessageDialog(null, "Cadastro finalizado com sucesso!");
-								TelaInicialProf telaOlimp=new TelaInicialProf();
+								
+								Professor prof = new Professor(nomeCompleto, nomeUsuario, email, senha);
+								TelaInicialProf telaProf=new TelaInicialProf(prof, false);
 								retorna=true;
 								
 							}else{
