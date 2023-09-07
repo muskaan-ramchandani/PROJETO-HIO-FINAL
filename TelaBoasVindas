@@ -10,6 +10,7 @@ import controller.AlunoCONTROLLER;
 import controller.ProfessorCONTROLLER;
 import dao.AlunoDAO;
 import vo.Aluno;
+import vo.Professor;
 
 public class TelaBoasVindas extends JFrame{
 	private JLayeredPane lp;
@@ -242,7 +243,8 @@ public class TelaBoasVindas extends JFrame{
 						 
 						 if(resposta==true) {
 							 JOptionPane.showMessageDialog(null, "Login realizado com sucesso!");
-							 TelaInicialProf telaInicialP = new TelaInicialProf();
+						       Professor prof = controla.obterProfExistente(email);
+							 TelaInicialProf telaInicialP = new TelaInicialProf(prof, true);
 						 }else {
 							 JOptionPane.showMessageDialog(null, "Login não realizado, por favor, tente novamente!");
 						 }
