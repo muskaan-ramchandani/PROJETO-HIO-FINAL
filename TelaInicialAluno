@@ -157,7 +157,7 @@ public class TelaInicialAluno extends JFrame{
         //coordenadas
         lp.setBounds(0, 0, screenSize.width, screenSize.height-40);
         barra.setBounds(0,0,screenSize.width, 50);
-        btnFavoritos.setBounds(50, 7, 150, 35);
+        btnFavoritos.setBounds(60, 7, 140, 35);
         lblEstrela.setBounds(180, 10, 20, 20);
     	btnPerfil.setBounds(10,0,45, 45);
         btnCronogramas.setBounds(220, 7, 150, 35);
@@ -225,7 +225,7 @@ public class TelaInicialAluno extends JFrame{
     				novaOlimp.addActionListener(new ActionListener() {
     					@Override
     					public void actionPerformed(ActionEvent e) {
-    						GuiOlimpiadas olimpiada = new GuiOlimpiadas(nomes);
+    						GuiOlimpiadasAluno olimpiada = new GuiOlimpiadasAluno(nomes);
     						contentPane.removeAll();
     			    		contentPane.add(olimpiada);
     						contentPane.validate();
@@ -274,7 +274,7 @@ public class TelaInicialAluno extends JFrame{
     				novaOlimp.addActionListener(new ActionListener() {
     					@Override
     					public void actionPerformed(ActionEvent e) {
-    						GuiOlimpiadas olimpiada = new GuiOlimpiadas(nomes);
+    						GuiOlimpiadasAluno olimpiada = new GuiOlimpiadasAluno(nomes);
     						contentPane.removeAll();
     			    		contentPane.add(olimpiada);
     						contentPane.validate();
@@ -315,7 +315,9 @@ public class TelaInicialAluno extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaPerfilAluno tela = new TelaPerfilAluno(aluno);
-				
+				contentPane.removeAll();
+	    		contentPane.add(tela);
+				contentPane.validate();
 			}
 			 
 		 });
