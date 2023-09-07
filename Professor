@@ -5,9 +5,6 @@ public class Professor {
 	private String nomeUsuario;
 	private String email;
 	private String senha;
-	private String redeDeEnsino;
-	private String tipoDeInstituicao;
-	private String areaDeAtuacao;
 	
 	public Professor(String nomeCompleto, String nomeUsuario, String email, String senha) {
 		
@@ -47,10 +44,6 @@ public class Professor {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-
-	public String getRedeDeEnsino() {
-		return redeDeEnsino;
 	}
 	
 }
