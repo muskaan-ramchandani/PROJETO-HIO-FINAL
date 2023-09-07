@@ -1,14 +1,27 @@
-package Projeto_testes;
-
+package view;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
+
+import conexaoBD.Conexao;
+import vo.Aluno;
+import vo.Professor;
+import controller.AlunoCONTROLLER;
+import controller.ProfessorCONTROLLER;
+import dao.AlunoDAO;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Tela_Inicial_Prof extends JFrame{
+public class TelaInicialProf extends JFrame{
+	Color roxoEscuro = new Color(75, 0,130);
 	
 	private Container contentPane;
 	private JLayeredPane lp;
@@ -16,7 +29,6 @@ public class Tela_Inicial_Prof extends JFrame{
 	private JLabel VideosR;
 	private JLabel Pesquisa;
 	private JLabel OlimpR;
-	private JLabel PesquisaIm; 
 	private JLabel ImVideo1;
 	private JLabel ImVideo2;
 	private JLabel LivrosRecente1;
@@ -26,13 +38,17 @@ public class Tela_Inicial_Prof extends JFrame{
 	
 	private JLabel Play;
 	private JLabel Livro;
-	private JLabel Perfil;
 	private JLabel Voltar;
 	
 	private JButton btLivrosRecente1;
 	private JButton btLivrosRecente2;
 	private JButton btVideosRecente1;
 	private JButton btVideosRecente2;
+	private JButton btnPerfil;
+	private JButton btnPesquisa;
+ 
+	private ImageIcon Perfil;
+	private ImageIcon PesquisaIm; 
 	
 	private JButton btVoltar;
 	
@@ -47,9 +63,97 @@ public class Tela_Inicial_Prof extends JFrame{
 	//private ArrayList<JButton> botoesOlimp = new ArrayList<>();
 
 	 
-	public Tela_Inicial_Prof() {
+	public TelaInicialProf(Professor prof, boolean login) {
 		inicializarComponentes();
-		//definirEventos();
+		definirEventos(prof);
+	}
+
+	private boolean consultarOlimpiada(String nome) {
+		 boolean autenticado = false;
+
+		try {
+			 Connection conn =  null;
+			 PreparedStatement ps = null;
+			 conn = new Conexao().getConnection();
+			 
+			 String sql="SELECT nome FROM Olimpiada WHERE nome=?";
+			 
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, nome);
+			
+			ResultSet rs=null;
+			rs=ps.executeQuery();
+			
+			if(rs.next()) {
+				String nomeOlimp= rs.getString("nome");
+				autenticado = true;
+			}
+			ps.close();
+			
+		 }catch(SQLException e) {
+			 autenticado=false;
+		 }
+		
+		return autenticado;
+
+	}
+	
+	private void definirEventos(Professor prof) {
+		btnPesquisa.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean retorna=false;
+				String olimp = PesOlimpiadas.getText();
+
+				while(retorna==false) {
+					if(olimp.equals("Pesquisar Olimpíadas")) {
+						JOptionPane.showMessageDialog(null, "Digite algo para que a pesquisa seja realizada!");
+						PesOlimpiadas.setText(null);
+						PesOlimpiadas.setText("Pesquisar Olimpíadas");
+						retorna=false;
+						return;
+					}else {
+						if(consultarOlimpiada(olimp)==true) {
+							JButton btnOlimp = new JButton(olimp);
+							btnOlimp.setForeground(roxoEscuro);
+							btnOlimp.setBackground(Color.WHITE);
+							btnOlimp.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura
+							btnOlimp.setBounds(880,151,550,50);
+							
+							lp.add(btnOlimp, new Integer(21));
+							
+							btnOlimp.addActionListener(new ActionListener() {
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									GuiOlimpiadasProf olimpiada = new GuiOlimpiadasProf(olimp);
+		    						contentPane.removeAll();
+		    			    		contentPane.add(olimpiada);
+		    						contentPane.validate();
+								}
+							});
+							
+							retorna=true;
+							
+						}else if(consultarOlimpiada(olimp)==false) {
+							JOptionPane.showMessageDialog(null, "Olimpíada inexistente no sistema!");
+							PesOlimpiadas.setText(null);
+							PesOlimpiadas.setText("Pesquisar Olimpíadas");
+							retorna=false;
+							return;
+						}
+					}
+					
+				}				
+			}
+		});		
+		
+		btnPerfil.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaPerfilProf tela = new TelaPerfilProf(prof);
+			}
+			 
+		 });
 	}
 
 	private void inicializarComponentes() {
@@ -58,7 +162,6 @@ public class Tela_Inicial_Prof extends JFrame{
 		setBounds(0, 0, screenSize.width, screenSize.height-40);
         contentPane=getContentPane();
         contentPane.setBackground(Color.white);
-        //setLayout(null);
         
         lp = new JLayeredPane();
         Barra = new JMenuBar();
@@ -68,7 +171,7 @@ public class Tela_Inicial_Prof extends JFrame{
         Livros = new JButton("Livros");
         Videos = new JButton("Vídeos");
         btVoltar = new JButton("Voltar");
-        PesOlimpiadas = new JTextField("Pesquisa Olimpíadas");
+        PesOlimpiadas = new JTextField("Pesquisar Olimpíadas");
         LivrosRecente1 = new JLabel("algo");
         LivrosRecente2 = new JLabel("algo");
         VideosRecente1 = new JLabel("");
@@ -80,13 +183,26 @@ public class Tela_Inicial_Prof extends JFrame{
         btVideosRecente1 = new JButton("Botão");
         btVideosRecente2 = new JButton("Botão");
         
-        Play = new JLabel(new ImageIcon("C:\\Breno\\play.png"));
-        Livro = new JLabel(new ImageIcon("C:\\Breno\\livro.png"));
-        Perfil = new JLabel(new ImageIcon("C:\\Breno\\perfil.png"));
-        Voltar = new JLabel(new ImageIcon("C:\\Breno\\voltar.png"));
-        PesquisaIm = new JLabel(new ImageIcon("C:\\Breno\\lupa.png"));
-        ImVideo1 = new JLabel(new ImageIcon("C:\\Breno\\seta.png"));
-        ImVideo2 = new JLabel(new ImageIcon("C:\\Breno\\seta.png"));
+        Play = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//videoPlayBranco.png"));
+        
+        Livro = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//livrinho.png"));
+        
+        Perfil = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//iconePerfilpequeno.png");
+        
+        Voltar = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaVoltar.png"));
+        
+        PesquisaIm = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//lupa.png");
+        
+        ImVideo1 = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//videoPlay.png"));
+        
+        ImVideo2 = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//videoPlay.png"));
         
         Livros.setFocusPainted(false);
         Videos.setFocusPainted(false);
@@ -97,6 +213,15 @@ public class Tela_Inicial_Prof extends JFrame{
         btVideosRecente2.setFocusPainted(false);
         
         
+        btnPerfil = new JButton(Perfil);
+        btnPerfil.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+        btnPerfil.setBorderPainted(false); // Remove a borda
+        btnPerfil.setFocusPainted(false);
+        
+        btnPesquisa = new JButton(PesquisaIm);
+        btnPesquisa.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+        btnPesquisa.setBorderPainted(false); // Remove a borda
+        btnPesquisa.setFocusPainted(false);
         
         PesOlimpiadas.setBorder( new BordaCantoArredondado() );
         
@@ -167,8 +292,8 @@ public class Tela_Inicial_Prof extends JFrame{
         Barra.setBounds(0,0,screenSize.width, 50);
         LivrosR.setBounds(100,100,430,60);
         VideosR.setBounds(100,350,430,60);
-        OlimpR.setBounds(900,180,390,60);
-        PesquisaIm.setBounds(500,-210,(screenSize.width/2)-130, screenSize.height-200);
+        OlimpR.setBounds(900,210,390,60);
+        btnPesquisa.setBounds(500,100,(screenSize.width/2)-130, screenSize.height-200);
         PesOlimpiadas.setBounds(880,100,550,50);
         Livros.setBounds(50, 7, 150, 35);
         Videos.setBounds(220, 7, 150, 35);
@@ -180,7 +305,7 @@ public class Tela_Inicial_Prof extends JFrame{
         ImVideo1.setBounds(193,480,60,60);
         ImVideo2.setBounds(395,480,60,60);
         Play.setBounds(340,3,40,40);
-        Perfil.setBounds(10,0,50,50);
+        btnPerfil.setBounds(10,0,50,50);
         Livro.setBounds(170,3,40,40);
         Voltar.setBounds(3,750,50,50);
         
@@ -195,7 +320,7 @@ public class Tela_Inicial_Prof extends JFrame{
         lp.add(LivrosR, new Integer(2));
         lp.add(VideosR, new Integer(3));
         lp.add(OlimpR,  new Integer(4));
-        lp.add(PesquisaIm, new Integer(5));
+        lp.add(btnPesquisa, new Integer(5));
         lp.add(PesOlimpiadas, new Integer(6));
         lp.add(Livros, new Integer(7));
         lp.add(Videos, new Integer(8));
@@ -212,7 +337,7 @@ public class Tela_Inicial_Prof extends JFrame{
         lp.add(btVideosRecente1, new Integer(18));
         lp.add(btVideosRecente2, new Integer(19));
         lp.add(Play, new Integer(20));
-        lp.add(Perfil, new Integer(20));
+        lp.add(btnPerfil, new Integer(20));
         lp.add(Livro, new Integer(20));
         lp.add(Voltar, new Integer(20));
         
@@ -223,19 +348,6 @@ public class Tela_Inicial_Prof extends JFrame{
 		
 		
 	}
-	public static void abrir() {
-		Tela_Inicial_Prof frame = new Tela_Inicial_Prof();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((tela.width - frame.getSize().width)/2,(tela.height - frame.getSize().height)/2);
-        frame.setVisible(true);
-    }
-   
-    public static void main(String[] args) {
-        abrir();
-    }
-    
-    
     
     
 private class BordaCantoArredondado extends AbstractBorder {
@@ -260,10 +372,6 @@ private class BordaCantoArredondado extends AbstractBorder {
         
     }
 	
-
-
-
-}
 
 
 
