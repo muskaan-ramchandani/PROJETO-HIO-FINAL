@@ -42,4 +42,9 @@ public class ProfessorBO {
             return dao.remover(email);
         }
     }
+	
+	public static Professor obterProfExistente(String email) {
+		ProfessorDAO dao = new ProfessorDAO();
+		return dao.obterProfExistente(email);
+	}
 }
