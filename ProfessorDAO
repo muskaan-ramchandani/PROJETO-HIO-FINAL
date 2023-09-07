@@ -103,4 +103,32 @@ public class ProfessorDAO {
             return false;
         }
     }
+	
+	public static Professor obterProfExistente(String email) {
+        Professor prof = null;
+
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    		 
+            String selectQuery = "SELECT * FROM Professor WHERE email = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String nomeCompleto = resultSet.getString("nomeCompleto");
+                String nomeUsuario = resultSet.getString("nomeUsuario");
+                String email1 = resultSet.getString("email");
+                String senha = resultSet.getString("senha");
+
+                prof = new Professor(nomeCompleto, nomeUsuario, email1, senha );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return prof;
+    }
 }
