@@ -38,7 +38,6 @@ public class TelaInicialProf extends JFrame{
 	
 	private JLabel Play;
 	private JLabel Livro;
-	private JLabel Voltar;
 	
 	private JButton btLivrosRecente1;
 	private JButton btLivrosRecente2;
@@ -49,9 +48,7 @@ public class TelaInicialProf extends JFrame{
  
 	private ImageIcon Perfil;
 	private ImageIcon PesquisaIm; 
-	
-	private JButton btVoltar;
-	
+		
 	private JMenuBar Barra;
 	private JButton Livros;
 	private JButton Videos;
@@ -117,10 +114,11 @@ public class TelaInicialProf extends JFrame{
 							JButton btnOlimp = new JButton(olimp);
 							btnOlimp.setForeground(roxoEscuro);
 							btnOlimp.setBackground(Color.WHITE);
+							btnOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
 							btnOlimp.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura
-							btnOlimp.setBounds(880,151,550,50);
+							btnOlimp.setBounds(760,151,550,50);
 							
-							lp.add(btnOlimp, new Integer(21));
+							lp.add(btnOlimp, new Integer(23));
 							
 							btnOlimp.addActionListener(new ActionListener() {
 								@Override
@@ -137,7 +135,7 @@ public class TelaInicialProf extends JFrame{
 						}else if(consultarOlimpiada(olimp)==false) {
 							JOptionPane.showMessageDialog(null, "Olimpíada inexistente no sistema!");
 							PesOlimpiadas.setText(null);
-							PesOlimpiadas.setText("Pesquisar Olimpíadas");
+							PesOlimpiadas.setText(" Pesquisar Olimpíadas");
 							retorna=false;
 							return;
 						}
@@ -167,11 +165,10 @@ public class TelaInicialProf extends JFrame{
         Barra = new JMenuBar();
         LivrosR = new JLabel("<html>Livros postados recentemente:");        
         VideosR = new JLabel("<html>Vídeos postados recentemente: ");  
-        OlimpR = new JLabel("<html>Olimpíadas acessadas anteriomente: ");
+        OlimpR = new JLabel("Olimpíadas acessadas anteriormente: ");
         Livros = new JButton("Livros");
         Videos = new JButton("Vídeos");
-        btVoltar = new JButton("Voltar");
-        PesOlimpiadas = new JTextField("Pesquisar Olimpíadas");
+        PesOlimpiadas = new JTextField(" Pesquisar Olimpíadas");
         LivrosRecente1 = new JLabel("algo");
         LivrosRecente2 = new JLabel("algo");
         VideosRecente1 = new JLabel("");
@@ -192,21 +189,17 @@ public class TelaInicialProf extends JFrame{
         Perfil = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//iconePerfilpequeno.png");
         
-        Voltar = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaVoltar.png"));
-        
         PesquisaIm = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//lupa.png");
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//lupaPequena.png");
         
         ImVideo1 = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//videoPlay.png"));
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//videoPlayRPequeno.png"));
         
         ImVideo2 = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//videoPlay.png"));
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//videoPlayRPequeno.png"));
         
         Livros.setFocusPainted(false);
         Videos.setFocusPainted(false);
-        btVoltar.setFocusPainted(false);
         btLivrosRecente1.setFocusPainted(false);
         btLivrosRecente2.setFocusPainted(false);
         btVideosRecente1.setFocusPainted(false);
@@ -232,8 +225,6 @@ public class TelaInicialProf extends JFrame{
         OlimpR.setForeground(Color.black);
         Livros.setBackground(roxoEscuro);
         Livros.setForeground(Color.WHITE);
-        btVoltar.setBackground(roxoEscuro);
-        btVoltar.setForeground(Color.WHITE);
         Videos.setBackground(roxoEscuro);
         Videos.setForeground(Color.WHITE);
         
@@ -280,39 +271,41 @@ public class TelaInicialProf extends JFrame{
         VideosR.setFont(fonteLabelsDesc);
         OlimpR.setFont(fonteLabelsDesc);
         PesOlimpiadas.setFont(fonteLabelsDesc);
-        btVoltar.setFont(fonteLabelsDesc);
 
         
         Font fonteBarra = new Font( "Trebuchet MS", Font.PLAIN, 20);
 		Livros.setFont(fonteBarra);
 		Videos.setFont(fonteBarra);
-        
-        
+		
         lp.setBounds(0, 0, screenSize.width, screenSize.height-40);
         Barra.setBounds(0,0,screenSize.width, 50);
-        LivrosR.setBounds(100,100,430,60);
-        VideosR.setBounds(100,350,430,60);
-        OlimpR.setBounds(900,210,390,60);
-        btnPesquisa.setBounds(500,100,(screenSize.width/2)-130, screenSize.height-200);
-        PesOlimpiadas.setBounds(880,100,550,50);
-        Livros.setBounds(50, 7, 150, 35);
+        btnPerfil.setBounds(10,5,44, 35);
+        Livros.setBounds(60, 7, 140, 35);
+        Livro.setBounds(165,14,21,20);
         Videos.setBounds(220, 7, 150, 35);
-        LivrosRecente1.setBounds(150, 165, 150, 150);
-        LivrosRecente2.setBounds(350, 165, 150, 150);
-        VideosRecente1.setBounds(150, 430, 150, 150);
-        VideosRecente2.setBounds(350, 430, 150, 150);
-        btVoltar.setBounds(0,740,200,70);
-        ImVideo1.setBounds(193,480,60,60);
-        ImVideo2.setBounds(395,480,60,60);
-        Play.setBounds(340,3,40,40);
-        btnPerfil.setBounds(10,0,50,50);
-        Livro.setBounds(170,3,40,40);
-        Voltar.setBounds(3,750,50,50);
+        Play.setBounds(330,15,20,20);
         
-        btLivrosRecente1.setBounds(150,315,150,40);
-        btLivrosRecente2.setBounds(350,315,150,40);
-        btVideosRecente1.setBounds(150,580,150,40);
-        btVideosRecente2.setBounds(350,580,150,40);
+        
+        btnPesquisa.setBounds(700,105,45, 46);
+        PesOlimpiadas.setBounds(760,100,550,50);
+        OlimpR.setBounds(760,210,550,60);
+
+        LivrosR.setBounds(50,100,430,60);
+        LivrosRecente1.setBounds(80, 165, 150, 150);
+        btLivrosRecente1.setBounds(80,315,150,40); //botao
+
+        LivrosRecente2.setBounds(280, 165, 150, 150); //algo
+        btLivrosRecente2.setBounds(280,315,150,40);
+
+        VideosR.setBounds(50,365,430,60);
+        VideosRecente1.setBounds(80, 430, 150, 150);
+        btVideosRecente1.setBounds(80,580,150,40);
+        ImVideo1.setBounds(130,485,48,46);
+
+        VideosRecente2.setBounds(280, 430, 150, 150);
+        btVideosRecente2.setBounds(280,580,150,40);
+        ImVideo2.setBounds(330,485,48,46);
+        
         
         
         contentPane.add(lp);
@@ -328,9 +321,8 @@ public class TelaInicialProf extends JFrame{
         lp.add(LivrosRecente2, new Integer(10));
         lp.add(VideosRecente1, new Integer(11));
         lp.add(VideosRecente2, new Integer(12));
-        lp.add(btVoltar, new Integer(13));
-        lp.add(ImVideo1, new Integer(14));
-        lp.add(ImVideo2, new Integer(15));
+        lp.add(ImVideo1, new Integer(21));
+        lp.add(ImVideo2, new Integer(22));
         
         lp.add(btLivrosRecente1, new Integer(16));
         lp.add(btLivrosRecente2, new Integer(17));
@@ -339,7 +331,6 @@ public class TelaInicialProf extends JFrame{
         lp.add(Play, new Integer(20));
         lp.add(btnPerfil, new Integer(20));
         lp.add(Livro, new Integer(20));
-        lp.add(Voltar, new Integer(20));
         
         setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
