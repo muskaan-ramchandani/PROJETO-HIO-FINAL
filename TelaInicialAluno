@@ -159,7 +159,7 @@ public class TelaInicialAluno extends JFrame{
         barra.setBounds(0,0,screenSize.width, 50);
         btnFavoritos.setBounds(60, 7, 140, 35);
         lblEstrela.setBounds(180, 10, 20, 20);
-    	btnPerfil.setBounds(10,0,45, 45);
+        btnPerfil.setBounds(10,5,44, 35);
         btnCronogramas.setBounds(220, 7, 150, 35);
         lblCronograma.setBounds(360, 15, 20, 20);
         lblEstatisticas.setBounds(30, 80, 350, 25);
