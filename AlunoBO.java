@@ -37,13 +37,19 @@ public class AlunoBO {
 		return dao.consultar(email, senha);
 	}
 	
-	public boolean atualizar(Aluno aluno, String email, String senha) {
+	public boolean atualizarSenha(Aluno aluno, String senha, String email) {
+		AlunoDAO dao = new AlunoDAO();
+		return dao.atualizarSenha(aluno, senha, email);
+	}
+
+	
+	public boolean atualizar(Aluno aluno, String nomeCompleto, String nomeUsuario, String senha, String email) {
 		AlunoDAO dao = new AlunoDAO();
 
 		if (dao.consultar(email, senha)==false) {
             return false; // email e senha invalidos, não pode alterar
         }else {
-    	    return dao.atualizar(aluno);
+    	    return dao.atualizar(aluno, nomeCompleto, nomeUsuario, senha, email);
         }
 	}
 	
@@ -56,6 +62,7 @@ public class AlunoBO {
             return dao.remover(email);
         }
     }
+	
 	
 	public static Aluno obterAlunoExistente(String email) {
 		AlunoDAO dao = new AlunoDAO();
