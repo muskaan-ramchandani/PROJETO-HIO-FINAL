@@ -29,19 +29,20 @@ public class AlunoCONTROLLER {
 		return bo.consultar(email, senha);
 	}
 	
-	public boolean atualizar(Aluno aluno, String email, String senha) {
+	public boolean atualizarSenha(Aluno aluno, String senha, String email) {
 		AlunoBO bo = new AlunoBO();
-		return bo.atualizar(aluno, email, senha);
+		return bo.atualizarSenha(aluno, senha, email);
 	}
-	
-	 public void remover(String email, String senha) {
-		 AlunoBO bo = new AlunoBO();
 
-	        if (bo.remover(email, senha)==true) {
-	        	JOptionPane.showMessageDialog(null, "Conta excluída com sucesso!");
-	        } else {
-	        	JOptionPane.showMessageDialog(null, "Erro ao excluir conta!");
-	        }
+	
+	public boolean atualizar(Aluno aluno, String nomeCompleto, String nomeUsuario, String senha, String email) {
+		AlunoBO bo = new AlunoBO();
+		return bo.atualizar(aluno, nomeCompleto, nomeUsuario, senha, email);
+	}
+	 
+	 public boolean remover(String email, String senha) {
+		 AlunoBO bo = new AlunoBO();
+		 return bo.remover(email, senha);
 	 }
 	 
 	 public static Aluno obterAlunoExistente(String email) {
