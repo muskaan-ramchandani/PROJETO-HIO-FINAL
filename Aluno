@@ -1,13 +1,14 @@
-//classe de modelo Aluno
 package vo;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Aluno {
 	private String nomeCompleto;
 	private String nomeUsuario;
 	private String email;
 	private String senha;
+	private ArrayList<String> olimpiadasSelecionadas = new ArrayList<String>();
 	
 	public Aluno(String nomeCompleto, String nomeUsuario, String email, String senha) {
 		setNomeCompleto(nomeCompleto);
@@ -15,20 +16,20 @@ public class Aluno {
 		setEmail(email);
 		setSenha(senha);
 	}
-	
-	private void alteraNomeCompleto(String nomeCompleto) {
+
+	public void alteraNomeCompleto(String nomeCompleto) {
 		setNomeCompleto(nomeCompleto);
 	}
 	
-	private void alteraNomeUsuario(String nomeUsuario) {
+	public void alteraNomeUsuario(String nomeUsuario) {
 		setNomeUsuario(nomeUsuario);
 	}
 	
-	private void alteraEmail(String email) {
+	public void alteraEmail(String email) {
 		setEmail(email);
 	}
 	
-	private void alteraSenha(String senha) {
+	public void alteraSenha(String senha) {
 		setSenha(senha);
 	}
 	
@@ -63,4 +64,12 @@ public class Aluno {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}	
+	
+	public void setOlimpiadasSelecionadas(String olimpiada) {
+		olimpiadasSelecionadas.add(olimpiada);
+	}
+	public ArrayList getOlimpiadasSelecionadas() {
+		return olimpiadasSelecionadas;
+	}
+	
 }
