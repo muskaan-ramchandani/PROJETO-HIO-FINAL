@@ -115,20 +115,53 @@ public class AlunoDAO {
 		 }
 	}
 	
-	public boolean atualizar(Aluno aluno) {
-		Connection conn =  null;
-		conn = new Conexao().getConnection();
-		
-		String sql = "UPDATE Aluno SET nomeCompleto = ?, nomeUsuario = ?, senha=?  WHERE email = ?";
+	public boolean atualizar(Aluno aluno, String nomeCompleto, String nomeUsuario, String senha, String email) {
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-        	stmt.setString(1, aluno.getNomeCompleto());
-			stmt.setString(2, aluno.getNomeUsuario());
-			stmt.setString(3, aluno.getSenha());
-			stmt.setString(4, aluno.getEmail());
+        try {
+        	Connection conn =  null;
+    		conn = new Conexao().getConnection();
+    		
+    		String sql = "UPDATE Aluno SET nomeCompleto = ?, nomeUsuario = ?, senha=?  WHERE email = ?";
+    		
+    		PreparedStatement stmt = conn.prepareStatement(sql);
+    		
+        	stmt.setString(1, nomeCompleto);
+			stmt.setString(2, nomeUsuario);
+			stmt.setString(3, senha);
+			stmt.setString(4, email);
+			stmt.executeUpdate();
 			
-            return true;
-            
+			int linhasAfetadas= stmt.executeUpdate();
+			if(linhasAfetadas>0){
+	            return true;
+			}else {
+	            return false;
+			}			
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+	}
+	
+	public boolean atualizarSenha(Aluno aluno, String senha, String email) {
+		try {
+        	Connection conn =  null;
+    		conn = new Conexao().getConnection();
+    		
+    		String sql = "UPDATE Aluno SET senha=?  WHERE email = ?";
+    		
+    		PreparedStatement stmt = conn.prepareStatement(sql);
+    		
+			stmt.setString(1, senha);
+			stmt.setString(2, email);
+			stmt.executeUpdate();
+			
+			int linhasAfetadas= stmt.executeUpdate();
+			if(linhasAfetadas>0){
+	            return true;
+			}else {
+	            return false;
+			}			
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -136,20 +169,44 @@ public class AlunoDAO {
 	}
 	
 	public boolean remover(String email) {
-		
-        String sql = "DELETE FROM Aluno WHERE email = ?";
+		try {
+			Connection conn =  null;
+			conn = new Conexao().getConnection();
+			conn.setAutoCommit(false);
+			
+			Statement statement = conn.createStatement();
+	        statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 0"); //desativa chaves estrangeiras
 
-        try (Connection conn = new Conexao().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+	        String sqlExcluirRegistrosRelacionados1 = "DELETE FROM olimpiadasSelecionadas WHERE emailAluno = ?";
+	        PreparedStatement preparedStatement = conn.prepareStatement(sqlExcluirRegistrosRelacionados1);
+            preparedStatement.setString(1, email);
 
-            stmt.setString(1, email);
+            // Executa a consulta de exclusão dos registros relacionados
+            int registrosExcluidos = preparedStatement.executeUpdate();
 
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+            
+	        String sqlExcluirUsuario = "DELETE FROM Aluno WHERE email = ?";
+            // Cria outro objeto PreparedStatement para a consulta de exclusão do usuário principal
+            preparedStatement = conn.prepareStatement(sqlExcluirUsuario);
+            preparedStatement.setString(1, email);
+            int usuarioExcluido = preparedStatement.executeUpdate();
+            
+            if (registrosExcluidos > 0 && usuarioExcluido > 0) {
+                // Confirma a transação se todas as operações foram bem-sucedidas
+                conn.commit();
+    	        statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");//ativa chaves
+                return true;
+            } else {
+    	        statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");//ativa chaves
+            	return false;
+            }
+	        	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	
 	
 	public static Aluno obterAlunoExistente(String email) {
         Aluno aluno = null;
