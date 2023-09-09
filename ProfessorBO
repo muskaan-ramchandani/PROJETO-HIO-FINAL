@@ -22,15 +22,20 @@ public class ProfessorBO {
 		ProfessorDAO dao = new ProfessorDAO();
 		return dao.consultar(email, senha);
 	}
-	
-	public boolean atualizar(Professor prof, String email, String senha) {
+
+	public boolean atualizar(Professor prof, String nomeCompleto, String nomeUsuario, String senha, String email) {
 		ProfessorDAO dao = new ProfessorDAO();
 
 		if (dao.consultar(email, senha)==false) {
             return false; // email e senha invalidos, não pode alterar
         }else {
-    	    return dao.atualizar(prof);
+    	    return dao.atualizar(prof, nomeCompleto, nomeUsuario, senha);
         }
+	}
+	
+	public boolean atualizarSenha(Professor prof, String senha, String email) {
+		ProfessorDAO dao = new ProfessorDAO();
+		return dao.atualizarSenha(prof, senha, email);
 	}
 	
 	public boolean remover(String email, String senha) {
