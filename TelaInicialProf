@@ -4,8 +4,10 @@ import javax.swing.border.AbstractBorder;
 
 import conexaoBD.Conexao;
 import vo.Aluno;
+import vo.Olimpiada;
 import vo.Professor;
 import controller.AlunoCONTROLLER;
+import controller.OlimpiadaCONTROLLER;
 import controller.ProfessorCONTROLLER;
 import dao.AlunoDAO;
 
@@ -65,35 +67,6 @@ public class TelaInicialProf extends JFrame{
 		definirEventos(prof);
 	}
 
-	private boolean consultarOlimpiada(String nome) {
-		 boolean autenticado = false;
-
-		try {
-			 Connection conn =  null;
-			 PreparedStatement ps = null;
-			 conn = new Conexao().getConnection();
-			 
-			 String sql="SELECT nome FROM Olimpiada WHERE nome=?";
-			 
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, nome);
-			
-			ResultSet rs=null;
-			rs=ps.executeQuery();
-			
-			if(rs.next()) {
-				String nomeOlimp= rs.getString("nome");
-				autenticado = true;
-			}
-			ps.close();
-			
-		 }catch(SQLException e) {
-			 autenticado=false;
-		 }
-		
-		return autenticado;
-
-	}
 	
 	private void definirEventos(Professor prof) {
 		btnPesquisa.addActionListener(new ActionListener() {
@@ -101,16 +74,17 @@ public class TelaInicialProf extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				boolean retorna=false;
 				String olimp = PesOlimpiadas.getText();
+				OlimpiadaCONTROLLER controlaOlimp = new OlimpiadaCONTROLLER();
 
 				while(retorna==false) {
-					if(olimp.equals("Pesquisar Olimpíadas")) {
+					if(olimp.equals(" Pesquisar Olimpíadas")) {
 						JOptionPane.showMessageDialog(null, "Digite algo para que a pesquisa seja realizada!");
 						PesOlimpiadas.setText(null);
-						PesOlimpiadas.setText("Pesquisar Olimpíadas");
+						PesOlimpiadas.setText(" Pesquisar Olimpíadas");
 						retorna=false;
 						return;
 					}else {
-						if(consultarOlimpiada(olimp)==true) {
+						if(controlaOlimp.consultar(olimp)==true) {
 							JButton btnOlimp = new JButton(olimp);
 							btnOlimp.setForeground(roxoEscuro);
 							btnOlimp.setBackground(Color.WHITE);
@@ -123,7 +97,8 @@ public class TelaInicialProf extends JFrame{
 							btnOlimp.addActionListener(new ActionListener() {
 								@Override
 								public void actionPerformed(ActionEvent e) {
-									GuiOlimpiadasProf olimpiada = new GuiOlimpiadasProf(olimp);
+									Olimpiada nomeOlimp=new Olimpiada(olimp);
+									GuiOlimpiadasProf olimpiada = new GuiOlimpiadasProf(nomeOlimp, prof);
 		    						contentPane.removeAll();
 		    			    		contentPane.add(olimpiada);
 		    						contentPane.validate();
@@ -132,7 +107,7 @@ public class TelaInicialProf extends JFrame{
 							
 							retorna=true;
 							
-						}else if(consultarOlimpiada(olimp)==false) {
+						}else if(controlaOlimp.consultar(olimp)==false) {
 							JOptionPane.showMessageDialog(null, "Olimpíada inexistente no sistema!");
 							PesOlimpiadas.setText(null);
 							PesOlimpiadas.setText(" Pesquisar Olimpíadas");
