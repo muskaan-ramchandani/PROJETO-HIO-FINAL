@@ -10,6 +10,15 @@ public class Livro {
 	private String autor;
 	private Date dataPublicacao;
 	private String emailProf;
+	
+	public Livro(int isbn, String titulo, String editora, String autor, Date dataPublicacao, String emailProf) {
+		setIsbn(isbn);
+		setTitulo(titulo);
+		setAutor(autor);
+		setDataPublicacao(dataPublicacao);
+		setEmailProf(emailProf);
+	}
+	
 	public int getIsbn() {
 		return isbn;
 	}
