@@ -1,0 +1,30 @@
+package bo;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
+import conexaoBD.Conexao;
+import dao.LivroDAO;
+import vo.Livro;
+
+public class LivroBO {
+
+	public void cadastrar(int isbn, String titulo, String editora, String autor, Date dataPublicacao,
+	String emailProf) {
+		Livro livro = new Livro(isbn, titulo, editora, autor, dataPublicacao, emailProf);
+		LivroDAO dao = new LivroDAO();
+		dao.cadastrar(livro);
+	}
+	
+	public boolean consultar(int isbn) {
+		 LivroDAO dao = new LivroDAO();
+		 return dao.consultar(isbn);
+	}
+}
