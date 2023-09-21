@@ -1,0 +1,29 @@
+package controller;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
+import conexaoBD.Conexao;
+import bo.LivroBO;
+import vo.Livro;
+
+public class LivroCONTROLLER {
+
+	public void cadastrar(int isbn, String titulo, String editora, String autor, Date dataPublicacao,
+	String emailProf) {
+		LivroBO bo = new LivroBO();
+		bo.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf);
+	}
+	
+	public boolean consultar(int isbn) {
+		LivroBO bo = new LivroBO();
+		return bo.consultar(isbn);
+	}
+}
