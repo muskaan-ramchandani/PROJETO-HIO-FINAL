@@ -1,0 +1,69 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
+import conexaoBD.Conexao;
+import vo.Livro;
+
+public class LivroDAO {
+	public void cadastrar(Livro livro) {
+		 Connection conn =  null;
+		 PreparedStatement ps = null;
+		 conn = new Conexao().getConnection();
+		
+		String sql= "INSERT INTO Livro(isbn, titulo, editora, autor, dataPublicacao, emailProf)VALUES(?,?,?,?,?,?)";
+		
+		try {
+			 ps = conn.prepareStatement(sql);
+			ps.setInt(1, livro.getIsbn());
+			ps.setString(2, livro.getTitulo());
+			ps.setString(3, livro.getEditora());
+			ps.setString(4, livro.getAutor());
+			ps.setDate(5, (Date) livro.getDataPublicacao());
+			ps.setString(6, livro.getEmailProf());
+
+
+			ps.execute();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	public boolean consultar(int isbn) {
+		 try {
+			 Connection conn =  null;
+			 PreparedStatement ps = null;
+			 conn = new Conexao().getConnection();
+			 
+			 boolean autenticado = false;
+			 String sql="SELECT * FROM Livro WHERE isbn=?";
+			 
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, isbn);
+			
+			ResultSet rs=null;
+			rs=ps.executeQuery();
+			
+			if(rs.next()) {
+				String isbnBD= rs.getString("isbn");
+				autenticado = true;
+			}
+			ps.close();
+			return autenticado;
+			
+		 }catch(SQLException e) {
+			 JOptionPane.showMessageDialog(null, "Livro não existe no sistema!");
+			 Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, e);
+			 throw new RuntimeException();
+		 }
+	}
+}
