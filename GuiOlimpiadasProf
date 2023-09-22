@@ -1,12 +1,14 @@
 package view;
+
 import javax.swing.*;
-
 import org.w3c.dom.events.MouseEvent;
-
 import vo.Professor;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
+import java.util.Date;
 
 import controller.OlimpiadaCONTROLLER;
 import vo.Olimpiada;
@@ -21,6 +23,22 @@ public class GuiOlimpiadasProf extends JPanel{
 	private JButton btnAssuntos;
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
+	
+	private JLabel lblCadastrarLivro;
+	private JLabel lblIsbn;
+	private JTextField txtIsbn;
+	private JLabel lblTitulo;
+	private JTextField txtTitulo;
+	private JLabel lblEditora;
+	private JTextField txtEditora;
+	private JLabel lblAutor;
+	private JTextField txtAutor;
+	private JLabel lblDataPublicacao;
+	private JTextField txtDataPublicacao;
+	private JLabel lblArquivoPDF;
+	private JFileChooser selecionaPDF;
+	
+
 	
 	public GuiOlimpiadasProf(Olimpiada olimp, Professor prof) {
 		inicializarComponentes(olimp, prof);
@@ -45,6 +63,26 @@ public class GuiOlimpiadasProf extends JPanel{
 		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
+		
+		
+		lblCadastrarLivro = new JLabel("Cadastrar Livro");
+		lblIsbn= new JLabel();
+		txtIsbn = new JTextField(13);
+		lblTitulo= new JLabel("Título:");
+		txtTitulo = new JTextField(100);
+		lblEditora= new JLabel("Editora:");
+		txtEditora = new JTextField(60);
+		lblAutor= new JLabel("Autor:");
+		txtAutor = new JTextField(200);
+		lblDataPublicacao= new JLabel("Data de publicação:");;
+		txtDataPublicacao = new JTextField(10);
+		lblArquivoPDF= new JLabel("Selecione o arquivo pdf:");;
+		selecionaPDF= new JFileChooser();
+		
+		
+		//formatação de data de DataPublicacao
+        JCalendar calendar = new JCalendar();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); //padrao de data
 		
 		//cores
 		Color roxoIndigo = new Color(75,0,130);
@@ -135,6 +173,13 @@ public class GuiOlimpiadasProf extends JPanel{
 			}
         });
 		
+		btnLivros.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
 		btnVideos.addMouseListener(new MouseListener() {
 			Color roxoIndigo = new Color(75,0,130);
 			Color roxoVioleta = new Color(148,0,211);
@@ -163,6 +208,13 @@ public class GuiOlimpiadasProf extends JPanel{
 				btnVideos.setBackground(roxoIndigo); // Retorna à cor padrão do botão
 			}
         });
+		
+		btnVideos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		
 		btnAssuntos.addMouseListener(new MouseListener() {
 			Color roxoIndigo = new Color(75,0,130);
@@ -193,6 +245,13 @@ public class GuiOlimpiadasProf extends JPanel{
 			}
         });
 		
+		btnAssuntos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
 		btnFlashcards.addMouseListener(new MouseListener() {
 			Color roxoIndigo = new Color(75,0,130);
 			Color roxoVioleta = new Color(148,0,211);
@@ -222,6 +281,13 @@ public class GuiOlimpiadasProf extends JPanel{
 			}
         });
 		
+		btnFlashcards.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
 		btnCronograma.addMouseListener(new MouseListener() {
 			Color roxoIndigo = new Color(75,0,130);
 			Color roxoVioleta = new Color(148,0,211);
@@ -250,6 +316,12 @@ public class GuiOlimpiadasProf extends JPanel{
 			}
         });
 		
+		btnCronograma.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 	}
 	
 	@Override
