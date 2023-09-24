@@ -300,6 +300,7 @@ public class TelaOlimpiadas extends JFrame{
 					if(qntdOlimpiadas>0) {
 						JOptionPane.showMessageDialog(null, qntdOlimpiadas +" olimpíadas selecionadas com sucesso!");
 						TelaInicialAluno tela = new TelaInicialAluno(aluno, true);
+					     setVisible(false);
 					}else {
 						JOptionPane.showMessageDialog(null, "Você deve selecionar uma olimpíada! Tente novamente!");
 					}
@@ -360,6 +361,7 @@ public class TelaOlimpiadas extends JFrame{
 					if(qntdOlimpiadas>0) {
 						JOptionPane.showMessageDialog(null, qntdOlimpiadas +" olimpíadas selecionadas com sucesso!");
 						TelaInicialAluno tela = new TelaInicialAluno(aluno, false);
+					     setVisible(false);
 					}else {
 						JOptionPane.showMessageDialog(null, "Você deve selecionar uma olimpíada! Tente novamente!");
 					}
