@@ -1,4 +1,5 @@
 package view;
+import java.awt.Window;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 
@@ -99,9 +100,7 @@ public class TelaInicialProf extends JFrame{
 								public void actionPerformed(ActionEvent e) {
 									Olimpiada nomeOlimp=new Olimpiada(olimp);
 									GuiOlimpiadasProf olimpiada = new GuiOlimpiadasProf(nomeOlimp, prof);
-		    						contentPane.removeAll();
-		    			    		contentPane.add(olimpiada);
-		    						contentPane.validate();
+		    						setVisible(false);
 								}
 							});
 							
@@ -124,6 +123,7 @@ public class TelaInicialProf extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaPerfilProf tela = new TelaPerfilProf(prof);
+			     setVisible(false);
 			}
 			 
 		 });
