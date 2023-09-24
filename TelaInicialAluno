@@ -1,5 +1,7 @@
 package view;
 import vo.Aluno;
+import vo.Olimpiada;
+
 import javax.swing.*;
 
 import controller.AlunoCONTROLLER;
@@ -16,7 +18,7 @@ public class TelaInicialAluno extends JFrame{
 	private JLayeredPane lp;
 	private JMenuBar barra;
 	private JButton btnFavoritos;
-	private JButton btnCronogramas;
+	private JButton btnAgenda;
 	private JButton btnAdicionarOlimp;
 	private ImageIcon imagemMais;
 	private JLabel lblEstatisticas;
@@ -56,7 +58,7 @@ public class TelaInicialAluno extends JFrame{
         lp= new JLayeredPane();
         barra= new JMenuBar();
         btnFavoritos = new JButton("Favoritos");
-        btnCronogramas = new JButton("Cronograma");
+        btnAgenda = new JButton("Agenda");
         lblEstatisticas = new JLabel("Estatísticas (últimos 7 dias):");
         lblAcertos = new JLabel("Acertos");
         lblErros = new JLabel("Erros");
@@ -97,8 +99,8 @@ public class TelaInicialAluno extends JFrame{
         barra.setBackground(roxoEscuro);
         btnFavoritos.setBackground(roxoEscuro);
         btnFavoritos.setForeground(Color.WHITE);
-        btnCronogramas.setBackground(roxoEscuro);
-        btnCronogramas.setForeground(Color.WHITE);
+        btnAgenda.setBackground(roxoEscuro);
+        btnAgenda.setForeground(Color.WHITE);
         lblEstatisticas.setBackground(Color.white);
         lblEstatisticas.setForeground(Color.BLACK);
         lblAcertos.setBackground(Color.white);
@@ -136,7 +138,7 @@ public class TelaInicialAluno extends JFrame{
         
         Font fonteBarra = new Font( "Trebuchet MS", Font.PLAIN, 20);
 		btnFavoritos.setFont(fonteBarra);
-		btnCronogramas.setFont(fonteBarra);
+		btnAgenda.setFont(fonteBarra);
 		
 		Font fonteLabels = new Font("Trebuchet MS", Font.PLAIN, 25);
 		lblEstatisticas.setFont(fonteLabels);
@@ -160,7 +162,7 @@ public class TelaInicialAluno extends JFrame{
         btnFavoritos.setBounds(60, 7, 140, 35);
         lblEstrela.setBounds(180, 10, 20, 20);
         btnPerfil.setBounds(10,5,44, 35);
-        btnCronogramas.setBounds(220, 7, 150, 35);
+        btnAgenda.setBounds(220, 7, 150, 35);
         lblCronograma.setBounds(360, 15, 20, 20);
         lblEstatisticas.setBounds(30, 80, 350, 25);
         lblAcertos.setBounds(30, 120, 100, 20);
@@ -184,7 +186,7 @@ public class TelaInicialAluno extends JFrame{
         lp.add(barra, new Integer(1));
         lp.add(btnFavoritos, new Integer(2));
         lp.add(btnPerfil, new Integer(3)); 
-        lp.add(btnCronogramas, new Integer(4));
+        lp.add(btnAgenda, new Integer(4));
         lp.add(lblEstatisticas, new Integer(5));
         lp.add(lblAcertos, new Integer(6));
         lp.add(lblErros, new Integer(7));
@@ -225,10 +227,9 @@ public class TelaInicialAluno extends JFrame{
     				novaOlimp.addActionListener(new ActionListener() {
     					@Override
     					public void actionPerformed(ActionEvent e) {
-    						GuiOlimpiadasAluno olimpiada = new GuiOlimpiadasAluno(nomes);
-    						contentPane.removeAll();
-    			    		contentPane.add(olimpiada);
-    						contentPane.validate();
+    						Olimpiada olimp = new Olimpiada(nomes);
+    						GuiOlimpiadasAluno olimpiada = new GuiOlimpiadasAluno(olimp, aluno);
+    						setVisible(false);
     					}
     				});
     				
@@ -274,10 +275,9 @@ public class TelaInicialAluno extends JFrame{
     				novaOlimp.addActionListener(new ActionListener() {
     					@Override
     					public void actionPerformed(ActionEvent e) {
-    						GuiOlimpiadasAluno olimpiada = new GuiOlimpiadasAluno(nomes);
-    						contentPane.removeAll();
-    			    		contentPane.add(olimpiada);
-    						contentPane.validate();
+    						Olimpiada olimp = new Olimpiada(nomes);
+    						GuiOlimpiadasAluno olimpiada = new GuiOlimpiadasAluno(olimp, aluno);
+    						setVisible(false);
     					}
     				});
     				
@@ -305,7 +305,7 @@ public class TelaInicialAluno extends JFrame{
         setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
         btnFavoritos.setBorderPainted(false);
-        btnCronogramas.setBorderPainted(false);
+        btnAgenda.setBorderPainted(false);
         
 		setVisible(true);
 	}
@@ -315,9 +315,8 @@ public class TelaInicialAluno extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaPerfilAluno tela = new TelaPerfilAluno(aluno);
-				contentPane.removeAll();
-	    		contentPane.add(tela);
-				contentPane.validate();
+			     setVisible(false);
+
 			}
 			 
 		 });
@@ -325,19 +324,16 @@ public class TelaInicialAluno extends JFrame{
 		btnFavoritos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				contentPane.removeAll();
-	    		//contentPane.add(tela);
-				contentPane.validate();
+			     setVisible(false);
+
 			}
 			 
 		 });
 		
-		btnCronogramas.addActionListener(new ActionListener() {
+		btnAgenda.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				contentPane.removeAll();
-	    		//contentPane.add(tela);
-				contentPane.validate();
+			     setVisible(false);
 			}
 			 
 		 });
@@ -346,9 +342,7 @@ public class TelaInicialAluno extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaOlimpiadas tela = new TelaOlimpiadas(aluno, true);
-				contentPane.removeAll();
-	    		contentPane.add(tela);
-				contentPane.validate();
+			     setVisible(false);
 			}
 			 
 		 });
