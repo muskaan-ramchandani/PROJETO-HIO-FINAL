@@ -204,6 +204,7 @@ public class TelaCadastroProf extends JFrame {
 								
 								Professor prof = new Professor(nomeCompleto, nomeUsuario, email, senha);
 								TelaInicialProf telaProf=new TelaInicialProf(prof, false);
+							    setVisible(false);
 								retorna=true;
 								
 							}else{
