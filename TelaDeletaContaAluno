@@ -95,7 +95,7 @@ public class TelaDeletaContaAluno extends JFrame{
 						setVisible(false);
 					}
 				}else {
-					JOptionPane.showMessageDialog(null, "Senha incorreta!Conta não pode ser deletada!");
+					JOptionPane.showMessageDialog(null, "Senha incorreta! Conta não pode ser deletada!");
 					pfRepeteSenha.setText(null);
 					return;
 				}
