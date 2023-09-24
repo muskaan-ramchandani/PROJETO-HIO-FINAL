@@ -206,9 +206,7 @@ public class TelaPerfilProf extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaInicialProf tela = new TelaInicialProf(prof, true);
-				contentPane.removeAll();
-				contentPane.add(tela);
-				contentPane.validate();
+			     setVisible(false);
 			}
 		});
 		
