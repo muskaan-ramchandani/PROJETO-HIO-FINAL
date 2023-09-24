@@ -201,9 +201,7 @@ public class TelaBoasVindas extends JFrame{
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	            	TelaSobreNos telaSB= new TelaSobreNos();
-					contentPane.removeAll();
-		    		contentPane.add(telaSB);
-		    		contentPane.validate();
+				     setVisible(false);
 	            }
 	        });
 		 
@@ -225,9 +223,9 @@ public class TelaBoasVindas extends JFrame{
 						 if(resposta==true) {
 							 JOptionPane.showMessageDialog(null, "Login realizado com sucesso!");
 							 
-						       Aluno aluno = controla.obterAlunoExistente(email);
-							 
+						      Aluno aluno = controla.obterAlunoExistente(email);
 							 TelaInicialAluno telaInicialA = new TelaInicialAluno(aluno, true);
+						     setVisible(false);
 						 }else {
 							 JOptionPane.showMessageDialog(null, "Login não realizado, por favor, tente novamente!");
 						 }
@@ -244,7 +242,8 @@ public class TelaBoasVindas extends JFrame{
 						 if(resposta==true) {
 							 JOptionPane.showMessageDialog(null, "Login realizado com sucesso!");
 						       Professor prof = controla.obterProfExistente(email);
-							 TelaInicialProf telaInicialP = new TelaInicialProf(prof, true);
+						       TelaInicialProf telaInicialP = new TelaInicialProf(prof, true);
+						       setVisible(false);
 						 }else {
 							 JOptionPane.showMessageDialog(null, "Login não realizado, por favor, tente novamente!");
 						 }
@@ -266,6 +265,7 @@ public class TelaBoasVindas extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				TelaAlunoProfessor telaCad1= new TelaAlunoProfessor();
 				telaCad1.setVisible(true);
+			     setVisible(false);
 			}
 			 
 		 });
