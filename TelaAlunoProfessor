@@ -136,9 +136,7 @@ public class TelaAlunoProfessor extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaCadastroAluno telaCad1= new TelaCadastroAluno();
-				contentPane.removeAll();
-	    		contentPane.add(telaCad1);
-				contentPane.validate();
+			    setVisible(false);
 			}
 			 
 		 });
@@ -147,9 +145,8 @@ public class TelaAlunoProfessor extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaCadastroProf telaCad1= new TelaCadastroProf();
-				contentPane.removeAll();
-				contentPane.add(telaCad1);
-				contentPane.validate();
+			     setVisible(false);
+;
 			}
 			 
 		 });
