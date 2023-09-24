@@ -206,9 +206,7 @@ public class TelaPerfilAluno extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaInicialAluno tela = new TelaInicialAluno(aluno, true);
-				contentPane.removeAll();
-				contentPane.add(tela);
-				contentPane.validate();
+			     setVisible(false);
 			}
 		});
 		
