@@ -26,6 +26,11 @@ public class GuiOlimpiadasAluno extends JFrame{
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
 	
+	private JLabel lblAluno;
+	private JLabel lblFrase1;
+	private JLabel lblFrase2;
+	private JLabel lblImagem;
+	
 	public GuiOlimpiadasAluno(Olimpiada olimp, Aluno aluno) {
 		inicializarComponentes(olimp, aluno);
 		definirEventos(olimp, aluno);
@@ -53,7 +58,13 @@ public class GuiOlimpiadasAluno extends JFrame{
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
 		
-        
+		lblAluno = new JLabel("ALUNO");
+		lblFrase1 = new JLabel("<html>O sucesso nas Olimpíadas <br>está ao seu alcance.</html>");
+		lblFrase2 = new JLabel("Tenha acesso a livros, vídeos e muito mais.");
+		lblImagem = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//imagemGUIOlimpiadasAlunoRecepcao.png"));
+		
+				
 		//cores
 		Color roxoIndigo = new Color(75,0,130);
 		
@@ -71,6 +82,10 @@ public class GuiOlimpiadasAluno extends JFrame{
 		btnCronograma.setBackground(roxoIndigo);
 		btnCronograma.setForeground(Color.WHITE);
 		
+		lblAluno.setForeground(roxoIndigo);
+		lblFrase1.setForeground(Color.BLACK);
+		lblFrase2.setForeground(Color.BLACK);
+		
 		//formatações
 		lblNomeOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 25));
 		
@@ -80,6 +95,10 @@ public class GuiOlimpiadasAluno extends JFrame{
 		btnAssuntos.setFont(fonteBarra);
 		btnFlashcards.setFont(fonteBarra);
 		btnCronograma.setFont(fonteBarra);
+		
+		lblAluno.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+		lblFrase1.setFont(new Font("Trebuchet MS", Font.BOLD, 30));
+		lblFrase2.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
 
 		//coordenadas
 		lp.setBounds(0, 0, screenSize.width, screenSize.height-40);
@@ -92,6 +111,11 @@ public class GuiOlimpiadasAluno extends JFrame{
 		btnFlashcards.setBounds(765,7,130,35);
 		btnCronograma.setBounds(980,7,130,35);
 		
+		lblAluno.setBounds(100, 200, largura, altura);
+		lblFrase1.setBounds(100, 300, l, a);
+		lblFrase2.setBounds(100, 500, l, a);
+		lblImagem.setBounds(x, y, 375, 309);
+		
 		//adiciona
 		contentPane.add(lp);
 		lp.add(barra, new Integer(1));
@@ -102,6 +126,11 @@ public class GuiOlimpiadasAluno extends JFrame{
 		lp.add(btnAssuntos, new Integer(6));
 		lp.add(btnFlashcards, new Integer(7));
 		lp.add(btnCronograma, new Integer(8));
+		lp.add(lblAluno, new Integer(9));
+		lp.add(lblFrase1, new Integer(10));
+		lp.add(lblFrase2, new Integer(11));
+		lp.add(lblImagem, new Integer(12));
+		
 		
 		setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
