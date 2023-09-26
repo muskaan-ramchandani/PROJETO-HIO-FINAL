@@ -61,10 +61,8 @@ public class GuiOlimpiadasAluno extends JFrame{
 		lblAluno = new JLabel("ALUNO");
 		lblFrase1 = new JLabel("<html>O sucesso nas Olimpíadas <br>está ao seu alcance.</html>");
 		lblFrase2 = new JLabel("Tenha acesso a livros, vídeos e muito mais.");
-		lblImagem = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//imagemGUIOlimpiadasAlunoRecepcao.png"));
-		
-				
+		lblImagem = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//Projeto HIO//PROJETO-HIO-FINAL//"
+				+"PROJETO-HIO-FINAL//Imagens HIO//imagemGUIOlimpiadasAlunoRecepcao.png"));
 		//cores
 		Color roxoIndigo = new Color(75,0,130);
 		
@@ -95,11 +93,11 @@ public class GuiOlimpiadasAluno extends JFrame{
 		btnAssuntos.setFont(fonteBarra);
 		btnFlashcards.setFont(fonteBarra);
 		btnCronograma.setFont(fonteBarra);
-		
-		lblAluno.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
-		lblFrase1.setFont(new Font("Trebuchet MS", Font.BOLD, 30));
-		lblFrase2.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
 
+		lblAluno.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+		lblFrase1.setFont(new Font("Trebuchet MS", Font.BOLD, 40));
+		lblFrase2.setFont(new Font("Trebuchet MS", Font.PLAIN, 25));
+		
 		//coordenadas
 		lp.setBounds(0, 0, screenSize.width, screenSize.height-40);
         barra.setBounds(0,0,screenSize.width, 50);
@@ -111,10 +109,11 @@ public class GuiOlimpiadasAluno extends JFrame{
 		btnFlashcards.setBounds(765,7,130,35);
 		btnCronograma.setBounds(980,7,130,35);
 		
-		lblAluno.setBounds(100, 200, largura, altura);
-		lblFrase1.setBounds(100, 300, l, a);
-		lblFrase2.setBounds(100, 500, l, a);
-		lblImagem.setBounds(x, y, 375, 309);
+		lblAluno.setBounds(100,180,150,40);
+		lblFrase1.setBounds(100,100,650,350);
+		lblFrase2.setBounds(100,330,500,40);
+		lblImagem.setBounds(700,130,567,425);
+		
 		
 		//adiciona
 		contentPane.add(lp);
@@ -130,7 +129,6 @@ public class GuiOlimpiadasAluno extends JFrame{
 		lp.add(lblFrase1, new Integer(10));
 		lp.add(lblFrase2, new Integer(11));
 		lp.add(lblImagem, new Integer(12));
-		
 		
 		setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
@@ -214,7 +212,8 @@ public class GuiOlimpiadasAluno extends JFrame{
 		btnVideos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			     setVisible(false);
+				TelaVideosAluno videos = new TelaVideosAluno(olimp, aluno);
+				setVisible(false);
 
 			}
 		});
@@ -251,7 +250,8 @@ public class GuiOlimpiadasAluno extends JFrame{
 		btnAssuntos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			     setVisible(false);
+				TelaAssuntosAluno assuntos = new TelaAssuntosAluno(olimp, aluno);
+				setVisible(false);
 
 			}
 		});
@@ -288,7 +288,8 @@ public class GuiOlimpiadasAluno extends JFrame{
 		btnFlashcards.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			     setVisible(false);
+				TelaFlashcardsAluno flashcards = new TelaFlashcardsAluno(olimp, aluno);
+				setVisible(false);
 
 			}
 		});
@@ -324,7 +325,8 @@ public class GuiOlimpiadasAluno extends JFrame{
 		btnCronograma.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			     setVisible(false);
+				TelaCronogramaAluno cronograma = new TelaCronogramaAluno(olimp, aluno);
+				setVisible(false);
 
 			}
 		});
