@@ -46,7 +46,7 @@ public class TelaLivrosProf extends JFrame{
     private JLayeredPane lpCadastro;
     private JLayeredPane lpLivros;
 
-
+    private Color roxoIndigo = new Color(75,0,130);
 	
 	public TelaLivrosProf(Olimpiada olimp, Professor prof) {
 		inicializarComponentes(olimp, prof);
@@ -75,51 +75,8 @@ public class TelaLivrosProf extends JFrame{
 		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
-
-        // Primeira área (sem JScrollPane) CADASTRO
-        lpCadastro = new JLayeredPane();
-        lpCadastro.setBackground(Color.RED);
-              
-      		lblCadastrarLivro = new JLabel("Cadastrar Livro");
-      		lblIsbn= new JLabel();
-      		txtIsbn = new JTextField(13);
-      		lblTitulo= new JLabel("Título:");
-      		txtTitulo = new JTextField(100);
-      		lblEditora= new JLabel("Editora:");
-      		txtEditora = new JTextField(60);
-      		lblAutor= new JLabel("Autor:");
-      		txtAutor = new JTextField(200);
-      		lblDataPublicacao= new JLabel("Data de publicação:");;
-      		txtDataPublicacao = new JTextField(10);
-      		lblArquivoPDF= new JLabel("Selecione o arquivo pdf:");;
-      		selecionaPDF= new JFileChooser();
-      		btnCadastrar= new JButton("Cadastrar");
-        
-        
-        //area1.add(label1, Integer.valueOf(1)); // Adiciona o componente ao JLayeredPane
-
-      		
-      		
-        // Segunda área (com JScrollPane) LIVROS
-        lpLivros = new JLayeredPane();
-        lpLivros.setBackground(Color.WHITE);
-
-        JTextArea textArea = new JTextArea();
-
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setBounds(0, 0, 400, 600); // Define o tamanho e a posição do JScrollPane
-        lpLivros.add(scrollPane, Integer.valueOf(1)); // Adiciona o JScrollPane ao JLayeredPane
-
-        // Configura o divisor do JSplitPane para redimensionar as áreas
-        splitPane.setLeftComponent(lpLivros);
-        splitPane.setRightComponent(lpCadastro);
-        splitPane.setDividerLocation(0.5); // Posição inicial do divisor (50%)
-
-        getContentPane().add(splitPane);
 		
-		//cores
-		Color roxoIndigo = new Color(75,0,130);
-		
+		//cores		
 		barra.setBackground(roxoIndigo);
 		lblNomeOlimp.setBackground(roxoIndigo);
 		lblNomeOlimp.setForeground(Color.WHITE);
@@ -158,9 +115,94 @@ public class TelaLivrosProf extends JFrame{
 		btnFlashcards.setBounds(765,7,130,35);
 		btnCronograma.setBounds(980,7,130,35);
 		
-		btnCadastrar.setBounds(100, 300, 20, 29);
-		
+		  // Primeira área (sem JScrollPane) CADASTRO
+        lpCadastro = new JLayeredPane();
+        lpCadastro.setBackground(Color.white);
+              
+      		lblCadastrarLivro = new JLabel("Cadastrar Livro");
+      		lblIsbn= new JLabel();
+      		txtIsbn = new JTextField(13);
+      		lblTitulo= new JLabel("Título:");
+      		txtTitulo = new JTextField(100);
+      		lblEditora= new JLabel("Editora:");
+      		txtEditora = new JTextField(60);
+      		lblAutor= new JLabel("Autor:");
+      		txtAutor = new JTextField(200);
+      		lblDataPublicacao= new JLabel("Data de publicação:");;
+      		txtDataPublicacao = new JTextField(10);
+      		lblArquivoPDF= new JLabel("Selecione o arquivo pdf:");;
+      		selecionaPDF= new JFileChooser();
+      		btnCadastrar= new JButton("Cadastrar");
+        
+      		btnCadastrar.setForeground(Color.white);
+      		btnCadastrar.setBackground(roxoIndigo);
+      		
+      		Font fonteLabelsDesc = new Font( "Trebuchet MS", Font.PLAIN, 20);
+      		lblIsbn.setFont(fonteLabelsDesc);
+      		lblTitulo.setFont(fonteLabelsDesc);
+      		lblEditora.setFont(fonteLabelsDesc);
+      		lblAutor.setFont(fonteLabelsDesc);
+      		lblDataPublicacao.setFont(fonteLabelsDesc);
+      		lblArquivoPDF.setFont(fonteLabelsDesc);	
+    		
+    		Font fonteTamanho = new Font( "Trebuchet MS", Font.PLAIN, 45);
+    		lblCadastrarLivro.setFont(fonteTamanho);
+    	    
+    	    Font fonteTamanhoBotao = new Font( "Trebuchet MS", Font.PLAIN, 20);
+    	    btnCadastrar.setFont(fonteTamanhoBotao);
+    	    
+    	    lblCadastrarLivro.setBounds(850,70,800,100);
+    	    lblIsbn.setBounds(780,165,200,30);
+    		txtIsbn.setBounds(780,205,212,30);
+    		lblDataPublicacao.setBounds(1042, 165, 200, 30);
+    		txtDataPublicacao.setBounds(1042, 205, 212, 30);
+    		lblTitulo.setBounds(780,255,400,40);
+    		txtTitulo.setBounds(780,310,425,30);
+    		lblEditora.setBounds(780,345,400,40);
+    		txtEditora.setBounds(780,385,425,30);
+    		lblAutor.setBounds(780,435,400,40);
+    		txtAutor.setBounds(780,475,425,30);
+    		lblArquivoPDF.setBounds(780,525,400,40);
+    		selecionaPDF.setBounds(780,565,425,30);
+    		btnCadastrar.setBounds(800, 620, 245, 45);
+    	    
+
+    		lpCadastro.add(lblCadastrarLivro, new Integer(1));
+    		lpCadastro.add(lblIsbn, new Integer(2));
+    		lpCadastro.add(txtIsbn, new Integer(3));
+    		lpCadastro.add(lblDataPublicacao, new Integer(4));
+    		lpCadastro.add(txtDataPublicacao, new Integer(5));
+    		lpCadastro.add(lblTitulo, new Integer(6));
+    		lpCadastro.add(txtTitulo, new Integer(7));
+    		lpCadastro.add(lblEditora, new Integer(8));
+    		lpCadastro.add(txtEditora, new Integer(9));
+    		lpCadastro.add(lblAutor, new Integer(10));
+    		lpCadastro.add(txtAutor, new Integer(11));
+    		lpCadastro.add(lblArquivoPDF, new Integer(12));
+    		lpCadastro.add(selecionaPDF, new Integer(13));
+    		lpCadastro.add(btnCadastrar, new Integer(14));
+
+      		
+      		
+        // Segunda área (com JScrollPane) LIVROS
+        lpLivros = new JLayeredPane();
+        lpLivros.setBackground(Color.WHITE);
+
+        JTextArea textArea = new JTextArea();
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setBounds(750, 51, 15, screenSize.height-40); // Define o tamanho e a posição do JScrollPane
+        lpLivros.add(scrollPane, new Integer(1)); // Adiciona o JScrollPane ao JLayeredPane
+
+        
+        // Configura o divisor do JSplitPane para redimensionar as áreas
+        splitPane.setLeftComponent(lpLivros);
+        splitPane.setRightComponent(lpCadastro);
+        splitPane.setDividerLocation(760);
+        
 		//adiciona
+		contentPane.add(splitPane);
+
 		lp.add(barra, new Integer(1));
 		lp.add(lblLogo, new Integer(2));
 		lp.add(lblNomeOlimp, new Integer(3));
@@ -169,9 +211,8 @@ public class TelaLivrosProf extends JFrame{
 		lp.add(btnAssuntos, new Integer(6));
 		lp.add(btnFlashcards, new Integer(7));
 		lp.add(btnCronograma, new Integer(8));
-		lp.add(btnCadastrar, new Integer(9));
 		contentPane.add(lp);
-
+		
 		setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
         btnLivros.setBorderPainted(false);
@@ -179,6 +220,8 @@ public class TelaLivrosProf extends JFrame{
         btnAssuntos.setBorderPainted(false);
         btnFlashcards.setBorderPainted(false);
         btnCronograma.setBorderPainted(false);
+        btnCadastrar.setBorderPainted(false);
+
 	}
 	
 	public void definirEventos(Olimpiada olimp, Professor prof) {		
