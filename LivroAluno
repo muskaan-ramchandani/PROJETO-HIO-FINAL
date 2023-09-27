@@ -37,6 +37,19 @@ public class LivroAluno extends JFrame {
 	private JButton btnCronograma;
 	private JTextField PesLivro;
 	private JLabel lblFunil;
+	//
+	private int numeroLabels = 14;
+	private JLabel[] EspacoLivro = new JLabel[numeroLabels];
+	int camadasEL = 30;
+	int linhaEL = 100;
+	int colunaEL = 200;
+	int limite = 7;
+	//
+	private JLabel[] espacoTitulo = new JLabel[numeroLabels];
+	int camadas = 60;
+	int linha = 100;
+	int coluna = 350;
+	
 	
 	public LivroAluno() {
 		inicializarComponentes();
@@ -57,7 +70,9 @@ public class LivroAluno extends JFrame {
 		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
-		PesLivro = new JTextField("     Procura título ou isbn");
+		PesLivro = new JTextField("     Procura título ou ISBN");
+		lblFunil= new JLabel(new ImageIcon("C://Breno//Funil.png"));
+		
 		
 		btnLivros.setFocusPainted(false);
 		btnVideos.setFocusPainted(false);
@@ -65,7 +80,6 @@ public class LivroAluno extends JFrame {
 		btnFlashcards.setFocusPainted(false);
 		btnCronograma.setFocusPainted(false);
 		
-		lblFunil= new JLabel(new ImageIcon("C://Breno//Funil.png"));
 		
 		
 		Color roxoIndigo = new Color(75,0,130);
@@ -87,7 +101,7 @@ public class LivroAluno extends JFrame {
 		
 		
 		
-		Font fonteBarra = new Font("Trebuchet MS", Font.PLAIN, 20);
+		Font fonteBarra = new Font("Trebuchet MS", Font.PLAIN, 21);
 		btnLivros.setFont(fonteBarra);
 		btnVideos.setFont(fonteBarra);
 		btnAssuntos.setFont(fonteBarra);
@@ -108,6 +122,41 @@ public class LivroAluno extends JFrame {
 		PesLivro.setBounds(200,100,950,60);
 		lblFunil.setBounds(100,105,55,55);
 		
+		
+		for(int i=0;i < numeroLabels; i++) {
+			EspacoLivro[i] = new JLabel ("");
+			EspacoLivro[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+			EspacoLivro[i].setBackground(Color.WHITE);
+			EspacoLivro[i].setForeground(Color.BLACK);
+			if(i >= limite) {
+				colunaEL = colunaEL+250;
+				limite = limite + 7;
+				linhaEL = 100;
+			}
+			EspacoLivro[i].setBounds(linhaEL,colunaEL,150,150);
+			lp.add(EspacoLivro[i], new Integer(camadasEL));
+			linhaEL= linhaEL+200;
+			camadasEL++;
+			
+		}
+		
+		limite = 7;
+		for(int i=0;i < numeroLabels; i++) {
+			espacoTitulo[i] = new JLabel("");
+			espacoTitulo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+			espacoTitulo[i].setBackground(Color.WHITE);
+			espacoTitulo[i].setForeground(Color.BLACK);
+			if(i >= limite) {
+				coluna = colunaEL+150;
+				limite = limite + 7;
+				linha = 100;
+		}
+			espacoTitulo[i].setBounds(linha,coluna,150,40);
+			lp.add(espacoTitulo[i], new Integer(camadas));
+			linha= linha+200;
+			camadas++;
+		}
+		
         contentPane.add(lp);
         lp.add(Barra, new Integer(1));
         lp.add(lblLogo, new Integer(2));
@@ -117,7 +166,8 @@ public class LivroAluno extends JFrame {
 		lp.add(btnFlashcards, new Integer(7));
 		lp.add(btnCronograma, new Integer(8));
 		lp.add(PesLivro, new Integer(9));
-		lp.add(lblFunil, new Integer(100));
+		lp.add(lblFunil, new Integer(1000));
+		
 
         setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
