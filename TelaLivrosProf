@@ -284,13 +284,11 @@ public class TelaLivrosProf extends JFrame{
 	            LocalDate localDate = LocalDate.parse(data, formatter);
 	            Date dataPublicacao = java.sql.Date.valueOf(localDate);	
 	            
-				int contErros=0;
 				File selectedFile = selecionaPDF.getSelectedFile();
 	            String fileName = selectedFile.getName();
 				
 				if(selecionePDF.getText().isEmpty()||selecionePDF.getText().equals("Clique e escolha um arquivo pdf:")) {
 		             JOptionPane.showMessageDialog(null, "Selecione um arquivo pdf para que o livro seja cadastrado!");
-		             contErros++;
 		             
            	}else if(txtIsbn.getText().isEmpty()||txtTitulo.getText().isEmpty()
                   		||txtEditora.getText().isEmpty()||txtAutor.getText().isEmpty()
@@ -298,16 +296,12 @@ public class TelaLivrosProf extends JFrame{
                   	
                   	JOptionPane.showMessageDialog(null, "Há campos Vazios! Não é possível cadastar o"
                   	+" livro sem todos os dados!");
-                  	contErros++;
                   	
                 }else if(!selectedFile.getName().toLowerCase().endsWith(".pdf")){
                  		
                  		JOptionPane.showMessageDialog(null, "O arquivo selecionado não é um PDF."
           		            +" Não é possível cadastrar livro!");
-                 		contErros++;
-                }
-				
-				if(contErros<0) {
+                }else {
 			        
 			        try {
 					    InputStream arquivoStream = new FileInputStream(selectedFile);
@@ -316,7 +310,7 @@ public class TelaLivrosProf extends JFrame{
 
 			            // Chame o DAO para inserir o arquivo no banco de dados
 			            LivroCONTROLLER controla = new LivroCONTROLLER();
-			            controla.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivoStream, dataPublicacao, olimp);
+			            controla.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivoStream, olimp);
 			           
 			            JOptionPane.showMessageDialog(null, "Livro cadastrado com sucesso!");
 			            txtIsbn.setText(null);
