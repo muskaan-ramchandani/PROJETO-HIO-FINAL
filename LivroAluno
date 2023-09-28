@@ -56,6 +56,7 @@ public class LivroAluno extends JFrame {
 	}
 	
 	private void inicializarComponentes() {
+		//instanciação
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = toolkit.getScreenSize();
 		setBounds(0, 0, screenSize.width, screenSize.height-40);
@@ -64,16 +65,16 @@ public class LivroAluno extends JFrame {
         //setLayout(null);
         lp = new JLayeredPane();
         Barra = new JMenuBar();
-        lblLogo  = new JLabel(new ImageIcon("C://Breno//bonequinhoSFMEDIO.png"));
+        lblLogo  = new JLabel(new ImageIcon("C:\\Breno\\bonequinhoSFMEDIO.png"));
         btnLivros = new JButton("<html><u>Livros</u></html>"); //Sublinhado
 		btnVideos= new JButton("<html><u>Videos</u></html>");
 		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
-		PesLivro = new JTextField("     Procura título ou ISBN");
-		lblFunil= new JLabel(new ImageIcon("C://Breno//Funil.png"));
+		PesLivro = new JTextField("     Pesquisa Video");
+		lblFunil= new JLabel(new ImageIcon("C:\\Breno\\funil.png"));
 		
-		
+		//tira o foco ao aperta o botão
 		btnLivros.setFocusPainted(false);
 		btnVideos.setFocusPainted(false);
 		btnAssuntos.setFocusPainted(false);
@@ -81,7 +82,7 @@ public class LivroAluno extends JFrame {
 		btnCronograma.setFocusPainted(false);
 		
 		
-		
+		//definir as cores
 		Color roxoIndigo = new Color(75,0,130);
         Barra.setBackground(roxoIndigo);
         btnLivros.setBackground(roxoIndigo);
@@ -95,12 +96,10 @@ public class LivroAluno extends JFrame {
 		btnCronograma.setBackground(roxoIndigo);
 		btnCronograma.setForeground(Color.WHITE);
         
-		
 		PesLivro.setBorder(BorderFactory.createLineBorder(roxoIndigo, 2)); // Cria uma borda de 2 pixels de largura em preto
-		//PesLivro.setHorizontalAlignment(SwingConstants.CENTER); 
 		
 		
-		
+		//definir as fontes
 		Font fonteBarra = new Font("Trebuchet MS", Font.PLAIN, 21);
 		btnLivros.setFont(fonteBarra);
 		btnVideos.setFont(fonteBarra);
@@ -108,10 +107,11 @@ public class LivroAluno extends JFrame {
 		btnFlashcards.setFont(fonteBarra);
 		btnCronograma.setFont(fonteBarra);     
         
-		
 		Font fonteLabelsDesc = new Font( "Trebuchet MS", Font.PLAIN, 35);
 		PesLivro.setFont(fonteLabelsDesc);
 		
+		
+		//definir as posições
         Barra.setBounds(0,0,screenSize.width, 50); 
         lblLogo.setBounds(10,5,44,35);
         btnLivros.setBounds(235,7, 100, 35);
@@ -120,9 +120,10 @@ public class LivroAluno extends JFrame {
 		btnFlashcards.setBounds(765,7,130,35);
 		btnCronograma.setBounds(980,7,130,35);
 		PesLivro.setBounds(200,100,950,60);
-		lblFunil.setBounds(100,105,55,55);
+		lblFunil.setBounds(200,105,55,55);
 		
 		
+		//JLabels dos espaços para a capa;
 		for(int i=0;i < numeroLabels; i++) {
 			EspacoLivro[i] = new JLabel ("");
 			EspacoLivro[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
@@ -140,6 +141,8 @@ public class LivroAluno extends JFrame {
 			
 		}
 		
+		
+		//JLabels dos espaços para titulos
 		limite = 7;
 		for(int i=0;i < numeroLabels; i++) {
 			espacoTitulo[i] = new JLabel("");
@@ -157,6 +160,7 @@ public class LivroAluno extends JFrame {
 			camadas++;
 		}
 		
+		//adicionar a interface
         contentPane.add(lp);
         lp.add(Barra, new Integer(1));
         lp.add(lblLogo, new Integer(2));
@@ -168,7 +172,7 @@ public class LivroAluno extends JFrame {
 		lp.add(PesLivro, new Integer(9));
 		lp.add(lblFunil, new Integer(1000));
 		
-
+		//tirar bordar
         setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
         btnLivros.setBorderPainted(false);
@@ -180,25 +184,4 @@ public class LivroAluno extends JFrame {
         setVisible(true);
 	}
 	
-	public static void abrir() {
-		LivroAluno frame = new LivroAluno();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((tela.width - frame.getSize().width)/2,(tela.height - frame.getSize().height)/2);
-        frame.setVisible(true);
-        
-     
-        
-        
-        
-    }
-   
-    public static void main(String[] args) {
-        abrir();
-    }
-    
-
-
-	
-    
 }
