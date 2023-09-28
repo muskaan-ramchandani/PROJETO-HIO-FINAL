@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -11,15 +12,17 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import conexaoBD.Conexao;
+import dao.LivroDAO;
 import bo.LivroBO;
 import vo.Livro;
+import vo.Olimpiada;
 
 public class LivroCONTROLLER {
 
-	public void cadastrar(int isbn, String titulo, String editora, String autor, Date dataPublicacao,
-	String emailProf) {
+	public void cadastrar(int isbn, String titulo, String editora, String autor, java.util.Date dataPublicacao,
+	String emailProf, InputStream arquivoStream, Olimpiada olimp) {
 		LivroBO bo = new LivroBO();
-		bo.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf);
+		bo.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivoStream, olimp);
 	}
 	
 	public boolean consultar(int isbn) {
