@@ -1,5 +1,8 @@
 package bo;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -13,15 +16,17 @@ import javax.swing.JOptionPane;
 import conexaoBD.Conexao;
 import dao.LivroDAO;
 import vo.Livro;
+import vo.Olimpiada;
 
 public class LivroBO {
 
-	public void cadastrar(int isbn, String titulo, String editora, String autor, Date dataPublicacao,
-	String emailProf) {
-		Livro livro = new Livro(isbn, titulo, editora, autor, dataPublicacao, emailProf);
+	public void cadastrar(int isbn, String titulo, String editora, String autor, java.util.Date dataPublicacao,
+	String emailProf, InputStream arquivoPDF, Olimpiada olimp) {
+		Livro livro = new Livro(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivoPDF);
 		LivroDAO dao = new LivroDAO();
-		dao.cadastrar(livro);
-	}
+		dao.cadastrar(livro, dataPublicacao, arquivoPDF, olimp);
+	} 
+	
 	
 	public boolean consultar(int isbn) {
 		 LivroDAO dao = new LivroDAO();
