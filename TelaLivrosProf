@@ -304,7 +304,7 @@ public class TelaLivrosProf extends JFrame{
                 }else {
 			        
 			        try {
-					    InputStream arquivoStream = new FileInputStream(selectedFile);
+			        	InputStream arquivoStream = new FileInputStream(selectedFile);
 			        	String nomeArquivo = selectedFile.getName();
 			            String caminhoDoArquivo = selectedFile.getAbsolutePath();
 
@@ -320,10 +320,10 @@ public class TelaLivrosProf extends JFrame{
 			            txtDataPublicacao.setText(null);    
 				
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "Arquivo não encontrado!");
 					e1.printStackTrace();
 				} catch (IOException e2) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "Erro ao cadastrar!");
 					e2.printStackTrace();
 				}
 				}
