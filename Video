@@ -1,0 +1,51 @@
+package vo;
+import java.util.Date;
+import javax.swing.*;
+
+public class Video {
+	private String titulo;
+	private String link;
+	private String produtor;
+	private Date dataPublicacao;
+	private String emailProf;
+	
+	public Video (String titulo, String link, String produtor, Date dataPublicacao, String emailProf) {
+		setTitulo (titulo);
+		setLink (link);
+		setProdutor (produtor);
+		setDataPublicacao (dataPublicacao);
+		setEmailProf (emailProf);
+		
+	}
+	
+	public String getTitulo() {
+		return titulo;
+	}
+	public void setTitulo (String titulo) {
+		this.titulo=titulo;
+	}
+	public String getLink() {
+		return link;
+	}
+	public void setLink (String link) {
+		this.link=link;
+	}
+	public String getProdutor() {
+		return produtor;
+	}
+	public void setProdutor (String produtor) {
+		this.produtor=produtor;
+	}
+	public Date getDataPublicacao() {
+		return dataPublicacao;
+	}
+	public void setDataPublicacao (Date dataPublicacao) {
+		this.dataPublicacao=dataPublicacao;
+	}
+	public String getEmailProf() {
+		return emailProf;
+	}
+	public void setEmailProf(String emailProf) {
+		this.emailProf=emailProf;
+	}
+}
