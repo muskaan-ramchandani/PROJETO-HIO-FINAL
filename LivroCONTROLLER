@@ -20,13 +20,18 @@ import vo.Olimpiada;
 
 public class LivroCONTROLLER {
 
-	public void cadastrar(int isbn, String titulo, String editora, String autor, java.util.Date dataPublicacao,
+	public boolean cadastrar(String isbn, String titulo, String editora, String autor, java.util.Date dataPublicacao,
 	String emailProf, File arquivoStream, Olimpiada olimp) {
 		LivroBO bo = new LivroBO();
-		bo.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivoStream, olimp);
+		return bo.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivoStream, olimp);
 	}
 	
-	public boolean consultar(int isbn) {
+	public boolean relacionarComOlimp(Olimpiada olimp, String isbn) {
+		 LivroBO bo = new LivroBO();
+		 return bo.relacionarComOlimp( olimp,  isbn);
+	}
+	
+	public boolean consultar(String isbn) {
 		LivroBO bo = new LivroBO();
 		return bo.consultar(isbn);
 	}
