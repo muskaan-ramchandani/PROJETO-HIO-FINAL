@@ -1,0 +1,33 @@
+package controller;
+
+import java.io.File;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
+import conexaoBD.Conexao;
+import dao.VideoDAO;
+import bo.VideoBO;
+import vo.Video;
+import vo.Olimpiada;
+
+public class VideoCONTROLLER {
+	
+	public void cadastrar(String titulo, int upc, String produtor, java.util.Date dataPublicacao, String emailProf,
+			File arquivoVideo, Olimpiada olimp) {
+		VideoBO bo = new VideoBO();
+		bo.cadastrar(titulo,upc, produtor, dataPublicacao, emailProf, arquivoVideo, olimp);
+	}
+	
+	public boolean consultar(int upc) {
+		VideoBO bo = new VideoBO();
+		return bo.consultar(upc);
+	}
+}
