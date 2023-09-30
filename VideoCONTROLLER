@@ -14,19 +14,25 @@ import javax.swing.JOptionPane;
 
 import conexaoBD.Conexao;
 import dao.VideoDAO;
+import bo.LivroBO;
 import bo.VideoBO;
 import vo.Video;
 import vo.Olimpiada;
 
 public class VideoCONTROLLER {
 	
-	public void cadastrar(String titulo, int upc, String produtor, java.util.Date dataPublicacao, String emailProf,
-			File arquivoVideo, Olimpiada olimp) {
+	public boolean cadastrar(String titulo, String upc, String produtor, java.util.Date dataPublicacao, String emailProf,
+		File arquivoVideo, Olimpiada olimp) {
 		VideoBO bo = new VideoBO();
-		bo.cadastrar(titulo,upc, produtor, dataPublicacao, emailProf, arquivoVideo, olimp);
+		return bo.cadastrar(titulo,upc, produtor, dataPublicacao, emailProf, arquivoVideo, olimp);
 	}
 	
-	public boolean consultar(int upc) {
+	public boolean relacionarComOlimp(Olimpiada olimp, String upc) {
+		 VideoBO bo = new VideoBO();
+		 return bo.relacionarComOlimp( olimp,  upc);
+	}
+	
+	public boolean consultar(String upc) {
 		VideoBO bo = new VideoBO();
 		return bo.consultar(upc);
 	}
