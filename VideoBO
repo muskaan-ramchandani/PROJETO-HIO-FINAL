@@ -1,0 +1,36 @@
+package bo;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
+import conexaoBD.Conexao;
+import dao.VideoDAO;
+import vo.Video;
+import vo.Olimpiada;
+
+public class VideoBO {
+
+	
+	public void cadastrar(String titulo, int upc, String produtor, java.util.Date dataPublicacao, String emailProf,
+			File arquivoVideo, Olimpiada olimp) {
+		Video video = new Video(titulo, upc, produtor, dataPublicacao, emailProf, arquivoVideo);
+		VideoDAO dao = new VideoDAO();
+		dao.cadastrar(video, dataPublicacao, arquivoVideo, olimp);
+	} 
+	
+	
+	public boolean consultar(int upc) {
+		 VideoDAO dao = new VideoDAO();
+		 return dao.consultar(upc);
+	}
+}
