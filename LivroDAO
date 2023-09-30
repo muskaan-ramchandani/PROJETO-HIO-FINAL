@@ -21,44 +21,79 @@ import vo.Livro;
 import vo.Olimpiada;
 
 public class LivroDAO {
-	public void cadastrar(Livro livro, java.util.Date dataPublicacao, File arquivoPDF, Olimpiada olimp) {
+	public boolean cadastrar(Livro livro, java.util.Date dataPublicacao, File arquivoPDF, Olimpiada olimp) {
 		try {
 			 Connection conn =  null;
 			 PreparedStatement ps = null;
 			 conn = new Conexao().getConnection();
 			 byte[] videoData;
 				try {
-					videoData = Files.readAllBytes(arquivoPDF.toPath());
+					InputStream is = new FileInputStream( arquivoPDF );
+			        byte[] bytes = new byte[(int)arquivoPDF.length() ];
+			        int offset = 0;
+			        int numRead = 0;
+			        while (offset < bytes.length
+			               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+			            offset += numRead;
+			        }
 					
 					String sql= "INSERT INTO Livro(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivo_PDF)VALUES(?,?,?,?,?,?,?)";
-					String sql2= "INSERT INTO OlimpiadaLivro(isbn, nomeOlimpiada)VALUES(?,?)";
 					
 					ps = conn.prepareStatement(sql);
-					ps.setInt(1, livro.getIsbn());
+					ps.setString(1, livro.getIsbn());
 					ps.setString(2, livro.getTitulo());
 					ps.setString(3, livro.getEditora());
 					ps.setString(4, livro.getAutor());
 					ps.setDate(5, (Date) dataPublicacao);
 					ps.setString(6, livro.getEmailProf());
-		            ps.setBytes(7, videoData);
-					ps.executeUpdate();
-					
-					ps=conn.prepareStatement(sql2);
-					ps.setInt(1, livro.getIsbn());
-					ps.setString(2, olimp.getNome());
-					ps.executeUpdate();
+		            ps.setBytes(7, bytes);
+										
+					int  linhasAfetadas= ps.executeUpdate();
+					if(linhasAfetadas>0) {
+						return true;
+					}else {
+						return false;
+					}
 					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					return false;
 				}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}	
+	}
+	
+	public boolean relacionarComOlimp(Olimpiada olimp, String isbn) {
+		try {
+			 Connection conn =  null;
+			 PreparedStatement ps = null;
+			 conn = new Conexao().getConnection();
+					
+			 String sql= "INSERT INTO OlimpiadaLivro(isbn, nomeOlimpiada)VALUES(?,?)";
+				
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, isbn);
+				ps.setString(2, olimp.getNome());
+				
+				int  linhasAfetadas= ps.executeUpdate();
+				if(linhasAfetadas>0) {
+					return true;
+				}else {
+					return false;
+				}
+					
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	 
-	public boolean consultar(int isbn) {
+	public boolean consultar(String isbn) {
 		 try {
 			 Connection conn =  null;
 			 PreparedStatement ps = null;
@@ -68,7 +103,7 @@ public class LivroDAO {
 			 String sql="SELECT * FROM Livro WHERE isbn=?";
 			 
 			ps = conn.prepareStatement(sql);
-			ps.setInt(1, isbn);
+			ps.setString(1, isbn);
 			
 			ResultSet rs=null;
 			rs=ps.executeQuery();
