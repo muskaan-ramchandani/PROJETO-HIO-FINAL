@@ -223,7 +223,7 @@ public class TelaLivrosProf extends JFrame{
 		txtAutor.setBounds(800,430,465,30);
 		lblArquivoPDF.setBounds(800,470,400,40);
 		selecionePDF.setBounds(800, 505, 465, 30);
-		btnCadastrar.setBounds(920, 590, 245, 45);
+		btnCadastrar.setBounds(915, 590, 245, 45);
 	    
 
 		lp.add(lblCadastrarLivro, new Integer(9));
@@ -287,7 +287,7 @@ public class TelaLivrosProf extends JFrame{
 				File selectedFile = selecionaPDF.getSelectedFile();
 	            String fileName = selectedFile.getName();
 				
-				if(selecionePDF.getText().isEmpty()||selecionePDF.getText().equals("Clique e escolha um arquivo pdf:")) {
+				if(selecionePDF.getText().isEmpty()||selecionePDF.getText().equals("Selecione um arquivo PDF")) {
 		             JOptionPane.showMessageDialog(null, "Selecione um arquivo pdf para que o livro seja cadastrado!");
 		             
            	}else if(txtIsbn.getText().isEmpty()||txtTitulo.getText().isEmpty()
@@ -303,29 +303,17 @@ public class TelaLivrosProf extends JFrame{
           		            +" Não é possível cadastrar livro!");
                 }else {
 			        
-			        try {
-			        	InputStream arquivoStream = new FileInputStream(selectedFile);
-			        	String nomeArquivo = selectedFile.getName();
-			            String caminhoDoArquivo = selectedFile.getAbsolutePath();
-
-			            // Chame o DAO para inserir o arquivo no banco de dados
-			            LivroCONTROLLER controla = new LivroCONTROLLER();
-			            controla.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivoStream, olimp);
-			           
-			            JOptionPane.showMessageDialog(null, "Livro cadastrado com sucesso!");
-			            txtIsbn.setText(null);
-			            txtTitulo.setText(null);
-			            txtEditora.setText(null);
-			            txtAutor.setText(null);
-			            txtDataPublicacao.setText(null);    
-				
-				} catch (FileNotFoundException e1) {
-					JOptionPane.showMessageDialog(null, "Arquivo não encontrado!");
-					e1.printStackTrace();
-				} catch (IOException e2) {
-					JOptionPane.showMessageDialog(null, "Erro ao cadastrar!");
-					e2.printStackTrace();
-				}
+			        // Chame o DAO para inserir o arquivo no banco de dados
+					LivroCONTROLLER controla = new LivroCONTROLLER();
+					controla.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf, selectedFile, olimp);
+         
+					JOptionPane.showMessageDialog(null, "Livro cadastrado com sucesso!");
+					txtIsbn.setText(null);
+					txtTitulo.setText(null);
+					txtEditora.setText(null);
+					txtAutor.setText(null);
+					txtDataPublicacao.setText(null);   
+					lblArquivoPDF.setText("Selecione um arquivo PDF");
 				}
 			}
 		});
