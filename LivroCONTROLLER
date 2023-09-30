@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
@@ -20,7 +21,7 @@ import vo.Olimpiada;
 public class LivroCONTROLLER {
 
 	public void cadastrar(int isbn, String titulo, String editora, String autor, java.util.Date dataPublicacao,
-	String emailProf, InputStream arquivoStream, Olimpiada olimp) {
+	String emailProf, File arquivoStream, Olimpiada olimp) {
 		LivroBO bo = new LivroBO();
 		bo.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivoStream, olimp);
 	}
