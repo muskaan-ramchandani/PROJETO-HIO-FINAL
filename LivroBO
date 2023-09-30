@@ -21,7 +21,7 @@ import vo.Olimpiada;
 public class LivroBO {
 
 	public void cadastrar(int isbn, String titulo, String editora, String autor, java.util.Date dataPublicacao,
-	String emailProf, InputStream arquivoPDF, Olimpiada olimp) {
+	String emailProf, File arquivoPDF, Olimpiada olimp) {
 		Livro livro = new Livro(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivoPDF);
 		LivroDAO dao = new LivroDAO();
 		dao.cadastrar(livro, dataPublicacao, arquivoPDF, olimp);
