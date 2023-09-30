@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import conexaoBD.Conexao;
+import dao.LivroDAO;
 import dao.VideoDAO;
 import vo.Video;
 import vo.Olimpiada;
@@ -21,15 +22,19 @@ import vo.Olimpiada;
 public class VideoBO {
 
 	
-	public void cadastrar(String titulo, int upc, String produtor, java.util.Date dataPublicacao, String emailProf,
+	public boolean cadastrar(String titulo, String upc, String produtor, java.util.Date dataPublicacao, String emailProf,
 			File arquivoVideo, Olimpiada olimp) {
 		Video video = new Video(titulo, upc, produtor, dataPublicacao, emailProf, arquivoVideo);
 		VideoDAO dao = new VideoDAO();
-		dao.cadastrar(video, dataPublicacao, arquivoVideo, olimp);
+		return dao.cadastrar(video, dataPublicacao, arquivoVideo, olimp);
 	} 
 	
+	public boolean relacionarComOlimp(Olimpiada olimp, String upc) {
+		 VideoDAO dao = new VideoDAO();
+		 return dao.relacionarComOlimp( olimp,  upc);
+	}
 	
-	public boolean consultar(int upc) {
+	public boolean consultar(String upc) {
 		 VideoDAO dao = new VideoDAO();
 		 return dao.consultar(upc);
 	}
