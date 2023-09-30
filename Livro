@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Date;
 
 public class Livro {
-	private int isbn;
+	private String isbn;
 	private String titulo;
 	private String editora;
 	private String autor;
@@ -14,7 +14,7 @@ public class Livro {
 	private String emailProf;
 	private File arquivoPDF;
 	
-	public Livro(int isbn, String titulo, String editora, String autor, Date dataPublicacao, String emailProf, File arquivoPDF) {
+	public Livro(String isbn, String titulo, String editora, String autor, Date dataPublicacao, String emailProf, File arquivoPDF) {
 		setIsbn(isbn);
 		setTitulo(titulo);
 		setEditora(editora);
@@ -24,10 +24,10 @@ public class Livro {
 		setArquivoPDF(arquivoPDF);
 	}
 	
-	public int getIsbn() {
+	public String getIsbn() {
 		return isbn;
 	}
-	public void setIsbn(int isbn) {
+	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
 	public String getTitulo() {
@@ -71,3 +71,11 @@ public class Livro {
 	
 }
 
+
+
+/*isbn VARCHAR(13),
+    titulo VARCHAR(100) NOT NULL,
+    editora VARCHAR(60) NOT NULL,
+    autor VARCHAR(200) NOT NULL,
+    dataPublicacao DATE NOT NULL,
+    emailProf VARCHAR(100) NOT NULL,*/
