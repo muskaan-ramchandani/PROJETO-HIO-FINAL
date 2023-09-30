@@ -44,7 +44,7 @@ INSERT INTO Olimpiada (nome) VALUES ('IMSF'), ('OBG'), ('OBR'), ('OBA'), ('OBI')
     FOREIGN KEY(emailProf) REFERENCES Professor(email)
  );
  
- CREATE TABLE OlimpiadaLivro(
+  CREATE TABLE OlimpiadaLivro(
 	isbn VARCHAR(13) NOT NULL,
 	nomeOlimpiada VARCHAR(10) NOT NULL,
 	FOREIGN KEY(isbn) REFERENCES Livro (isbn),
@@ -52,21 +52,23 @@ INSERT INTO Olimpiada (nome) VALUES ('IMSF'), ('OBG'), ('OBR'), ('OBA'), ('OBI')
 	CONSTRAINT LivroNRepeteOlimp UNIQUE (nomeOlimpiada, isbn)
 );
 
- CREATE TABLE Video(
+  CREATE TABLE Video(
 	titulo VARCHAR(100) NOT NULL,
-	link VARCHAR(50) NOT NULL,
+	upc VARCHAR(12) NOT NULL,
 	produtor  VARCHAR(100) NOT NULL,
 	dataPublicacao DATE NOT NULL,
 	emailProf VARCHAR(100) NOT NULL,
-	PRIMARY KEY(link),
+	arquivo_Video LONGBLOB NOT NULL,
+	PRIMARY KEY(upc),
 	FOREIGN KEY(emailProf) REFERENCES Professor(email)
 );
 
 CREATE TABLE OlimpiadaVideo(
-	linkVideo VARCHAR(50) NOT NULL,
+	upcVideo VARCHAR(12) NOT NULL,
 	nomeOlimpiada VARCHAR(7) NOT NULL,
-	FOREIGN KEY(linkVideo) REFERENCES Video (link),
-	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome)
+	FOREIGN KEY(upcVideo) REFERENCES Video (upc),
+	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
+	CONSTRAINT VideoNRepeteOlimp UNIQUE (nomeOlimpiada, upcVideo)
 );
-
+ 
 #SET FOREIGN_KEY_CHECKS=1;
