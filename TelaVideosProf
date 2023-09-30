@@ -20,9 +20,9 @@ import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import controller.LivroCONTROLLER;
+import controller.VideoCONTROLLER;
 import controller.OlimpiadaCONTROLLER;
-import dao.LivroDAO;
+import dao.VideoDAO;
 import vo.Olimpiada;
 
 public class TelaVideosProf extends JFrame{
@@ -53,19 +53,17 @@ public class TelaVideosProf extends JFrame{
 	private JTextField txtProdutor;
 	private JLabel lblTitulo;
 	private JTextField txtTitulo;
-	private JLabel lblEditora;
-	private JTextField txtEditora;
-	private JLabel lblAutor;
-	private JTextField txtAutor;
 	private JLabel lblDataPublicacao;
 	private JFormattedTextField txtDataPublicacao;
-	private JLabel lblArquivoPDF;
-	private JButton selecioneMP4;
-	private JFileChooser selecionaMP4;
+	private JLabel lblArquivoVideo;
+	private JButton selecioneVideo;
+	private JFileChooser selecionaVideo;
 	private JButton btnCadastrar;
     private JTextField txtFiltro;
     private JLabel lblFiltro;
     private JLabel lblPesquisar;
+    private JLabel lblUPC;
+    private JTextField txtUPC;
 
     private Color roxoIndigo = new Color(75,0,130);
 	
@@ -95,11 +93,12 @@ public class TelaVideosProf extends JFrame{
 		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
-		selecioneMP4= new JButton("Clique e escolha um arquivo MP4");
+		selecioneVideo= new JButton("Selecione o arquivo de vídeo:");
 		txtFiltro = new JTextField(300);
 		lblFiltro= new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//funilPequeno.png"));
 	    lblPesquisar= new JLabel("Procurar por título ou isbn");
+	    
 		
 		//cores		
 		barra.setBackground(roxoIndigo);
@@ -113,8 +112,8 @@ public class TelaVideosProf extends JFrame{
 		btnFlashcards.setForeground(Color.WHITE);
 		btnCronograma.setBackground(roxoIndigo);
 		btnCronograma.setForeground(Color.WHITE);
-		selecioneMP4.setBackground(Color.white);
-		selecioneMP4.setForeground(Color.black);
+		selecioneVideo.setBackground(Color.white);
+		selecioneVideo.setForeground(Color.black);
 		Color roxoVioleta = new Color(148,0,211);
 		btnVideos.setBackground(roxoVioleta);
 		btnVideos.setForeground(Color.WHITE);
@@ -168,14 +167,12 @@ public class TelaVideosProf extends JFrame{
 		
 		 // Primeira área (sem JScrollPane) CADASTRO
   		lblCadastrarVideo = new JLabel("Cadastrar Vídeo");
+  		lblUPC= new JLabel("UPC:");
+  		txtUPC= new JTextField(12);
   		lblProdutor= new JLabel("Produto:");
-  		txtProdutor = new JTextField(13);
+  		txtProdutor = new JTextField(100);
   		lblTitulo= new JLabel("Título:");
   		txtTitulo = new JTextField(100);
-  		lblEditora= new JLabel("Editora:");
-  		txtEditora = new JTextField(60);
-  		lblAutor= new JLabel("Autor:");
-  		txtAutor = new JTextField(200);
   		lblDataPublicacao= new JLabel("Data de publicação:");
   		txtDataPublicacao = new JFormattedTextField();
   		
@@ -187,13 +184,13 @@ public class TelaVideosProf extends JFrame{
  			e.printStackTrace();
  		}
   	
-  		lblArquivoPDF= new JLabel("Selecione o arquivo pdf:");
+  		lblArquivoVideo= new JLabel("Selecione o arquivo de vídeo:");
   		btnCadastrar= new JButton("Cadastrar");
 
-  		selecionaMP4= new JFileChooser();
-  		FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Files", "pdf");
-  		selecionaMP4.setFileFilter(filter);
-  		selecionaMP4.setDialogTitle("Selecione um arquivo PDF");
+  		selecionaVideo= new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos de Vídeo", "mp4", "avi", "mkv", "mov");
+  		selecionaVideo.setFileFilter(filter);
+  		selecionaVideo.setDialogTitle("Selecione um arquivo MP4");
     
   		btnCadastrar.setForeground(Color.white);
   		btnCadastrar.setBackground(roxoIndigo);
@@ -201,19 +198,17 @@ public class TelaVideosProf extends JFrame{
   		Font fonteLabelsDesc = new Font( "Trebuchet MS", Font.PLAIN, 20);
   		lblProdutor.setFont(fonteLabelsDesc);
   		lblTitulo.setFont(fonteLabelsDesc);
-  		lblEditora.setFont(fonteLabelsDesc);
-  		lblAutor.setFont(fonteLabelsDesc);
+  		lblUPC.setFont(fonteLabelsDesc);
   		lblDataPublicacao.setFont(fonteLabelsDesc);
-  		lblArquivoPDF.setFont(fonteLabelsDesc);	
+  		lblArquivoVideo.setFont(fonteLabelsDesc);	
 		
   		Font fonteTXT = new Font( "Trebuchet MS", Font.PLAIN, 18);;
   		txtProdutor.setFont(fonteTXT);
   		txtTitulo.setFont(fonteTXT);
-  		txtEditora.setFont(fonteTXT);
-  		txtAutor.setFont(fonteTXT);
   		txtDataPublicacao.setFont(fonteTXT);
-  		selecionaMP4.setFont(fonteTXT);
-  		selecioneMP4.setFont(fonteTXT);
+  		selecionaVideo.setFont(fonteTXT);
+  		selecioneVideo.setFont(fonteTXT);
+  		txtUPC.setFont(fonteTXT);
   		
 		Font fonteTamanho = new Font( "Trebuchet MS", Font.PLAIN, 45);
 		lblCadastrarVideo.setFont(fonteTamanho);
@@ -222,20 +217,19 @@ public class TelaVideosProf extends JFrame{
 	    btnCadastrar.setFont(fonteTamanhoBotao);
 	    
 	    lblCadastrarVideo.setBounds(870,70,800,100);
-	    lblProdutor.setBounds(800,165,200,30);
-		txtProdutor.setBounds(800,205,212,30); //espaço de 40
-		lblDataPublicacao.setBounds(1062, 165, 200, 30);
-		txtDataPublicacao.setBounds(1062, 205, 200, 30);
-		lblTitulo.setBounds(800,240,400,40);
-		txtTitulo.setBounds(800,280,465,30); //diferença de 35
-		lblEditora.setBounds(800,315,400,40);
-		txtEditora.setBounds(800,355,465,30);
-		lblAutor.setBounds(800,395,400,40);
-		txtAutor.setBounds(800,430,465,30);
-		lblArquivoPDF.setBounds(800,470,400,40);
-		selecioneMP4.setBounds(800, 505, 465, 30);
-		btnCadastrar.setBounds(920, 590, 245, 45);
+	    lblUPC.setBounds(800,165,400,30);
+	    txtUPC.setBounds(800,205,465,30);
+	    lblTitulo.setBounds(800,240,400,40);
+	    txtTitulo.setBounds(800,280,465,30);
+	    lblProdutor.setBounds(800,315,400,40);
+		txtProdutor.setBounds(800,355,465,30);
+		lblDataPublicacao.setBounds(800,395,400,40);
+		txtDataPublicacao.setBounds(800,430,465,30);
+		lblArquivoVideo.setBounds(800,470,400,40);
+		selecioneVideo.setBounds(800,505,465,30);
+		btnCadastrar.setBounds(915, 590, 245, 45);
 	    
+	  
 
 		lp.add(lblCadastrarVideo, new Integer(9));
 		lp.add(lblProdutor, new Integer(10));
@@ -244,14 +238,12 @@ public class TelaVideosProf extends JFrame{
 		lp.add(txtDataPublicacao, new Integer(13));
 		lp.add(lblTitulo, new Integer(14));
 		lp.add(txtTitulo, new Integer(15));
-		lp.add(lblEditora, new Integer(16));
-		lp.add(txtEditora, new Integer(17));
-		lp.add(lblAutor, new Integer(18));
-		lp.add(txtAutor, new Integer(19));
-		lp.add(lblArquivoPDF, new Integer(20));
-		lp.add(btnCadastrar, new Integer(22));
-		lp.add(selecioneMP4, new Integer(23));
-		lp.add(selecionaMP4, new Integer(21));
+		lp.add(lblArquivoVideo, new Integer(16));
+		lp.add(btnCadastrar, new Integer(17));
+		lp.add(selecioneVideo, new Integer(18));
+		lp.add(selecionaVideo, new Integer(19));
+		lp.add(lblUPC, new Integer(20));
+		lp.add(txtUPC, new Integer(21));
 
 		
 		setLayout(new BorderLayout());
@@ -266,17 +258,17 @@ public class TelaVideosProf extends JFrame{
 
 	public void definirEventos(Olimpiada olimp, Professor prof) {
 		
-		selecioneMP4.addActionListener(new ActionListener() {
+		selecioneVideo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				selecioneMP4.setText(null);
-				 int returnValue = selecionaMP4.showOpenDialog(null);
+				selecioneVideo.setText(null);
+				 int returnValue = selecionaVideo.showOpenDialog(null);
 
 	                if (returnValue == JFileChooser.APPROVE_OPTION) {
-	                	  File selectedFile = selecionaMP4.getSelectedFile();
+	                	  File selectedFile = selecionaVideo.getSelectedFile();
 	  		            String fileName = selectedFile.getName();
-	  		            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selecionaMP4.getSelectedFile().getName());
-	    				selecioneMP4.setText(fileName);
+	  		            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selecionaVideo.getSelectedFile().getName());
+	    				selecioneVideo.setText(fileName);
 	                }
 			}
 		});
@@ -284,41 +276,32 @@ public class TelaVideosProf extends JFrame{
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				/*String fileName = selectedFile.getName().toLowerCase();
-                    if (fileName.endsWith(".mp4") || fileName.endsWith(".avi") || fileName.endsWith(".mkv") || fileName.endsWith(".mov")) {
-                        uploadVideo(selectedFile);
-                    } else {
-                        statusLabel.setText("Status: O arquivo selecionado não é um vídeo válido.");
-                    }*/
-				
+				int upc = Integer.parseInt(String.valueOf(txtUPC.getText()));
 				String produtor= String.valueOf(txtProdutor.getText());
 	            String titulo = String.valueOf(txtTitulo.getText());
-	            String editora= String.valueOf(txtEditora.getText());
-	            String autor = String.valueOf(txtAutor.getText());
 	            String emailProf= prof.getEmail();
 	            
 	            String data = String.valueOf(txtDataPublicacao.getText());
 	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Define o formato da data
 	            LocalDate localDate = LocalDate.parse(data, formatter);
-	            Date dataPublicacao = java.sql.Date.valueOf(localDate);	
+	            Date dataPublicacao = java.sql.Date.valueOf(localDate);
 	            
-				File selectedFile = selecionaMP4.getSelectedFile();
+				File selectedFile = selecionaVideo.getSelectedFile();
 	            String fileName = selectedFile.getName();
 				
-				if(selecioneMP4.getText().isEmpty()||selecioneMP4.getText().equals("Clique e escolha um arquivo pdf:")) {
-		             JOptionPane.showMessageDialog(null, "Selecione um arquivo pdf para que o livro seja cadastrado!");
+				if(selecioneVideo.getText().isEmpty()||selecioneVideo.getText().equals("Selecione o arquivo de vídeo:")) {
+		             JOptionPane.showMessageDialog(null, "Selecione um arquivo vídeo para poder ser cadastrado!");
 		             
            	}else if(txtProdutor.getText().isEmpty()||txtTitulo.getText().isEmpty()
-                  		||txtEditora.getText().isEmpty()||txtAutor.getText().isEmpty()
-                  		||txtDataPublicacao.getText().isEmpty()) {
+                  		||txtDataPublicacao.getText().isEmpty()||txtUPC.getText().isEmpty()) {
                   	
                   	JOptionPane.showMessageDialog(null, "Há campos Vazios! Não é possível cadastar o"
                   	+" livro sem todos os dados!");
                   	
-                }else if(!selectedFile.getName().toLowerCase().endsWith(".pdf")){
+                }else if(!fileName.endsWith(".mp4") || fileName.endsWith(".avi") || fileName.endsWith(".mkv") || fileName.endsWith(".mov")){
                  		
-                 		JOptionPane.showMessageDialog(null, "O arquivo selecionado não é um PDF."
-          		            +" Não é possível cadastrar livro!");
+                 		JOptionPane.showMessageDialog(null, "O arquivo selecionado não é um vídeo."
+          		            +" Não é possível cadastrar vídeo!");
                 }else {
 			        
 			        try {
@@ -328,14 +311,15 @@ public class TelaVideosProf extends JFrame{
 
 			            // Chame o DAO para inserir o arquivo no banco de dados
 			            VideoCONTROLLER controla = new VideoCONTROLLER();
-			            controla.cadastrar(produtor, titulo, editora, autor, dataPublicacao, emailProf, arquivoStream, olimp);
+			            controla.cadastrar(titulo, upc, produtor, dataPublicacao, emailProf,
+			            		selectedFile, olimp);
 			           
-			            JOptionPane.showMessageDialog(null, "Livro cadastrado com sucesso!");
+			            JOptionPane.showMessageDialog(null, "Vídeo cadastrado com sucesso!");
 			            txtProdutor.setText(null);
 			            txtTitulo.setText(null);
-			            txtEditora.setText(null);
-			            txtAutor.setText(null);
-			            txtDataPublicacao.setText(null);    
+			            txtDataPublicacao.setText(null);  
+			            txtUPC.setText(null);
+			      		lblArquivoVideo.setText("Selecione o arquivo de vídeo:");
 				
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
