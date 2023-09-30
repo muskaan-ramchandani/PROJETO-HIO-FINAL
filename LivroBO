@@ -20,15 +20,19 @@ import vo.Olimpiada;
 
 public class LivroBO {
 
-	public void cadastrar(int isbn, String titulo, String editora, String autor, java.util.Date dataPublicacao,
+	public boolean cadastrar(String isbn, String titulo, String editora, String autor, java.util.Date dataPublicacao,
 	String emailProf, File arquivoPDF, Olimpiada olimp) {
 		Livro livro = new Livro(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivoPDF);
 		LivroDAO dao = new LivroDAO();
-		dao.cadastrar(livro, dataPublicacao, arquivoPDF, olimp);
+		return dao.cadastrar(livro, dataPublicacao, arquivoPDF, olimp);
 	} 
 	
+	public boolean relacionarComOlimp(Olimpiada olimp, String isbn) {
+		 LivroDAO dao = new LivroDAO();
+		 return dao.relacionarComOlimp( olimp,  isbn);
+	}
 	
-	public boolean consultar(int isbn) {
+	public boolean consultar(String isbn) {
 		 LivroDAO dao = new LivroDAO();
 		 return dao.consultar(isbn);
 	}
