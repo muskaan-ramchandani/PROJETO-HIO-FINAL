@@ -3,7 +3,9 @@ package dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -19,30 +21,37 @@ import vo.Livro;
 import vo.Olimpiada;
 
 public class LivroDAO {
-	public void cadastrar(Livro livro, java.util.Date dataPublicacao, InputStream arquivoPDF, Olimpiada olimp) {
+	public void cadastrar(Livro livro, java.util.Date dataPublicacao, File arquivoPDF, Olimpiada olimp) {
 		try {
 			 Connection conn =  null;
 			 PreparedStatement ps = null;
 			 conn = new Conexao().getConnection();
-		     
-			String sql= "INSERT INTO Livro(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivo_PDF)VALUES(?,?,?,?,?,?,?)";
-			String sql2= "INSERT INTO OlimpiadaLivro(isbn, nomeOlimpiada)VALUES(?,?)";
-			
-			ps = conn.prepareStatement(sql);
-			ps.setInt(1, livro.getIsbn());
-			ps.setString(2, livro.getTitulo());
-			ps.setString(3, livro.getEditora());
-			ps.setString(4, livro.getAutor());
-			ps.setDate(5, (Date) dataPublicacao);
-			ps.setString(6, livro.getEmailProf());
-            ps.setBlob(7, livro.getArquivoPDF());
-			ps.executeUpdate();
-			
-			ps=conn.prepareStatement(sql2);
-			ps.setInt(1, livro.getIsbn());
-			ps.setString(2, olimp.getNome());
-			ps.executeUpdate();
-			
+			 byte[] videoData;
+				try {
+					videoData = Files.readAllBytes(arquivoPDF.toPath());
+					
+					String sql= "INSERT INTO Livro(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivo_PDF)VALUES(?,?,?,?,?,?,?)";
+					String sql2= "INSERT INTO OlimpiadaLivro(isbn, nomeOlimpiada)VALUES(?,?)";
+					
+					ps = conn.prepareStatement(sql);
+					ps.setInt(1, livro.getIsbn());
+					ps.setString(2, livro.getTitulo());
+					ps.setString(3, livro.getEditora());
+					ps.setString(4, livro.getAutor());
+					ps.setDate(5, (Date) dataPublicacao);
+					ps.setString(6, livro.getEmailProf());
+		            ps.setBytes(7, videoData);
+					ps.executeUpdate();
+					
+					ps=conn.prepareStatement(sql2);
+					ps.setInt(1, livro.getIsbn());
+					ps.setString(2, olimp.getNome());
+					ps.executeUpdate();
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
