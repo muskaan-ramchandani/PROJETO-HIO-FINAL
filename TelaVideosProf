@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import controller.VideoCONTROLLER;
+import controller.LivroCONTROLLER;
 import controller.OlimpiadaCONTROLLER;
 import dao.VideoDAO;
 import vo.Olimpiada;
@@ -169,7 +170,7 @@ public class TelaVideosProf extends JFrame{
   		lblCadastrarVideo = new JLabel("Cadastrar Vídeo");
   		lblUPC= new JLabel("UPC:");
   		txtUPC= new JTextField(12);
-  		lblProdutor= new JLabel("Produto:");
+  		lblProdutor= new JLabel("Produtor:");
   		txtProdutor = new JTextField(100);
   		lblTitulo= new JLabel("Título:");
   		txtTitulo = new JTextField(100);
@@ -266,9 +267,15 @@ public class TelaVideosProf extends JFrame{
 
 	                if (returnValue == JFileChooser.APPROVE_OPTION) {
 	                	  File selectedFile = selecionaVideo.getSelectedFile();
-	  		            String fileName = selectedFile.getName();
-	  		            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selecionaVideo.getSelectedFile().getName());
-	    				selecioneVideo.setText(fileName);
+	                	  
+	                	  if(selectedFile == null) {
+	                		  //se nada for selecionado, continua na mesma
+	                	  }else {
+	                		 String fileName = selectedFile.getName();
+	  	  		            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selecionaVideo.getSelectedFile().getName());
+	  	  		        selecioneVideo.setText(fileName);
+	                	  }
+	  		            
 	                }
 			}
 		});
@@ -276,7 +283,7 @@ public class TelaVideosProf extends JFrame{
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				int upc = Integer.parseInt(String.valueOf(txtUPC.getText()));
+				String upc = String.valueOf(txtUPC.getText());
 				String produtor= String.valueOf(txtProdutor.getText());
 	            String titulo = String.valueOf(txtTitulo.getText());
 	            String emailProf= prof.getEmail();
@@ -287,56 +294,62 @@ public class TelaVideosProf extends JFrame{
 	            Date dataPublicacao = java.sql.Date.valueOf(localDate);
 	            
 				File selectedFile = selecionaVideo.getSelectedFile();
-	            String fileName = selectedFile.getName();
-				
-				if(selecioneVideo.getText().isEmpty()||selecioneVideo.getText().equals("Selecione o arquivo de vídeo:")) {
-		             JOptionPane.showMessageDialog(null, "Selecione um arquivo vídeo para poder ser cadastrado!");
-		             
-           	}else if(txtProdutor.getText().isEmpty()||txtTitulo.getText().isEmpty()
-                  		||txtDataPublicacao.getText().isEmpty()||txtUPC.getText().isEmpty()) {
+				if(txtUPC.getText().isEmpty()&&txtTitulo.getText().isEmpty()
+                  		&&txtProdutor.getText().isEmpty()&&txtTitulo.getText().isEmpty()
+                  		&&txtDataPublicacao.getText().isEmpty()&&selecioneVideo.getText().isEmpty()
+                  		||selectedFile == null&&selecioneVideo.getText().equals("Selecione o arquivo de vídeo:")) {
+	            	
+	            	JOptionPane.showMessageDialog(null, "Não é possível cadastrar um vídeo sem os dados!");
+	            	
+	            }else if(txtUPC.getText().isEmpty()&&txtTitulo.getText().isEmpty()
+                  		&&txtProdutor.getText().isEmpty()&&txtTitulo.getText().isEmpty()
+                  		&&txtDataPublicacao.getText().isEmpty()) {
                   	
                   	JOptionPane.showMessageDialog(null, "Há campos Vazios! Não é possível cadastar o"
                   	+" livro sem todos os dados!");
-                  	
-                }else if(!fileName.endsWith(".mp4") || fileName.endsWith(".avi") || fileName.endsWith(".mkv") || fileName.endsWith(".mov")){
-                 		
-                 		JOptionPane.showMessageDialog(null, "O arquivo selecionado não é um vídeo."
-          		            +" Não é possível cadastrar vídeo!");
+		             
+				}else if(selectedFile == null&&selecioneVideo.getText().isEmpty()||selecioneVideo.getText().equals("Selecione o arquivo de vídeo:")) {
+	             
+					JOptionPane.showMessageDialog(null, "Selecione um arquivo de vídeo para realizar o cadastro!");
+	             
+                }else if(!(selectedFile.getName().toLowerCase().endsWith(".mp4") ||
+                	      selectedFile.getName().toLowerCase().endsWith(".avi") ||
+                	      selectedFile.getName().toLowerCase().endsWith(".mkv") ||
+                	      selectedFile.getName().toLowerCase().endsWith(".mov"))){
+             		
+             		JOptionPane.showMessageDialog(null, "O arquivo selecionado não é um vídeo."
+      		            +" Não é possível cadastrar vídeo!");
+             	
                 }else {
 			        
-			        try {
-					    InputStream arquivoStream = new FileInputStream(selectedFile);
-			        	String nomeArquivo = selectedFile.getName();
-			            String caminhoDoArquivo = selectedFile.getAbsolutePath();
-
-			            // Chame o DAO para inserir o arquivo no banco de dados
-			            VideoCONTROLLER controla = new VideoCONTROLLER();
-			            controla.cadastrar(titulo, upc, produtor, dataPublicacao, emailProf,
-			            		selectedFile, olimp);
-			           
-			            JOptionPane.showMessageDialog(null, "Vídeo cadastrado com sucesso!");
+			        // Chame o DAO para inserir o arquivo no banco de dados
+					VideoCONTROLLER controla = new VideoCONTROLLER();
+					boolean VideoCadastrou = controla.cadastrar(titulo, upc, produtor, dataPublicacao, emailProf,selectedFile, olimp);
+					boolean RelacionouVideo= controla.relacionarComOlimp(olimp, upc);
+					
+					if(VideoCadastrou==false&&RelacionouVideo==false){
+						
+						JOptionPane.showMessageDialog(null, "Não foi possível cadastrar o vídeo!");
+						
+					}else if(VideoCadastrou==true&&RelacionouVideo==true) { //cadastrou
+						
+						JOptionPane.showMessageDialog(null, "Vídeo cadastrado com sucesso!");
 			            txtProdutor.setText(null);
 			            txtTitulo.setText(null);
 			            txtDataPublicacao.setText(null);  
 			            txtUPC.setText(null);
 			      		lblArquivoVideo.setText("Selecione o arquivo de vídeo:");
-				
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-				}
+						
+					}
+                }
 			}
 		});
 		
-		txtFiltro.addMouseListener(new MouseListener() {	
+		lblPesquisar.addMouseListener(new MouseListener() {	
 			@Override
 			public void mouseClicked(java.awt.event.MouseEvent e) {
-				remove(lblPesquisar);				
-			}
+				lp.remove(lblPesquisar);
+                repaint();			}
 			@Override
 			public void mousePressed(java.awt.event.MouseEvent e) {
 			}
@@ -347,13 +360,16 @@ public class TelaVideosProf extends JFrame{
 			}
 			@Override
 			public void mouseEntered(java.awt.event.MouseEvent e) {
-			
 			}
 			@Override
 			public void mouseExited(java.awt.event.MouseEvent e) {
-				lp.add(lblPesquisar, new Integer(26));
+				if (!lp.isAncestorOf(lblPesquisar)) {
+					lp.add(lblPesquisar, new Integer(26));
+                    repaint();
+                }
 			}
         });
+        getContentPane().add(lp);
 		
 		
 		btnLivros.addMouseListener(new MouseListener() {
