@@ -137,7 +137,7 @@ public class TelaLivrosProf extends JFrame{
 		btnCronograma.setBounds(980,7,130,35);
 		lblFiltro.setBounds(75, 115, 23, 25);
 		txtFiltro.setBounds(104, 110, 490, 35);
-		lblPesquisar.setBounds(108, 110, 450, 35);
+		lblPesquisar.setBounds(108, 110, 490, 35);
 	    
 		//adiciona
 		contentPane.add(lp);
@@ -263,9 +263,15 @@ public class TelaLivrosProf extends JFrame{
 
 	                if (returnValue == JFileChooser.APPROVE_OPTION) {
 	                	  File selectedFile = selecionaPDF.getSelectedFile();
-	  		            String fileName = selectedFile.getName();
-	  		            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selecionaPDF.getSelectedFile().getName());
-	    				selecionePDF.setText(fileName);
+	                	  
+	                	  if(selectedFile == null) {
+	                		  //se nada for selecionado, continua na mesma
+	                	  }else {
+	                		 String fileName = selectedFile.getName();
+	  	  		            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selecionaPDF.getSelectedFile().getName());
+	  	    				selecionePDF.setText(fileName);
+	                	  }
+	  		            
 	                }
 			}
 		});
@@ -273,7 +279,7 @@ public class TelaLivrosProf extends JFrame{
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				int isbn= Integer.parseInt(String.valueOf(txtIsbn.getText()));
+				String isbn= String.valueOf(txtIsbn.getText());
 	            String titulo = String.valueOf(txtTitulo.getText());
 	            String editora= String.valueOf(txtEditora.getText());
 	            String autor = String.valueOf(txtAutor.getText());
@@ -285,18 +291,26 @@ public class TelaLivrosProf extends JFrame{
 	            Date dataPublicacao = java.sql.Date.valueOf(localDate);	
 	            
 				File selectedFile = selecionaPDF.getSelectedFile();
-	            String fileName = selectedFile.getName();
 				
-				if(selecionePDF.getText().isEmpty()||selecionePDF.getText().equals("Selecione um arquivo PDF")) {
-		             JOptionPane.showMessageDialog(null, "Selecione um arquivo pdf para que o livro seja cadastrado!");
-		             
-           	}else if(txtIsbn.getText().isEmpty()||txtTitulo.getText().isEmpty()
+	            
+	            if(txtIsbn.getText().isEmpty()&&txtTitulo.getText().isEmpty()
+                  		&&txtEditora.getText().isEmpty()&&txtAutor.getText().isEmpty()
+                  		&&txtDataPublicacao.getText().isEmpty()&&selecionePDF.getText().isEmpty()
+                  		||selectedFile == null&&selecionePDF.getText().equals("Selecione um arquivo PDF")) {
+	            	
+	            	JOptionPane.showMessageDialog(null, "Não é possível cadastrar um livro sem os dados!");
+	            	
+	            }else if(txtIsbn.getText().isEmpty()||txtTitulo.getText().isEmpty()
                   		||txtEditora.getText().isEmpty()||txtAutor.getText().isEmpty()
                   		||txtDataPublicacao.getText().isEmpty()) {
                   	
                   	JOptionPane.showMessageDialog(null, "Há campos Vazios! Não é possível cadastar o"
                   	+" livro sem todos os dados!");
-                  	
+		             
+				}else if(selectedFile == null&&selecionePDF.getText().isEmpty()||selecionePDF.getText().equals("Selecione um arquivo PDF")) {
+	             
+					JOptionPane.showMessageDialog(null, "Selecione um arquivo pdf para que o livro seja cadastrado!");
+	             
                 }else if(!selectedFile.getName().toLowerCase().endsWith(".pdf")){
                  		
                  		JOptionPane.showMessageDialog(null, "O arquivo selecionado não é um PDF."
@@ -305,24 +319,33 @@ public class TelaLivrosProf extends JFrame{
 			        
 			        // Chame o DAO para inserir o arquivo no banco de dados
 					LivroCONTROLLER controla = new LivroCONTROLLER();
-					controla.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf, selectedFile, olimp);
-         
-					JOptionPane.showMessageDialog(null, "Livro cadastrado com sucesso!");
-					txtIsbn.setText(null);
-					txtTitulo.setText(null);
-					txtEditora.setText(null);
-					txtAutor.setText(null);
-					txtDataPublicacao.setText(null);   
-					lblArquivoPDF.setText("Selecione um arquivo PDF");
-				}
+					boolean LivroCadastrou = controla.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf, selectedFile, olimp);
+					boolean RelacionouLivro= controla.relacionarComOlimp(olimp, isbn);
+					
+					if(LivroCadastrou==false&&RelacionouLivro==false){
+						
+						JOptionPane.showMessageDialog(null, "Não foi possível cadastrar o livro!");
+						
+					}else if(LivroCadastrou==true&&RelacionouLivro==true) { //cadastrou
+						
+						JOptionPane.showMessageDialog(null, "Livro cadastrado com sucesso!");
+						txtIsbn.setText(null);
+						txtTitulo.setText(null);
+						txtEditora.setText(null);
+						txtAutor.setText(null);
+						txtDataPublicacao.setText(null);   
+						lblArquivoPDF=new JLabel ("Selecione um arquivo PDF");
+						
+					}
+                }
 			}
 		});
 		
-		txtFiltro.addMouseListener(new MouseListener() {	
+		lblPesquisar.addMouseListener(new MouseListener() {	
 			@Override
 			public void mouseClicked(java.awt.event.MouseEvent e) {
-				remove(lblPesquisar);				
-			}
+				lp.remove(lblPesquisar);
+                repaint();			}
 			@Override
 			public void mousePressed(java.awt.event.MouseEvent e) {
 			}
@@ -333,14 +356,16 @@ public class TelaLivrosProf extends JFrame{
 			}
 			@Override
 			public void mouseEntered(java.awt.event.MouseEvent e) {
-			
 			}
 			@Override
 			public void mouseExited(java.awt.event.MouseEvent e) {
-				lp.add(lblPesquisar, new Integer(26));
+				if (!lp.isAncestorOf(lblPesquisar)) {
+					lp.add(lblPesquisar, new Integer(26));
+                    repaint();
+                }
 			}
         });
-		
+        getContentPane().add(lp);
 		
 		btnVideos.addMouseListener(new MouseListener() {
 			Color roxoIndigo = new Color(75,0,130);
@@ -490,6 +515,7 @@ public class TelaLivrosProf extends JFrame{
 
 			}
 		});
+		
 	}
 		
 }
