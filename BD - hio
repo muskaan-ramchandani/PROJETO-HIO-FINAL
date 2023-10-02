@@ -70,5 +70,53 @@ CREATE TABLE OlimpiadaVideo(
 	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
 	CONSTRAINT VideoNRepeteOlimp UNIQUE (nomeOlimpiada, upcVideo)
 );
- 
+
+CREATE TABLE Flashcards(
+	titulo VARCHAR(100) NOT NULL,
+    imagem LONGBLOB NOT NULL,
+    palavraChave VARCHAR (100) NOT NULL,
+    resumo VARCHAR(250) NOT NULL,
+    emailProf VARCHAR(100) NOT NULL,
+    PRIMARY KEY (titulo),
+    FOREIGN KEY(emailProf) REFERENCES Professor(email)
+);
+
+CREATE TABLE OlimpiadaFlashcards(
+	tituloFlash VARCHAR(100) NOT NULL,
+	nomeOlimpiada VARCHAR(7) NOT NULL,
+	FOREIGN KEY(tituloFlash) REFERENCES Flashcards (titulo),
+	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
+	CONSTRAINT FlashNRepeteOlimp UNIQUE (nomeOlimpiada, tituloFlash)
+);
+
+CREATE TABLE FavoritosLivro(
+	id INT AUTO_INCREMENT NOT NULL, 
+	emailAluno VARCHAR(100) NOT NULL,
+	isbn VARCHAR(13) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY(isbn) REFERENCES Livro (isbn),
+    FOREIGN KEY(emailAluno) REFERENCES Aluno(email)
+);
+
+CREATE TABLE FavoritosVideo(
+	id INT AUTO_INCREMENT NOT NULL,
+    emailAluno VARCHAR(100) NOT NULL,
+    upcVideo VARCHAR(12) NOT NULL,
+	PRIMARY KEY (id),
+    FOREIGN KEY (upcVideo) REFERENCES Video (upcVideo),
+	FOREIGN KEY(emailAluno) REFERENCES Aluno(email)
+);
+
+
+CREATE TABLE FavoritosFlashcard(
+	id INT AUTO_INCREMENT NOT NULL,
+    emailAluno VARCHAR(100) NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY(emailAluno) REFERENCES Aluno(email),
+	FOREIGN KEY(titulo) REFERENCES Flashcard(titulo)
+);
+
+
+
 #SET FOREIGN_KEY_CHECKS=1;
