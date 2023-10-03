@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +18,7 @@ import dao.VideoDAO;
 import bo.LivroBO;
 import bo.VideoBO;
 import vo.Video;
+import vo.Livro;
 import vo.Olimpiada;
 
 public class VideoCONTROLLER {
@@ -32,8 +34,18 @@ public class VideoCONTROLLER {
 		 return bo.relacionarComOlimp( olimp,  upc);
 	}
 	
-	public boolean consultar(String upc) {
+	public ArrayList retornaVideoOlimpiada(Olimpiada olimp) {
 		VideoBO bo = new VideoBO();
-		return bo.consultar(upc);
+        return bo.retornaVideoOlimpiada(olimp);
+    }
+	
+	public ArrayList<Video> consultarVideosPorNome(String tituloVideo, Olimpiada olimp) {
+		VideoBO bo = new VideoBO();
+	     return bo.consultarVideosPorNome(tituloVideo, olimp);
+	}
+	
+	public ArrayList<Video> consultarVideosPorUpc(String upc, Olimpiada olimp) {
+		VideoBO bo = new VideoBO();
+	     return bo.consultarVideosPorUpc(upc, olimp);
 	}
 }
