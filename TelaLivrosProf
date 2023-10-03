@@ -9,6 +9,8 @@ import vo.Professor;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -18,11 +20,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
 import controller.LivroCONTROLLER;
 import controller.OlimpiadaCONTROLLER;
 import dao.LivroDAO;
+import vo.Livro;
 import vo.Olimpiada;
 
 public class TelaLivrosProf extends JFrame{
@@ -55,6 +59,10 @@ public class TelaLivrosProf extends JFrame{
     private JTextField txtFiltro;
     private JLabel lblFiltro;
     private JLabel lblPesquisar;
+    
+    ArrayList<Livro> livrosDaOlimpiada = new ArrayList<Livro>();
+	JLabel[] EspacoLivro;
+	JLabel[] espacoTitulo;
 
     private Color roxoIndigo = new Color(75,0,130);
 	
@@ -70,6 +78,25 @@ public class TelaLivrosProf extends JFrame{
 		setBounds(0, 0, screenSize.width, screenSize.height-40);
 		contentPane=getContentPane();
         contentPane.setBackground(Color.white);
+        
+      //Tela dos livros configurações
+        LivroCONTROLLER controla = new LivroCONTROLLER();
+        livrosDaOlimpiada= controla.retornaLivroOlimpiada(olimp);
+    	
+    	int numeroLabels = livrosDaOlimpiada.size();
+    	
+
+    	EspacoLivro = new JLabel[numeroLabels];
+    	int camadasEL = 30;
+    	int linhaEL = 80;
+    	int colunaEL = 200;
+    	int limite = 3;
+    	//
+    	espacoTitulo = new JLabel[numeroLabels];
+    	int camadas = 60;
+    	int linha = 80;
+    	int coluna = 350;
+    	
 		
 		//inicializa
 		lp= new JLayeredPane();
@@ -139,6 +166,57 @@ public class TelaLivrosProf extends JFrame{
 		txtFiltro.setBounds(104, 110, 490, 35);
 		lblPesquisar.setBounds(108, 110, 490, 35);
 	    
+		if(numeroLabels==0) {
+			JLabel lblNaoTem = new JLabel("<html>Não há livros cadastrados<br>nesta olimpíada<html>");
+			lblNaoTem.setForeground(Color.BLACK);
+			lblNaoTem.setFont(new Font("Trebuchet MS", Font.BOLD, 30));
+			lblNaoTem.setBounds(100, 350, 1000, 50);
+			lp.add(lblNaoTem, new Integer(30));
+		}else {
+	    	
+			//JLabels dos espaços para a capa;
+			for(int i=0;i < numeroLabels; i++) {
+				Livro livroDaLista = livrosDaOlimpiada.get(i);
+				EspacoLivro[i] = new JLabel (livroDaLista.getTitulo());
+				EspacoLivro[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+				EspacoLivro[i].setHorizontalAlignment(SwingConstants.CENTER);
+				EspacoLivro[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+				EspacoLivro[i].setBackground(Color.WHITE);
+				EspacoLivro[i].setForeground(Color.BLACK);
+				if(i >= limite) {
+					colunaEL = colunaEL+250;
+					limite = limite + 3;
+					linhaEL = 80;
+				}
+				EspacoLivro[i].setBounds(linhaEL,colunaEL,150,150);
+				lp.add(EspacoLivro[i], new Integer(camadasEL));
+				linhaEL= linhaEL+180;
+				camadasEL++;
+				
+			}
+			
+			
+			//JLabels dos espaços para titulos
+			limite = 3;
+			for(int i=0;i < numeroLabels; i++) {
+				Livro livroDaLista = livrosDaOlimpiada.get(i);
+				espacoTitulo[i] = new JLabel(livroDaLista.getIsbn());
+				espacoTitulo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+				espacoTitulo[i].setHorizontalAlignment(SwingConstants.CENTER);
+				espacoTitulo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+				espacoTitulo[i].setBackground(Color.WHITE);
+				espacoTitulo[i].setForeground(Color.BLACK);
+				if(i >= limite) {
+					coluna = colunaEL+150;
+					limite = limite + 3;
+					linha = 80;
+				}
+				espacoTitulo[i].setBounds(linha,coluna,150,40);
+				lp.add(espacoTitulo[i], new Integer(camadas));
+				linha= linha+180;
+				camadas++;
+			}
+		}
 		//adiciona
 		contentPane.add(lp);
 
@@ -254,7 +332,165 @@ public class TelaLivrosProf extends JFrame{
 	}
 
 	public void definirEventos(Olimpiada olimp, Professor prof) {
-		
+		txtFiltro.addKeyListener((KeyListener) new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				String tituloIsbn = "%" + txtFiltro.getText() + "%";
+				String numeros = tituloIsbn.replaceAll("[^0-9]", "");
+				boolean ehIsbn= false;
+				
+				for (JLabel label : EspacoLivro) {
+				    lp.remove(label); // Remove cada JLabel do JLayeredPane
+				}
+				for (JLabel label : espacoTitulo) {
+				    lp.remove(label); // Remove cada JLabel do JLayeredPane
+				}
+		    	lp.repaint();
+		    	
+				if (numeros.length() == 13) {
+					ehIsbn=true;
+			    } else {
+			    	ehIsbn=false;
+			    }
+		    	
+		    	
+			    if (ehIsbn==true) {
+			        LivroCONTROLLER controller = new LivroCONTROLLER();
+			        ArrayList<Livro> lista = controller.consultarLivrosPorIsbn(numeros, olimp);
+			        
+			        int numeroResultados=lista.size();
+			        JLabel[] EspacoLivroR;
+			    	EspacoLivro = new JLabel[numeroResultados];
+			    	int camadasEL = 30;
+			    	int linhaEL = 80;
+			    	int colunaEL = 200;
+			    	int limite = 3;
+			    	//
+			    	JLabel[] espacoTituloR;
+			    	espacoTitulo = new JLabel[numeroResultados];
+			    	int camadas = 60;
+			    	int linha = 80;
+			    	int coluna = 350;
+			    	
+					//JLabels dos espaços para a capa;
+					for(int i=0;i < numeroResultados; i++) {
+						Livro livroDaLista = lista.get(i);
+						EspacoLivro[i] = new JLabel (livroDaLista.getTitulo());
+						EspacoLivro[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+						EspacoLivro[i].setHorizontalAlignment(SwingConstants.CENTER);
+						EspacoLivro[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+						EspacoLivro[i].setBackground(Color.WHITE);
+						EspacoLivro[i].setForeground(Color.BLACK);
+						if(i >= limite) {
+							colunaEL = colunaEL+250;
+							limite = limite + 3;
+							linhaEL = 80;
+						}
+						EspacoLivro[i].setBounds(linhaEL,colunaEL,150,150);
+						lp.add(EspacoLivro[i], new Integer(camadasEL));
+						linhaEL= linhaEL+180;
+						camadasEL++;
+						
+					}
+					
+					
+					//JLabels dos espaços para titulos
+					limite = 3;
+					for(int i=0;i < numeroResultados; i++) {
+						Livro livroDaLista = lista.get(i);
+						espacoTitulo[i] = new JLabel(livroDaLista.getIsbn());
+						espacoTitulo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+						espacoTitulo[i].setHorizontalAlignment(SwingConstants.CENTER);
+						espacoTitulo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+						espacoTitulo[i].setBackground(Color.WHITE);
+						espacoTitulo[i].setForeground(Color.BLACK);
+						if(i >= limite) {
+							coluna = colunaEL+150;
+							limite = limite + 3;
+							linha = 80;
+						}
+						espacoTitulo[i].setBounds(linha,coluna,150,40);
+						lp.add(espacoTitulo[i], new Integer(camadas));
+						linha= linha+180;
+						camadas++;
+					}
+					
+			    } else if(isInteger(tituloIsbn)==false){
+			        LivroCONTROLLER controller = new LivroCONTROLLER();
+			        ArrayList<Livro> lista = controller.consultarLivrosPorNome(tituloIsbn, olimp);
+
+			        int numeroResultados=lista.size();
+			        JLabel[] EspacoLivroR;
+			    	EspacoLivro = new JLabel[numeroResultados];
+			    	int camadasEL = 30;
+			    	int linhaEL = 80;
+			    	int colunaEL = 200;
+			    	int limite = 3;
+			    	//
+			    	JLabel[] espacoTituloR;
+			    	espacoTitulo = new JLabel[numeroResultados];
+			    	int camadas = 60;
+			    	int linha = 80;
+			    	int coluna = 350;
+			    	
+					//JLabels dos espaços para a capa;
+					for(int i=0;i < numeroResultados; i++) {
+						Livro livroDaLista = lista.get(i);
+						EspacoLivro[i] = new JLabel (livroDaLista.getTitulo());
+						EspacoLivro[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+						EspacoLivro[i].setHorizontalAlignment(SwingConstants.CENTER);
+						EspacoLivro[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+						EspacoLivro[i].setBackground(Color.WHITE);
+						EspacoLivro[i].setForeground(Color.BLACK);
+						if(i >= limite) {
+							colunaEL = colunaEL+250;
+							limite = limite + 3;
+							linhaEL = 80;
+						}
+						EspacoLivro[i].setBounds(linhaEL,colunaEL,150,150);
+						lp.add(EspacoLivro[i], new Integer(camadasEL));
+						linhaEL= linhaEL+180;
+						camadasEL++;
+						
+					}
+					
+					
+					//JLabels dos espaços para titulos
+					limite = 3;
+					for(int i=0;i < numeroResultados; i++) {
+						Livro livroDaLista = lista.get(i);
+						espacoTitulo[i] = new JLabel(livroDaLista.getIsbn());
+						espacoTitulo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+						espacoTitulo[i].setHorizontalAlignment(SwingConstants.CENTER);
+						espacoTitulo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+						espacoTitulo[i].setBackground(Color.WHITE);
+						espacoTitulo[i].setForeground(Color.BLACK);
+						if(i >= limite) {
+							coluna = colunaEL+150;
+							limite = limite + 3;
+							linha = 80;
+						}
+						espacoTitulo[i].setBounds(linha,coluna,150,40);
+						lp.add(espacoTitulo[i], new Integer(camadas));
+						linha= linha+180;
+						camadas++;
+					}
+			    }
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+			}
+		});
+
 		selecionePDF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -516,6 +752,14 @@ public class TelaLivrosProf extends JFrame{
 			}
 		});
 		
+	}
+	public static boolean isInteger(String input) {
+	    try {
+	        Integer.parseInt(input);
+	        return true;
+	    } catch (NumberFormatException e) {
+	        return false;
+	    }
 	}
 		
 }
