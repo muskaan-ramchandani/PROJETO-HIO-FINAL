@@ -103,7 +103,7 @@ CREATE TABLE FavoritosVideo(
     emailAluno VARCHAR(100) NOT NULL,
     upcVideo VARCHAR(12) NOT NULL,
 	PRIMARY KEY (id),
-    FOREIGN KEY (upcVideo) REFERENCES Video (upcVideo),
+    FOREIGN KEY (upcVideo) REFERENCES Video (upc),
 	FOREIGN KEY(emailAluno) REFERENCES Aluno(email)
 );
 
