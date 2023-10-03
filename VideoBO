@@ -2,12 +2,14 @@ package bo;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,6 +19,7 @@ import conexaoBD.Conexao;
 import dao.LivroDAO;
 import dao.VideoDAO;
 import vo.Video;
+import vo.Livro;
 import vo.Olimpiada;
 
 public class VideoBO {
@@ -29,13 +32,23 @@ public class VideoBO {
 		return dao.cadastrar(video, dataPublicacao, arquivoVideo, olimp);
 	} 
 	
+	public ArrayList retornaVideoOlimpiada(Olimpiada olimp) {
+		VideoDAO dao = new VideoDAO();
+        return dao.retornaVideoOlimpiada(olimp);
+    }
+	
 	public boolean relacionarComOlimp(Olimpiada olimp, String upc) {
 		 VideoDAO dao = new VideoDAO();
 		 return dao.relacionarComOlimp( olimp,  upc);
 	}
 	
-	public boolean consultar(String upc) {
+	public ArrayList<Video> consultarVideosPorNome(String tituloVideo, Olimpiada olimp) {
 		 VideoDAO dao = new VideoDAO();
-		 return dao.consultar(upc);
+	     return dao.consultarVideosPorNome(tituloVideo, olimp);
+	}
+	
+	public ArrayList<Video> consultarVideosPorUpc(String upc, Olimpiada olimp) {
+		VideoDAO dao = new VideoDAO();
+	     return dao.consultarVideosPorUpc(upc, olimp);
 	}
 }
