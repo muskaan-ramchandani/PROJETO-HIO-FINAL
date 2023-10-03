@@ -3,6 +3,7 @@ package dao;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -11,6 +12,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +20,8 @@ import javax.swing.JOptionPane;
 
 import conexaoBD.Conexao;
 import vo.Video;
+import vo.Aluno;
+import vo.Livro;
 import vo.Olimpiada;
 
 
@@ -58,6 +62,80 @@ public class VideoDAO {
 		}	
 	}
 	
+	public ArrayList retornaVideoOlimpiada(Olimpiada olimp) {
+		ArrayList<Video> videos = new ArrayList<Video>();
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    	    
+        
+         // Consulta SQL para selecionar vídeos com base no nome da Olimpíada
+            String sql = "SELECT * FROM Video " +
+                         "INNER JOIN OlimpiadaVideo ON Video.upc = OlimpiadaVideo.upcVideo " +
+                         "WHERE OlimpiadaVideo.nomeOlimpiada = ?";
+
+            // Preparar a consulta
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, olimp.getNome());
+
+            // Executar a consulta
+            ResultSet resultSet = ps.executeQuery();
+
+            // Processar o resultado
+            while (resultSet.next()) {
+            	InputStream inputStream = resultSet.getBinaryStream("arquivo_Video");
+                File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("upc"));
+                
+				 Video video = new Video(resultSet.getString("titulo"), resultSet.getString("upc"),
+						 resultSet.getString("produtor"), resultSet.getDate("dataPublicacao"),
+						 resultSet.getString("emailProf"), arquivo);
+			    
+				 //adiciona o video na lista
+			     videos.add(video);
+ 			}
+               
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        return videos;
+    }
+	
+	//PARA PODER RETORNAR O ARQUIVO
+	private File criarArquivoAPartirDoBlob(InputStream inputStream, String upc) throws IOException {
+		Connection conn =  null;
+		conn = new Conexao().getConnection();
+	    File arquivo = null;
+	    try {
+	        PreparedStatement ps = conn.prepareStatement("SELECT titulo, arquivo_Video FROM Video WHERE upc = ?");
+	        ps.setString(1, upc);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        if ( rs.next() ){
+	        	byte [] bytes = rs.getBytes("arquivo_Video");
+	            String titulo = rs.getString("titulo");
+
+	            //converte o array de bytes em file
+	            File diretorioDaAplicacao = new File(System.getProperty("user.dir"));
+	            arquivo = new File(diretorioDaAplicacao, "dados/"+titulo+".mp4");
+
+	            FileOutputStream fos = new FileOutputStream(arquivo);
+	            fos.write( bytes );
+	            fos.close();
+	        }
+	} catch (SQLException ex) {
+	ex.printStackTrace();
+	}
+	catch (IOException ex) {
+	ex.printStackTrace();
+	}
+	    return arquivo;
+    }
+	
 	public boolean relacionarComOlimp(Olimpiada olimp, String upc) {
 		try {
 			 Connection conn =  null;
@@ -85,32 +163,89 @@ public class VideoDAO {
 	}
 
 	 
-	public boolean consultar(String upc) {
-		 try {
-			 Connection conn =  null;
-			 PreparedStatement ps = null;
-			 conn = new Conexao().getConnection();
-			 
-			 boolean autenticado = false;
-			 String sql="SELECT * FROM Video WHERE upc=?";
-			 
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, upc);
-			
-			ResultSet rs=null;
-			rs=ps.executeQuery();
-			
-			if(rs.next()) {
-				String upcBD= rs.getString("upc");
-				autenticado = true;
-			}
-			ps.close();
-			return autenticado;
-			
-		 }catch(SQLException e) {
-			 JOptionPane.showMessageDialog(null, "Vídeo não existe no sistema!");
-			 Logger.getLogger(AlunoDAO.class.getName()).log(Level.SEVERE, null, e);
-			 throw new RuntimeException();
-		 }
+	public ArrayList<Video> consultarVideosPorNome(String tituloVideo, Olimpiada olimp) {
+	    ArrayList<Video> videosPorNome = new ArrayList<>();
+	    try {
+	        Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        
+	        String sql = "SELECT * FROM Video " +
+                    "INNER JOIN OlimpiadaVideo ON Video.upc = OlimpiadaVideo.upcVideo " +
+                    "WHERE OlimpiadaVideo.nomeOlimpiada = ? AND Video.titulo LIKE ?";
+
+
+	        // Preparar a consulta
+	        ps = conn.prepareStatement(sql);
+            ps.setString(1, olimp.getNome());
+	        ps.setString(2, "%" + tituloVideo + "%");
+
+	        // Executar a consulta
+	        ResultSet resultSet = ps.executeQuery();
+
+	        // Processar o resultado
+	        while (resultSet.next()) {
+	        	InputStream inputStream = resultSet.getBinaryStream("arquivo_Video");
+                File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("upc"));
+                
+				 Video video = new Video(resultSet.getString("titulo"), resultSet.getString("upc"),
+						 resultSet.getString("produtor"), resultSet.getDate("dataPublicacao"),
+						 resultSet.getString("emailProf"), arquivo);
+
+	            // Adiciona o livro na lista
+				 videosPorNome.add(video);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return videosPorNome;
 	}
+	
+	public ArrayList<Video> consultarVideosPorUpc(String upc, Olimpiada olimp) {
+	    ArrayList<Video> videosPorNome = new ArrayList<>();
+	    try {
+	        Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        
+	        String sql = "SELECT * FROM Video " +
+                    "INNER JOIN OlimpiadaVideo ON Video.isbn = OlimpiadaVideo.upcVideo " +
+                    "WHERE OlimpiadaVideo.nomeOlimpiada = ? AND Video.upc LIKE ?";
+
+
+	        // Preparar a consulta
+	        ps = conn.prepareStatement(sql);
+            ps.setString(1, olimp.getNome());
+	        ps.setString(2, upc + "%");
+
+	        // Executar a consulta
+	        ResultSet resultSet = ps.executeQuery();
+
+	        // Processar o resultado
+	        while (resultSet.next()) {
+	        	InputStream inputStream = resultSet.getBinaryStream("arquivo_Video");
+                File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("upc"));
+                
+				 Video video = new Video(resultSet.getString("titulo"), resultSet.getString("upc"),
+						 resultSet.getString("produtor"), resultSet.getDate("dataPublicacao"),
+						 resultSet.getString("emailProf"), arquivo);
+
+	            // Adiciona o livro na lista
+	            videosPorNome.add(video);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return videosPorNome;
+	}
+
+	
 }
