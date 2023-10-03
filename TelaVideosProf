@@ -6,9 +6,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.time.LocalDate;
 import org.w3c.dom.events.MouseEvent;
 import vo.Professor;
+import vo.Video;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -18,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
 import controller.VideoCONTROLLER;
@@ -38,16 +43,10 @@ public class TelaVideosProf extends JFrame{
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
 	
-	/*CREATE TABLE Video(
-	titulo VARCHAR(100) NOT NULL,
-	link VARCHAR(50) NOT NULL,
-	produtor  VARCHAR(100) NOT NULL,
-	dataPublicacao DATE NOT NULL,
-	emailProf VARCHAR(100) NOT NULL,
-	PRIMARY KEY(link),
-	FOREIGN KEY(emailProf) REFERENCES Professor(email)
-);
-*/
+	ArrayList<Video> videosDaOlimpiada = new ArrayList<Video>();
+	private JLabel[] EspacoVideo;
+	private JLabel[] espacoTitulo;
+	
 	
 	private JLabel lblCadastrarVideo;
 	private JLabel lblProdutor;
@@ -81,6 +80,23 @@ public class TelaVideosProf extends JFrame{
 		contentPane=getContentPane();
         contentPane.setBackground(Color.white);
 		
+        //configuração de exbição dos livros
+        VideoCONTROLLER controla = new VideoCONTROLLER();
+    	videosDaOlimpiada= controla.retornaVideoOlimpiada(olimp);
+    	
+    	int numeroLabels = videosDaOlimpiada.size();
+    	
+    	EspacoVideo = new JLabel[numeroLabels];
+    	int camadasEL = 30;
+    	int linhaEL = 75;
+    	int colunaEL = 200;
+    	int limite = 3;
+    	//
+    	espacoTitulo = new JLabel[numeroLabels];
+    	int camadas = 60;
+    	int linha = 75;
+    	int coluna = 350;
+        
 		//inicializa
 		lp= new JLayeredPane();
 		barra= new JMenuBar();
@@ -98,7 +114,7 @@ public class TelaVideosProf extends JFrame{
 		txtFiltro = new JTextField(300);
 		lblFiltro= new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//funilPequeno.png"));
-	    lblPesquisar= new JLabel("Procurar por título ou isbn");
+	    lblPesquisar= new JLabel("Procurar por título");
 	    
 		
 		//cores		
@@ -149,6 +165,57 @@ public class TelaVideosProf extends JFrame{
 		lblFiltro.setBounds(75, 115, 23, 25);
 		txtFiltro.setBounds(104, 110, 490, 35);
 		lblPesquisar.setBounds(108, 110, 450, 35);
+		
+		if(numeroLabels==0) {
+			JLabel lblNaoTem = new JLabel("<html>Não há vídeos cadastrados<br>nesta olimpíada<html>");
+			lblNaoTem.setForeground(Color.BLACK);
+			lblNaoTem.setFont(new Font("Trebuchet MS", Font.BOLD, 32));
+			lblNaoTem.setBounds(100, 350, 1000, 50);
+			lp.add(lblNaoTem, new Integer(30));
+		}else {
+			//JLabels dos espaços para a capa;
+			for(int i=0;i < numeroLabels; i++) {
+				Video videoDaLista = videosDaOlimpiada.get(i);
+				EspacoVideo[i] = new JLabel (videoDaLista.getTitulo());
+				EspacoVideo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+				EspacoVideo[i].setHorizontalAlignment(SwingConstants.CENTER);
+				EspacoVideo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+				EspacoVideo[i].setBackground(Color.WHITE);
+				EspacoVideo[i].setForeground(Color.BLACK);
+				if(i >= limite) {
+					colunaEL = colunaEL+250;
+					limite = limite + 3;
+					linhaEL = 80;
+				}
+				EspacoVideo[i].setBounds(linhaEL,colunaEL,150,150);
+				lp.add(EspacoVideo[i], new Integer(camadasEL));
+				linhaEL= linhaEL+180;
+				camadasEL++;
+				
+			}
+			
+			
+			//JLabels dos espaços para titulos
+			limite = 3;
+			for(int i=0;i < numeroLabels; i++) {
+				Video videoDaLista = videosDaOlimpiada.get(i);
+				espacoTitulo[i] = new JLabel(videoDaLista.getUpc());
+				espacoTitulo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+				espacoTitulo[i].setHorizontalAlignment(SwingConstants.CENTER);
+				espacoTitulo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+				espacoTitulo[i].setBackground(Color.WHITE);
+				espacoTitulo[i].setForeground(Color.BLACK);
+				if(i >= limite) {
+					coluna = colunaEL+150;
+					limite = limite + 3;
+					linha = 80;
+				}
+				espacoTitulo[i].setBounds(linha,coluna,150,40);
+				lp.add(espacoTitulo[i], new Integer(camadas));
+				linha= linha+180;
+				camadas++;
+			}
+			}
 	    
 		//adiciona
 		contentPane.add(lp);
@@ -259,6 +326,165 @@ public class TelaVideosProf extends JFrame{
 
 	public void definirEventos(Olimpiada olimp, Professor prof) {
 		
+		txtFiltro.addKeyListener((KeyListener) new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				String tituloUPC = "%" + txtFiltro.getText() + "%";
+				String numeros = tituloUPC.replaceAll("[^0-9]", "");
+				boolean ehUPC= false;
+				
+				for (JLabel label : EspacoVideo) {
+				    lp.remove(label); // Remove cada JLabel do JLayeredPane
+				}
+				for (JLabel label : espacoTitulo) {
+				    lp.remove(label); // Remove cada JLabel do JLayeredPane
+				}
+		    	lp.repaint();
+		    	
+				if (numeros.length() == 12) {
+					ehUPC=true;
+			    } else {
+			    	ehUPC=false;
+			    }
+		    	
+		    	
+			    if (ehUPC==true) {
+			    	VideoCONTROLLER controller = new VideoCONTROLLER();
+			        ArrayList<Video> lista = controller.consultarVideosPorUpc(numeros, olimp);
+			        
+			        int numeroResultados=lista.size();
+			        JLabel[] EspacoLivroR;
+			    	EspacoVideo = new JLabel[numeroResultados];
+			    	int camadasEL = 30;
+			    	int linhaEL = 80;
+			    	int colunaEL = 200;
+			    	int limite = 3;
+			    	//
+			    	JLabel[] espacoTituloR;
+			    	espacoTitulo = new JLabel[numeroResultados];
+			    	int camadas = 60;
+			    	int linha = 80;
+			    	int coluna = 350;
+			    	
+					//JLabels dos espaços para a capa;
+					for(int i=0;i < numeroResultados; i++) {
+						Video videoDaLista = lista.get(i);
+						EspacoVideo[i] = new JLabel (videoDaLista.getTitulo());
+						EspacoVideo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+						EspacoVideo[i].setHorizontalAlignment(SwingConstants.CENTER);
+						EspacoVideo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+						EspacoVideo[i].setBackground(Color.WHITE);
+						EspacoVideo[i].setForeground(Color.BLACK);
+						if(i >= limite) {
+							colunaEL = colunaEL+250;
+							limite = limite + 3;
+							linhaEL = 80;
+						}
+						EspacoVideo[i].setBounds(linhaEL,colunaEL,150,150);
+						lp.add(EspacoVideo[i], new Integer(camadasEL));
+						linhaEL= linhaEL+180;
+						camadasEL++;
+						
+					}
+					
+					
+					//JLabels dos espaços para titulos
+					limite = 3;
+					for(int i=0;i < numeroResultados; i++) {
+						Video videoDaLista = lista.get(i);
+						espacoTitulo[i] = new JLabel(videoDaLista.getUpc());
+						espacoTitulo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+						espacoTitulo[i].setHorizontalAlignment(SwingConstants.CENTER);
+						espacoTitulo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+						espacoTitulo[i].setBackground(Color.WHITE);
+						espacoTitulo[i].setForeground(Color.BLACK);
+						if(i >= limite) {
+							coluna = colunaEL+150;
+							limite = limite + 3;
+							linha = 80;
+						}
+						espacoTitulo[i].setBounds(linha,coluna,150,40);
+						lp.add(espacoTitulo[i], new Integer(camadas));
+						linha= linha+180;
+						camadas++;
+					}
+					
+			    } else if(isInteger(tituloUPC)==false){
+			    	VideoCONTROLLER controller = new VideoCONTROLLER();
+			        ArrayList<Video> lista = controller.consultarVideosPorNome(tituloUPC, olimp);
+
+			        int numeroResultados=lista.size();
+			        JLabel[] EspacoLivroR;
+			    	EspacoVideo = new JLabel[numeroResultados];
+			    	int camadasEL = 30;
+			    	int linhaEL = 80;
+			    	int colunaEL = 200;
+			    	int limite = 3;
+			    	//
+			    	JLabel[] espacoTituloR;
+			    	espacoTitulo = new JLabel[numeroResultados];
+			    	int camadas = 60;
+			    	int linha = 80;
+			    	int coluna = 350;
+			    	
+					//JLabels dos espaços para a capa;
+					for(int i=0;i < numeroResultados; i++) {
+						Video videoDaLista = lista.get(i);
+						EspacoVideo[i] = new JLabel (videoDaLista.getTitulo());
+						EspacoVideo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+						EspacoVideo[i].setHorizontalAlignment(SwingConstants.CENTER);
+						EspacoVideo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+						EspacoVideo[i].setBackground(Color.WHITE);
+						EspacoVideo[i].setForeground(Color.BLACK);
+						if(i >= limite) {
+							colunaEL = colunaEL+250;
+							limite = limite + 3;
+							linhaEL = 80;
+						}
+						EspacoVideo[i].setBounds(linhaEL,colunaEL,150,150);
+						lp.add(EspacoVideo[i], new Integer(camadasEL));
+						linhaEL= linhaEL+180;
+						camadasEL++;
+						
+					}
+					
+					
+					//JLabels dos espaços para titulos
+					limite = 3;
+					for(int i=0;i < numeroResultados; i++) {
+						Video videoDaLista = lista.get(i);
+						espacoTitulo[i] = new JLabel(videoDaLista.getUpc());
+						espacoTitulo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+						espacoTitulo[i].setHorizontalAlignment(SwingConstants.CENTER);
+						espacoTitulo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+						espacoTitulo[i].setBackground(Color.WHITE);
+						espacoTitulo[i].setForeground(Color.BLACK);
+						if(i >= limite) {
+							coluna = colunaEL+150;
+							limite = limite + 3;
+							linha = 80;
+						}
+						espacoTitulo[i].setBounds(linha,coluna,150,40);
+						lp.add(espacoTitulo[i], new Integer(camadas));
+						linha= linha+180;
+						camadas++;
+					}
+			    }
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+			}
+		});
+		
 		selecioneVideo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -339,7 +565,7 @@ public class TelaVideosProf extends JFrame{
 			            txtDataPublicacao.setText(null);  
 			            txtUPC.setText(null);
 			      		lblArquivoVideo.setText("Selecione o arquivo de vídeo:");
-						
+						lp.repaint();
 					}
                 }
 			}
@@ -520,6 +746,15 @@ public class TelaVideosProf extends JFrame{
 
 			}
 		});
+	}
+	
+	public static boolean isInteger(String input) {
+	    try {
+	        Integer.parseInt(input);
+	        return true;
+	    } catch (NumberFormatException e) {
+	        return false;
+	    }
 	}
 		
 }
