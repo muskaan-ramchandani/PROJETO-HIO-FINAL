@@ -105,7 +105,8 @@ public class TelaLivrosAluno extends JFrame{
 	    lblPesquisar= new JLabel("Procurar por título");
 	    txtFiltro= new JTextField(300);
 	    lblLogo  = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//bonequinhoSFMEDIO.png"));        btnLivros = new JButton("<html><u>Livros</u></html>"); //Sublinhado
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//bonequinhoSFMEDIO.png"));        
+	    btnLivros = new JButton("<html><u>Livros</u></html>"); //Sublinhado
 		btnVideos= new JButton("<html><u>Videos</u></html>");
 		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
