@@ -1,0 +1,177 @@
+package Projeto_testes;
+
+
+import javax.swing.*;
+import javax.swing.border.AbstractBorder;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+public class TelaFavoritos extends JFrame{
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JMenuBar barra;
+	private JButton btnFavoritos;
+	private JTextField PesFavoritos;
+	private JLabel lblFunil;
+	private JLabel txtLivro;
+	private JLabel txtVideo;
+	private JLabel txtFlashcard;
+	
+	
+	
+	private int numeroLabels = 14;
+	private JLabel[] EspacoVideo = new JLabel[numeroLabels];
+	int camadasEL = 30;
+	int linhaEL = 100;
+	int colunaEL = 250;
+	int limite = 7;
+
+	private JButton livroScrollButton;
+	private JButton livroScrollButton2;
+	private int livroScrollValue = 100;
+	private final int labelWidth = 150;
+    private final int labelCount = 14;
+    private int scrollValue = 0;
+    
+	public TelaFavoritos() {
+		inicializarComponentes();
+		//definirEventos();
+	}
+
+	private void inicializarComponentes() {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+		contentPane = new JPanel();
+        contentPane.setLayout(new BorderLayout());
+        contentPane=getContentPane();
+        contentPane.setBackground(Color.white);
+        setLocationRelativeTo(null);
+        
+        
+        lp= new JLayeredPane();
+        barra= new JMenuBar();
+        btnFavoritos = new JButton("Favoritos");
+        PesFavoritos = new JTextField("     Procurar por título");
+        livroScrollButton = new JButton(">");
+        livroScrollButton2 = new JButton("<");
+        txtLivro = new JLabel ("LIVRO");
+    	txtVideo = new JLabel ("VIDEO");
+    	txtFlashcard = new JLabel ("FLASHCARD");
+        
+        lblFunil= new JLabel(new ImageIcon("C:\\Breno\\funil.png"));
+        
+        
+        Color roxoEscuro=new Color(75,0,130);
+        barra.setBackground(roxoEscuro);
+        btnFavoritos.setBackground(roxoEscuro);
+        btnFavoritos.setForeground(Color.WHITE);
+        livroScrollButton.setBackground(roxoEscuro);
+        livroScrollButton.setForeground(Color.WHITE);
+        txtLivro.setForeground(Color.BLACK);
+    	txtVideo.setForeground(Color.BLACK);
+    	txtFlashcard.setForeground(Color.BLACK);
+    	
+    	
+		PesFavoritos.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2));
+        
+        Font fonteBarra = new Font( "Trebuchet MS", Font.PLAIN, 20);
+		btnFavoritos.setFont(fonteBarra);
+		livroScrollButton.setFont(fonteBarra);
+		
+		Font fonteLabelsDesc = new Font( "Trebuchet MS", Font.PLAIN, 35);
+		PesFavoritos.setFont(fonteLabelsDesc);
+		txtLivro.setFont(fonteLabelsDesc);
+    	txtVideo.setFont(fonteLabelsDesc);
+    	txtFlashcard.setFont(fonteLabelsDesc);
+		
+		
+		lp.setBounds(0, 0, screenSize.width, screenSize.height-40);
+	    barra.setBounds(0,0,screenSize.width, 50);
+	    btnFavoritos.setBounds(60, 7, 140, 35);
+	    PesFavoritos.setBounds(200,100,950,60);
+	    lblFunil.setBounds(200,105,55,55);
+	    livroScrollButton.setBounds(720*2,300,55,55);
+	    livroScrollButton2.setBounds(20,300,55,55);
+	    txtLivro.setBounds(75,150,300,100);
+    	txtVideo.setBounds(75,390,300,100);
+    	txtFlashcard.setBounds(75,590,300,100);
+	    
+	    contentPane.add(lp);
+	    lp.add(barra, new Integer(1));
+	    lp.add(btnFavoritos, new Integer(2));
+	    lp.add(PesFavoritos, new Integer(3));
+	    lp.add(lblFunil, new Integer(4));
+	    lp.add(livroScrollButton, new Integer(10)); 
+	    lp.add(livroScrollButton2, new Integer(10)); 
+	    lp.add(txtLivro, new Integer(11)); 
+	    lp.add(txtVideo, new Integer(12)); 
+	    lp.add(txtFlashcard, new Integer(13)); 
+	    
+	    setLayout(new BorderLayout());
+	    add(lp, BorderLayout.CENTER);
+	    btnFavoritos.setBorderPainted(false);
+	     
+	     
+	    btnFavoritos.setFocusPainted(false);
+	    
+	    for(int i=0;i < numeroLabels; i++) {
+	    	int referencia = 1;
+			EspacoVideo[i] = new JLabel (""+(referencia+i));
+			EspacoVideo[i].setOpaque(true);
+			EspacoVideo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+			EspacoVideo[i].setBackground(Color.WHITE);
+			EspacoVideo[i].setForeground(Color.BLACK);
+			EspacoVideo[i].setBounds(linhaEL,colunaEL,150,150);
+			lp.add(EspacoVideo[i], new Integer(camadasEL));
+			linhaEL= linhaEL+200;
+			camadasEL++;
+			
+		}
+	    
+	    livroScrollButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	 int maxScroll = labelCount * labelWidth - contentPane.getWidth();
+            	 for(int i=0;i < numeroLabels; i++) {
+            		 if (scrollValue < maxScroll) {
+                         scrollValue += 200;
+                         EspacoVideo[i].setLocation(scrollValue, 250);
+                     }
+            	 }
+            }
+        });
+	   
+	    livroScrollButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	 for(int i=0;i < numeroLabels; i++) {
+                if (scrollValue > 0) {
+                    scrollValue -= 200;
+                    EspacoVideo[i].setLocation(scrollValue, 250);
+                }
+                }
+            }
+        });
+	    
+	    
+	}
+	
+	public static void abrir() {
+		TelaFavoritos frame = new TelaFavoritos();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation((tela.width - frame.getSize().width)/2,(tela.height - frame.getSize().height)/2);
+        frame.setVisible(true);
+    }
+   
+    public static void main(String[] args) {
+        abrir();
+    }
+    
+	
+	
+}
