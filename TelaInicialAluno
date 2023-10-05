@@ -324,8 +324,8 @@ public class TelaInicialAluno extends JFrame{
 		btnFavoritos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				TelaFavoritos favs = new TelaFavoritos(aluno);
 			     setVisible(false);
-
 			}
 			 
 		 });
