@@ -167,10 +167,10 @@ public class TelaVideosProf extends JFrame{
 		lblPesquisar.setBounds(108, 110, 450, 35);
 		
 		if(numeroLabels==0) {
-			JLabel lblNaoTem = new JLabel("<html>Não há vídeos cadastrados<br>nesta olimpíada<html>");
+			JLabel lblNaoTem = new JLabel("<html>Não há vídeos cadastrados<br>     nesta olimpíada<html>");
 			lblNaoTem.setForeground(Color.BLACK);
-			lblNaoTem.setFont(new Font("Trebuchet MS", Font.BOLD, 32));
-			lblNaoTem.setBounds(100, 350, 1000, 50);
+			lblNaoTem.setFont(new Font("Trebuchet MS", Font.BOLD, 30));
+			lblNaoTem.setBounds(100, 350, 1000, 70);
 			lp.add(lblNaoTem, new Integer(30));
 		}else {
 			//JLabels dos espaços para a capa;
@@ -552,12 +552,13 @@ public class TelaVideosProf extends JFrame{
 					VideoCONTROLLER controla = new VideoCONTROLLER();
 					boolean VideoCadastrou = controla.cadastrar(titulo, upc, produtor, dataPublicacao, emailProf,selectedFile, olimp);
 					boolean RelacionouVideo= controla.relacionarComOlimp(olimp, upc);
+					boolean Historico = controla.HistoricoVideosProf( emailProf, upc, titulo);
 					
 					if(VideoCadastrou==false&&RelacionouVideo==false){
 						
 						JOptionPane.showMessageDialog(null, "Não foi possível cadastrar o vídeo!");
 						
-					}else if(VideoCadastrou==true&&RelacionouVideo==true) { //cadastrou
+					}else if(VideoCadastrou==true&&RelacionouVideo==true&&Historico==true) { //cadastrou
 						
 						JOptionPane.showMessageDialog(null, "Vídeo cadastrado com sucesso!");
 			            txtProdutor.setText(null);
