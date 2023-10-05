@@ -115,7 +115,7 @@ public class TelaLivrosProf extends JFrame{
 		txtFiltro = new JTextField(300);
 		lblFiltro= new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//funilPequeno.png"));
-	    lblPesquisar= new JLabel("Procurar por título ou isbn");
+	    lblPesquisar= new JLabel("Procurar por título");
 		
 		//cores		
 		barra.setBackground(roxoIndigo);
@@ -167,10 +167,10 @@ public class TelaLivrosProf extends JFrame{
 		lblPesquisar.setBounds(108, 110, 490, 35);
 	    
 		if(numeroLabels==0) {
-			JLabel lblNaoTem = new JLabel("<html>Não há livros cadastrados<br>nesta olimpíada<html>");
+			JLabel lblNaoTem = new JLabel("<html>Não há livros cadastrados<br>      nesta olimpíada<html>");
 			lblNaoTem.setForeground(Color.BLACK);
 			lblNaoTem.setFont(new Font("Trebuchet MS", Font.BOLD, 30));
-			lblNaoTem.setBounds(100, 350, 1000, 50);
+			lblNaoTem.setBounds(100, 350, 1000, 70);
 			lp.add(lblNaoTem, new Integer(30));
 		}else {
 	    	
@@ -557,12 +557,13 @@ public class TelaLivrosProf extends JFrame{
 					LivroCONTROLLER controla = new LivroCONTROLLER();
 					boolean LivroCadastrou = controla.cadastrar(isbn, titulo, editora, autor, dataPublicacao, emailProf, selectedFile, olimp);
 					boolean RelacionouLivro= controla.relacionarComOlimp(olimp, isbn);
+					boolean Historico = controla.HistoricoLivrosProf(emailProf, isbn, titulo);
 					
 					if(LivroCadastrou==false&&RelacionouLivro==false){
 						
 						JOptionPane.showMessageDialog(null, "Não foi possível cadastrar o livro!");
 						
-					}else if(LivroCadastrou==true&&RelacionouLivro==true) { //cadastrou
+					}else if(LivroCadastrou==true&&RelacionouLivro==true&&Historico==true) { //cadastrou
 						
 						JOptionPane.showMessageDialog(null, "Livro cadastrado com sucesso!");
 						txtIsbn.setText(null);
@@ -570,8 +571,8 @@ public class TelaLivrosProf extends JFrame{
 						txtEditora.setText(null);
 						txtAutor.setText(null);
 						txtDataPublicacao.setText(null);   
-						lblArquivoPDF=new JLabel ("Selecione um arquivo PDF");
-						
+						lblArquivoPDF.setText("Selecione um arquivo PDF");
+						lp.repaint();
 					}
                 }
 			}
