@@ -247,5 +247,90 @@ public class VideoDAO {
 	    return videosPorNome;
 	}
 
+	public boolean HistoricoVideosProf(String emailProf, String upc, String titulo) {
+		try {
+			Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        
+	        String sql = "INSERT INTO HistoricoVideosProf (upc, titulo, emailProf) VALUES (?, ?, ?)";
+	        ps = conn.prepareStatement(sql);
+	        ps.setString(1, upc);
+	        ps.setString(2, titulo);
+	        ps.setString(3, emailProf);
+
+	        int  linhasAfetadas= ps.executeUpdate();
+			if(linhasAfetadas>0) {
+				return true;
+			}else {
+				return false;
+			}
+			
+		} catch (SQLException e) {
+	        e.printStackTrace();
+			return false;
+
+	    }
+	}
 	
+	public ArrayList<String> exibirHistoricoVideosProfUPC(String emailProfessor) {
+		ArrayList<String> listaISBNRec = new ArrayList<String>();
+
+        try {
+        	Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        String sql = "SELECT upc, dataAcesso FROM HistoricoVideosProf " +
+                         "WHERE emailProf = ? " +
+                         "ORDER BY dataAcesso DESC " +
+                         "LIMIT 2";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, emailProfessor);
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                String upc = resultSet.getString("upc");
+                listaISBNRec.add(upc);
+                
+            }
+            
+            return listaISBNRec;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
+	
+	public ArrayList<String> exibirHistoricoVideosProfTITULO(String emailProfessor) {
+		ArrayList<String> listaTiTULORec = new ArrayList<String>();
+
+        try {
+        	Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        String sql = "SELECT titulo, dataAcesso FROM HistoricoVideosProf " +
+                         "WHERE emailProf = ? " +
+                         "ORDER BY dataAcesso DESC " +
+                         "LIMIT 2";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, emailProfessor);
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                String titulo = resultSet.getString("titulo");
+                listaTiTULORec.add(titulo);
+                
+            }
+
+            return listaTiTULORec;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
 }
