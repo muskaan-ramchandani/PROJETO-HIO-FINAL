@@ -47,4 +47,18 @@ public class LivroCONTROLLER {
 		 LivroBO bo = new LivroBO();
 	     return bo.consultarLivrosPorIsbn(isbn, olimp);
 	}
+	
+	public boolean HistoricoLivrosProf(String emailProf, String isbn, String titulo) {
+		LivroBO bo = new LivroBO();
+	    return bo.HistoricoLivrosProf(emailProf, isbn, titulo);
+	}
+	public ArrayList<String> exibirHistoricoLivrosProfISBN(String emailProfessor) {
+		LivroBO bo = new LivroBO();
+        return bo.exibirHistoricoLivrosProfISBN(emailProfessor);
+    }
+	
+	public ArrayList<String> exibirHistoricoLivrosProfTITULO(String emailProfessor) {
+		LivroBO bo = new LivroBO();
+        return bo.exibirHistoricoLivrosProfTITULO(emailProfessor);
+    }
 }
