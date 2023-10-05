@@ -49,4 +49,20 @@ public class LivroBO {
 		 LivroDAO dao = new LivroDAO();
 	     return dao.consultarLivrosPorIsbn(isbn, olimp);
 	}
+	
+	public boolean HistoricoLivrosProf(String emailProf, String isbn, String titulo) {
+		LivroDAO dao = new LivroDAO();
+	    return dao.HistoricoLivrosProf(emailProf, isbn, titulo);
+	}
+	
+	public ArrayList<String> exibirHistoricoLivrosProfISBN(String emailProfessor) {
+		LivroDAO dao= new LivroDAO();
+        return dao.exibirHistoricoLivrosProfISBN(emailProfessor);
+    }
+	
+	public ArrayList<String> exibirHistoricoLivrosProfTITULO(String emailProfessor) {
+		LivroDAO dao= new LivroDAO();
+        return dao.exibirHistoricoLivrosProfTITULO(emailProfessor);
+    }
+
 }
