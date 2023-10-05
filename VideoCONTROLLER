@@ -48,4 +48,18 @@ public class VideoCONTROLLER {
 		VideoBO bo = new VideoBO();
 	     return bo.consultarVideosPorUpc(upc, olimp);
 	}
+	
+	public boolean HistoricoVideosProf(String emailProf, String upc, String titulo) {
+		VideoBO bo = new VideoBO();
+	    return bo.HistoricoVideosProf(emailProf, upc, titulo);
+	}
+	public ArrayList<String> exibirHistoricoVideosProfUPC(String emailProfessor) {
+		VideoBO bo = new VideoBO();
+        return bo.exibirHistoricoVideosProfUPC(emailProfessor);
+    }
+	
+	public ArrayList<String> exibirHistoricoVideosProfTITULO(String emailProfessor) {
+		VideoBO bo = new VideoBO();
+        return bo.exibirHistoricoVideosProfTITULO(emailProfessor);
+    }
 }
