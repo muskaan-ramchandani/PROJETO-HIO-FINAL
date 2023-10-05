@@ -117,6 +117,35 @@ CREATE TABLE FavoritosFlashcard(
 	FOREIGN KEY(titulo) REFERENCES Flashcard(titulo)
 );
 
+CREATE TABLE HistoricoVideosProf(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    upc VARCHAR(12) NOT NULL,
+	titulo VARCHAR(100) NOT NULL,
+    emailProf VARCHAR(100) NOT NULL,
+    dataAcesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(emailProf) REFERENCES Professor(email),
+	FOREIGN KEY(upc) REFERENCES Video(upc)
+);
 
+CREATE TABLE HistoricoLivrosProf(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    isbn VARCHAR(13) NOT NULL,
+	titulo VARCHAR(100) NOT NULL,
+    emailProf VARCHAR(100) NOT NULL,
+    dataAcesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(emailProf) REFERENCES Professor(email),
+	FOREIGN KEY(isbn) REFERENCES Livro(isbn)
+);
+
+CREATE TABLE HistoricoOlimpiadasProf(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    nomeOlimp VARCHAR(10) NOT NULL,
+    emailProf VARCHAR(100) NOT NULL,
+    dataAcesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(emailProf) REFERENCES Professor(email),
+	FOREIGN KEY(nomeOlimp) REFERENCES Olimpiada(nome)
+);
 
 #SET FOREIGN_KEY_CHECKS=1;
+
+#DELETE FROM Video Where emailProf='juju@gmail.com';
