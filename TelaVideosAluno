@@ -38,6 +38,7 @@ import javax.swing.border.AbstractBorder;
 import controller.LivroCONTROLLER;
 import controller.VideoCONTROLLER;
 import view.GuiOlimpiadasAluno;
+import view.TelaInicialAluno;
 import view.TelasGuiOlimpiadasProf.TelaLivrosProf;
 
 
@@ -56,6 +57,7 @@ public class TelaVideosAluno extends JFrame{
 	private JTextField txtFiltro;
 	private JLabel lblFiltro;
 	private JLabel lblPesquisar;
+	private JButton btnVoltar;
 	ArrayList<JLabel> labelFavoritar = new ArrayList<JLabel>();
 
 	//
@@ -297,6 +299,12 @@ public class TelaVideosAluno extends JFrame{
 	
 	}
 		
+		btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaPequenaRoxa.png"));
+		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnVoltar.setBorderPainted(false); // Remove a borda
+		btnVoltar.setFocusPainted(false);
+    	btnVoltar.setBounds(10, 650, 28,25);
 		
 		
 		//adicionar a interface
@@ -312,6 +320,7 @@ public class TelaVideosAluno extends JFrame{
 		lp.add(lblFiltro, new Integer(10));
 		lp.add(lblPesquisar, new Integer(11));
 		lp.add(lblNomeOlimp, new Integer(12));
+		lp.add(btnVoltar, new Integer(13));
 		
 		//tirar bordar
         setLayout(new BorderLayout());
@@ -660,6 +669,14 @@ public class TelaVideosAluno extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 			     setVisible(false);
 
+			}
+		});
+		
+		btnVoltar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaInicialAluno tela = new TelaInicialAluno(aluno, true);
+			     setVisible(false);
 			}
 		});
 	}
