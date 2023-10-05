@@ -25,6 +25,7 @@ public class GuiOlimpiadasAluno extends JFrame{
 	private JButton btnAssuntos;
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
+	private JButton btnVoltar;
 	
 	private JLabel lblAluno;
 	private JLabel lblFrase1;
@@ -114,7 +115,13 @@ public class GuiOlimpiadasAluno extends JFrame{
 		lblFrase2.setBounds(100,330,500,40);
 		lblImagem.setBounds(700,130,567,425);
 		
-		
+		btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaPequenaRoxa.png"));
+		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnVoltar.setBorderPainted(false); // Remove a borda
+		btnVoltar.setFocusPainted(false);
+    	btnVoltar.setBounds(10, 650, 28,25);
+    	
 		//adiciona
 		contentPane.add(lp);
 		lp.add(barra, new Integer(1));
@@ -129,6 +136,7 @@ public class GuiOlimpiadasAluno extends JFrame{
 		lp.add(lblFrase1, new Integer(10));
 		lp.add(lblFrase2, new Integer(11));
 		lp.add(lblImagem, new Integer(12));
+		lp.add(btnVoltar, new Integer(13));
 		
 		setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
@@ -330,5 +338,13 @@ public class GuiOlimpiadasAluno extends JFrame{
 
 			}
 		});
+		
+		 btnVoltar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					TelaInicialAluno tela = new TelaInicialAluno(aluno, true);
+				     setVisible(false);
+				}
+			});
 	}
 }
