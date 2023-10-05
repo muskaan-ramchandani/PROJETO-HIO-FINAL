@@ -51,4 +51,18 @@ public class VideoBO {
 		VideoDAO dao = new VideoDAO();
 	     return dao.consultarVideosPorUpc(upc, olimp);
 	}
+	public boolean HistoricoVideosProf(String emailProf, String upc, String titulo) {
+		VideoDAO dao = new VideoDAO();
+	    return dao.HistoricoVideosProf(emailProf, upc, titulo);
+	}
+	
+	public ArrayList<String> exibirHistoricoVideosProfUPC(String emailProfessor) {
+		VideoDAO dao= new VideoDAO();
+        return dao.exibirHistoricoVideosProfUPC(emailProfessor);
+    }
+	
+	public ArrayList<String> exibirHistoricoVideosProfTITULO(String emailProfessor) {
+		VideoDAO dao= new VideoDAO();
+        return dao.exibirHistoricoVideosProfTITULO(emailProfessor);
+    }
 }
