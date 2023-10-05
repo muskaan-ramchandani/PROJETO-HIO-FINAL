@@ -1,4 +1,4 @@
-package Projeto_testes;
+package Testeprojeto;
 
 
 import javax.swing.*;
@@ -65,6 +65,9 @@ public class TelaFavoritos extends JFrame{
     private final int labelCount = 14;
     private int scrollValue = 0;
     
+    private JButton videoScrollButton;
+	private JButton videoScrollButton2;
+    
 	public TelaFavoritos() {
 		inicializarComponentes();
 		//definirEventos();
@@ -88,6 +91,8 @@ public class TelaFavoritos extends JFrame{
         PesFavoritos = new JTextField("     Procurar por título");
         livroScrollButton = new JButton(">");
         livroScrollButton2 = new JButton("<");
+        videoScrollButton = new JButton(">");
+        videoScrollButton2 = new JButton("<");
         txtLivro = new JLabel ("LIVRO");
     	txtVideo = new JLabel ("VIDEO");
     	txtFlashcard = new JLabel ("FLASHCARD");
@@ -126,6 +131,8 @@ public class TelaFavoritos extends JFrame{
 	    lblFunil.setBounds(200,105,55,55);
 	    livroScrollButton.setBounds(720*2,300,55,55);
 	    livroScrollButton2.setBounds(20,300,55,55);
+	    videoScrollButton.setBounds(720*2,550,55,55);
+	    videoScrollButton2.setBounds(20,550,55,55);
 	    txtLivro.setBounds(75,170,300,100);
     	txtVideo.setBounds(75,420,300,100);
     	txtFlashcard.setBounds(75,670,300,100);
@@ -137,6 +144,8 @@ public class TelaFavoritos extends JFrame{
 	    lp.add(lblFunil, new Integer(4));
 	    lp.add(livroScrollButton, new Integer(1000)); 
 	    lp.add(livroScrollButton2, new Integer(1000 )); 
+	    lp.add(videoScrollButton, new Integer(1000)); 
+	    lp.add(videoScrollButton2, new Integer(1000 )); 
 	    lp.add(txtLivro, new Integer(11)); 
 	    lp.add(txtVideo, new Integer(12)); 
 	    lp.add(txtFlashcard, new Integer(13)); 
@@ -234,31 +243,67 @@ public class TelaFavoritos extends JFrame{
 	    
 	    
 	    livroScrollButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	 int maxScroll = labelCount * labelWidth - contentPane.getWidth();
-            	 for(int i=0;i < numeroLabels; i++) {
-            		 if (scrollValue < maxScroll) {
-                         scrollValue += 200;
-                         EspacoLivro[i].setLocation(-scrollValue, 250);
-                         espacoTituloLivro[i].setLocation(-scrollValue, 400);
-                     }
-            	 }
-            }
-        });
-	   
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            int maxScroll = (numeroLabels - 1) * 200; // Máximo valor de rolagem
+	            
+	            if (scrollValue < maxScroll) {
+	                scrollValue += 200; // Atualiza a quantidade de rolagem
+	                
+	                for (int i = 0; i < numeroLabels; i++) {
+	                    EspacoLivro[i].setLocation(EspacoLivro[i].getX() - 200, EspacoLivro[i].getY());
+	                    espacoTituloLivro[i].setLocation(espacoTituloLivro[i].getX() - 200, espacoTituloLivro[i].getY());
+	                }
+	            }
+	        }
+	    });
+
 	    livroScrollButton2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	 for(int i=0;i < numeroLabels; i++) {
-                if (scrollValue > 0) {
-                    scrollValue -= 200;
-                    EspacoLivro[i].setLocation(-scrollValue, 250);
-                    espacoTituloLivro[i].setLocation(-scrollValue, 400);
-                }
-                }
-            }
-        });
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            if (scrollValue > 0) {
+	                scrollValue -= 200; // Atualiza a quantidade de rolagem
+	                
+	                for (int i = 0; i < numeroLabels; i++) {
+	                    EspacoLivro[i].setLocation(EspacoLivro[i].getX() + 200, EspacoLivro[i].getY());
+	                    espacoTituloLivro[i].setLocation(espacoTituloLivro[i].getX() + 200, espacoTituloLivro[i].getY());
+	                }
+	            }
+	        }
+	    });
+	    
+	    
+	    
+	    
+	    videoScrollButton.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            int maxScroll = (numeroLabels - 1) * 200; // Máximo valor de rolagem
+	            
+	            if (scrollValue < maxScroll) {
+	                scrollValue += 200; // Atualiza a quantidade de rolagem
+	                
+	                for (int i = 0; i < numeroLabels; i++) {
+	                	EspacoVideo[i].setLocation(EspacoVideo[i].getX() - 200, EspacoVideo[i].getY());
+	                    espacoTituloVideo[i].setLocation(espacoTituloVideo[i].getX() - 200, espacoTituloVideo[i].getY());
+	                }
+	            }
+	        }
+	    });
+
+	    videoScrollButton2.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            if (scrollValue > 0) {
+	                scrollValue -= 200; // Atualiza a quantidade de rolagem
+	                
+	                for (int i = 0; i < numeroLabels; i++) {
+	                    EspacoVideo[i].setLocation(EspacoVideo[i].getX() + 200, EspacoVideo[i].getY());
+	                    espacoTituloVideo[i].setLocation(espacoTituloVideo[i].getX() + 200, espacoTituloVideo[i].getY());
+	                }
+	            }
+	        }
+	    });
 	    
 	    
 	}
@@ -278,3 +323,4 @@ public class TelaFavoritos extends JFrame{
 	
 	
 }
+
