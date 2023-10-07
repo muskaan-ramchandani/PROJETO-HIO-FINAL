@@ -1,0 +1,42 @@
+package bo;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import conexaoBD.Conexao;
+import vo.Flashcard;
+import vo.Olimpiada;
+import dao.FlashcardDAO;
+import java.io.File;
+
+public class FlashcardBO {
+
+		public boolean cadastrar(String titulo, String resumo, String palavrasChave, File imagem, String emailProf) {
+			FlashcardDAO dao = new FlashcardDAO();
+			Flashcard flash = new Flashcard(titulo, resumo, palavrasChave, imagem, emailProf);
+			return dao.cadastrar(flash, imagem);
+		}
+		
+		public boolean relacionarComOlimp(Olimpiada olimp, String titulo) {
+			FlashcardDAO dao = new FlashcardDAO();
+			return dao.relacionarComOlimp(olimp, titulo);
+		}
+		
+		public ArrayList retornaFlashOlimpiada(Olimpiada olimp) {
+			FlashcardDAO dao = new FlashcardDAO();
+	        return dao.retornaFlashOlimpiada(olimp);
+	    }
+		
+		public ArrayList<Flashcard> consultarFlashcardsPorTitulo(String tituloFlash, Olimpiada olimp) {
+			FlashcardDAO dao = new FlashcardDAO();
+		    return dao.consultarFlashcardsPorTitulo(tituloFlash, olimp);
+		}
+}
