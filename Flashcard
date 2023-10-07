@@ -11,7 +11,11 @@ public class Flashcard {
 	private String emailProf;
 	
 	public Flashcard(String titulo, String resumo, String palavrasChave, File imagem, String emailProf) {
-		
+		setTitulo(titulo);
+		setResumo(resumo);
+		setPalavrasChave(palavrasChave);
+		setImagem(imagem);
+		setEmailProf(emailProf);
 	}
 
 	public String getTitulo() {
