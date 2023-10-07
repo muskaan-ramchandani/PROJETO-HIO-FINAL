@@ -199,6 +199,38 @@ public class FlashcardDAO {
 
 	    return flashsPorNome;
 	}
+	
+	public Flashcard obterFlashExistente(String titulo) {
+        Flashcard flashcard = null;
+
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    		 
+            String selectQuery = "SELECT * FROM Flashcards WHERE titulo = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setString(1, titulo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String tituloF = resultSet.getString("titulo");
+                String resumo = resultSet.getString("resumo");
+                String palavrasChave = resultSet.getString("palavraChave");
+                String emailProf = resultSet.getString("emailProf");
+                InputStream inputStream = resultSet.getBinaryStream("imagem");
+	            File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("titulo"));
+	            
+				flashcard = new Flashcard(tituloF, resumo, palavrasChave, arquivo, emailProf);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return flashcard;
+    }
 }
 
 //	public Flashcard(String titulo, String resumo, String palavrasChave, File imagem, String emailProf) {
