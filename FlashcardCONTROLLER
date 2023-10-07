@@ -28,4 +28,9 @@ public class FlashcardCONTROLLER {
 		FlashcardBO bo = new FlashcardBO();
 	    return bo.consultarFlashcardsPorTitulo(tituloFlash, olimp);
 	}
+	
+	public Flashcard obterFlashExistente(String titulo) {
+		FlashcardBO bo = new FlashcardBO();
+        return bo.obterFlashExistente(titulo);
+    }
 }
