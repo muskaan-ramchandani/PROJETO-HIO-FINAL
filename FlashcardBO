@@ -39,4 +39,9 @@ public class FlashcardBO {
 			FlashcardDAO dao = new FlashcardDAO();
 		    return dao.consultarFlashcardsPorTitulo(tituloFlash, olimp);
 		}
+		
+		public Flashcard obterFlashExistente(String titulo) {
+			FlashcardDAO dao = new FlashcardDAO();
+	        return dao.obterFlashExistente(titulo);
+	    }
 }
