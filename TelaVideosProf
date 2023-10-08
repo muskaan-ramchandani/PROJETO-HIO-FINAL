@@ -44,6 +44,7 @@ public class TelaVideosProf extends JFrame{
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
 	private JButton btnVoltar;
+	
 	ArrayList<Video> videosDaOlimpiada = new ArrayList<Video>();
 	private JLabel[] EspacoVideo;
 	private JLabel[] espacoTitulo;
@@ -714,8 +715,8 @@ public class TelaVideosProf extends JFrame{
 		btnFlashcards.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			     setVisible(false);
-
+				TelaFlashcardsProf assuntos = new TelaFlashcardsProf(olimp, prof);
+				setVisible(false);
 			}
 		});
 		
