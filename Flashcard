@@ -1,5 +1,6 @@
 package vo;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class Flashcard {
@@ -7,10 +8,10 @@ public class Flashcard {
 	private String titulo;
 	private String resumo;
 	private String palavrasChave;
-	private File imagem;
+	private BufferedImage imagem;
 	private String emailProf;
 	
-	public Flashcard(String titulo, String resumo, String palavrasChave, File imagem, String emailProf) {
+	public Flashcard(String titulo, String resumo, String palavrasChave, BufferedImage imagem, String emailProf) {
 		setTitulo(titulo);
 		setResumo(resumo);
 		setPalavrasChave(palavrasChave);
@@ -42,11 +43,11 @@ public class Flashcard {
 		this.palavrasChave = palavrasChave;
 	}
 
-	public File getImagem() {
+	public BufferedImage getImagem() {
 		return imagem;
 	}
 
-	public void setImagem(File imagem) {
+	public void setImagem(BufferedImage imagem) {
 		this.imagem = imagem;
 	}
 
