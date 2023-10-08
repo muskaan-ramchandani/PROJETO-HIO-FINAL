@@ -1,0 +1,519 @@
+package view.TelasGuiOlimpiadasProf;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import controller.FlashcardCONTROLLER;
+import view.TelaInicialProf;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
+import vo.Olimpiada;
+import vo.Professor;
+
+public class TelaFlashcardsProf extends JFrame{
+
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JMenuBar barra;
+	private JLabel lblLogo;
+	private JLabel lblNomeOlimp;
+	private JButton btnLivros;
+	private JButton btnVideos;
+	private JButton btnAssuntos;
+	private JButton btnFlashcards;
+	private JButton btnCronograma;
+	private JButton btnVoltar;
+	
+	private JLabel lblCadastrarFlash;
+	private JLabel lblPalavrasChave;
+	private JTextField txtPalavrasChave;
+	private JLabel lblResumo;
+	private JTextField txtResumo;
+	private JLabel lblArquivoPNG;
+	private JButton selecionePNG;
+	private JFileChooser selecionaPNG;
+	private JButton btnCadastrar;
+    private JTextField txtFiltro;
+    private JLabel lblFiltro;
+    private JLabel lblPesquisar;
+    private JLabel lblTitulo;
+    private JTextField txtTitulo;
+    
+    private Color roxoIndigo = new Color(75,0,130);
+
+	public TelaFlashcardsProf(Olimpiada olimp, Professor prof) {
+		inicializarComponentes(olimp, prof);
+		definirEventos(olimp, prof);
+		setVisible(true);
+	}
+
+	private void inicializarComponentes(Olimpiada olimp, Professor prof) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+		contentPane=getContentPane();
+        contentPane.setBackground(Color.white);
+        
+        //configução exibição flashs
+        //
+        
+      //inicializa
+      		lp= new JLayeredPane();
+      		barra= new JMenuBar();
+      		
+      		lblLogo  = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+      				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//bonequinhoSFMEDIO.png"));
+      		
+      		lblNomeOlimp = new JLabel(olimp.getNome());
+      		btnLivros = new JButton("<html><u>Livros</u></html>"); //Sublinhado
+      		btnVideos= new JButton("<html><u>Videos</u></html>");
+      		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
+      		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
+      		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
+      		selecionePNG= new JButton("Selecione um arquivo PNG:");
+      		txtFiltro = new JTextField(300);
+      		lblFiltro= new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+      				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//funilPequeno.png"));
+      	    lblPesquisar= new JLabel("Procurar por título");
+      	    
+      		
+      		//cores		
+      		barra.setBackground(roxoIndigo);
+      		lblNomeOlimp.setBackground(roxoIndigo);
+      		lblNomeOlimp.setForeground(Color.WHITE);
+      		btnLivros.setBackground(roxoIndigo);
+      		btnLivros.setForeground(Color.WHITE);
+      		btnAssuntos.setBackground(roxoIndigo);
+      		btnAssuntos.setForeground(Color.WHITE);
+      		btnVideos.setBackground(roxoIndigo);
+      		btnVideos.setForeground(Color.WHITE);
+      		btnCronograma.setBackground(roxoIndigo);
+      		btnCronograma.setForeground(Color.WHITE);
+      		selecionePNG.setBackground(Color.white);
+      		selecionePNG.setForeground(Color.black);
+      		Color roxoVioleta = new Color(148,0,211);
+      		btnFlashcards.setBackground(roxoVioleta);
+      		btnFlashcards.setForeground(Color.WHITE);
+      		lblPesquisar.setBackground(Color.white);
+      		lblPesquisar.setForeground(Color.black);
+
+      		
+      		//formatações
+      		lblNomeOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 25));
+      		
+      		Font fonteBarra = new Font("Trebuchet MS", Font.PLAIN, 20);
+      		btnLivros.setFont(fonteBarra);
+      		btnVideos.setFont(fonteBarra);
+      		btnAssuntos.setFont(fonteBarra);
+      		btnFlashcards.setFont(fonteBarra);
+      		btnCronograma.setFont(fonteBarra);
+
+      		
+      		txtFiltro.setFont(new Font("Trebuchet  MS", Font.PLAIN, 25));
+      	    lblPesquisar.setFont(new Font("Trebuchet  MS", Font.PLAIN, 25));
+      	    
+      		//coordenadas
+      		lp.setBounds(0, 0, screenSize.width, screenSize.height-40);
+            barra.setBounds(0,0,screenSize.width, 50);
+            lblLogo.setBounds(10,5,44,35);
+            lblNomeOlimp.setBounds(80, 15, 250, 20);
+            btnLivros.setBounds(235,7, 100, 35);
+      		btnVideos.setBounds(403,7,100,35);
+      		btnAssuntos.setBounds(578,7,100,35);
+      		btnFlashcards.setBounds(765,7,130,35);
+      		btnCronograma.setBounds(980,7,130,35);
+      		lblFiltro.setBounds(75, 115, 23, 25);
+      		txtFiltro.setBounds(104, 110, 490, 35);
+      		lblPesquisar.setBounds(108, 110, 450, 35);
+      		
+      		//adiciona
+    		contentPane.add(lp);
+
+    		lp.add(barra, new Integer(1));
+    		lp.add(lblLogo, new Integer(2));
+    		lp.add(lblNomeOlimp, new Integer(3));
+    		lp.add(btnLivros, new Integer(4));
+    		lp.add(btnVideos, new Integer(5));
+    		lp.add(btnAssuntos, new Integer(6));
+    		lp.add(btnFlashcards, new Integer(7));
+    		lp.add(btnCronograma, new Integer(8));
+    		lp.add(lblFiltro, new Integer(24));
+    		lp.add(txtFiltro, new Integer(25));
+    		lp.add(lblPesquisar, new Integer(26));
+    		
+    		
+    		 // Primeira área CADASTRO
+      		lblCadastrarFlash = new JLabel("Cadastrar Flashcard");
+      		lblTitulo= new JLabel("Titulo:");
+      		txtTitulo= new JTextField(100);
+      		lblPalavrasChave= new JLabel("Palavras-chave:");
+      		txtPalavrasChave = new JTextField(100);
+      		lblResumo= new JLabel("Resumo:");
+      		txtResumo = new JTextField(250);
+      		
+      	
+      		lblArquivoPNG= new JLabel("Selecione um arquivo PNG:");
+      		btnCadastrar= new JButton("Cadastrar");
+
+      		selecionaPNG= new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Files", "png");
+      		selecionaPNG.setFileFilter(filter);
+      		selecionaPNG.setDialogTitle("Selecione um arquivo PNG");
+        
+      		btnCadastrar.setForeground(Color.white);
+      		btnCadastrar.setBackground(roxoIndigo);
+      		lblCadastrarFlash.setForeground(Color.BLACK);
+      		lblTitulo.setForeground(Color.BLACK);
+      		txtTitulo.setForeground(Color.BLACK);
+      		lblPalavrasChave.setForeground(Color.BLACK);
+      		txtPalavrasChave.setForeground(Color.BLACK);
+      		lblResumo.setForeground(Color.BLACK);
+      		txtResumo.setForeground(Color.BLACK);
+      		selecionaPNG.setForeground(Color.BLACK);
+      		
+      		Font fonteLabelsDesc = new Font( "Trebuchet MS", Font.PLAIN, 20);
+      		lblPalavrasChave.setFont(fonteLabelsDesc);
+      		lblResumo.setFont(fonteLabelsDesc);
+      		lblTitulo.setFont(fonteLabelsDesc);
+      		lblArquivoPNG.setFont(fonteLabelsDesc);	
+    		
+      		Font fonteTXT = new Font( "Trebuchet MS", Font.PLAIN, 18);;
+      		txtPalavrasChave.setFont(fonteTXT);
+      		txtResumo.setFont(fonteTXT);
+      		selecionaPNG.setFont(fonteTXT);
+      		selecionePNG.setFont(fonteTXT);
+      		txtTitulo.setFont(fonteTXT);
+      		
+    		Font fonteTamanho = new Font( "Trebuchet MS", Font.PLAIN, 45);
+    		lblCadastrarFlash.setFont(fonteTamanho);
+    	    
+    	    Font fonteTamanhoBotao = new Font( "Trebuchet MS", Font.PLAIN, 20);
+    	    btnCadastrar.setFont(fonteTamanhoBotao);
+    	    
+    	    lblCadastrarFlash.setBounds(860,70,810,100);
+    	    lblTitulo.setBounds(800,165,400,30);
+    	    txtTitulo.setBounds(800,205,465,30);
+    	    lblPalavrasChave.setBounds(800,240,400,40);
+    	    txtPalavrasChave.setBounds(800,280,465,30);
+    	    lblResumo.setBounds(800,315,400,40);
+    		txtResumo.setBounds(800,355,465,145);
+    		lblArquivoPNG.setBounds(800,515,400,40);
+    		selecionePNG.setBounds(800,550,465,30);
+    		btnCadastrar.setBounds(915, 620, 245, 45);
+    	    
+    		btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+    				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaPequenaRoxa.png"));
+    		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+    		btnVoltar.setBorderPainted(false); // Remove a borda
+    		btnVoltar.setFocusPainted(false);
+        	btnVoltar.setBounds(10, 650, 28,25);
+
+    		lp.add(lblCadastrarFlash, new Integer(9));
+    		lp.add(lblPalavrasChave, new Integer(10));
+    		lp.add(txtPalavrasChave, new Integer(11));
+    		lp.add(lblResumo, new Integer(12));
+    		lp.add(txtResumo, new Integer(13));
+    		lp.add(lblArquivoPNG, new Integer(14));
+    		lp.add(btnCadastrar, new Integer(15));
+    		lp.add(selecionePNG, new Integer(16));
+    		lp.add(selecionaPNG, new Integer(17));
+    		lp.add(lblTitulo, new Integer(18));
+    		lp.add(txtTitulo, new Integer(19));
+    		lp.add(btnVoltar, new Integer(20));
+
+    		
+    		setLayout(new BorderLayout());
+            add(lp, BorderLayout.CENTER);
+            btnLivros.setBorderPainted(false);
+            btnVideos.setBorderPainted(false);
+            btnAssuntos.setBorderPainted(false);
+            btnFlashcards.setBorderPainted(false);
+            btnCronograma.setBorderPainted(false);
+            btnCadastrar.setBorderPainted(false);
+		
+	}
+
+	private void definirEventos(Olimpiada olimp, Professor prof) {
+		
+		
+		
+		selecionePNG.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				selecionePNG.setText(null);
+				 int returnValue = selecionaPNG.showOpenDialog(null);
+
+	                if (returnValue == JFileChooser.APPROVE_OPTION) {
+	                	  File selectedFile = selecionaPNG.getSelectedFile();
+	                	  
+	                	  if(selectedFile == null) {
+	                		  //se nada for selecionado, continua na mesma
+	                	  }else {
+	                		 String fileName = selectedFile.getName();
+	  	  		            JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + selecionaPNG.getSelectedFile().getName());
+	  	  		        selecionePNG.setText(fileName);
+	                	  }
+	  		            
+	                }
+			}
+		});
+		
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					String titulo = String.valueOf(txtTitulo.getText());
+					String palavrasChave= String.valueOf(txtPalavrasChave.getText());
+		            String resumo = String.valueOf(txtResumo.getText());
+		            String emailProf= prof.getEmail();
+		            
+		            
+					File selectedFile = selecionaPNG.getSelectedFile();
+					if(txtTitulo.getText().isEmpty()&&txtPalavrasChave.getText().isEmpty()
+	                  		&&txtResumo.getText().isEmpty()&&selecionePNG.getText().isEmpty()
+	                  		||selectedFile == null&&selecionePNG.getText().equals("Selecione um arquivo PNG:")) {
+		            	
+		            	JOptionPane.showMessageDialog(null, "Não é possível cadastrar um flashcard sem os dados!");
+		            	
+		            }else if(txtTitulo.getText().isEmpty()&&txtPalavrasChave.getText().isEmpty()
+	                  		&&txtResumo.getText().isEmpty()) {
+	                  	
+	                  	JOptionPane.showMessageDialog(null, "Há campos Vazios! Não é possível cadastar o"
+	                  	+" flashcard sem todos os dados!");
+			             
+					}else if(selectedFile == null&&selecionePNG.getText().isEmpty()||selecionePNG.getText().equals("Selecione um arquivo PNG:")) {
+		             
+						JOptionPane.showMessageDialog(null, "Selecione um arquivo PNG para realizar o cadastro!");
+		             
+	                }else if(!selectedFile.getName().toLowerCase().endsWith(".png")){
+	             		
+	             		JOptionPane.showMessageDialog(null, "O arquivo selecionado não é um PNG."
+	      		            +" Não é possível cadastrar Flashcard!");
+	             	
+	                }else {
+				        
+				        // Chame o DAO para inserir o arquivo no banco de dados
+						FlashcardCONTROLLER controla = new FlashcardCONTROLLER();
+			            BufferedImage bufferedImage = ImageIO.read(selectedFile);
+						boolean FlashCadastrou = controla.cadastrar( titulo, resumo, palavrasChave, bufferedImage, emailProf);
+						boolean RelacionouFlash= controla.relacionarComOlimp(olimp, titulo);
+						
+						if(FlashCadastrou==false&&RelacionouFlash==false){
+							
+							JOptionPane.showMessageDialog(null, "Não foi possível cadastrar o flashcard!");
+							
+						}else if(FlashCadastrou==true&&RelacionouFlash==true) { //cadastrou
+							
+							JOptionPane.showMessageDialog(null, "Flashcard cadastrado com sucesso!");
+				            txtResumo.setText(null);
+				            txtTitulo.setText(null);
+				            txtPalavrasChave.setText(null);  
+				      		lblArquivoPNG.setText("Selecione um arquivo PNG:");
+							lp.repaint();
+						}
+	                }
+				}catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		lblPesquisar.addMouseListener(new MouseListener() {	
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				lp.remove(lblPesquisar);
+                repaint();			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				if (!lp.isAncestorOf(lblPesquisar)) {
+					lp.add(lblPesquisar, new Integer(26));
+                    repaint();
+                }
+			}
+        });
+        getContentPane().add(lp);
+		
+		
+		btnLivros.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnLivros.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnLivros.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnLivros.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaLivrosProf livro = new TelaLivrosProf(olimp, prof);
+				setVisible(false);
+
+			}
+		});
+		
+		btnAssuntos.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnAssuntos.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnAssuntos.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnAssuntos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TelaAssuntosProf video = new TelaAssuntosProf(olimp, prof);
+			     setVisible(false);
+
+			}
+		});
+		
+		btnVideos.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnVideos.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnVideos.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnVideos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaVideosProf videos = new TelaVideosProf(olimp, prof);
+			     setVisible(false);
+
+			}
+		});
+		
+		btnCronograma.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnCronograma.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+            	btnCronograma.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnCronograma.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			     setVisible(false);
+
+			}
+		});
+		
+		 btnVoltar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					TelaInicialProf tela = new TelaInicialProf(prof, true);
+				     setVisible(false);
+				}
+			});
+		
+	}
+
+}
