@@ -26,6 +26,7 @@ import java.util.Date;
 import controller.LivroCONTROLLER;
 import controller.OlimpiadaCONTROLLER;
 import dao.LivroDAO;
+import view.TelaInicialProf;
 import vo.Livro;
 import vo.Olimpiada;
 
@@ -40,6 +41,7 @@ public class TelaLivrosProf extends JFrame{
 	private JButton btnAssuntos;
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
+	private JButton btnVoltar;
 	
 	private JLabel lblCadastrarLivro;
 	private JLabel lblIsbn;
@@ -217,6 +219,14 @@ public class TelaLivrosProf extends JFrame{
 				camadas++;
 			}
 		}
+		
+		btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaPequenaRoxa.png"));
+		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnVoltar.setBorderPainted(false); // Remove a borda
+		btnVoltar.setFocusPainted(false);
+    	btnVoltar.setBounds(10, 650, 28,25);
+    	
 		//adiciona
 		contentPane.add(lp);
 
@@ -231,6 +241,7 @@ public class TelaLivrosProf extends JFrame{
 		lp.add(lblFiltro, new Integer(24));
 		lp.add(txtFiltro, new Integer(25));
 		lp.add(lblPesquisar, new Integer(26));
+		lp.add(btnVoltar, new Integer(27));
 		
 		
 		 // Primeira área (sem JScrollPane) CADASTRO
@@ -712,7 +723,8 @@ public class TelaLivrosProf extends JFrame{
 		btnFlashcards.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			     setVisible(false);
+				TelaFlashcardsProf assuntos = new TelaFlashcardsProf(olimp, prof);
+				setVisible(false);
 
 			}
 		});
@@ -752,6 +764,14 @@ public class TelaLivrosProf extends JFrame{
 
 			}
 		});
+		
+		 btnVoltar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					TelaInicialProf tela = new TelaInicialProf(prof, true);
+				     setVisible(false);
+				}
+			});
 		
 	}
 	public static boolean isInteger(String input) {
