@@ -1,4 +1,6 @@
 package dao;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,6 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
+import com.mysql.cj.jdbc.Blob;
 
 import conexaoBD.Conexao;
 import vo.Flashcard;
@@ -108,7 +114,7 @@ public class FlashcardDAO {
             // Processar o resultado
             while (resultSet.next()) {
             	InputStream inputStream = resultSet.getBinaryStream("imagem");
-                File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("titulo"));
+            	BufferedImage arquivo = criarArquivoAPartirDoBlob(resultSet.getString("imagem"));
 
                 Flashcard flash = new Flashcard(resultSet.getString("titulo"), resultSet.getString("resumo"),
 						 resultSet.getString("palavraChave"),arquivo, resultSet.getString("emailProf"));
@@ -128,32 +134,27 @@ public class FlashcardDAO {
     }
 	
 	//PARA PODER RETORNAR O ARQUIVO
-	private File criarArquivoAPartirDoBlob(InputStream inputStream, String tituloF) throws IOException {
+	public BufferedImage criarArquivoAPartirDoBlob(String tituloF) throws IOException {
 		Connection conn =  null;
 		conn = new Conexao().getConnection();
-	    File arquivo = null;
+		BufferedImage arquivo = null;
 	    try {
 	        PreparedStatement ps = conn.prepareStatement("SELECT titulo, imagem FROM Flashcards WHERE titulo = ?");
 	        ps.setString(1, tituloF);
 	        ResultSet rs = ps.executeQuery();
 	        
-	        if ( rs.next() ){
-	        	byte [] bytes = rs.getBytes("imagem");
-	            String titulo = rs.getString("titulo");
-
-	            //converte o array de bytes em file
-	            File diretorioDaAplicacao = new File(System.getProperty("user.dir"));
-	            arquivo = new File(diretorioDaAplicacao, "dados/"+titulo+".png");
-
-	            FileOutputStream fos = new FileOutputStream(arquivo);
-	            fos.write( bytes );
-	            fos.close();
+	        if ( rs.next() ){	        	
+	        	Blob blob = (Blob) rs.getBlob("imagem");
+                byte[] imageBytes = blob.getBytes(1, (int) blob.length());
+                
+                ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                arquivo= ImageIO.read(bis);
+	            
 	        }
 	} catch (SQLException ex) {
 	ex.printStackTrace();
-	}
-	catch (IOException ex) {
-	ex.printStackTrace();
+	} catch (IOException ex) {
+		ex.printStackTrace();
 	}
 	    return arquivo;
     }
@@ -181,8 +182,7 @@ public class FlashcardDAO {
 
 	        // Processar o resultado
 	        while (resultSet.next()) {
-	            InputStream inputStream = resultSet.getBinaryStream("imagem");
-	            File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("titulo"));
+	        	BufferedImage arquivo = criarArquivoAPartirDoBlob( resultSet.getString("titulo"));
 
 	            Flashcard flash = new Flashcard(resultSet.getString("titulo"), resultSet.getString("resumo"),
 						 resultSet.getString("palavraChave"),arquivo, resultSet.getString("emailProf"));
@@ -218,8 +218,7 @@ public class FlashcardDAO {
                 String resumo = resultSet.getString("resumo");
                 String palavrasChave = resultSet.getString("palavraChave");
                 String emailProf = resultSet.getString("emailProf");
-                InputStream inputStream = resultSet.getBinaryStream("imagem");
-	            File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("titulo"));
+                BufferedImage arquivo = criarArquivoAPartirDoBlob( resultSet.getString("imagem"));
 	            
 				flashcard = new Flashcard(tituloF, resumo, palavrasChave, arquivo, emailProf);
             }
