@@ -37,7 +37,8 @@ public class OlimpiadaDAO {
 					autenticado = true;
 				}
 				ps.close();
-				
+				rs.close();
+				conn.close();
 			 }catch(SQLException e) {
 				 autenticado=false;
 			 }
@@ -63,6 +64,9 @@ public class OlimpiadaDAO {
 
                olimp = new Olimpiada(nomeOlimp);
            }
+           resultSet.close();
+           preparedStatement.close();
+			conn.close();
        } catch (SQLException e) {
            e.printStackTrace();
        }
