@@ -46,6 +46,8 @@ public class VideoDAO {
 		            ps.setBytes(6, videoData);					
 					
 					int  linhasAfetadas= ps.executeUpdate();
+		            ps.close();
+					conn.close();
 					if(linhasAfetadas>0) {
 						return true;
 					}else {
@@ -94,6 +96,9 @@ public class VideoDAO {
 				 //adiciona o video na lista
 			     videos.add(video);
  			}
+            resultSet.close();
+            ps.close();
+			conn.close();
                
         } catch (SQLException e) {
             e.printStackTrace();
@@ -127,6 +132,9 @@ public class VideoDAO {
 	            fos.write( bytes );
 	            fos.close();
 	        }
+	        rs.close();
+            ps.close();
+			conn.close();
 	} catch (SQLException ex) {
 	ex.printStackTrace();
 	}
@@ -149,6 +157,8 @@ public class VideoDAO {
 				ps.setString(2, olimp.getNome());
 				
 				int  linhasAfetadas= ps.executeUpdate();
+	            ps.close();
+				conn.close();
 				if(linhasAfetadas>0) {
 					return true;
 				}else {
@@ -195,6 +205,9 @@ public class VideoDAO {
 	            // Adiciona o livro na lista
 				 videosPorNome.add(video);
 	        }
+	        resultSet.close();
+            ps.close();
+			conn.close();
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -238,6 +251,9 @@ public class VideoDAO {
 	            videosPorNome.add(video);
 	        }
 
+	        resultSet.close();
+            ps.close();
+			conn.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } catch (IOException e) {
@@ -260,6 +276,8 @@ public class VideoDAO {
 	        ps.setString(3, emailProf);
 
 	        int  linhasAfetadas= ps.executeUpdate();
+            ps.close();
+			conn.close();
 			if(linhasAfetadas>0) {
 				return true;
 			}else {
@@ -293,6 +311,9 @@ public class VideoDAO {
                 listaISBNRec.add(upc);
                 
             }
+            resultSet.close();
+            ps.close();
+			conn.close();
             
             return listaISBNRec;
 
@@ -324,6 +345,9 @@ public class VideoDAO {
                 listaTiTULORec.add(titulo);
                 
             }
+            resultSet.close();
+            ps.close();
+			conn.close();
 
             return listaTiTULORec;
 
