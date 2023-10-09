@@ -60,9 +60,7 @@ public class TelaFlashcardsProf extends JFrame{
     private JTextField txtTitulo;
     
     private Color roxoIndigo = new Color(75,0,130);
-    
-    private ArrayList<Component> componentesRetirar = new ArrayList<Component>();
-    
+        
     private ArrayList<Flashcard> flashsDaOlimpiada = new ArrayList<Flashcard>();
     
 
@@ -287,7 +285,6 @@ public class TelaFlashcardsProf extends JFrame{
         				lblCaixa.setBorder(borda);
         				lblCaixa.setBounds(xCaixa, yCaixa, 250, 155);
         				lp.add(lblCaixa, new Integer(camada+=1));
-        				componentesRetirar.add(lblCaixa);
 
         				
         				JLabel lblTituloF = new JLabel(f.getTitulo());
@@ -295,7 +292,6 @@ public class TelaFlashcardsProf extends JFrame{
         				lblTituloF.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
         				lblTituloF.setBounds(xTitulo, yTitulo, 100, 30);
         				lp.add(lblTituloF, new Integer(camada+=1));
-        				componentesRetirar.add(lblTituloF);
 
         				
         				JLabel lblPChaveF = new JLabel (f.getPalavrasChave());
@@ -303,7 +299,6 @@ public class TelaFlashcardsProf extends JFrame{
         				lblPChaveF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
         				lblPChaveF.setBounds(xPalavraChave, yPalavraChave, 150, 25);
         				lp.add(lblPChaveF, new Integer(camada+=1));
-        				componentesRetirar.add(lblPChaveF);
         				
         				JLabel lblEmailProfF = new JLabel("Professor:"+f.getEmailProf());
         				lblEmailProfF.setForeground(Color.BLACK);
@@ -311,7 +306,6 @@ public class TelaFlashcardsProf extends JFrame{
         				lblEmailProfF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
         				lblEmailProfF.setBounds(xEmailProf, yEmailProf, 200, 25);
         				lp.add(lblEmailProfF, new Integer(camada+=1));
-        				componentesRetirar.add(lblEmailProfF);
 
         				
         				JButton btnAcessar = new JButton("Acessar");
@@ -320,7 +314,6 @@ public class TelaFlashcardsProf extends JFrame{
         				btnAcessar.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
         				btnAcessar.setBounds(xBotao, yBotao, 150, 23);
         				lp.add(btnAcessar, new Integer(camada+=1));   
-        				componentesRetirar.add(btnAcessar);
 
         				
         				camada+=1;
@@ -336,6 +329,8 @@ public class TelaFlashcardsProf extends JFrame{
             				public void actionPerformed(ActionEvent e) {
             					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
             					flash.setVisible(true);
+            			        flash.setLocationRelativeTo(null);
+
             				}
             			});
             			
@@ -356,7 +351,6 @@ public class TelaFlashcardsProf extends JFrame{
         				lblCaixa.setBorder(borda);
         				lblCaixa.setBounds(xCaixa, yCaixa, 250, 155);
         				lp.add(lblCaixa, new Integer(camada+=1));
-        				componentesRetirar.add(lblCaixa);
 
         				
         				JLabel lblTituloF = new JLabel(f.getTitulo());
@@ -364,7 +358,6 @@ public class TelaFlashcardsProf extends JFrame{
         				lblTituloF.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
         				lblTituloF.setBounds(xTitulo, yTitulo, 100, 30);
         				lp.add(lblTituloF, new Integer(camada+=1));
-        				componentesRetirar.add(lblTituloF);
 
         				
         				JLabel lblPChaveF = new JLabel (f.getPalavrasChave());
@@ -372,7 +365,6 @@ public class TelaFlashcardsProf extends JFrame{
         				lblPChaveF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
         				lblPChaveF.setBounds(xPalavraChave, yPalavraChave, 150, 25);
         				lp.add(lblPChaveF, new Integer(camada+=1));
-        				componentesRetirar.add(lblPChaveF);
 
         				
         				JLabel lblEmailProfF = new JLabel("Professor:"+f.getEmailProf());
@@ -381,7 +373,6 @@ public class TelaFlashcardsProf extends JFrame{
         				lblEmailProfF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
         				lblEmailProfF.setBounds(xEmailProf, yEmailProf, 200, 25);
         				lp.add(lblEmailProfF, new Integer(camada+=1));
-        				componentesRetirar.add(lblEmailProfF);
 
         				
         				JButton btnAcessar = new JButton("Acessar");
@@ -390,9 +381,7 @@ public class TelaFlashcardsProf extends JFrame{
         				btnAcessar.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
         				btnAcessar.setBounds(xBotao, yBotao, 150, 23);
         				lp.add(btnAcessar, new Integer(camada+=1));
-        				componentesRetirar.add(btnAcessar);
 
-        				
 
         				camada+=1;
         				xCaixa+=270; 
@@ -408,6 +397,8 @@ public class TelaFlashcardsProf extends JFrame{
             				public void actionPerformed(ActionEvent e) {
             					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
             					flash.setVisible(true);
+            			        flash.setLocationRelativeTo(null);
+
             				}
             			});
         			}
@@ -430,14 +421,7 @@ public class TelaFlashcardsProf extends JFrame{
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				String titulo = "%" + txtFiltro.getText() + "%";
-				
-				for(Component componente : componentesRetirar) {
-					lp.remove(componente);
-					lp.revalidate();
-			        lp.repaint();
-				}
-	           
+				String titulo = "%" + txtFiltro.getText() + "%";           
 	            
 				int camada=60;
 	    		int xCaixa=75; //tamanho da caixa 200 por 155
@@ -510,6 +494,8 @@ public class TelaFlashcardsProf extends JFrame{
             				public void actionPerformed(ActionEvent e) {
             					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
             					flash.setVisible(true);
+            			        flash.setLocationRelativeTo(null);
+
             				}
             			});
             			
@@ -576,6 +562,8 @@ public class TelaFlashcardsProf extends JFrame{
             				public void actionPerformed(ActionEvent e) {
             					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
             					flash.setVisible(true);
+            			        flash.setLocationRelativeTo(null);
+
             				}
             			});
         			}
