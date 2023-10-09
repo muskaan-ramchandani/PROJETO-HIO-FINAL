@@ -2,14 +2,19 @@ package view.TelasGuiOlimpiadasProf;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.FlashcardCONTROLLER;
+import controller.VideoCONTROLLER;
+import view.ExibirFlashcard;
 import view.TelaInicialProf;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,10 +22,13 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 
+import vo.Flashcard;
 import vo.Olimpiada;
 import vo.Professor;
+import vo.Video;
 
 public class TelaFlashcardsProf extends JFrame{
 
@@ -52,6 +60,11 @@ public class TelaFlashcardsProf extends JFrame{
     private JTextField txtTitulo;
     
     private Color roxoIndigo = new Color(75,0,130);
+    
+    private ArrayList<Component> componentesRetirar = new ArrayList<Component>();
+    
+    private ArrayList<Flashcard> flashsDaOlimpiada = new ArrayList<Flashcard>();
+    
 
 	public TelaFlashcardsProf(Olimpiada olimp, Professor prof) {
 		inicializarComponentes(olimp, prof);
@@ -65,10 +78,7 @@ public class TelaFlashcardsProf extends JFrame{
 		setBounds(0, 0, screenSize.width, screenSize.height-40);
 		contentPane=getContentPane();
         contentPane.setBackground(Color.white);
-        
-        //configução exibição flashs
-        //
-        
+                
       //inicializa
       		lp= new JLayeredPane();
       		barra= new JMenuBar();
@@ -232,7 +242,8 @@ public class TelaFlashcardsProf extends JFrame{
     		lp.add(lblTitulo, new Integer(18));
     		lp.add(txtTitulo, new Integer(19));
     		lp.add(btnVoltar, new Integer(20));
-
+    		
+    		
     		
     		setLayout(new BorderLayout());
             add(lp, BorderLayout.CENTER);
@@ -242,11 +253,347 @@ public class TelaFlashcardsProf extends JFrame{
             btnFlashcards.setBorderPainted(false);
             btnCronograma.setBorderPainted(false);
             btnCadastrar.setBorderPainted(false);
+            
+          //configução exibição flashs
+      	    FlashcardCONTROLLER controla = new FlashcardCONTROLLER();
+    		flashsDaOlimpiada= controla.retornaFlashOlimpiada(olimp);
+    		
+    		int camada=25;
+    		int xCaixa=75; //tamanho da caixa 200 por 155
+    		int yCaixa=200;
+    		int xTitulo=170;
+    		int yTitulo=200;
+    		int xPalavraChave=85;
+    		int yPalavraChave=250;
+    		int xEmailProf=85;
+    		int yEmailProf=275;
+    		int xBotao=125;
+    		int yBotao=315;
+
+    		
+    		int cont=1;
+    		
+    		if(flashsDaOlimpiada.size()==0) {
+    			JLabel lblNaoTem = new JLabel("<html>Não há flashcards cadastrados<br>     nesta olimpíada<html>");
+    			lblNaoTem.setForeground(Color.BLACK);
+    			lblNaoTem.setFont(new Font("Trebuchet MS", Font.BOLD, 30));
+    			lblNaoTem.setBounds(100, 350, 1000, 70);
+    			lp.add(lblNaoTem, new Integer(30));
+    		}else {
+    			for(Flashcard f : flashsDaOlimpiada) {
+        			if(cont<=2) {//ainda está dentro do limite, apenas muda X
+        				JLabel lblCaixa= new JLabel("");
+        				Border borda = BorderFactory.createLineBorder(roxoIndigo, 1);
+        				lblCaixa.setBorder(borda);
+        				lblCaixa.setBounds(xCaixa, yCaixa, 250, 155);
+        				lp.add(lblCaixa, new Integer(camada+=1));
+        				componentesRetirar.add(lblCaixa);
+
+        				
+        				JLabel lblTituloF = new JLabel(f.getTitulo());
+        				lblTituloF.setForeground(Color.BLACK);
+        				lblTituloF.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+        				lblTituloF.setBounds(xTitulo, yTitulo, 100, 30);
+        				lp.add(lblTituloF, new Integer(camada+=1));
+        				componentesRetirar.add(lblTituloF);
+
+        				
+        				JLabel lblPChaveF = new JLabel (f.getPalavrasChave());
+        				lblPChaveF.setForeground(Color.BLACK);
+        				lblPChaveF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				lblPChaveF.setBounds(xPalavraChave, yPalavraChave, 150, 25);
+        				lp.add(lblPChaveF, new Integer(camada+=1));
+        				componentesRetirar.add(lblPChaveF);
+        				
+        				JLabel lblEmailProfF = new JLabel("Professor:"+f.getEmailProf());
+        				lblEmailProfF.setForeground(Color.BLACK);
+        				lblEmailProfF.setBackground(new Color(220,220,220));
+        				lblEmailProfF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				lblEmailProfF.setBounds(xEmailProf, yEmailProf, 200, 25);
+        				lp.add(lblEmailProfF, new Integer(camada+=1));
+        				componentesRetirar.add(lblEmailProfF);
+
+        				
+        				JButton btnAcessar = new JButton("Acessar");
+        				btnAcessar.setForeground(Color.WHITE);
+        				btnAcessar.setBackground(roxoIndigo);
+        				btnAcessar.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
+        				btnAcessar.setBounds(xBotao, yBotao, 150, 23);
+        				lp.add(btnAcessar, new Integer(camada+=1));   
+        				componentesRetirar.add(btnAcessar);
+
+        				
+        				camada+=1;
+        				xCaixa+=270; 
+        	    		xTitulo+=270;
+        	    		xPalavraChave+=270;
+        	    		xEmailProf+=270;
+        	    		xBotao+=270;
+            			cont++;
+        	    		
+            			btnAcessar.addActionListener(new ActionListener() {
+            				@Override
+            				public void actionPerformed(ActionEvent e) {
+            					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
+            					flash.setVisible(true);
+            				}
+            			});
+            			
+        			}else { //passou do limite, voltam às configurações normais, porém agora y é maior
+        				xCaixa=75; 
+        	    		yCaixa+=200;
+        	    		xTitulo=170;
+        	    		yTitulo+=200;
+        	    		xPalavraChave=85;
+        	    		yPalavraChave+=200;
+        	    		xEmailProf=85;
+        	    		yEmailProf+=200;
+        	    		xBotao=125;
+        	    		yBotao+=200;
+        				
+        	    		JLabel lblCaixa= new JLabel("");
+        				Border borda = BorderFactory.createLineBorder(roxoIndigo, 1);
+        				lblCaixa.setBorder(borda);
+        				lblCaixa.setBounds(xCaixa, yCaixa, 250, 155);
+        				lp.add(lblCaixa, new Integer(camada+=1));
+        				componentesRetirar.add(lblCaixa);
+
+        				
+        				JLabel lblTituloF = new JLabel(f.getTitulo());
+        				lblTituloF.setForeground(Color.BLACK);
+        				lblTituloF.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+        				lblTituloF.setBounds(xTitulo, yTitulo, 100, 30);
+        				lp.add(lblTituloF, new Integer(camada+=1));
+        				componentesRetirar.add(lblTituloF);
+
+        				
+        				JLabel lblPChaveF = new JLabel (f.getPalavrasChave());
+        				lblPChaveF.setForeground(Color.BLACK);
+        				lblPChaveF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				lblPChaveF.setBounds(xPalavraChave, yPalavraChave, 150, 25);
+        				lp.add(lblPChaveF, new Integer(camada+=1));
+        				componentesRetirar.add(lblPChaveF);
+
+        				
+        				JLabel lblEmailProfF = new JLabel("Professor:"+f.getEmailProf());
+        				lblEmailProfF.setForeground(Color.BLACK);
+        				lblEmailProfF.setBackground(new Color(220,220,220));
+        				lblEmailProfF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				lblEmailProfF.setBounds(xEmailProf, yEmailProf, 200, 25);
+        				lp.add(lblEmailProfF, new Integer(camada+=1));
+        				componentesRetirar.add(lblEmailProfF);
+
+        				
+        				JButton btnAcessar = new JButton("Acessar");
+        				btnAcessar.setForeground(Color.WHITE);
+        				btnAcessar.setBackground(roxoIndigo);
+        				btnAcessar.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
+        				btnAcessar.setBounds(xBotao, yBotao, 150, 23);
+        				lp.add(btnAcessar, new Integer(camada+=1));
+        				componentesRetirar.add(btnAcessar);
+
+        				
+
+        				camada+=1;
+        				xCaixa+=270; 
+        	    		xTitulo+=270;
+        	    		xPalavraChave+=270;
+        	    		xEmailProf+=270;
+        	    		xBotao+=270;
+        	    		
+            			cont=1;
+            			
+            			btnAcessar.addActionListener(new ActionListener() {
+            				@Override
+            				public void actionPerformed(ActionEvent e) {
+            					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
+            					flash.setVisible(true);
+            				}
+            			});
+        			}
+        		}
+    		}
+    		
+    		
+    		//
 		
 	}
 
 	private void definirEventos(Olimpiada olimp, Professor prof) {
 		
+		txtFiltro.addKeyListener((KeyListener) new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				String titulo = "%" + txtFiltro.getText() + "%";
+				
+				for(Component componente : componentesRetirar) {
+					lp.remove(componente);
+					lp.revalidate();
+			        lp.repaint();
+				}
+	           
+	            
+				int camada=60;
+	    		int xCaixa=75; //tamanho da caixa 200 por 155
+	    		int yCaixa=200;
+	    		int xTitulo=170;
+	    		int yTitulo=200;
+	    		int xPalavraChave=85;
+	    		int yPalavraChave=250;
+	    		int xEmailProf=85;
+	    		int yEmailProf=275;
+	    		int xBotao=125;
+	    		int yBotao=315;
+	    		
+	    		
+	    		int cont=1;
+		    	
+	            
+			    FlashcardCONTROLLER controller = new FlashcardCONTROLLER();
+			    ArrayList<Flashcard> lista = controller.consultarFlashcardsPorTitulo(titulo, olimp);
+
+			    for(Flashcard f : flashsDaOlimpiada) {
+        			if(cont<=2) {//ainda está dentro do limite, apenas muda X
+        				JLabel lblCaixa= new JLabel("");
+        				Border borda = BorderFactory.createLineBorder(roxoIndigo, 1);
+        				lblCaixa.setBorder(borda);
+        				lblCaixa.setBounds(xCaixa, yCaixa, 250, 155);
+        				lp.add(lblCaixa, new Integer(camada+=1));
+
+        				
+        				JLabel lblTituloF = new JLabel(f.getTitulo());
+        				lblTituloF.setForeground(Color.BLACK);
+        				lblTituloF.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+        				lblTituloF.setBounds(xTitulo, yTitulo, 100, 30);
+        				lp.add(lblTituloF, new Integer(camada+=1));
+
+        				
+        				JLabel lblPChaveF = new JLabel (f.getPalavrasChave());
+        				lblPChaveF.setForeground(Color.BLACK);
+        				lblPChaveF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				lblPChaveF.setBounds(xPalavraChave, yPalavraChave, 150, 25);
+        				lp.add(lblPChaveF, new Integer(camada+=1));
+
+        				
+        				JLabel lblEmailProfF = new JLabel("Professor:"+f.getEmailProf());
+        				lblEmailProfF.setForeground(Color.BLACK);
+        				lblEmailProfF.setBackground(new Color(220,220,220));
+        				lblEmailProfF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				lblEmailProfF.setBounds(xEmailProf, yEmailProf, 200, 25);
+        				lp.add(lblEmailProfF, new Integer(camada+=1));
+
+        				
+        				JButton btnAcessar = new JButton("Acessar");
+        				btnAcessar.setForeground(Color.WHITE);
+        				btnAcessar.setBackground(roxoIndigo);
+        				btnAcessar.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
+        				btnAcessar.setBounds(xBotao, yBotao, 150, 23);
+        				lp.add(btnAcessar, new Integer(camada+=1));        		
+
+        				
+        				camada+=1;
+        				xCaixa+=270; 
+        	    		xTitulo+=270;
+        	    		xPalavraChave+=270;
+        	    		xEmailProf+=270;
+        	    		xBotao+=270;
+            			cont++;
+        	    		
+            			btnAcessar.addActionListener(new ActionListener() {
+            				@Override
+            				public void actionPerformed(ActionEvent e) {
+            					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
+            					flash.setVisible(true);
+            				}
+            			});
+            			
+        			}else { //passou do limite, voltam às configurações normais, porém agora y é maior
+        				xCaixa=75; 
+        	    		yCaixa+=200;
+        	    		xTitulo=170;
+        	    		yTitulo+=200;
+        	    		xPalavraChave=85;
+        	    		yPalavraChave+=200;
+        	    		xEmailProf=85;
+        	    		yEmailProf+=200;
+        	    		xBotao=125;
+        	    		yBotao+=200;
+        				
+        	    		JLabel lblCaixa= new JLabel("");
+        				Border borda = BorderFactory.createLineBorder(roxoIndigo, 1);
+        				lblCaixa.setBorder(borda);
+        				lblCaixa.setBounds(xCaixa, yCaixa, 250, 155);
+        				lp.add(lblCaixa, new Integer(camada+=1));
+
+        				
+        				JLabel lblTituloF = new JLabel(f.getTitulo());
+        				lblTituloF.setForeground(Color.BLACK);
+        				lblTituloF.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+        				lblTituloF.setBounds(xTitulo, yTitulo, 100, 30);
+        				lp.add(lblTituloF, new Integer(camada+=1));
+
+        				
+        				JLabel lblPChaveF = new JLabel (f.getPalavrasChave());
+        				lblPChaveF.setForeground(Color.BLACK);
+        				lblPChaveF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				lblPChaveF.setBounds(xPalavraChave, yPalavraChave, 150, 25);
+        				lp.add(lblPChaveF, new Integer(camada+=1));
+
+        				
+        				JLabel lblEmailProfF = new JLabel("Professor:"+f.getEmailProf());
+        				lblEmailProfF.setForeground(Color.BLACK);
+        				lblEmailProfF.setBackground(new Color(220,220,220));
+        				lblEmailProfF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				lblEmailProfF.setBounds(xEmailProf, yEmailProf, 200, 25);
+        				lp.add(lblEmailProfF, new Integer(camada+=1));
+
+        				
+        				JButton btnAcessar = new JButton("Acessar");
+        				btnAcessar.setForeground(Color.WHITE);
+        				btnAcessar.setBackground(roxoIndigo);
+        				btnAcessar.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
+        				btnAcessar.setBounds(xBotao, yBotao, 150, 23);
+        				lp.add(btnAcessar, new Integer(camada+=1));
+
+        				
+
+        				camada+=1;
+        				xCaixa+=270; 
+        	    		xTitulo+=270;
+        	    		xPalavraChave+=270;
+        	    		xEmailProf+=270;
+        	    		xBotao+=270;
+        	    		
+            			cont=1;
+            			
+            			btnAcessar.addActionListener(new ActionListener() {
+            				public void actionPerformed(ActionEvent e) {
+            					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
+            					flash.setVisible(true);
+            				}
+            			});
+        			}
+        		}
+	    		
+	    			
+		    	}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			
+
+			});	
+
 		
 		
 		selecionePNG.addActionListener(new ActionListener() {
