@@ -29,7 +29,8 @@ public class AlunoDAO {
 			ps.setString(4, aluno.getSenha());
 
 			ps.execute();
-			
+			ps.close();
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -51,7 +52,8 @@ public class AlunoDAO {
 			ps.setString(2, aluno.getEmail());
 
 			ps.execute();
-			
+			ps.close();
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -75,7 +77,9 @@ public class AlunoDAO {
                  olimpiadas.add(nomeOlimp);
             }
             
-        
+            ps.close();
+            resultSet.close();
+			conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -106,6 +110,8 @@ public class AlunoDAO {
 				autenticado = true;
 			}
 			ps.close();
+			rs.close();
+			conn.close();
 			return autenticado;
 			
 		 }catch(SQLException e) {
@@ -132,11 +138,14 @@ public class AlunoDAO {
 			stmt.executeUpdate();
 			
 			int linhasAfetadas= stmt.executeUpdate();
+			conn.close();
+			stmt.close();
 			if(linhasAfetadas>0){
 	            return true;
 			}else {
 	            return false;
 			}			
+			
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -157,6 +166,9 @@ public class AlunoDAO {
 			stmt.executeUpdate();
 			
 			int linhasAfetadas= stmt.executeUpdate();
+
+			stmt.close();
+			conn.close();
 			if(linhasAfetadas>0){
 	            return true;
 			}else {
@@ -191,6 +203,9 @@ public class AlunoDAO {
             preparedStatement.setString(1, email);
             int usuarioExcluido = preparedStatement.executeUpdate();
             
+            preparedStatement.close();
+			conn.close();
+
             if (registrosExcluidos > 0 && usuarioExcluido > 0) {
                 // Confirma a transação se todas as operações foram bem-sucedidas
                 conn.commit();
@@ -229,6 +244,9 @@ public class AlunoDAO {
 
                 aluno = new Aluno(nomeCompleto, nomeUsuario, email1, senha );
             }
+            resultSet.close();
+            preparedStatement.close();
+			conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
