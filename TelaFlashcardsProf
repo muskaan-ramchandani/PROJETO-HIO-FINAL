@@ -62,6 +62,11 @@ public class TelaFlashcardsProf extends JFrame{
     private Color roxoIndigo = new Color(75,0,130);
         
     private ArrayList<Flashcard> flashsDaOlimpiada = new ArrayList<Flashcard>();
+    JLabel[] vetCaixa;
+	JLabel[] vetTitulo;
+	JLabel[] vetPChave;
+	JLabel[] vetEmailProf;
+	JButton[] vetAcessar;
     
 
 	public TelaFlashcardsProf(Olimpiada olimp, Professor prof) {
@@ -256,6 +261,12 @@ public class TelaFlashcardsProf extends JFrame{
       	    FlashcardCONTROLLER controla = new FlashcardCONTROLLER();
     		flashsDaOlimpiada= controla.retornaFlashOlimpiada(olimp);
     		
+    		vetCaixa = new JLabel[flashsDaOlimpiada.size()];
+			vetTitulo = new JLabel[flashsDaOlimpiada.size()];
+			vetPChave = new JLabel[flashsDaOlimpiada.size()];
+			vetEmailProf = new JLabel[flashsDaOlimpiada.size()];
+			vetAcessar = new JButton[flashsDaOlimpiada.size()];
+			
     		int camada=25;
     		int xCaixa=75; //tamanho da caixa 200 por 155
     		int yCaixa=200;
@@ -268,7 +279,7 @@ public class TelaFlashcardsProf extends JFrame{
     		int xBotao=125;
     		int yBotao=315;
 
-    		
+    		int indice=0;
     		int cont=1;
     		
     		if(flashsDaOlimpiada.size()==0) {
@@ -280,40 +291,43 @@ public class TelaFlashcardsProf extends JFrame{
     		}else {
     			for(Flashcard f : flashsDaOlimpiada) {
         			if(cont<=2) {//ainda está dentro do limite, apenas muda X
-        				JLabel lblCaixa= new JLabel("");
+        				
+
+
+        				vetCaixa[indice]= new JLabel("");
         				Border borda = BorderFactory.createLineBorder(roxoIndigo, 1);
-        				lblCaixa.setBorder(borda);
-        				lblCaixa.setBounds(xCaixa, yCaixa, 250, 155);
-        				lp.add(lblCaixa, new Integer(camada+=1));
+        				vetCaixa[indice].setBorder(borda);
+        				vetCaixa[indice].setBounds(xCaixa, yCaixa, 250, 155);
+        				lp.add(vetCaixa[indice], new Integer(camada+=1));
 
         				
-        				JLabel lblTituloF = new JLabel(f.getTitulo());
-        				lblTituloF.setForeground(Color.BLACK);
-        				lblTituloF.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
-        				lblTituloF.setBounds(xTitulo, yTitulo, 100, 30);
-        				lp.add(lblTituloF, new Integer(camada+=1));
+        				vetTitulo[indice] = new JLabel(f.getTitulo());
+        				vetTitulo[indice].setForeground(Color.BLACK);
+        				vetTitulo[indice].setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+        				vetTitulo[indice].setBounds(xTitulo, yTitulo, 100, 30);
+        				lp.add(vetTitulo[indice], new Integer(camada+=1));
 
         				
-        				JLabel lblPChaveF = new JLabel (f.getPalavrasChave());
-        				lblPChaveF.setForeground(Color.BLACK);
-        				lblPChaveF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
-        				lblPChaveF.setBounds(xPalavraChave, yPalavraChave, 150, 25);
-        				lp.add(lblPChaveF, new Integer(camada+=1));
+        				vetPChave[indice] = new JLabel (f.getPalavrasChave());
+        				vetPChave[indice].setForeground(Color.BLACK);
+        				vetPChave[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				vetPChave[indice].setBounds(xPalavraChave, yPalavraChave, 150, 25);
+        				lp.add(vetPChave[indice], new Integer(camada+=1));
         				
-        				JLabel lblEmailProfF = new JLabel("Professor:"+f.getEmailProf());
-        				lblEmailProfF.setForeground(Color.BLACK);
-        				lblEmailProfF.setBackground(new Color(220,220,220));
-        				lblEmailProfF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
-        				lblEmailProfF.setBounds(xEmailProf, yEmailProf, 200, 25);
-        				lp.add(lblEmailProfF, new Integer(camada+=1));
+        				vetEmailProf[indice] = new JLabel("Professor:"+f.getEmailProf());
+        				vetEmailProf[indice].setForeground(Color.BLACK);
+        				vetEmailProf[indice].setBackground(new Color(220,220,220));
+        				vetEmailProf[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				vetEmailProf[indice].setBounds(xEmailProf, yEmailProf, 200, 25);
+        				lp.add(vetEmailProf[indice], new Integer(camada+=1));
 
         				
-        				JButton btnAcessar = new JButton("Acessar");
-        				btnAcessar.setForeground(Color.WHITE);
-        				btnAcessar.setBackground(roxoIndigo);
-        				btnAcessar.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
-        				btnAcessar.setBounds(xBotao, yBotao, 150, 23);
-        				lp.add(btnAcessar, new Integer(camada+=1));   
+        				vetAcessar[indice] = new JButton("Acessar");
+        				vetAcessar[indice].setForeground(Color.WHITE);
+        				vetAcessar[indice].setBackground(roxoIndigo);
+        				vetAcessar[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
+        				vetAcessar[indice].setBounds(xBotao, yBotao, 150, 23);
+        				lp.add(vetAcessar[indice], new Integer(camada+=1));   
 
         				
         				camada+=1;
@@ -324,7 +338,7 @@ public class TelaFlashcardsProf extends JFrame{
         	    		xBotao+=270;
             			cont++;
         	    		
-            			btnAcessar.addActionListener(new ActionListener() {
+            			vetAcessar[indice].addActionListener(new ActionListener() {
             				@Override
             				public void actionPerformed(ActionEvent e) {
             					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
@@ -346,41 +360,40 @@ public class TelaFlashcardsProf extends JFrame{
         	    		xBotao=125;
         	    		yBotao+=200;
         				
-        	    		JLabel lblCaixa= new JLabel("");
+        	    		vetCaixa[indice]= new JLabel("");
         				Border borda = BorderFactory.createLineBorder(roxoIndigo, 1);
-        				lblCaixa.setBorder(borda);
-        				lblCaixa.setBounds(xCaixa, yCaixa, 250, 155);
-        				lp.add(lblCaixa, new Integer(camada+=1));
+        				vetCaixa[indice].setBorder(borda);
+        				vetCaixa[indice].setBounds(xCaixa, yCaixa, 250, 155);
+        				lp.add(vetCaixa[indice], new Integer(camada+=1));
 
         				
-        				JLabel lblTituloF = new JLabel(f.getTitulo());
-        				lblTituloF.setForeground(Color.BLACK);
-        				lblTituloF.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
-        				lblTituloF.setBounds(xTitulo, yTitulo, 100, 30);
-        				lp.add(lblTituloF, new Integer(camada+=1));
+        				vetTitulo[indice] = new JLabel(f.getTitulo());
+        				vetTitulo[indice].setForeground(Color.BLACK);
+        				vetTitulo[indice].setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+        				vetTitulo[indice].setBounds(xTitulo, yTitulo, 100, 30);
+        				lp.add(vetTitulo[indice], new Integer(camada+=1));
 
         				
-        				JLabel lblPChaveF = new JLabel (f.getPalavrasChave());
-        				lblPChaveF.setForeground(Color.BLACK);
-        				lblPChaveF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
-        				lblPChaveF.setBounds(xPalavraChave, yPalavraChave, 150, 25);
-        				lp.add(lblPChaveF, new Integer(camada+=1));
+        				vetPChave[indice] = new JLabel (f.getPalavrasChave());
+        				vetPChave[indice].setForeground(Color.BLACK);
+        				vetPChave[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				vetPChave[indice].setBounds(xPalavraChave, yPalavraChave, 150, 25);
+        				lp.add(vetPChave[indice], new Integer(camada+=1));
+        				
+        				vetEmailProf[indice] = new JLabel("Professor:"+f.getEmailProf());
+        				vetEmailProf[indice].setForeground(Color.BLACK);
+        				vetEmailProf[indice].setBackground(new Color(220,220,220));
+        				vetEmailProf[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				vetEmailProf[indice].setBounds(xEmailProf, yEmailProf, 200, 25);
+        				lp.add(vetEmailProf[indice], new Integer(camada+=1));
 
         				
-        				JLabel lblEmailProfF = new JLabel("Professor:"+f.getEmailProf());
-        				lblEmailProfF.setForeground(Color.BLACK);
-        				lblEmailProfF.setBackground(new Color(220,220,220));
-        				lblEmailProfF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
-        				lblEmailProfF.setBounds(xEmailProf, yEmailProf, 200, 25);
-        				lp.add(lblEmailProfF, new Integer(camada+=1));
-
-        				
-        				JButton btnAcessar = new JButton("Acessar");
-        				btnAcessar.setForeground(Color.WHITE);
-        				btnAcessar.setBackground(roxoIndigo);
-        				btnAcessar.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
-        				btnAcessar.setBounds(xBotao, yBotao, 150, 23);
-        				lp.add(btnAcessar, new Integer(camada+=1));
+        				vetAcessar[indice] = new JButton("Acessar");
+        				vetAcessar[indice].setForeground(Color.WHITE);
+        				vetAcessar[indice].setBackground(roxoIndigo);
+        				vetAcessar[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
+        				vetAcessar[indice].setBounds(xBotao, yBotao, 150, 23);
+        				lp.add(vetAcessar[indice], new Integer(camada+=1));
 
 
         				camada+=1;
@@ -392,7 +405,7 @@ public class TelaFlashcardsProf extends JFrame{
         	    		
             			cont=1;
             			
-            			btnAcessar.addActionListener(new ActionListener() {
+            			vetAcessar[indice].addActionListener(new ActionListener() {
             				@Override
             				public void actionPerformed(ActionEvent e) {
             					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
@@ -402,6 +415,7 @@ public class TelaFlashcardsProf extends JFrame{
             				}
             			});
         			}
+        			indice++;
         		}
     		}
     		
@@ -435,50 +449,72 @@ public class TelaFlashcardsProf extends JFrame{
 	    		int xBotao=125;
 	    		int yBotao=315;
 	    		
-	    		
-	    		int cont=1;
+	    		for (JLabel label : vetCaixa) {
+				    lp.remove(label); // Remove cada JLabel do JLayeredPane
+				}
+				for (JLabel label : vetTitulo) {
+				    lp.remove(label); // Remove cada JLabel do JLayeredPane
+				}
+				for (JLabel label : vetPChave) {
+				    lp.remove(label); // Remove cada JLabel do JLayeredPane
+				}
+				for (JLabel label : vetEmailProf) {
+				    lp.remove(label); // Remove cada JLabel do JLayeredPane
+				}
+				for (JButton but : vetAcessar) {
+				    lp.remove(but); // Remove cada JLabel do JLayeredPane
+				}
+		    	lp.repaint();
 		    	
-	            
+	    		int cont=1;
+	    		int indice=0;
+	    		
+
 			    FlashcardCONTROLLER controller = new FlashcardCONTROLLER();
 			    ArrayList<Flashcard> lista = controller.consultarFlashcardsPorTitulo(titulo, olimp);
+			    
+			    vetCaixa = new JLabel[lista.size()];
+				vetTitulo = new JLabel[lista.size()];
+				vetPChave = new JLabel[lista.size()];
+				vetEmailProf = new JLabel[lista.size()];
+				vetAcessar = new JButton[lista.size()];
 
-			    for(Flashcard f : flashsDaOlimpiada) {
+			    for(Flashcard f : lista) {
         			if(cont<=2) {//ainda está dentro do limite, apenas muda X
-        				JLabel lblCaixa= new JLabel("");
+        				vetCaixa[indice]= new JLabel("");
         				Border borda = BorderFactory.createLineBorder(roxoIndigo, 1);
-        				lblCaixa.setBorder(borda);
-        				lblCaixa.setBounds(xCaixa, yCaixa, 250, 155);
-        				lp.add(lblCaixa, new Integer(camada+=1));
+        				vetCaixa[indice].setBorder(borda);
+        				vetCaixa[indice].setBounds(xCaixa, yCaixa, 250, 155);
+        				lp.add(vetCaixa[indice], new Integer(camada+=1));
 
         				
-        				JLabel lblTituloF = new JLabel(f.getTitulo());
-        				lblTituloF.setForeground(Color.BLACK);
-        				lblTituloF.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
-        				lblTituloF.setBounds(xTitulo, yTitulo, 100, 30);
-        				lp.add(lblTituloF, new Integer(camada+=1));
+        				vetTitulo[indice] = new JLabel(f.getTitulo());
+        				vetTitulo[indice].setForeground(Color.BLACK);
+        				vetTitulo[indice].setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+        				vetTitulo[indice].setBounds(xTitulo, yTitulo, 100, 30);
+        				lp.add(vetTitulo[indice], new Integer(camada+=1));
 
         				
-        				JLabel lblPChaveF = new JLabel (f.getPalavrasChave());
-        				lblPChaveF.setForeground(Color.BLACK);
-        				lblPChaveF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
-        				lblPChaveF.setBounds(xPalavraChave, yPalavraChave, 150, 25);
-        				lp.add(lblPChaveF, new Integer(camada+=1));
+        				vetPChave[indice] = new JLabel (f.getPalavrasChave());
+        				vetPChave[indice].setForeground(Color.BLACK);
+        				vetPChave[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				vetPChave[indice].setBounds(xPalavraChave, yPalavraChave, 150, 25);
+        				lp.add(vetPChave[indice], new Integer(camada+=1));
+        				
+        				vetEmailProf[indice] = new JLabel("Professor:"+f.getEmailProf());
+        				vetEmailProf[indice].setForeground(Color.BLACK);
+        				vetEmailProf[indice].setBackground(new Color(220,220,220));
+        				vetEmailProf[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				vetEmailProf[indice].setBounds(xEmailProf, yEmailProf, 200, 25);
+        				lp.add(vetEmailProf[indice], new Integer(camada+=1));
 
         				
-        				JLabel lblEmailProfF = new JLabel("Professor:"+f.getEmailProf());
-        				lblEmailProfF.setForeground(Color.BLACK);
-        				lblEmailProfF.setBackground(new Color(220,220,220));
-        				lblEmailProfF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
-        				lblEmailProfF.setBounds(xEmailProf, yEmailProf, 200, 25);
-        				lp.add(lblEmailProfF, new Integer(camada+=1));
-
-        				
-        				JButton btnAcessar = new JButton("Acessar");
-        				btnAcessar.setForeground(Color.WHITE);
-        				btnAcessar.setBackground(roxoIndigo);
-        				btnAcessar.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
-        				btnAcessar.setBounds(xBotao, yBotao, 150, 23);
-        				lp.add(btnAcessar, new Integer(camada+=1));        		
+        				vetAcessar[indice] = new JButton("Acessar");
+        				vetAcessar[indice].setForeground(Color.WHITE);
+        				vetAcessar[indice].setBackground(roxoIndigo);
+        				vetAcessar[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
+        				vetAcessar[indice].setBounds(xBotao, yBotao, 150, 23);
+        				lp.add(vetAcessar[indice], new Integer(camada+=1));          		
 
         				
         				camada+=1;
@@ -489,7 +525,7 @@ public class TelaFlashcardsProf extends JFrame{
         	    		xBotao+=270;
             			cont++;
         	    		
-            			btnAcessar.addActionListener(new ActionListener() {
+            			vetAcessar[indice].addActionListener(new ActionListener() {
             				@Override
             				public void actionPerformed(ActionEvent e) {
             					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
@@ -511,41 +547,40 @@ public class TelaFlashcardsProf extends JFrame{
         	    		xBotao=125;
         	    		yBotao+=200;
         				
-        	    		JLabel lblCaixa= new JLabel("");
+        	    		vetCaixa[indice]= new JLabel("");
         				Border borda = BorderFactory.createLineBorder(roxoIndigo, 1);
-        				lblCaixa.setBorder(borda);
-        				lblCaixa.setBounds(xCaixa, yCaixa, 250, 155);
-        				lp.add(lblCaixa, new Integer(camada+=1));
+        				vetCaixa[indice].setBorder(borda);
+        				vetCaixa[indice].setBounds(xCaixa, yCaixa, 250, 155);
+        				lp.add(vetCaixa[indice], new Integer(camada+=1));
 
         				
-        				JLabel lblTituloF = new JLabel(f.getTitulo());
-        				lblTituloF.setForeground(Color.BLACK);
-        				lblTituloF.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
-        				lblTituloF.setBounds(xTitulo, yTitulo, 100, 30);
-        				lp.add(lblTituloF, new Integer(camada+=1));
+        				vetTitulo[indice] = new JLabel(f.getTitulo());
+        				vetTitulo[indice].setForeground(Color.BLACK);
+        				vetTitulo[indice].setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+        				vetTitulo[indice].setBounds(xTitulo, yTitulo, 100, 30);
+        				lp.add(vetTitulo[indice], new Integer(camada+=1));
 
         				
-        				JLabel lblPChaveF = new JLabel (f.getPalavrasChave());
-        				lblPChaveF.setForeground(Color.BLACK);
-        				lblPChaveF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
-        				lblPChaveF.setBounds(xPalavraChave, yPalavraChave, 150, 25);
-        				lp.add(lblPChaveF, new Integer(camada+=1));
+        				vetPChave[indice] = new JLabel (f.getPalavrasChave());
+        				vetPChave[indice].setForeground(Color.BLACK);
+        				vetPChave[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				vetPChave[indice].setBounds(xPalavraChave, yPalavraChave, 150, 25);
+        				lp.add(vetPChave[indice], new Integer(camada+=1));
+        				
+        				vetEmailProf[indice] = new JLabel("Professor:"+f.getEmailProf());
+        				vetEmailProf[indice].setForeground(Color.BLACK);
+        				vetEmailProf[indice].setBackground(new Color(220,220,220));
+        				vetEmailProf[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        				vetEmailProf[indice].setBounds(xEmailProf, yEmailProf, 200, 25);
+        				lp.add(vetEmailProf[indice], new Integer(camada+=1));
 
         				
-        				JLabel lblEmailProfF = new JLabel("Professor:"+f.getEmailProf());
-        				lblEmailProfF.setForeground(Color.BLACK);
-        				lblEmailProfF.setBackground(new Color(220,220,220));
-        				lblEmailProfF.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
-        				lblEmailProfF.setBounds(xEmailProf, yEmailProf, 200, 25);
-        				lp.add(lblEmailProfF, new Integer(camada+=1));
-
-        				
-        				JButton btnAcessar = new JButton("Acessar");
-        				btnAcessar.setForeground(Color.WHITE);
-        				btnAcessar.setBackground(roxoIndigo);
-        				btnAcessar.setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
-        				btnAcessar.setBounds(xBotao, yBotao, 150, 23);
-        				lp.add(btnAcessar, new Integer(camada+=1));
+        				vetAcessar[indice] = new JButton("Acessar");
+        				vetAcessar[indice].setForeground(Color.WHITE);
+        				vetAcessar[indice].setBackground(roxoIndigo);
+        				vetAcessar[indice].setFont(new Font("Trebuchet MS", Font.PLAIN, 17));
+        				vetAcessar[indice].setBounds(xBotao, yBotao, 150, 23);
+        				lp.add(vetAcessar[indice], new Integer(camada+=1));   
 
         				
 
@@ -558,7 +593,7 @@ public class TelaFlashcardsProf extends JFrame{
         	    		
             			cont=1;
             			
-            			btnAcessar.addActionListener(new ActionListener() {
+            			vetAcessar[indice].addActionListener(new ActionListener() {
             				public void actionPerformed(ActionEvent e) {
             					ExibirFlashcard flash = new ExibirFlashcard(f.getTitulo());
             					flash.setVisible(true);
@@ -567,6 +602,7 @@ public class TelaFlashcardsProf extends JFrame{
             				}
             			});
         			}
+        			indice++;
         		}
 	    		
 	    			
