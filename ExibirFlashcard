@@ -83,10 +83,4 @@ public class ExibirFlashcard extends JFrame{
 			ex.printStackTrace();
 		}
 	}
-	
-	public static void main(String[]args) {
-		String titulo = "Mitose";
-		ExibirFlashcard flash = new ExibirFlashcard(titulo);
-		flash.setVisible(true);
-	}
 }
