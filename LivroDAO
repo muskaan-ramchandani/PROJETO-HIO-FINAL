@@ -52,12 +52,14 @@ public class LivroDAO {
 		            ps.setBytes(7, bytes);
 										
 					int  linhasAfetadas= ps.executeUpdate();
+		            ps.close();
+					conn.close();
 					if(linhasAfetadas>0) {
 						return true;
 					}else {
 						return false;
 					}
-					
+		           
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -82,6 +84,8 @@ public class LivroDAO {
 				ps.setString(2, olimp.getNome());
 				
 				int  linhasAfetadas= ps.executeUpdate();
+	            ps.close();
+				conn.close();
 				if(linhasAfetadas>0) {
 					return true;
 				}else {
@@ -128,6 +132,9 @@ public class LivroDAO {
 				 //adiciona o video na lista
 			     livros.add(livro);
  			}
+            resultSet.close();
+            ps.close();
+			conn.close();
                
         } catch (SQLException e) {
             e.printStackTrace();
@@ -161,6 +168,9 @@ public class LivroDAO {
 	            fos.write( bytes );
 	            fos.close();
 	        }
+	        rs.close();
+            ps.close();
+			conn.close();
 	} catch (SQLException ex) {
 	ex.printStackTrace();
 	}
@@ -204,7 +214,9 @@ public class LivroDAO {
 	            // Adiciona o livro na lista
 	            livrosPorNome.add(livro);
 	        }
-
+	        resultSet.close();
+            ps.close();
+			conn.close();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } catch (IOException e) {
@@ -247,6 +259,9 @@ public class LivroDAO {
 	            // Adiciona o livro na lista
 	            livrosPorNome.add(livro);
 	        }
+	        resultSet.close();
+            ps.close();
+			conn.close();
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -270,6 +285,8 @@ public class LivroDAO {
 	        ps.setString(3, emailProf);
 
 	        int  linhasAfetadas= ps.executeUpdate();
+            ps.close();
+			conn.close();
 			if(linhasAfetadas>0) {
 				return true;
 			}else {
@@ -301,6 +318,9 @@ public class LivroDAO {
                 listaISBNRec.add(isbn);
                 
             }
+            resultSet.close();
+            ps.close();
+			conn.close();
             return listaISBNRec;
 
 
@@ -331,6 +351,9 @@ public class LivroDAO {
                 listaTiTULORec.add(titulo);
                 
             }
+            resultSet.close();
+            ps.close();
+			conn.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
