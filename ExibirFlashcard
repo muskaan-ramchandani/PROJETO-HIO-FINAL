@@ -41,12 +41,16 @@ public class ExibirFlashcard extends JFrame{
 	        contentPane.setBackground(new Color(220,220,220));
 	        
 	        //inicializa
+	        String textoResumo="<html>"+flash.getResumo()+"<html>";
+
 	        lp= new JLayeredPane();
 	        panelBranco = new JPanel();
 	        lblTitulo = new JLabel(titulo);
-	        lblResumo= new JLabel(flash.getResumo());
+	        lblResumo= new JLabel(textoResumo);
 	        palavrasChave = new JLabel("Palavras-chave:"+flash.getPalavrasChave());
 	        
+	        lblResumo.setHorizontalAlignment(JLabel.CENTER); // Centraliza horizontalmente
+	        lblResumo.setVerticalAlignment(JLabel.CENTER);
 	        
 	        BufferedImage fotoPNG = dao.criarArquivoAPartirDoBlob(titulo);
 	        lblImagem = new JLabel(new ImageIcon(fotoPNG));
@@ -67,10 +71,10 @@ public class ExibirFlashcard extends JFrame{
 	        panelBranco.setBounds(17, 20, 450, 570);
 	        lblTitulo.setBounds(180, 30, 300, 45);
 	        lblImagem.setBounds(100, 130, 250, 250);
-	        lblResumo.setBounds(50, 385, 250, 150);
-	        palavrasChave.setBounds(110, 80,300, 25);
+	        lblResumo.setBounds(50, 375, 400, 250);
+	        palavrasChave.setBounds(115, 80,300, 25);
 	        
-	        
+
 	        //adiciona
 	        contentPane.add(lp);
 	        lp.add(panelBranco, new Integer(1));
