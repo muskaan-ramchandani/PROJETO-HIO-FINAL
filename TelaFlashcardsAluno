@@ -1,6 +1,4 @@
 package Projeto_testes;
-
-
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 
@@ -9,118 +7,118 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class FlashcardAluno extends JFrame{
-	private Container contentPane;
-	private JLayeredPane lp;
-	private JMenuBar Barra;
-	private JLabel lblLogo;
-	private JLabel lblNomeOlimp;
-	private JButton btnLivros;
-	private JButton btnVideos;
-	private JButton btnAssuntos;
-	private JButton btnFlashcards;
-	private JButton btnCronograma;
-	private JTextField PesLivro;
-	private JLabel lblFunil;
-	private JLabel EspacoMaior;
-	
-	public FlashcardAluno() {
-		inicializarComponentes();
-		
-	}
-	private void inicializarComponentes() {
-		//instanciação
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		Dimension screenSize = toolkit.getScreenSize();
-		setBounds(0, 0, screenSize.width, screenSize.height-40);
-		contentPane=getContentPane();
+public class TelaFlashcardAluno extends JFrame {
+    private Container contentPane;
+    private JLayeredPane lp;
+    private JMenuBar Barra;
+    private JLabel lblLogo;
+    private JLabel lblNomeOlimp;
+    private JButton btnLivros;
+    private JButton btnVideos;
+    private JButton btnAssuntos;
+    private JButton btnFlashcards;
+    private JButton btnCronograma;
+    private JTextField PesLivro;
+    private JLabel lblFunil;
+    
+    private ArrayList<JLabel> espacoFlashcards;
+    private JLabel EspacoImagemFlashcard;
+    private JLabel txtPalavraChave;
+    private JLabel txtEmailProf;
+    private JButton Acessa;
+
+    public FlashcardAluno() {
+        inicializarComponentes();
+        espacoFlashcards = new ArrayList<>();
+        criarFlashcards(6);
+    }
+
+    private void inicializarComponentes() {
+        // Instanciação
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+        setBounds(0, 0, screenSize.width, screenSize.height - 40);
+        contentPane = getContentPane();
         contentPane.setBackground(Color.white);
-        //setLayout(null);
         lp = new JLayeredPane();
         Barra = new JMenuBar();
-        lblLogo  = new JLabel(new ImageIcon("C:\\Breno\\bonequinhoSFMEDIO.png"));
-        btnLivros = new JButton("<html><u>Livros</u></html>"); //Sublinhado
-		btnVideos= new JButton("<html><u>Videos</u></html>");
-		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
-		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
-		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
-		PesLivro = new JTextField("     Pesquisa Video");
-		lblFunil= new JLabel(new ImageIcon("C:\\Breno\\funil.png"));
-		
-		EspacoMaior = new JLabel();
-		
-		//tira o foco ao aperta o botão
-		btnLivros.setFocusPainted(false);
-		btnVideos.setFocusPainted(false);
-		btnAssuntos.setFocusPainted(false);
-		btnFlashcards.setFocusPainted(false);
-		btnCronograma.setFocusPainted(false);
-		
-		
-		//definir as cores
-		Color roxoIndigo = new Color(75,0,130);
+        lblLogo = new JLabel(new ImageIcon("C:\\Breno\\bonequinhoSFMEDIO.png"));
+        btnLivros = new JButton("<html><u>Livros</u></html>"); // Sublinhado
+        btnVideos = new JButton("<html><u>Videos</u></html>");
+        btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
+        btnFlashcards = new JButton("<html><u>Flashcards</u></html>");
+        btnCronograma = new JButton("<html><u>Cronograma</u></html>");
+        PesLivro = new JTextField("     Pesquisa Video");
+        lblFunil = new JLabel(new ImageIcon("C:\\Breno\\funil.png"));
+
+
+        // Tira o foco ao apertar o botão
+        btnLivros.setFocusPainted(false);
+        btnVideos.setFocusPainted(false);
+        btnAssuntos.setFocusPainted(false);
+        btnFlashcards.setFocusPainted(false);
+        btnCronograma.setFocusPainted(false);
+       
+
+        // Definir as cores
+        Color roxoIndigo = new Color(75, 0, 130);
         Barra.setBackground(roxoIndigo);
         btnLivros.setBackground(roxoIndigo);
-		btnLivros.setForeground(Color.WHITE);
-		btnVideos.setBackground(roxoIndigo);
-		btnVideos.setForeground(Color.WHITE);
-		btnAssuntos.setBackground(roxoIndigo);
-		btnAssuntos.setForeground(Color.WHITE);
-		btnFlashcards.setBackground(roxoIndigo);
-		btnFlashcards.setForeground(Color.WHITE);
-		btnCronograma.setBackground(roxoIndigo);
-		btnCronograma.setForeground(Color.WHITE);
-		
-		
+        btnLivros.setForeground(Color.WHITE);
+        btnVideos.setBackground(roxoIndigo);
+        btnVideos.setForeground(Color.WHITE);
+        btnAssuntos.setBackground(roxoIndigo);
+        btnAssuntos.setForeground(Color.WHITE);
+        btnFlashcards.setBackground(roxoIndigo);
+        btnFlashcards.setForeground(Color.WHITE);
+        btnCronograma.setBackground(roxoIndigo);
+        btnCronograma.setForeground(Color.WHITE);
 
-		EspacoMaior.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
-		EspacoMaior.setBackground(Color.WHITE);
-		EspacoMaior.setForeground(Color.BLACK);
-        
-		PesLivro.setBorder(BorderFactory.createLineBorder(roxoIndigo, 2)); // Cria uma borda de 2 pixels de largura em preto
-		
-		
-		//definir as fontes
-		Font fonteBarra = new Font("Trebuchet MS", Font.PLAIN, 21);
-		btnLivros.setFont(fonteBarra);
-		btnVideos.setFont(fonteBarra);
-		btnAssuntos.setFont(fonteBarra);
-		btnFlashcards.setFont(fonteBarra);
-		btnCronograma.setFont(fonteBarra);     
-		EspacoMaior.setFont(fonteBarra); 
-		
-		
-		Font fonteLabelsDesc = new Font( "Trebuchet MS", Font.PLAIN, 35);
-		PesLivro.setFont(fonteLabelsDesc);
-		
-		
-		//definir as posições
-        Barra.setBounds(0,0,screenSize.width, 50); 
-        lblLogo.setBounds(10,5,44,35);
-        btnLivros.setBounds(235,7, 100, 35);
-		btnVideos.setBounds(403,7,100,35);
-		btnAssuntos.setBounds(578,7,100,35);
-		btnFlashcards.setBounds(765,7,130,35);
-		btnCronograma.setBounds(980,7,130,35);
-		PesLivro.setBounds(200,100,950,60);
-		lblFunil.setBounds(200,105,55,55);
-		EspacoMaior.setBounds(100,200,320,220);
-		
-		
-		//adicionar a interface
+
+        PesLivro.setBorder(BorderFactory.createLineBorder(roxoIndigo, 2)); // Cria uma borda de 2 pixels de largura em preto
+
+        // Definir as fontes
+        Font fonteBarra = new Font("Trebuchet MS", Font.PLAIN, 21);
+        btnLivros.setFont(fonteBarra);
+        btnVideos.setFont(fonteBarra);
+        btnAssuntos.setFont(fonteBarra);
+        btnFlashcards.setFont(fonteBarra);
+        btnCronograma.setFont(fonteBarra);
+
+
+        Font fonteLabelsDesc = new Font("Trebuchet MS", Font.PLAIN, 35);
+        PesLivro.setFont(fonteLabelsDesc);
+
+        // Definir as posições
+        Barra.setBounds(0, 0, screenSize.width, 50);
+        lblLogo.setBounds(10, 5, 44, 35);
+        btnLivros.setBounds(235, 7, 100, 35);
+        btnVideos.setBounds(403, 7, 100, 35);
+        btnAssuntos.setBounds(578, 7, 100, 35);
+        btnFlashcards.setBounds(765, 7, 130, 35);
+        btnCronograma.setBounds(980, 7, 130, 35);
+        PesLivro.setBounds(200, 100, 950, 60);
+        lblFunil.setBounds(200, 105, 55, 55);
+
+
+
+        // Adicionar a interface
         contentPane.add(lp);
         lp.add(Barra, new Integer(1));
         lp.add(lblLogo, new Integer(2));
         lp.add(btnLivros, new Integer(4));
-		lp.add(btnVideos, new Integer(5));
-		lp.add(btnAssuntos, new Integer(6));
-		lp.add(btnFlashcards, new Integer(7));
-		lp.add(btnCronograma, new Integer(8));
-		lp.add(PesLivro, new Integer(9));
-		lp.add(lblFunil, new Integer(10));
-		lp.add(EspacoMaior, new Integer(110));
-		
-		//tirar bordar
+        lp.add(btnVideos, new Integer(5));
+        lp.add(btnAssuntos, new Integer(6));
+        lp.add(btnFlashcards, new Integer(7));
+        lp.add(btnCronograma, new Integer(8));
+        lp.add(PesLivro, new Integer(9));
+        lp.add(lblFunil, new Integer(10));
+
+
+        
+        
+
+        // Tirar bordar
         setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
         btnLivros.setBorderPainted(false);
@@ -128,19 +126,88 @@ public class FlashcardAluno extends JFrame{
         btnAssuntos.setBorderPainted(false);
         btnFlashcards.setBorderPainted(false);
         btnCronograma.setBorderPainted(false);
+       
 
         setVisible(true);
-	}
-	public static void abrir() {
-		FlashcardAluno frame = new FlashcardAluno();
+    }
+
+    public static void abrir() {
+        TelaFlashcardAluno frame = new TelaFlashcardAluno();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((tela.width - frame.getSize().width)/2,(tela.height - frame.getSize().height)/2);
+        frame.setLocation((tela.width - frame.getSize().width) / 2, (tela.height - frame.getSize().height) / 2);
         frame.setVisible(true);
     }
-   
+
     public static void main(String[] args) {
         abrir();
     }
-	
+
+    private void criarFlashcards(int numFlashcards) {
+        int x = 100; // Posição inicial X
+        int y = 200; // Posição inicial Y
+        int flashcardsPorLinha = 0; // Contador de flashcards por linha
+
+        for (int i = 0; i < numFlashcards; i++) {
+            JLabel espacoFlashcard = new JLabel();
+            espacoFlashcard.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75, 0, 130), 3));
+            espacoFlashcard.setBackground(Color.WHITE);
+            espacoFlashcard.setForeground(Color.BLACK);
+            espacoFlashcard.setBounds(x, y, 320, 220);
+            espacoFlashcard = criarEspacoFlashcard(espacoFlashcard);
+            
+            espacoFlashcards.add(espacoFlashcard); // Adicione o flashcard à ArrayList
+
+            lp.add(espacoFlashcard, new Integer(11)); // Adicionar ao JLayeredPane
+
+            // Atualizar as posições X e Y para o próximo flashcard
+            x += 420; // Distância entre flashcards (320 + 100)
+            flashcardsPorLinha++;
+
+            // Se atingir 3 flashcards por linha, pular para a próxima linha
+            if (flashcardsPorLinha == 3) {
+                x = 100; // Reiniciar na posição inicial X
+                y += 250; // Distância vertical entre linhas
+                flashcardsPorLinha = 0; // Resetar o contador
+            }
+        }
+    }
+
+    private JLabel criarEspacoFlashcard(JLabel espacoFlashcard) {
+        // Configurar os elementos dentro do EspacoFlashcard como desejado
+        // EspacoImagemFlashcard, txtPalavraChave, txtEmailProf, Acessa, etc.
+        // Defina as bordas, cores, fontes, etc.
+
+        // Exemplo de configuração do EspacoImagemFlashcard
+        EspacoImagemFlashcard = new JLabel();
+        EspacoImagemFlashcard.setBounds(19, 20, 120, 138);
+        EspacoImagemFlashcard.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75, 0, 130), 3));
+        EspacoImagemFlashcard.setBackground(Color.DARK_GRAY);
+        EspacoImagemFlashcard.setForeground(Color.BLACK);
+        espacoFlashcard.add(EspacoImagemFlashcard);
+
+        // Exemplo de configuração do txtPalavraChave
+        txtPalavraChave = new JLabel("Palavras-chaves");
+        txtPalavraChave.setBounds(150, 20, 200, 40);
+        txtPalavraChave.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        espacoFlashcard.add(txtPalavraChave);
+
+        // Exemplo de configuração do txtEmailProf
+        txtEmailProf = new JLabel("Email-prof");
+        txtEmailProf.setBounds(150, 100, 200, 40);
+        txtEmailProf.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+        espacoFlashcard.add(txtEmailProf);
+
+        // Exemplo de configuração do Acessa
+        Acessa = new JButton("Acessa");
+        Acessa.setFont(new Font("Trebuchet MS", Font.PLAIN, 21));
+        Acessa.setBounds(80, 170, 150, 40);
+        Acessa.setBackground(new Color(75, 0, 130));
+        Acessa.setForeground(Color.WHITE);
+        Acessa.setFocusPainted(false);
+        Acessa.setBorderPainted(false);
+        espacoFlashcard.add(Acessa);
+
+        return espacoFlashcard;
+    }
 }
