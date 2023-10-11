@@ -298,7 +298,7 @@ public class GuiOlimpiadasAluno extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				TelaFlashcardsAluno flashcards = new TelaFlashcardsAluno(olimp, aluno);
 				setVisible(false);
-
+				flashcards.setVisible(true);
 			}
 		});
 		
