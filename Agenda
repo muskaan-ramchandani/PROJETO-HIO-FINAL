@@ -1,0 +1,58 @@
+package vo;
+import javax.swing.*;
+import java.util.*;
+import java.time.*;
+
+public class Agenda {
+
+	private Date dataSemana;
+	private String diaSemana;
+	private String atividade;
+	private String emailAluno;
+	
+	public Agenda(Date dataSemana, String diaSemana, String atividade, String emailAluno) {
+		setDataSemana(dataSemana);
+		setDiaSemana(diaSemana);
+		setAtividade(atividade);
+		setEmailAluno(emailAluno);
+	}
+
+	public Date getDataSemana() {
+		return dataSemana;
+	}
+
+	public void setDataSemana(Date dataSemana) {
+		this.dataSemana = dataSemana;
+	}
+
+	public String getDiaSemana() {
+		return diaSemana;
+	}
+
+	public void setDiaSemana(String diaSemana) {
+		this.diaSemana = diaSemana;
+	}
+
+	public String getAtividade() {
+		return atividade;
+	}
+
+	public void setAtividade(String atividade) {
+		this.atividade = atividade;
+	}
+
+	public String getEmailAluno() {
+		return emailAluno;
+	}
+
+	public void setEmailAluno(String emailAluno) {
+		this.emailAluno = emailAluno;
+	}
+	
+	
+}
+/*id INT AUTO_INCREMENT NOT NULL,
+	dataSemana DATE NOT NUll,
+    diaSemana VARCHAR(14) NOT NULL,
+    atividade VARCHAR(200),
+    emailAluno VARCHAR(100) NOT NULL,*/
