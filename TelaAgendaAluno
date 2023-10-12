@@ -1,0 +1,202 @@
+package view;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.*;
+import java.time.*;
+
+import vo.Aluno;
+import controller.AgendaCONTROLLER;
+import controller.AlunoCONTROLLER;
+//implementar dao dde agenda
+
+
+//por meio dessa classe deve ser possivel que o aluno edite/adicione/exclua eventos da sua agenda e visualize eles
+//deve ser implementada uma função para que a semana seja atualizada
+//ideia 1: atualiza automaticamnete
+//ideia 2: botao de atualizar semana
+
+public class TelaAgendaAluno extends JFrame{
+
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JMenuBar barra;
+	private JButton btnVoltar;
+	private JLabel lblMinhaAgenda;
+	private JLabel lblMes;
+	private JButton btnIniciar;
+	private JButton btnAdicionarAtividade;
+	private JButton btnApagar;
+	private JLabel lblInicieSuaAgenda;
+	
+	AgendaCONTROLLER controla = new AgendaCONTROLLER();
+	
+	public TelaAgendaAluno(Aluno aluno) {
+		inicializarComponentes(aluno);
+		definirEventos(aluno);
+		setVisible(true);
+	}
+
+	private void inicializarComponentes(Aluno aluno) {
+		//configura tela
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+		contentPane=getContentPane();
+        contentPane.setBackground(Color.white);
+        
+		//inicializa
+		lp=new JLayeredPane();
+		barra =new JMenuBar();
+		
+		btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaVoltarPequena.png"));
+		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnVoltar.setBorderPainted(false); // Remove a borda
+		btnVoltar.setFocusPainted(false);
+		
+		btnIniciar= new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnIniciarAgenda.png"));
+		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnVoltar.setBorderPainted(false); // Remove a borda
+		btnVoltar.setFocusPainted(false);
+		
+		btnAdicionarAtividade= new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnAdicionarAtv.png"));
+		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnVoltar.setBorderPainted(false); // Remove a borda
+		btnVoltar.setFocusPainted(false);
+		
+		btnApagar= new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnDeletardadosAgenda.png"));
+		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnVoltar.setBorderPainted(false); // Remove a borda
+		btnVoltar.setFocusPainted(false);
+		
+		
+		lblMinhaAgenda= new JLabel("Minha Agenda");
+		lblInicieSuaAgenda = new JLabel("Inicie sua agenda no botão de iniciar");
+		lblMes = new JLabel();
+        
+		//cores
+		Color roxoIndigo=new Color(75,0,130);
+		barra.setBackground(roxoIndigo);
+		lblMinhaAgenda.setForeground(Color.WHITE);
+		lblMes.setForeground(Color.BLACK);
+		lblInicieSuaAgenda.setForeground(Color.BLACK);
+		
+		//fontes
+		lblMinhaAgenda.setFont(new Font("Trebuchet MS", Font.BOLD, 23));
+		lblMes.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+		lblInicieSuaAgenda.setFont(new Font("Trebuchet MS", Font.BOLD, 30));
+		
+		//coordenadas
+	    barra.setBounds(0,0,screenSize.width, 50);
+    	btnVoltar.setBounds(10, 12, 28,25);
+    	lblMinhaAgenda.setBounds(400, 12, 150, 26);
+    	lblMes.setBounds(100, 150, 200, 25);
+    	lblInicieSuaAgenda.setBounds(100, 350, 300, 40);
+    	btnIniciar.setBounds(500, 150, 31, 30);
+		btnAdicionarAtividade.setBounds(550, 150, 31, 30);
+		btnApagar.setBounds(600, 150, 31, 30);
+
+    	//adiciona
+    	contentPane.add(lp);
+    	lp.add(barra, new Integer(1));
+    	lp.add(btnVoltar, new Integer(2));
+    	lp.add(lblMinhaAgenda, new Integer(3));
+    	lp.add(lblMes, new Integer(4));
+    	lp.add(lblInicieSuaAgenda, new Integer(5));
+    	lp.add(btnIniciar, new Integer(6));
+    	lp.add(btnAdicionarAtividade, new Integer(7));
+    	lp.add(btnApagar, new Integer(8));
+    	
+    	setLayout(new BorderLayout());
+        add(lp, BorderLayout.CENTER);
+        btnIniciar.setBorderPainted(false);
+        btnVoltar.setBorderPainted(false);
+        btnAdicionarAtividade.setBorderPainted(false);
+        btnApagar.setBorderPainted(false);
+
+		
+	}
+
+	private void definirEventos(Aluno aluno) {
+		
+		btnVoltar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaInicialAluno tela = new TelaInicialAluno(aluno, true);
+			     setVisible(false);
+			}
+		});
+		
+	}
+}
+
+
+/*//CONFIGURAÇÕES REFERENTES A DATAS E MÊS
+		LocalDate dataAtual = LocalDate.now();
+        LocalDate dataFinalDaSemana = dataAtual.with(DayOfWeek.SUNDAY); // Encontre o próximo domingo
+        
+        ArrayList<LocalDate> datasDaSemana = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+        	LocalDate data=dataFinalDaSemana.plusDays(i);
+        	String diaSemana = String.valueOf(data.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("pt", "BR")));
+        	int mesAtualNumero= data.getMonthValue();
+        	String mes=null;
+        	
+        	if(mesAtualNumero==1) {
+        		mes="Janeiro";
+        	}else if(mesAtualNumero==2) {
+        		mes="Fevereiro";
+        	}else if(mesAtualNumero==3) {
+        		mes="Março";
+
+        	}else if(mesAtualNumero==4) {
+        		mes="Abril";
+
+        	}else if(mesAtualNumero==5) {
+        		mes="Maio";
+
+        	}else if(mesAtualNumero==6) {
+        		mes="Junho";
+
+        	}else if(mesAtualNumero==7) {
+        		mes="Julho";
+
+        	}else if(mesAtualNumero==8) {
+        		mes="Agosto";
+
+        	}else if(mesAtualNumero==9) {
+        		mes="Setembro";
+
+        	}else if(mesAtualNumero==10) {
+        		mes="Outubro";
+
+        	}else if(mesAtualNumero==11) {
+        		mes="Novembro";
+
+        	}else if(mesAtualNumero==12) {
+        		mes="Dezembro";
+
+        	}
+        	
+            datasDaSemana.add(data);
+            
+            controla.iniciarAgenda(data, diaSemana,mes, aluno.getEmail());
+            
+        }
+//	public void iniciarAgenda(Date dataSemana, String diaSemana, String mes, String emailAluno) {
+
+        // Imprima as datas da semana
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        for (LocalDate data : datasDaSemana) {
+            System.out.println(data.format(formato));
+        }
+		
+        //FIM DATA E MES*/
