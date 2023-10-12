@@ -5,24 +5,26 @@ import java.time.*;
 
 public class Agenda {
 
-	private Date dataSemana;
+	private LocalDate dataSemana;
 	private String diaSemana;
+	private String mes;
 	private String atividade;
 	private String emailAluno;
 	
-	public Agenda(Date dataSemana, String diaSemana, String atividade, String emailAluno) {
+	public Agenda(LocalDate dataSemana, String diaSemana, String mes, String atividade, String emailAluno) {
 		setDataSemana(dataSemana);
 		setDiaSemana(diaSemana);
+		setMes(mes);
 		setAtividade(atividade);
 		setEmailAluno(emailAluno);
 	}
 
-	public Date getDataSemana() {
+	public LocalDate getDataSemana() {
 		return dataSemana;
 	}
 
-	public void setDataSemana(Date dataSemana) {
-		this.dataSemana = dataSemana;
+	public void setDataSemana(LocalDate dataSemana2) {
+		this.dataSemana = dataSemana2;
 	}
 
 	public String getDiaSemana() {
@@ -31,6 +33,14 @@ public class Agenda {
 
 	public void setDiaSemana(String diaSemana) {
 		this.diaSemana = diaSemana;
+	}
+
+	public String getMes() {
+		return mes;
+	}
+
+	public void setMes(String mes) {
+		this.mes = mes;
 	}
 
 	public String getAtividade() {
