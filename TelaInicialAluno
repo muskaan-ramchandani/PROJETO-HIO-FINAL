@@ -333,6 +333,7 @@ public class TelaInicialAluno extends JFrame{
 		btnAgenda.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				TelaAgendaAluno agenda = new TelaAgendaAluno(aluno);
 			     setVisible(false);
 			}
 			 
