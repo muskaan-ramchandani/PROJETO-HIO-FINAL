@@ -81,6 +81,7 @@ CREATE TABLE Flashcards(
     FOREIGN KEY(emailProf) REFERENCES Professor(email)
 );
 
+
 CREATE TABLE OlimpiadaFlashcards(
 	tituloFlash VARCHAR(100) NOT NULL,
 	nomeOlimpiada VARCHAR(7) NOT NULL,
@@ -146,6 +147,15 @@ CREATE TABLE HistoricoOlimpiadasProf(
 	FOREIGN KEY(nomeOlimp) REFERENCES Olimpiada(nome)
 );
 
+CREATE TABLE AgendaAluno(
+	id INT AUTO_INCREMENT NOT NULL,
+	dataSemana DATE NOT NUll,
+    diaSemana VARCHAR(14) NOT NULL,
+    mes VARCHAR(9) NOT NULL,
+    atividade VARCHAR(200),
+    emailAluno VARCHAR(100) NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(emailAluno) REFERENCES Aluno(email)
+);
 #SET FOREIGN_KEY_CHECKS=1;
-
 #DELETE FROM Video Where emailProf='juju@gmail.com';
