@@ -15,6 +15,7 @@ import java.awt.Toolkit;
 import javax.swing.border.AbstractBorder;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 public class TelaCronogramaAluno extends JFrame {
 	private Container contentPane;
@@ -56,12 +57,18 @@ public class TelaCronogramaAluno extends JFrame {
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
 		
-		modelo = new DefaultTableModel(new String[]{"Nome", "janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"}, 0);
-		//modelo.addColumn("Nome");
-		//modelo.addColumn("Data");
-		modelo.addRow(new Object[]{"Inicio inscrição", "10"});
-		modelo.addRow(new Object[]{"Fim da inscrição",null , "10"});
-		tabela = new JTable(modelo);
+		modelo = new DefaultTableModel(new String[]{"Nome", "janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"}, 0) {
+	           @Override
+	           public boolean isCellEditable(int row, int column) {
+	               return false; // Isso torna todas as células não editáveis
+	           }
+	       };
+
+	    modelo.addRow(new Object[]{"Inicio inscrição", "10"});
+	    modelo.addRow(new Object[]{"Fim da inscrição", null, "10"});
+
+	    tabela = new JTable(modelo);
+		
 		scrollPane = new JScrollPane(tabela);
 		
 		//tira o foco ao aperta o botão
