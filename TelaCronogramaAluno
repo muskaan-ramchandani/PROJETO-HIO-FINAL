@@ -1,0 +1,144 @@
+package Projeto_testes;
+
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
+
+import javax.swing.border.AbstractBorder;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+public class TelaCronogramaAluno extends JFrame {
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JMenuBar Barra;
+	private JLabel lblLogo;
+	private JLabel lblNomeOlimp;
+	private JButton btnLivros;
+	private JButton btnVideos;
+	private JButton btnAssuntos;
+	private JButton btnFlashcards;
+	private JButton btnCronograma;
+	private DefaultTableModel modelo;
+	private JTable tabela;
+	private JScrollPane scrollPane;
+	
+	
+	public TelaCronogramaAluno() {
+		inicializarComponentes();
+	}
+	
+	
+	private void inicializarComponentes() {
+		//instanciação
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+		contentPane=getContentPane();
+		contentPane.setBackground(Color.white);
+		setLayout(null);
+		
+		
+		lp = new JLayeredPane();
+        Barra = new JMenuBar();
+        lblLogo  = new JLabel(new ImageIcon("C:\\Breno\\bonequinhoSFMEDIO.png"));
+        btnLivros = new JButton("<html><u>Livros</u></html>"); //Sublinhado
+		btnVideos= new JButton("<html><u>Videos</u></html>");
+		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
+		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
+		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
+		
+		modelo = new DefaultTableModel(new String[]{"Nome", "janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"}, 0);
+		//modelo.addColumn("Nome");
+		//modelo.addColumn("Data");
+		modelo.addRow(new Object[]{"Inicio inscrição", "10"});
+		modelo.addRow(new Object[]{"Fim da inscrição",null , "10"});
+		tabela = new JTable(modelo);
+		scrollPane = new JScrollPane(tabela);
+		
+		//tira o foco ao aperta o botão
+		btnLivros.setFocusPainted(false);
+		btnVideos.setFocusPainted(false);
+		btnAssuntos.setFocusPainted(false);
+		btnFlashcards.setFocusPainted(false);
+		btnCronograma.setFocusPainted(false);
+		
+		
+		Color roxoIndigo = new Color(75,0,130);
+        Barra.setBackground(roxoIndigo);
+        btnLivros.setBackground(roxoIndigo);
+		btnLivros.setForeground(Color.WHITE);
+		btnVideos.setBackground(roxoIndigo);
+		btnVideos.setForeground(Color.WHITE);
+		btnAssuntos.setBackground(roxoIndigo);
+		btnAssuntos.setForeground(Color.WHITE);
+		btnFlashcards.setBackground(roxoIndigo);
+		btnFlashcards.setForeground(Color.WHITE);
+		btnCronograma.setBackground(roxoIndigo);
+		btnCronograma.setForeground(Color.WHITE);
+		
+		
+		//definir as fontes
+		Font fonteBarra = new Font("Trebuchet MS", Font.PLAIN, 21);
+		btnLivros.setFont(fonteBarra);
+		btnVideos.setFont(fonteBarra);
+		btnAssuntos.setFont(fonteBarra);
+		btnFlashcards.setFont(fonteBarra);
+		btnCronograma.setFont(fonteBarra);
+		
+		
+		//definir as posições
+        Barra.setBounds(0,0,screenSize.width, 50); 
+        lblLogo.setBounds(10,5,44,35);
+        btnLivros.setBounds(235,7, 100, 35);
+		btnVideos.setBounds(403,7,100,35);
+		btnAssuntos.setBounds(578,7,100,35);
+		btnFlashcards.setBounds(765,7,130,35);
+		btnCronograma.setBounds(980,7,130,35);
+		scrollPane.setBounds(90,140,1360,600);
+
+		
+		contentPane.add(lp);
+        lp.add(Barra, new Integer(1));
+        lp.add(lblLogo, new Integer(2));
+        lp.add(btnLivros, new Integer(4));
+		lp.add(btnVideos, new Integer(5));
+		lp.add(btnAssuntos, new Integer(6));
+		lp.add(btnFlashcards, new Integer(7));
+		lp.add(btnCronograma, new Integer(8));
+		lp.add(scrollPane, new Integer(8));
+		
+		//tirar bordar
+        setLayout(new BorderLayout());
+        add(lp, BorderLayout.CENTER);
+        btnLivros.setBorderPainted(false);
+        btnVideos.setBorderPainted(false);
+        btnAssuntos.setBorderPainted(false);
+        btnFlashcards.setBorderPainted(false);
+        btnCronograma.setBorderPainted(false);
+
+        setVisible(true);
+		
+	}
+	
+	 public static void abrir() {
+		 	TelaCronogramaAluno frame = new TelaCronogramaAluno();
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+	        frame.setLocation((tela.width - frame.getSize().width) / 2, (tela.height - frame.getSize().height) / 2);
+	        frame.setVisible(true);
+	    }
+
+	    public static void main(String[] args) {
+	        abrir();
+	    }
+}
+
