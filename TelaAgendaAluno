@@ -3,15 +3,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.time.*;
 
+import vo.Agenda;
 import vo.Aluno;
 import controller.AgendaCONTROLLER;
 import controller.AlunoCONTROLLER;
+import view.TelasGuiOlimpiadasProf.TelaLivrosProf;
+
 //implementar dao dde agenda
 
 
@@ -27,13 +33,29 @@ public class TelaAgendaAluno extends JFrame{
 	private JMenuBar barra;
 	private JButton btnVoltar;
 	private JLabel lblMinhaAgenda;
-	private JLabel lblMes;
 	private JButton btnIniciar;
 	private JButton btnAdicionarAtividade;
 	private JButton btnApagar;
 	private JLabel lblInicieSuaAgenda;
 	
+    private Color roxoIndigo = new Color(75,0,130);
+
 	AgendaCONTROLLER controla = new AgendaCONTROLLER();
+	
+	//itens da agenda 
+	private JLabel lblMes;
+	private JLabel[] lblDiaMesSem;
+	private JLabel[] lblAtividades1;
+	private JLabel[] lblAtividades2;
+	private JLabel[] lblAtividades3;
+	private JLabel[] lblAtividades4;
+	private JLabel[] lblAtividades5;
+	private JLabel[] lblAtividades6;
+	private JLabel[] lblAtividades7;
+	
+	private JButton btnExcluir;
+	private JButton btnEditar;
+
 	
 	public TelaAgendaAluno(Aluno aluno) {
 		inicializarComponentes(aluno);
@@ -61,55 +83,50 @@ public class TelaAgendaAluno extends JFrame{
 		
 		btnIniciar= new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnIniciarAgenda.png"));
-		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
-		btnVoltar.setBorderPainted(false); // Remove a borda
-		btnVoltar.setFocusPainted(false);
+		btnIniciar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnIniciar.setBorderPainted(false); // Remove a borda
+		btnIniciar.setFocusPainted(false);
 		
 		btnAdicionarAtividade= new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnAdicionarAtv.png"));
-		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
-		btnVoltar.setBorderPainted(false); // Remove a borda
-		btnVoltar.setFocusPainted(false);
+		btnAdicionarAtividade.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnAdicionarAtividade.setBorderPainted(false); // Remove a borda
+		btnAdicionarAtividade.setFocusPainted(false);
+		
 		
 		btnApagar= new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnDeletardadosAgenda.png"));
-		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
-		btnVoltar.setBorderPainted(false); // Remove a borda
-		btnVoltar.setFocusPainted(false);
+		btnApagar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnApagar.setBorderPainted(false); // Remove a borda
+		btnApagar.setFocusPainted(false);
 		
 		
 		lblMinhaAgenda= new JLabel("Minha Agenda");
 		lblInicieSuaAgenda = new JLabel("Inicie sua agenda no botão de iniciar");
-		lblMes = new JLabel();
         
 		//cores
-		Color roxoIndigo=new Color(75,0,130);
 		barra.setBackground(roxoIndigo);
 		lblMinhaAgenda.setForeground(Color.WHITE);
-		lblMes.setForeground(Color.BLACK);
 		lblInicieSuaAgenda.setForeground(Color.BLACK);
 		
 		//fontes
 		lblMinhaAgenda.setFont(new Font("Trebuchet MS", Font.BOLD, 23));
-		lblMes.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
 		lblInicieSuaAgenda.setFont(new Font("Trebuchet MS", Font.BOLD, 30));
 		
 		//coordenadas
 	    barra.setBounds(0,0,screenSize.width, 50);
     	btnVoltar.setBounds(10, 12, 28,25);
-    	lblMinhaAgenda.setBounds(400, 12, 150, 26);
-    	lblMes.setBounds(100, 150, 200, 25);
-    	lblInicieSuaAgenda.setBounds(100, 350, 300, 40);
-    	btnIniciar.setBounds(500, 150, 31, 30);
-		btnAdicionarAtividade.setBounds(550, 150, 31, 30);
-		btnApagar.setBounds(600, 150, 31, 30);
+    	lblMinhaAgenda.setBounds(600, 12, 150, 26);
+    	lblInicieSuaAgenda.setBounds(450, 350, 700, 40);
+    	btnIniciar.setBounds(1150, 140, 41, 40);
+		btnAdicionarAtividade.setBounds(1200, 140, 41, 40);
+		btnApagar.setBounds(1250, 140, 41, 40); //50 diferenca
 
     	//adiciona
     	contentPane.add(lp);
     	lp.add(barra, new Integer(1));
     	lp.add(btnVoltar, new Integer(2));
     	lp.add(lblMinhaAgenda, new Integer(3));
-    	lp.add(lblMes, new Integer(4));
     	lp.add(lblInicieSuaAgenda, new Integer(5));
     	lp.add(btnIniciar, new Integer(6));
     	lp.add(btnAdicionarAtividade, new Integer(7));
@@ -126,6 +143,1529 @@ public class TelaAgendaAluno extends JFrame{
 	}
 
 	private void definirEventos(Aluno aluno) {
+		int camada=9;
+
+		btnIniciar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Agenda> itensAgenda = new ArrayList<Agenda>();
+				itensAgenda =controla.retornaAgendaExistente(aluno.getEmail());
+				
+				if(itensAgenda.isEmpty()) {//primeira vez iniciando a agenda
+					LocalDate dataAtual = LocalDate.now();
+			        LocalDate dataFinalDaSemana = dataAtual.with(DayOfWeek.SUNDAY); // Encontre o próximo domingo
+			        
+			        ArrayList<LocalDate> datasDaSemana = new ArrayList<>();
+			        
+			        for (int i = 0; i < 7; i++) {
+			        	LocalDate data=dataFinalDaSemana.plusDays(i);
+			        	String diaSemana = String.valueOf(data.getDayOfWeek().getDisplayName(TextStyle.SHORT, new Locale("pt", "BR")));
+			        	int mesAtualNumero= data.getMonthValue();
+			        	String mes=null;
+			        	
+			        	if(mesAtualNumero==1) {
+			        		mes="Janeiro";
+			        	}else if(mesAtualNumero==2) {
+			        		mes="Fevereiro";
+			        	}else if(mesAtualNumero==3) {
+			        		mes="Março";
+
+			        	}else if(mesAtualNumero==4) {
+			        		mes="Abril";
+
+			        	}else if(mesAtualNumero==5) {
+			        		mes="Maio";
+
+			        	}else if(mesAtualNumero==6) {
+			        		mes="Junho";
+
+			        	}else if(mesAtualNumero==7) {
+			        		mes="Julho";
+
+			        	}else if(mesAtualNumero==8) {
+			        		mes="Agosto";
+
+			        	}else if(mesAtualNumero==9) {
+			        		mes="Setembro";
+
+			        	}else if(mesAtualNumero==10) {
+			        		mes="Outubro";
+
+			        	}else if(mesAtualNumero==11) {
+			        		mes="Novembro";
+
+			        	}else if(mesAtualNumero==12) {
+			        		mes="Dezembro";
+
+			        	}
+			        	
+			            datasDaSemana.add(data);
+			            
+			            controla.iniciarAgenda(data, diaSemana,mes, aluno.getEmail());
+			        }
+			        	
+
+			        	ArrayList<Agenda> diasAgenda = new ArrayList<Agenda>();
+			        	diasAgenda= controla.retornaAgendaExistente(aluno.getEmail());
+			            lblDiaMesSem = new JLabel[7];
+			            
+			            if (!contains(array, newValue)) {
+			                // Adicionando o valor ao array se ele não existir
+			                for (int i = 0; i < array.length; i++) {
+			                    if (array[i] == 0) {
+			                        array[i] = newValue;
+			                        break;
+			                    }
+			                }
+			            }
+			            
+			            String mesAtual = null;
+			        	int posicao=0;
+			        	int xDMS =40;
+			        	int yDMS=200;
+			        	for(Agenda dias : diasAgenda) {
+			        		LocalDate dataS=dias.getDataSemana();
+		                	mesAtual= dias.getMes();
+
+			        		for(JLabel dataExistente: lblDiaMesSem) {
+				        		int mesNArray=dataS.getMonthValue();
+				        		int diaNArray= dataS.getDayOfMonth();
+				        		String diaDaSemanaArray= dias.getDiaSemana();
+			        			
+				                String texto = dataExistente.getText();
+				                String palavraProcurada = diaNArray+"."+mesNArray+"     "+diaDaSemanaArray;
+
+				                if (texto.toLowerCase().contains(palavraProcurada.toLowerCase())) {
+				                	//verificar se a data ja foi inserida na tela, se foi, apenas adicionar atv
+				                	
+				                    System.out.println("A palavra '" + palavraProcurada + "' foi encontrada na JLabel.");
+				                } else {
+				                	//se não foi, inserir
+					        		int mesN=dataS.getMonthValue();
+					        		int diaN= dataS.getDayOfMonth();
+					        		String diaDaSemana= dias.getDiaSemana();
+					        		
+
+					        		lblDiaMesSem[posicao]= new JLabel("<html><u><font color='" + toHexString(roxoIndigo)+
+					        				"'>"+diaN+"."+mesN+"     "+diaDaSemana+"</font></u></html>");
+					        		lblDiaMesSem[posicao].setForeground(Color.BLACK);
+					        		lblDiaMesSem[posicao].setFont(new Font("Trebuchet MS", Font.BOLD, 18));
+					        		lblDiaMesSem[posicao].setBounds(xDMS, yDMS, 100, 22);
+					        		int novaCamada= camada+1;
+					        		lp.add(lblDiaMesSem[posicao], new Integer(novaCamada));
+					        		
+					        		ArrayList<String> atvd = new ArrayList<String>();
+					        		atvd=controla.retornaAtividadesDeUmaData(dataS, aluno.getEmail());
+					        		
+					        		 if(posicao==0) {
+					        			 int yAtvD1=300;
+					        			 lblAtividades1 = new JLabel[atvd.size()];
+					        			 int indiceAtv =0;
+					        			 
+					        			 for(String atv: atvd) {
+					        				 lblAtividades1[indiceAtv] = new JLabel(atv);
+					        				 lblAtividades1[indiceAtv].setForeground(Color.BLACK);
+					        				 lblAtividades1[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+					        				 lblAtividades1[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+					        				 lp.add(lblAtividades1[indiceAtv], new Integer(novaCamada+=1));
+					        				 
+			        							int XBtnEdit=xDMS+110;
+			        							int xBtnExc= xDMS+150;
+			        							int YBotoes = yAtvD1;
+
+					        				 lblAtividades1[indiceAtv].addMouseListener(new MouseListener() {
+					        						
+					        						@Override
+					        						public void mouseClicked(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mousePressed(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseReleased(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseEntered(java.awt.event.MouseEvent e) {
+					        							//ta em cima
+					        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+					        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnEditar.setBorderPainted(false); // Remove a borda
+					        							btnEditar.setFocusPainted(false);
+					        							
+					        							
+					        							int camadaBtn = 60;
+					        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+					        							lp.add(btnEditar, new Integer(camadaBtn));
+					        						
+					        							
+					        							btnEditar.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+					        								}
+					        							});
+					        							
+					        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+					        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnExcluir.setBorderPainted(false); // Remove a borda
+					        							btnExcluir.setFocusPainted(false);
+					        							
+					        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+					        							camadaBtn+=1;
+					        							lp.add(btnExcluir, new Integer(camadaBtn));
+					        							
+					        							btnExcluir.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+					        								}
+					        							});
+					        							
+					        						}
+					        						@Override
+					        						public void mouseExited(java.awt.event.MouseEvent e) {
+					        							//saiu
+					        							lp.remove(btnExcluir);
+					        							lp.remove(btnEditar);
+					        					        lp.revalidate();
+					        					        lp.repaint();
+					        						}
+					        			        });
+					        			 }
+					        			 
+					        			 yAtvD1+=60;
+					        		 }else if(posicao==1) {
+					        			 int yAtvD1=300;
+					        			 lblAtividades1 = new JLabel[atvd.size()];
+					        			 int indiceAtv =0;
+					        			 
+					        			 for(String atv: atvd) {
+					        				 lblAtividades2[indiceAtv] = new JLabel(atv);
+					        				 lblAtividades2[indiceAtv].setForeground(Color.BLACK);
+					        				 lblAtividades2[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+					        				 lblAtividades2[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+					        				 lp.add(lblAtividades2[indiceAtv], new Integer(novaCamada+=1));
+					        				 
+			        							int XBtnEdit=xDMS+110;
+			        							int xBtnExc= xDMS+150;
+			        							int YBotoes = yAtvD1;
+
+					        				 lblAtividades2[indiceAtv].addMouseListener(new MouseListener() {
+					        						
+					        						@Override
+					        						public void mouseClicked(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mousePressed(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseReleased(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseEntered(java.awt.event.MouseEvent e) {
+					        							//ta em cima
+					        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+					        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnEditar.setBorderPainted(false); // Remove a borda
+					        							btnEditar.setFocusPainted(false);
+					        							
+					        							
+					        							int camadaBtn = 60;
+					        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+					        							lp.add(btnEditar, new Integer(camadaBtn));
+					        						
+					        							
+					        							btnEditar.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+					        								}
+					        							});
+					        							
+					        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+					        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnExcluir.setBorderPainted(false); // Remove a borda
+					        							btnExcluir.setFocusPainted(false);
+					        							
+					        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+					        							camadaBtn+=1;
+					        							lp.add(btnExcluir, new Integer(camadaBtn));
+					        							
+					        							btnExcluir.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+					        								}
+					        							});
+					        							
+					        						}
+					        						@Override
+					        						public void mouseExited(java.awt.event.MouseEvent e) {
+					        							//saiu
+					        							lp.remove(btnExcluir);
+					        							lp.remove(btnEditar);
+					        					        lp.revalidate();
+					        					        lp.repaint();
+					        						}
+					        			        });
+					        			 }
+					        			 
+					        			 yAtvD1+=60;
+					        			 
+					        		 }else if(posicao==2) {
+					        			 int yAtvD1=300;
+					        			 lblAtividades3 = new JLabel[atvd.size()];
+					        			 int indiceAtv =0;
+					        			 
+					        			 for(String atv: atvd) {
+					        				 lblAtividades3[indiceAtv] = new JLabel(atv);
+					        				 lblAtividades3[indiceAtv].setForeground(Color.BLACK);
+					        				 lblAtividades3[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+					        				 lblAtividades3[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+					        				 lp.add(lblAtividades3[indiceAtv], new Integer(novaCamada+=1));
+					        				 
+			        							int XBtnEdit=xDMS+110;
+			        							int xBtnExc= xDMS+150;
+			        							int YBotoes = yAtvD1;
+
+					        				 lblAtividades3[indiceAtv].addMouseListener(new MouseListener() {
+					        						
+					        						@Override
+					        						public void mouseClicked(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mousePressed(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseReleased(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseEntered(java.awt.event.MouseEvent e) {
+					        							//ta em cima
+					        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+					        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnEditar.setBorderPainted(false); // Remove a borda
+					        							btnEditar.setFocusPainted(false);
+					        							
+					        							
+					        							int camadaBtn = 60;
+					        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+					        							lp.add(btnEditar, new Integer(camadaBtn));
+					        						
+					        							
+					        							btnEditar.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+					        								}
+					        							});
+					        							
+					        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+					        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnExcluir.setBorderPainted(false); // Remove a borda
+					        							btnExcluir.setFocusPainted(false);
+					        							
+					        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+					        							camadaBtn+=1;
+					        							lp.add(btnExcluir, new Integer(camadaBtn));
+					        							
+					        							btnExcluir.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+					        								}
+					        							});
+					        							
+					        						}
+					        						@Override
+					        						public void mouseExited(java.awt.event.MouseEvent e) {
+					        							//saiu
+					        							lp.remove(btnExcluir);
+					        							lp.remove(btnEditar);
+					        					        lp.revalidate();
+					        					        lp.repaint();
+					        						}
+					        			        });
+					        			 }
+					        			 
+					        			 yAtvD1+=60;
+					        			 
+					        		 }else if(posicao==3) {
+					        			 int yAtvD1=300;
+					        			 lblAtividades4 = new JLabel[atvd.size()];
+					        			 int indiceAtv =0;
+					        			 
+					        			 for(String atv: atvd) {
+					        				 lblAtividades4[indiceAtv] = new JLabel(atv);
+					        				 lblAtividades4[indiceAtv].setForeground(Color.BLACK);
+					        				 lblAtividades4[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+					        				 lblAtividades4[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+					        				 lp.add(lblAtividades4[indiceAtv], new Integer(novaCamada+=1));
+					        				 
+			        							int XBtnEdit=xDMS+110;
+			        							int xBtnExc= xDMS+150;
+			        							int YBotoes = yAtvD1;
+
+					        				 lblAtividades4[indiceAtv].addMouseListener(new MouseListener() {
+					        						
+					        						@Override
+					        						public void mouseClicked(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mousePressed(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseReleased(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseEntered(java.awt.event.MouseEvent e) {
+					        							//ta em cima
+					        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+					        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnEditar.setBorderPainted(false); // Remove a borda
+					        							btnEditar.setFocusPainted(false);
+					        							
+					        							
+					        							int camadaBtn = 60;
+					        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+					        							lp.add(btnEditar, new Integer(camadaBtn));
+					        						
+					        							
+					        							btnEditar.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+					        								}
+					        							});
+					        							
+					        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+					        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnExcluir.setBorderPainted(false); // Remove a borda
+					        							btnExcluir.setFocusPainted(false);
+					        							
+					        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+					        							camadaBtn+=1;
+					        							lp.add(btnExcluir, new Integer(camadaBtn));
+					        							
+					        							btnExcluir.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+					        								}
+					        							});
+					        							
+					        						}
+					        						@Override
+					        						public void mouseExited(java.awt.event.MouseEvent e) {
+					        							//saiu
+					        							lp.remove(btnExcluir);
+					        							lp.remove(btnEditar);
+					        					        lp.revalidate();
+					        					        lp.repaint();
+					        						}
+					        			        });
+					        			 }
+					        			 
+					        			 yAtvD1+=60;
+					        		 }else if(posicao==4) {
+					        			 
+					        			 int yAtvD1=300;
+					        			 lblAtividades5 = new JLabel[atvd.size()];
+					        			 int indiceAtv =0;
+					        			 
+					        			 for(String atv: atvd) {
+					        				 lblAtividades5[indiceAtv] = new JLabel(atv);
+					        				 lblAtividades5[indiceAtv].setForeground(Color.BLACK);
+					        				 lblAtividades5[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+					        				 lblAtividades5[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+					        				 lp.add(lblAtividades5[indiceAtv], new Integer(novaCamada+=1));
+					        				 
+			        							int XBtnEdit=xDMS+110;
+			        							int xBtnExc= xDMS+150;
+			        							int YBotoes = yAtvD1;
+
+					        				 lblAtividades5[indiceAtv].addMouseListener(new MouseListener() {
+					        						
+					        						@Override
+					        						public void mouseClicked(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mousePressed(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseReleased(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseEntered(java.awt.event.MouseEvent e) {
+					        							//ta em cima
+					        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+					        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnEditar.setBorderPainted(false); // Remove a borda
+					        							btnEditar.setFocusPainted(false);
+					        							
+					        							
+					        							int camadaBtn = 60;
+					        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+					        							lp.add(btnEditar, new Integer(camadaBtn));
+					        						
+					        							
+					        							btnEditar.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+					        								}
+					        							});
+					        							
+					        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+					        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnExcluir.setBorderPainted(false); // Remove a borda
+					        							btnExcluir.setFocusPainted(false);
+					        							
+					        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+					        							camadaBtn+=1;
+					        							lp.add(btnExcluir, new Integer(camadaBtn));
+					        							
+					        							btnExcluir.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+					        								}
+					        							});
+					        							
+					        						}
+					        						@Override
+					        						public void mouseExited(java.awt.event.MouseEvent e) {
+					        							//saiu
+					        							lp.remove(btnExcluir);
+					        							lp.remove(btnEditar);
+					        					        lp.revalidate();
+					        					        lp.repaint();
+					        						}
+					        			        });
+					        			 }
+					        			 
+					        			 yAtvD1+=60;
+					        			 
+					        		 }else if(posicao==5) {
+					        			 int yAtvD1=300;
+					        			 lblAtividades6 = new JLabel[atvd.size()];
+					        			 int indiceAtv =0;
+					        			 
+					        			 for(String atv: atvd) {
+					        				 lblAtividades6[indiceAtv] = new JLabel(atv);
+					        				 lblAtividades6[indiceAtv].setForeground(Color.BLACK);
+					        				 lblAtividades6[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+					        				 lblAtividades6[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+					        				 lp.add(lblAtividades6[indiceAtv], new Integer(novaCamada+=1));
+					        				 
+			        							int XBtnEdit=xDMS+110;
+			        							int xBtnExc= xDMS+150;
+			        							int YBotoes = yAtvD1;
+
+					        				 lblAtividades6[indiceAtv].addMouseListener(new MouseListener() {
+					        						
+					        						@Override
+					        						public void mouseClicked(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mousePressed(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseReleased(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseEntered(java.awt.event.MouseEvent e) {
+					        							//ta em cima
+					        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+					        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnEditar.setBorderPainted(false); // Remove a borda
+					        							btnEditar.setFocusPainted(false);
+					        							
+					        							
+					        							int camadaBtn = 60;
+					        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+					        							lp.add(btnEditar, new Integer(camadaBtn));
+					        						
+					        							
+					        							btnEditar.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+					        								}
+					        							});
+					        							
+					        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+					        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnExcluir.setBorderPainted(false); // Remove a borda
+					        							btnExcluir.setFocusPainted(false);
+					        							
+					        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+					        							camadaBtn+=1;
+					        							lp.add(btnExcluir, new Integer(camadaBtn));
+					        							
+					        							btnExcluir.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+					        								}
+					        							});
+					        							
+					        						}
+					        						@Override
+					        						public void mouseExited(java.awt.event.MouseEvent e) {
+					        							//saiu
+					        							lp.remove(btnExcluir);
+					        							lp.remove(btnEditar);
+					        					        lp.revalidate();
+					        					        lp.repaint();
+					        						}
+					        			        });
+					        			 }
+					        			 
+					        			 yAtvD1+=60;
+					        			 
+					        		 }else if(posicao==6) {
+					        			 int yAtvD1=300;
+					        			 lblAtividades7 = new JLabel[atvd.size()];
+					        			 int indiceAtv =0;
+					        			 
+					        			 for(String atv: atvd) {
+					        				 lblAtividades7[indiceAtv] = new JLabel(atv);
+					        				 lblAtividades7[indiceAtv].setForeground(Color.BLACK);
+					        				 lblAtividades7[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+					        				 lblAtividades7[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+					        				 lp.add(lblAtividades7[indiceAtv], new Integer(novaCamada+=1));
+					        				 
+			        							int XBtnEdit=xDMS+110;
+			        							int xBtnExc= xDMS+150;
+			        							int YBotoes = yAtvD1;
+
+					        				 lblAtividades7[indiceAtv].addMouseListener(new MouseListener() {
+					        						
+					        						@Override
+					        						public void mouseClicked(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mousePressed(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseReleased(java.awt.event.MouseEvent e) {
+					        							// TODO Auto-generated method stub
+					        							
+					        						}
+					        						@Override
+					        						public void mouseEntered(java.awt.event.MouseEvent e) {
+					        							//ta em cima
+					        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+					        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnEditar.setBorderPainted(false); // Remove a borda
+					        							btnEditar.setFocusPainted(false);
+					        							
+					        							
+					        							int camadaBtn = 60;
+					        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+					        							lp.add(btnEditar, new Integer(camadaBtn));
+					        						
+					        							
+					        							btnEditar.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+					        								}
+					        							});
+					        							
+					        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+					        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+					        							btnExcluir.setBorderPainted(false); // Remove a borda
+					        							btnExcluir.setFocusPainted(false);
+					        							
+					        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+					        							camadaBtn+=1;
+					        							lp.add(btnExcluir, new Integer(camadaBtn));
+					        							
+					        							btnExcluir.addActionListener(new ActionListener() {
+					        								@Override
+					        								public void actionPerformed(ActionEvent e) {
+					        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+					        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+					        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+					        								}
+					        							});
+					        							
+					        						}
+					        						@Override
+					        						public void mouseExited(java.awt.event.MouseEvent e) {
+					        							//saiu
+					        							lp.remove(btnExcluir);
+					        							lp.remove(btnEditar);
+					        					        lp.revalidate();
+					        					        lp.repaint();
+					        						}
+					        			        });
+					        			 }
+					        			 
+					        			 yAtvD1+=60;
+					        		 }
+					        			 
+					        		xDMS+=60;
+					        		posicao++;
+					        	}
+				                
+			        		}
+			      
+			        	}
+			        	
+			            lblMes = new JLabel(mesAtual);
+			            lblMes.setForeground(Color.BLACK);
+			    		lblMes.setFont(new Font("Trebuchet MS", Font.BOLD, 40));
+			        	lblMes.setBounds(100, 100, 200, 50);
+			        	lp.add(lblMes, new Integer(camada));
+			        	
+			        	
+				}else {//agenda já existe
+					
+					ArrayList<Agenda> diasAgenda = new ArrayList<Agenda>();
+		        	diasAgenda= controla.retornaAgendaExistente(aluno.getEmail());
+		            lblDiaMesSem = new JLabel[7];
+		            
+		            
+		            
+		            String mesAtual = null;
+		        	int posicao=0;
+		        	int xDMS =40;
+		        	int yDMS=200;
+		        	for(Agenda dias : itensAgenda) {
+		        		LocalDate dataS=dias.getDataSemana();
+	                	mesAtual= dias.getMes();
+
+		        		for(JLabel dataExistente: lblDiaMesSem) {
+			        		int mesNArray=dataS.getMonthValue();
+			        		int diaNArray= dataS.getDayOfMonth();
+			        		String diaDaSemanaArray= dias.getDiaSemana();
+		        			
+			                String texto = dataExistente.getText();
+			                String palavraProcurada = diaNArray+"."+mesNArray+"     "+diaDaSemanaArray;
+
+			                if (texto.toLowerCase().contains(palavraProcurada.toLowerCase())) {
+			                	//verificar se a data ja foi inserida na tela, se foi, apenas adicionar atv
+			                	
+			                    System.out.println("A palavra '" + palavraProcurada + "' foi encontrada na JLabel.");
+			                } else {
+			                	//se não foi, inserir
+				        		int mesN=dataS.getMonthValue();
+				        		int diaN= dataS.getDayOfMonth();
+				        		String diaDaSemana= dias.getDiaSemana();
+				        		
+
+				        		lblDiaMesSem[posicao]= new JLabel("<html><u><font color='" + toHexString(roxoIndigo)+
+				        				"'>"+diaN+"."+mesN+"     "+diaDaSemana+"</font></u></html>");
+				        		lblDiaMesSem[posicao].setForeground(Color.BLACK);
+				        		lblDiaMesSem[posicao].setFont(new Font("Trebuchet MS", Font.BOLD, 18));
+				        		lblDiaMesSem[posicao].setBounds(xDMS, yDMS, 100, 22);
+				        		int novaCamada= camada+1;
+				        		lp.add(lblDiaMesSem[posicao], new Integer(novaCamada));
+				        		
+				        		ArrayList<String> atvd = new ArrayList<String>();
+				        		atvd=controla.retornaAtividadesDeUmaData(dataS, aluno.getEmail());
+				        		
+				        		 if(posicao==0) {
+				        			 int yAtvD1=300;
+				        			 lblAtividades1 = new JLabel[atvd.size()];
+				        			 int indiceAtv =0;
+				        			 
+				        			 for(String atv: atvd) {
+				        				 lblAtividades1[indiceAtv] = new JLabel(atv);
+				        				 lblAtividades1[indiceAtv].setForeground(Color.BLACK);
+				        				 lblAtividades1[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+				        				 lblAtividades1[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+				        				 lp.add(lblAtividades1[indiceAtv], new Integer(novaCamada+=1));
+				        				 
+		        							int XBtnEdit=xDMS+110;
+		        							int xBtnExc= xDMS+150;
+		        							int YBotoes = yAtvD1;
+
+				        				 lblAtividades1[indiceAtv].addMouseListener(new MouseListener() {
+				        						
+				        						@Override
+				        						public void mouseClicked(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mousePressed(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseReleased(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseEntered(java.awt.event.MouseEvent e) {
+				        							//ta em cima
+				        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+				        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnEditar.setBorderPainted(false); // Remove a borda
+				        							btnEditar.setFocusPainted(false);
+				        							
+				        							
+				        							int camadaBtn = 60;
+				        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+				        							lp.add(btnEditar, new Integer(camadaBtn));
+				        						
+				        							
+				        							btnEditar.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+				        								}
+				        							});
+				        							
+				        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+				        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnExcluir.setBorderPainted(false); // Remove a borda
+				        							btnExcluir.setFocusPainted(false);
+				        							
+				        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+				        							camadaBtn+=1;
+				        							lp.add(btnExcluir, new Integer(camadaBtn));
+				        							
+				        							btnExcluir.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+				        								}
+				        							});
+				        							
+				        						}
+				        						@Override
+				        						public void mouseExited(java.awt.event.MouseEvent e) {
+				        							//saiu
+				        							lp.remove(btnExcluir);
+				        							lp.remove(btnEditar);
+				        					        lp.revalidate();
+				        					        lp.repaint();
+				        						}
+				        			        });
+				        			 }
+				        			 
+				        			 yAtvD1+=60;
+				        		 }else if(posicao==1) {
+				        			 int yAtvD1=300;
+				        			 lblAtividades1 = new JLabel[atvd.size()];
+				        			 int indiceAtv =0;
+				        			 
+				        			 for(String atv: atvd) {
+				        				 lblAtividades2[indiceAtv] = new JLabel(atv);
+				        				 lblAtividades2[indiceAtv].setForeground(Color.BLACK);
+				        				 lblAtividades2[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+				        				 lblAtividades2[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+				        				 lp.add(lblAtividades2[indiceAtv], new Integer(novaCamada+=1));
+				        				 
+		        							int XBtnEdit=xDMS+110;
+		        							int xBtnExc= xDMS+150;
+		        							int YBotoes = yAtvD1;
+
+				        				 lblAtividades2[indiceAtv].addMouseListener(new MouseListener() {
+				        						
+				        						@Override
+				        						public void mouseClicked(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mousePressed(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseReleased(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseEntered(java.awt.event.MouseEvent e) {
+				        							//ta em cima
+				        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+				        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnEditar.setBorderPainted(false); // Remove a borda
+				        							btnEditar.setFocusPainted(false);
+				        							
+				        							
+				        							int camadaBtn = 60;
+				        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+				        							lp.add(btnEditar, new Integer(camadaBtn));
+				        						
+				        							
+				        							btnEditar.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+				        								}
+				        							});
+				        							
+				        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+				        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnExcluir.setBorderPainted(false); // Remove a borda
+				        							btnExcluir.setFocusPainted(false);
+				        							
+				        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+				        							camadaBtn+=1;
+				        							lp.add(btnExcluir, new Integer(camadaBtn));
+				        							
+				        							btnExcluir.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+				        								}
+				        							});
+				        							
+				        						}
+				        						@Override
+				        						public void mouseExited(java.awt.event.MouseEvent e) {
+				        							//saiu
+				        							lp.remove(btnExcluir);
+				        							lp.remove(btnEditar);
+				        					        lp.revalidate();
+				        					        lp.repaint();
+				        						}
+				        			        });
+				        			 }
+				        			 
+				        			 yAtvD1+=60;
+				        			 
+				        		 }else if(posicao==2) {
+				        			 int yAtvD1=300;
+				        			 lblAtividades3 = new JLabel[atvd.size()];
+				        			 int indiceAtv =0;
+				        			 
+				        			 for(String atv: atvd) {
+				        				 lblAtividades3[indiceAtv] = new JLabel(atv);
+				        				 lblAtividades3[indiceAtv].setForeground(Color.BLACK);
+				        				 lblAtividades3[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+				        				 lblAtividades3[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+				        				 lp.add(lblAtividades3[indiceAtv], new Integer(novaCamada+=1));
+				        				 
+		        							int XBtnEdit=xDMS+110;
+		        							int xBtnExc= xDMS+150;
+		        							int YBotoes = yAtvD1;
+
+				        				 lblAtividades3[indiceAtv].addMouseListener(new MouseListener() {
+				        						
+				        						@Override
+				        						public void mouseClicked(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mousePressed(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseReleased(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseEntered(java.awt.event.MouseEvent e) {
+				        							//ta em cima
+				        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+				        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnEditar.setBorderPainted(false); // Remove a borda
+				        							btnEditar.setFocusPainted(false);
+				        							
+				        							
+				        							int camadaBtn = 60;
+				        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+				        							lp.add(btnEditar, new Integer(camadaBtn));
+				        						
+				        							
+				        							btnEditar.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+				        								}
+				        							});
+				        							
+				        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+				        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnExcluir.setBorderPainted(false); // Remove a borda
+				        							btnExcluir.setFocusPainted(false);
+				        							
+				        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+				        							camadaBtn+=1;
+				        							lp.add(btnExcluir, new Integer(camadaBtn));
+				        							
+				        							btnExcluir.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+				        								}
+				        							});
+				        							
+				        						}
+				        						@Override
+				        						public void mouseExited(java.awt.event.MouseEvent e) {
+				        							//saiu
+				        							lp.remove(btnExcluir);
+				        							lp.remove(btnEditar);
+				        					        lp.revalidate();
+				        					        lp.repaint();
+				        						}
+				        			        });
+				        			 }
+				        			 
+				        			 yAtvD1+=60;
+				        			 
+				        		 }else if(posicao==3) {
+				        			 int yAtvD1=300;
+				        			 lblAtividades4 = new JLabel[atvd.size()];
+				        			 int indiceAtv =0;
+				        			 
+				        			 for(String atv: atvd) {
+				        				 lblAtividades4[indiceAtv] = new JLabel(atv);
+				        				 lblAtividades4[indiceAtv].setForeground(Color.BLACK);
+				        				 lblAtividades4[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+				        				 lblAtividades4[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+				        				 lp.add(lblAtividades4[indiceAtv], new Integer(novaCamada+=1));
+				        				 
+		        							int XBtnEdit=xDMS+110;
+		        							int xBtnExc= xDMS+150;
+		        							int YBotoes = yAtvD1;
+
+				        				 lblAtividades4[indiceAtv].addMouseListener(new MouseListener() {
+				        						
+				        						@Override
+				        						public void mouseClicked(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mousePressed(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseReleased(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseEntered(java.awt.event.MouseEvent e) {
+				        							//ta em cima
+				        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+				        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnEditar.setBorderPainted(false); // Remove a borda
+				        							btnEditar.setFocusPainted(false);
+				        							
+				        							
+				        							int camadaBtn = 60;
+				        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+				        							lp.add(btnEditar, new Integer(camadaBtn));
+				        						
+				        							
+				        							btnEditar.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+				        								}
+				        							});
+				        							
+				        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+				        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnExcluir.setBorderPainted(false); // Remove a borda
+				        							btnExcluir.setFocusPainted(false);
+				        							
+				        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+				        							camadaBtn+=1;
+				        							lp.add(btnExcluir, new Integer(camadaBtn));
+				        							
+				        							btnExcluir.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+				        								}
+				        							});
+				        							
+				        						}
+				        						@Override
+				        						public void mouseExited(java.awt.event.MouseEvent e) {
+				        							//saiu
+				        							lp.remove(btnExcluir);
+				        							lp.remove(btnEditar);
+				        					        lp.revalidate();
+				        					        lp.repaint();
+				        						}
+				        			        });
+				        			 }
+				        			 
+				        			 yAtvD1+=60;
+				        		 }else if(posicao==4) {
+				        			 
+				        			 int yAtvD1=300;
+				        			 lblAtividades5 = new JLabel[atvd.size()];
+				        			 int indiceAtv =0;
+				        			 
+				        			 for(String atv: atvd) {
+				        				 lblAtividades5[indiceAtv] = new JLabel(atv);
+				        				 lblAtividades5[indiceAtv].setForeground(Color.BLACK);
+				        				 lblAtividades5[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+				        				 lblAtividades5[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+				        				 lp.add(lblAtividades5[indiceAtv], new Integer(novaCamada+=1));
+				        				 
+		        							int XBtnEdit=xDMS+110;
+		        							int xBtnExc= xDMS+150;
+		        							int YBotoes = yAtvD1;
+
+				        				 lblAtividades5[indiceAtv].addMouseListener(new MouseListener() {
+				        						
+				        						@Override
+				        						public void mouseClicked(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mousePressed(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseReleased(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseEntered(java.awt.event.MouseEvent e) {
+				        							//ta em cima
+				        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+				        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnEditar.setBorderPainted(false); // Remove a borda
+				        							btnEditar.setFocusPainted(false);
+				        							
+				        							
+				        							int camadaBtn = 60;
+				        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+				        							lp.add(btnEditar, new Integer(camadaBtn));
+				        						
+				        							
+				        							btnEditar.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+				        								}
+				        							});
+				        							
+				        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+				        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnExcluir.setBorderPainted(false); // Remove a borda
+				        							btnExcluir.setFocusPainted(false);
+				        							
+				        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+				        							camadaBtn+=1;
+				        							lp.add(btnExcluir, new Integer(camadaBtn));
+				        							
+				        							btnExcluir.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+				        								}
+				        							});
+				        							
+				        						}
+				        						@Override
+				        						public void mouseExited(java.awt.event.MouseEvent e) {
+				        							//saiu
+				        							lp.remove(btnExcluir);
+				        							lp.remove(btnEditar);
+				        					        lp.revalidate();
+				        					        lp.repaint();
+				        						}
+				        			        });
+				        			 }
+				        			 
+				        			 yAtvD1+=60;
+				        			 
+				        		 }else if(posicao==5) {
+				        			 int yAtvD1=300;
+				        			 lblAtividades6 = new JLabel[atvd.size()];
+				        			 int indiceAtv =0;
+				        			 
+				        			 for(String atv: atvd) {
+				        				 lblAtividades6[indiceAtv] = new JLabel(atv);
+				        				 lblAtividades6[indiceAtv].setForeground(Color.BLACK);
+				        				 lblAtividades6[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+				        				 lblAtividades6[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+				        				 lp.add(lblAtividades6[indiceAtv], new Integer(novaCamada+=1));
+				        				 
+		        							int XBtnEdit=xDMS+110;
+		        							int xBtnExc= xDMS+150;
+		        							int YBotoes = yAtvD1;
+
+				        				 lblAtividades6[indiceAtv].addMouseListener(new MouseListener() {
+				        						
+				        						@Override
+				        						public void mouseClicked(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mousePressed(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseReleased(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseEntered(java.awt.event.MouseEvent e) {
+				        							//ta em cima
+				        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+				        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnEditar.setBorderPainted(false); // Remove a borda
+				        							btnEditar.setFocusPainted(false);
+				        							
+				        							
+				        							int camadaBtn = 60;
+				        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+				        							lp.add(btnEditar, new Integer(camadaBtn));
+				        						
+				        							
+				        							btnEditar.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+				        								}
+				        							});
+				        							
+				        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+				        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnExcluir.setBorderPainted(false); // Remove a borda
+				        							btnExcluir.setFocusPainted(false);
+				        							
+				        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+				        							camadaBtn+=1;
+				        							lp.add(btnExcluir, new Integer(camadaBtn));
+				        							
+				        							btnExcluir.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+				        								}
+				        							});
+				        							
+				        						}
+				        						@Override
+				        						public void mouseExited(java.awt.event.MouseEvent e) {
+				        							//saiu
+				        							lp.remove(btnExcluir);
+				        							lp.remove(btnEditar);
+				        					        lp.revalidate();
+				        					        lp.repaint();
+				        						}
+				        			        });
+				        			 }
+				        			 
+				        			 yAtvD1+=60;
+				        			 
+				        		 }else if(posicao==6) {
+				        			 int yAtvD1=300;
+				        			 lblAtividades7 = new JLabel[atvd.size()];
+				        			 int indiceAtv =0;
+				        			 
+				        			 for(String atv: atvd) {
+				        				 lblAtividades7[indiceAtv] = new JLabel(atv);
+				        				 lblAtividades7[indiceAtv].setForeground(Color.BLACK);
+				        				 lblAtividades7[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
+				        				 lblAtividades7[indiceAtv].setBounds(xDMS, yAtvD1, 100, 25);
+				        				 lp.add(lblAtividades7[indiceAtv], new Integer(novaCamada+=1));
+				        				 
+		        							int XBtnEdit=xDMS+110;
+		        							int xBtnExc= xDMS+150;
+		        							int YBotoes = yAtvD1;
+
+				        				 lblAtividades7[indiceAtv].addMouseListener(new MouseListener() {
+				        						
+				        						@Override
+				        						public void mouseClicked(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mousePressed(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseReleased(java.awt.event.MouseEvent e) {
+				        							// TODO Auto-generated method stub
+				        							
+				        						}
+				        						@Override
+				        						public void mouseEntered(java.awt.event.MouseEvent e) {
+				        							//ta em cima
+				        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
+				        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnEditar.setBorderPainted(false); // Remove a borda
+				        							btnEditar.setFocusPainted(false);
+				        							
+				        							
+				        							int camadaBtn = 60;
+				        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+				        							lp.add(btnEditar, new Integer(camadaBtn));
+				        						
+				        							
+				        							btnEditar.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
+				        								}
+				        							});
+				        							
+				        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
+				        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				        							btnExcluir.setBorderPainted(false); // Remove a borda
+				        							btnExcluir.setFocusPainted(false);
+				        							
+				        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+
+				        							camadaBtn+=1;
+				        							lp.add(btnExcluir, new Integer(camadaBtn));
+				        							
+				        							btnExcluir.addActionListener(new ActionListener() {
+				        								@Override
+				        								public void actionPerformed(ActionEvent e) {
+				        									String ATIVIDADE = lblAtividades1[indiceAtv].getText();
+				        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
+				        								}
+				        							});
+				        							
+				        						}
+				        						@Override
+				        						public void mouseExited(java.awt.event.MouseEvent e) {
+				        							//saiu
+				        							lp.remove(btnExcluir);
+				        							lp.remove(btnEditar);
+				        					        lp.revalidate();
+				        					        lp.repaint();
+				        						}
+				        			        });
+				        			 }
+				        			 
+				        			 yAtvD1+=60;
+				        		 }
+				        			 
+				        		xDMS+=60;
+				        		posicao++;
+				        	}
+			                
+		        		}
+		      
+		        	}
+		        	
+		            lblMes = new JLabel(mesAtual);
+		            lblMes.setForeground(Color.BLACK);
+		    		lblMes.setFont(new Font("Trebuchet MS", Font.BOLD, 40));
+		        	lblMes.setBounds(100, 100, 200, 50);
+		        	lp.add(lblMes, new Integer(camada));
+				}
+			}
+		});
+		
+		btnIniciar.addMouseListener(new MouseAdapter() {
+			@Override
+	            public void mouseEntered(MouseEvent e) {
+	                super.mouseEntered(e);
+	                btnIniciar.setToolTipText("Iniciar agenda");
+	            }
+
+	            @Override
+	            public void mouseExited(MouseEvent e) {
+	                super.mouseExited(e);
+	                btnIniciar.setToolTipText(" ");
+	            }
+	        });
+		
+		btnAdicionarAtividade.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+			
+		});
+		
+		btnAdicionarAtividade.addMouseListener(new MouseAdapter() {
+			@Override
+	            public void mouseEntered(MouseEvent e) {
+	                super.mouseEntered(e);
+	                btnAdicionarAtividade.setToolTipText("Adicionar atividade");
+	            }
+
+	            @Override
+	            public void mouseExited(MouseEvent e) {
+	                super.mouseExited(e);
+	                btnAdicionarAtividade.setToolTipText(" ");
+	            }
+	        });
+		
+		btnApagar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+			
+		});
+		
+		btnApagar.addMouseListener(new MouseAdapter() {
+			@Override
+	            public void mouseEntered(MouseEvent e) {
+	                super.mouseEntered(e);
+	                btnApagar.setToolTipText("Apagar agenda");
+	            }
+
+	            @Override
+	            public void mouseExited(MouseEvent e) {
+	                super.mouseExited(e);
+	                btnApagar.setToolTipText(" "); 
+	            }
+	        });
 		
 		btnVoltar.addActionListener(new ActionListener() {
 			@Override
@@ -136,67 +1676,8 @@ public class TelaAgendaAluno extends JFrame{
 		});
 		
 	}
+	
+	private static String toHexString(Color cor) {
+        return String.format("#%02x%02x%02x", cor.getRed(), cor.getGreen(), cor.getBlue());
+    }
 }
-
-
-/*//CONFIGURAÇÕES REFERENTES A DATAS E MÊS
-		LocalDate dataAtual = LocalDate.now();
-        LocalDate dataFinalDaSemana = dataAtual.with(DayOfWeek.SUNDAY); // Encontre o próximo domingo
-        
-        ArrayList<LocalDate> datasDaSemana = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-        	LocalDate data=dataFinalDaSemana.plusDays(i);
-        	String diaSemana = String.valueOf(data.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("pt", "BR")));
-        	int mesAtualNumero= data.getMonthValue();
-        	String mes=null;
-        	
-        	if(mesAtualNumero==1) {
-        		mes="Janeiro";
-        	}else if(mesAtualNumero==2) {
-        		mes="Fevereiro";
-        	}else if(mesAtualNumero==3) {
-        		mes="Março";
-
-        	}else if(mesAtualNumero==4) {
-        		mes="Abril";
-
-        	}else if(mesAtualNumero==5) {
-        		mes="Maio";
-
-        	}else if(mesAtualNumero==6) {
-        		mes="Junho";
-
-        	}else if(mesAtualNumero==7) {
-        		mes="Julho";
-
-        	}else if(mesAtualNumero==8) {
-        		mes="Agosto";
-
-        	}else if(mesAtualNumero==9) {
-        		mes="Setembro";
-
-        	}else if(mesAtualNumero==10) {
-        		mes="Outubro";
-
-        	}else if(mesAtualNumero==11) {
-        		mes="Novembro";
-
-        	}else if(mesAtualNumero==12) {
-        		mes="Dezembro";
-
-        	}
-        	
-            datasDaSemana.add(data);
-            
-            controla.iniciarAgenda(data, diaSemana,mes, aluno.getEmail());
-            
-        }
-//	public void iniciarAgenda(Date dataSemana, String diaSemana, String mes, String emailAluno) {
-
-        // Imprima as datas da semana
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        for (LocalDate data : datasDaSemana) {
-            System.out.println(data.format(formato));
-        }
-		
-        //FIM DATA E MES*/
