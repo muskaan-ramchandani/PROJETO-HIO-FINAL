@@ -1,38 +1,33 @@
 package view;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.Locale;
+import java.util.*;
+import java.time.*;
 
-import javax.swing.*;
-import java.awt.*;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JMenuBar;
-
-import controller.AgendaCONTROLLER;
-import controller.AlunoCONTROLLER;
 import vo.Agenda;
 import vo.Aluno;
+import controller.AgendaCONTROLLER;
+import controller.AlunoCONTROLLER;
+import view.TelasGuiOlimpiadasProf.TelaLivrosProf;
 
-public class AGENDA_ALUNO_TESTE extends JFrame{
-	
+//implementar dao dde agenda
+
+
+//por meio dessa classe deve ser possivel que o aluno edite/adicione/exclua eventos da sua agenda e visualize eles
+//deve ser implementada uma função para que a semana seja atualizada
+//ideia 1: atualiza automaticamnete
+//ideia 2: botao de atualizar semana
+
+public class TelaAgendaAluno extends JFrame{
+
 	private Container contentPane;
 	private JLayeredPane lp;
 	private JMenuBar barra;
@@ -47,16 +42,7 @@ public class AGENDA_ALUNO_TESTE extends JFrame{
 
 	AgendaCONTROLLER controla = new AgendaCONTROLLER();
 	
-	//itens da agenda 
-	private JLabel lblMes;
-	private JLabel[] lblDiaMesSem;
-	private JLabel[] lblAtividades;
-	
-	private JButton btnExcluir;
-	private JButton btnEditar;
-
-	
-	public AGENDA_ALUNO_TESTE(Aluno aluno) {
+	public TelaAgendaAluno(Aluno aluno) {
 		inicializarComponentes(aluno);
 		definirEventos(aluno);
 		setVisible(true);
@@ -126,10 +112,10 @@ public class AGENDA_ALUNO_TESTE extends JFrame{
     	lp.add(barra, new Integer(1));
     	lp.add(btnVoltar, new Integer(2));
     	lp.add(lblMinhaAgenda, new Integer(3));
-    	lp.add(lblInicieSuaAgenda, new Integer(4));
-    	lp.add(btnIniciar, new Integer(5));
-    	lp.add(btnAdicionarAtividade, new Integer(6));
-    	lp.add(btnApagar, new Integer(7));
+    	lp.add(lblInicieSuaAgenda, new Integer(5));
+    	lp.add(btnIniciar, new Integer(6));
+    	lp.add(btnAdicionarAtividade, new Integer(7));
+    	lp.add(btnApagar, new Integer(8));
     	
     	setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
@@ -140,232 +126,15 @@ public class AGENDA_ALUNO_TESTE extends JFrame{
 
 		
 	}
-	
+
 	private void definirEventos(Aluno aluno) {
-		btnIniciar.addActionListener(new ActionListener (){
+		int camada=9;
+
+		btnIniciar.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				lp.remove(lblInicieSuaAgenda);
-		        lp.revalidate();
-		        lp.repaint();
-		        lp=new JLayeredPane();
-		        
-				ArrayList<Agenda> arrayVerifica = new ArrayList<Agenda>();
-				arrayVerifica =controla.retornaAgendaExistente(aluno.getEmail());
-				
-				if(arrayVerifica.isEmpty()) {//o usuario não criou uma agenda, primeira vez
-					
-					//inicia valores da agenda
-					LocalDate dataAtual = LocalDate.now();
-			        LocalDate dataFinalDaSemana = dataAtual.with(DayOfWeek.SUNDAY); // Encontre o próximo domingo
-			        			        
-			        for (int i = 0; i < 7; i++) {
-			        	LocalDate data=dataFinalDaSemana.plusDays(i);
-			        	String diaSemana = String.valueOf(data.getDayOfWeek().getDisplayName(TextStyle.SHORT, new Locale("pt", "BR")));
-			        	int mesAtualNumero= data.getMonthValue();
-			        	String mes=null;
-			        	
-			        	if(mesAtualNumero==1) {
-			        		mes="Janeiro";
-			        	}else if(mesAtualNumero==2) {
-			        		mes="Fevereiro";
-			        	}else if(mesAtualNumero==3) {
-			        		mes="Março";
-
-			        	}else if(mesAtualNumero==4) {
-			        		mes="Abril";
-
-			        	}else if(mesAtualNumero==5) {
-			        		mes="Maio";
-
-			        	}else if(mesAtualNumero==6) {
-			        		mes="Junho";
-
-			        	}else if(mesAtualNumero==7) {
-			        		mes="Julho";
-
-			        	}else if(mesAtualNumero==8) {
-			        		mes="Agosto";
-
-			        	}else if(mesAtualNumero==9) {
-			        		mes="Setembro";
-
-			        	}else if(mesAtualNumero==10) {
-			        		mes="Outubro";
-
-			        	}else if(mesAtualNumero==11) {
-			        		mes="Novembro";
-
-			        	}else if(mesAtualNumero==12) {
-			        		mes="Dezembro";
-
-			        	}
-			        	
-			            controla.iniciarAgenda(data, diaSemana,mes, aluno.getEmail());
-			        }
-				}//finaliza a iniciação dos itens da agenda
-				
-
-				
-				ArrayList<Agenda> verificaDatasIguais = new ArrayList<Agenda>();
-				verificaDatasIguais =controla.retornaAgendaExistente(aluno.getEmail());
-				
-				ArrayList<Agenda> itensAtuais = new ArrayList<Agenda>();
-				itensAtuais =controla.retornaAgendaExistente(aluno.getEmail());
-				
-				ArrayList<Agenda> agendaNRepete = new ArrayList<Agenda>();
-				
-				LocalDate dataV;
-				LocalDate dataIA;
-				
-				for(Agenda IA : itensAtuais) {
-					dataIA = IA.getDataSemana();
-					
-					for(Agenda V : verificaDatasIguais) {
-						dataV= V.getDataSemana();
-						
-						if(dataIA.isEqual(dataV)) {
-							//As datas são iguais, nada acontece
-						}else {
-							//datas diferentes
-							agendaNRepete.add(IA);
-						}
-					}
-				}
-				
-	            lblDiaMesSem = new JLabel[7];
-	            String mesAtual = null;
-	        	int xDMS =40;
-	        	int yDMS=200;
-	        	int contador=0;
-	    		int camada=8;
-
-	        	for(Agenda agendinha :agendaNRepete) {
-					LocalDate dataS=agendinha.getDataSemana();
-	            	mesAtual= agendinha.getMes();
-	            	
-	        		int mesN=dataS.getMonthValue();
-	        		int diaN= dataS.getDayOfMonth();
-	        		String diaDaSemana= agendinha.getDiaSemana();
-	        		
-
-	        		lblDiaMesSem[contador]= new JLabel("<html><u><font color='" + toHexString(roxoIndigo)+
-	        				"'>"+diaN+"."+mesN+"     "+diaDaSemana+"</font></u></html>");
-	        		lblDiaMesSem[contador].setForeground(Color.BLACK);
-	        		lblDiaMesSem[contador].setFont(new Font("Trebuchet MS", Font.BOLD, 18));
-	        		lblDiaMesSem[contador].setBounds(xDMS, yDMS, 100, 22);
-	        		lp.add(lblDiaMesSem[contador], new Integer(camada));
-	        		lp.revalidate();
-		             lp.repaint();
-	        		camada++;
-	        		
-	        		ArrayList<String> atvd = new ArrayList<String>();
-	        		atvd=controla.retornaAtividadesDeUmaData(dataS, aluno.getEmail());
-	        		
-	        			int yAtvD=yDMS+100;
-	        			int xAtvD=40;
-	        			 lblAtividades = new JLabel[atvd.size()];
-	        			 int indiceAtv =0;
-	        			 
-	        			 for(String atv: atvd) {
-	        				 lblAtividades[indiceAtv] = new JLabel(atv);
-	        				 lblAtividades[indiceAtv].setForeground(Color.BLACK);
-	        				 lblAtividades[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
-	        				 lblAtividades[indiceAtv].setBounds(xDMS, yAtvD, 100, 25);
-	        				 lp.add(lblAtividades[indiceAtv], new Integer(camada));
-	        				 lp.revalidate();
-	        	             lp.repaint();
-	     	        		camada++;
-
-	        				 
-   							int XBtnEdit=xDMS+110;
-   							int xBtnExc= xDMS+150;
-   							int YBotoes = yAtvD;
-   							
-							String ATIVIDADE = lblAtividades[indiceAtv].getText();
-
-   							lblAtividades[indiceAtv].addMouseListener(new MouseListener() {
-	        						
-	        						@Override
-	        						public void mouseClicked(java.awt.event.MouseEvent e) {
-	        							// TODO Auto-generated method stub
-	        							
-	        						}
-	        						@Override
-	        						public void mousePressed(java.awt.event.MouseEvent e) {
-	        							// TODO Auto-generated method stub
-	        							
-	        						}
-	        						@Override
-	        						public void mouseReleased(java.awt.event.MouseEvent e) {
-	        							// TODO Auto-generated method stub
-	        							
-	        						}
-	        						@Override
-	        						public void mouseEntered(java.awt.event.MouseEvent e) {
-	        							//ta em cima
-	        							btnEditar =new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-	        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnEditarAtividade.png"));
-	        							btnEditar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
-	        							btnEditar.setBorderPainted(false); // Remove a borda
-	        							btnEditar.setFocusPainted(false);
-	        							
-	        							
-	        							btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
-
-	        							int novaCamada=100;
-	        							lp.add(btnEditar, new Integer(novaCamada));
-	        							lp.revalidate();
-	        				             lp.repaint();
-	        							novaCamada++;	        						
-	        							
-	        							btnEditar.addActionListener(new ActionListener() {
-	        								@Override
-	        								public void actionPerformed(ActionEvent e) {
-	        									TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
-	        									//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
-	        								}
-	        							});
-	        							
-	        							btnExcluir=new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-	        									+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnExcluirAtividade.png"));
-	        							btnExcluir.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
-	        							btnExcluir.setBorderPainted(false); // Remove a borda
-	        							btnExcluir.setFocusPainted(false);
-	        							
-	        							btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
-
-	        							lp.add(btnExcluir, new Integer(novaCamada));
-	        							lp.revalidate();
-	        				             lp.repaint();
-	        							
-	        							btnExcluir.addActionListener(new ActionListener() {
-	        								@Override
-	        								public void actionPerformed(ActionEvent e) {
-	        									TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
-	        									//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
-	        								}
-	        							});
-	        							
-	        						}
-	        						@Override
-	        						public void mouseExited(java.awt.event.MouseEvent e) {
-	        							//saiu
-	        							lp.remove(btnExcluir);
-	        							lp.remove(btnEditar);
-	        					        lp.revalidate();
-	        					        lp.repaint();
-	        						}
-	        			        });
-   	        			 yAtvD+=60;
-   	        			indiceAtv++;
-	        			 }
-	        			 
-	        		
-	        		contador+=1;
-	        		xDMS+=160;
-	        	}
-	        	contentPane.add(lp);
-	        	JOptionPane.showMessageDialog(null, "OTARIAAA");
+				TelaAgendaInicia inicia = new TelaAgendaInicia(aluno);
+				setVisible(false);
 			}
 		});
 		
@@ -437,23 +206,7 @@ public class AGENDA_ALUNO_TESTE extends JFrame{
 		
 	}
 	
-	public static void main(String[]args) {
-		AlunoCONTROLLER controla = new AlunoCONTROLLER();
-		Aluno aluno = controla.obterAlunoExistente("isassevalho@gmail.com");
-		AGENDA_ALUNO_TESTE Telagenda = new AGENDA_ALUNO_TESTE(aluno);
-	}
-	
 	private static String toHexString(Color cor) {
         return String.format("#%02x%02x%02x", cor.getRed(), cor.getGreen(), cor.getBlue());
-    }
-	
-	private static int getLowestUnusedLayer(JLayeredPane layeredPane) {
-        int layer;
-        for (layer = 0; layer < layeredPane.getComponentCount(); layer++) {
-            if (layeredPane.getComponentCountInLayer(layer) == 0) {
-                return layer;
-            }
-        }
-        return layer;
     }
 }
