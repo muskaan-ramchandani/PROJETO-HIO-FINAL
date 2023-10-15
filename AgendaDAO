@@ -40,6 +40,7 @@ public class AgendaDAO {
 	}
 	
 	public boolean adicionarAtividade(String atividade, LocalDate dataSemana, String diaSemana,String mes, String emailAluno) {
+		boolean retorno=false;
 		Connection conn =  null;
 		PreparedStatement ps = null;
 		conn = new Conexao().getConnection();
@@ -57,35 +58,93 @@ public class AgendaDAO {
             ps.setString(4, emailAluno);
            
             ResultSet resultSet = ps.executeQuery();
-
-            if (resultSet.next()) {
-                String insertSql = "INSERT INTO AgendaAluno (atividade) VALUES (?)";
-                PreparedStatement insertStatement = conn.prepareStatement(insertSql);
-
-                insertStatement.setString(1, atividade);
-   
-                int linhasAfetadas = insertStatement.executeUpdate();
-                
-                resultSet.close();
-                ps.close();
-    			conn.close();
-    			
-                if(linhasAfetadas>0) {
-                	return true;
-                }else {
-                	return false;
-                }
-               
-            } else {
-                return false;
-            }
+            boolean atvPreenchida = verificarAtividadePreenchida(dataSemana, diaSemana, mes, emailAluno);
+            
+            if(atvPreenchida==true) {
+        		PreparedStatement psNovaLinha = null;
+            	String sqlNovaLinha = "INSERT INTO AgendaAluno (dataSemana, diaSemana, mes,atividade, emailAluno) VALUES (?,?,?,?,?)";
            
-			
+	            	psNovaLinha= conn.prepareStatement(sqlNovaLinha);
+	
+	            	psNovaLinha.setDate(1, (java.sql.Date) dataSql);
+	            	psNovaLinha.setString(2, diaSemana);
+	            	psNovaLinha.setString(3, mes);
+	            	psNovaLinha.setString(4, emailAluno);
+	                    
+	            	psNovaLinha.executeUpdate();
+                    int linhasCriadas = psNovaLinha.executeUpdate();
+                    
+                    psNovaLinha.close();
+        			conn.close();
+        			
+                    if(linhasCriadas>0) {
+                    	retorno= true;
+                    }else {
+                    	retorno= false;
+                    }
+                    
+            }else if(atvPreenchida==false) {
+            	if (resultSet.next()) {
+                    String insertSql = "INSERT INTO AgendaAluno (atividade) VALUES (?)";
+                    PreparedStatement insertStatement = conn.prepareStatement(insertSql);
+
+                    insertStatement.setString(1, atividade);
+       
+                    int linhasAfetadas = insertStatement.executeUpdate();
+                    
+                    resultSet.close();
+                    ps.close();
+        			conn.close();
+        			
+                    if(linhasAfetadas>0) {
+                    	retorno= true;
+                    }else {
+                    	retorno= false;
+                    }
+                   
+                } else {
+                	retorno= false;
+                }
+            }
+            
         }catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			retorno= false;
 		}
+		return retorno;
 	}
+	
+	private boolean verificarAtividadePreenchida(LocalDate dataSemana, String diaSemana, String mes, String emailAluno) {
+	    Connection conn = null;
+	    PreparedStatement ps = null;
+	    conn = new Conexao().getConnection();
+
+	    try {
+	        String selectSql = "SELECT * FROM AgendaAluno WHERE dataSemana = ? AND diaSemana = ? AND mes = ? AND emailAluno = ? AND atividade IS NOT NULL";
+	        ps = conn.prepareStatement(selectSql);
+	        Date data = Date.from(dataSemana.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	        java.sql.Date dataSql = new java.sql.Date(data.getTime());
+
+	        ps.setDate(1, (java.sql.Date) dataSql);
+	        ps.setString(2, diaSemana);
+	        ps.setString(3, mes);
+	        ps.setString(4, emailAluno);
+
+	        ResultSet resultSet = ps.executeQuery();
+
+	        boolean atividadePreenchida = resultSet.next();
+
+	        resultSet.close();
+	        ps.close();
+	        conn.close();
+
+	        return atividadePreenchida;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 	
 	public ArrayList<String> retornaAtividadesDeUmaData(LocalDate dataSemana, String emailAluno){
 		Connection conn =  null;
@@ -106,7 +165,7 @@ public class AgendaDAO {
            
             ResultSet resultSet = ps.executeQuery();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 String atividade = resultSet.getString("atividade");
                 
                 if(atividade!=null) {
@@ -215,31 +274,29 @@ public class AgendaDAO {
             preparedStatement.setString(1, emailAluno);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-            	Date date = resultSet.getDate("dataSemana");
+            while (resultSet.next()) {
+                Date date = resultSet.getDate("dataSemana");
 
-            	
-            	 Calendar calendar = Calendar.getInstance();
-                 calendar.setTime(date);
-                 int year = calendar.get(Calendar.YEAR);
-                 int month = calendar.get(Calendar.MONTH) + 1; // Adicionando 1 pois os meses em Calendar começam de 0
-                 int day = calendar.get(Calendar.DAY_OF_MONTH);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH) + 1; // Adicionando 1 pois os meses em Calendar começam de 0
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-                 java.time.LocalDate dataSemana = java.time.LocalDate.of(year, month, day);                
-                
-                
+                java.time.LocalDate dataSemana = java.time.LocalDate.of(year, month, day);
+
                 String diaSemana = resultSet.getString("diaSemana");
                 String mes = resultSet.getString("mes");
                 String atividade = resultSet.getString("atividade");
-                
-                Agenda agenda = new Agenda(dataSemana, diaSemana,mes, atividade, emailAluno);
-                
+
+                Agenda agenda = new Agenda(dataSemana, diaSemana, mes, atividade, emailAluno);
+
                 diasDaAgenda.add(agenda);
             }
-            
+
             resultSet.close();
             preparedStatement.close();
-			conn.close();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
