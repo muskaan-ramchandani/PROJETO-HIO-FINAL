@@ -103,9 +103,9 @@ public class TelaAgendaAluno extends JFrame{
     	btnVoltar.setBounds(10, 12, 28,25);
     	lblMinhaAgenda.setBounds(600, 12, 150, 26);
     	lblInicieSuaAgenda.setBounds(450, 350, 700, 40);
-    	btnIniciar.setBounds(1150, 140, 41, 40);
-		btnAdicionarAtividade.setBounds(1200, 140, 41, 40);
-		btnApagar.setBounds(1250, 140, 41, 40); //50 diferenca
+    	btnIniciar.setBounds(1150, 100, 41, 40);
+		btnAdicionarAtividade.setBounds(1200, 100, 41, 40);
+		btnApagar.setBounds(1250, 100, 41, 40); //50 diferenca
 
     	//adiciona
     	contentPane.add(lp);
@@ -155,7 +155,8 @@ public class TelaAgendaAluno extends JFrame{
 		btnAdicionarAtividade.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				JOptionPane.showMessageDialog(null, "Só é possível adicionar uma atividade se"
+						+ "\na agenda for iniciada!");
 			}
 			
 		});
@@ -177,7 +178,8 @@ public class TelaAgendaAluno extends JFrame{
 		btnApagar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				JOptionPane.showMessageDialog(null, "Só é possível apagar uma agenda se"
+						+ "\na agenda for iniciada!");
 			}
 			
 		});
