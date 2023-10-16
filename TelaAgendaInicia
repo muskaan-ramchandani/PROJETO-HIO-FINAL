@@ -10,12 +10,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
-
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.*;
 import java.awt.*;
 
@@ -26,6 +29,7 @@ import vo.Aluno;
 
 
 public class TelaAgendaInicia extends JFrame{
+	String mesAtual;
 	private Container contentPane;
 	private JLayeredPane lp;
 	private JMenuBar barra;
@@ -115,11 +119,13 @@ public class TelaAgendaInicia extends JFrame{
 				if(arrayVerifica.isEmpty()) {//o usuario não criou uma agenda, primeira vez
 					
 					//inicia valores da agenda
-					LocalDate dataAtual = LocalDate.now();
+			        LocalDate dataAtual = LocalDate.now();
 			        LocalDate dataFinalDaSemana = dataAtual.with(DayOfWeek.SUNDAY); // Encontre o próximo domingo
-			        			        
+			        LocalDate primeiraData = dataFinalDaSemana.minusDays(6); // A primeira data é 6 dias antes da data final da semana
+			        LocalDate ultimaData = dataFinalDaSemana;
+			        
 			        for (int i = 0; i < 7; i++) {
-			        	LocalDate data=dataFinalDaSemana.plusDays(i);
+			        	LocalDate data=primeiraData.plusDays(i);
 			        	String diaSemana = String.valueOf(data.getDayOfWeek().getDisplayName(TextStyle.SHORT, new Locale("pt", "BR")));
 			        	int mesAtualNumero= data.getMonthValue();
 			        	String mes=null;
@@ -194,7 +200,7 @@ public class TelaAgendaInicia extends JFrame{
 
 				}*/
 	            lblDiaMesSem = new JLabel[7];
-	            String mesAtual = null;
+	            mesAtual = null;
 	        	int xDMS =100;
 	        	int yDMS=190;
 	        	int contador=0;
@@ -212,15 +218,15 @@ public class TelaAgendaInicia extends JFrame{
 	        		lblDiaMesSem[contador]= new JLabel("<html><u><font color='" + toHexString(roxoIndigo)+
 	        				"'>"+diaN+"."+mesN+"     "+diaDaSemana+"</font></u></html>");
 	        		lblDiaMesSem[contador].setForeground(Color.BLACK);
-	        		lblDiaMesSem[contador].setFont(new Font("Trebuchet MS", Font.BOLD, 18));
-	        		lblDiaMesSem[contador].setBounds(xDMS, yDMS, 100, 22);
+	        		lblDiaMesSem[contador].setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+	        		lblDiaMesSem[contador].setBounds(xDMS, yDMS, 110, 23);
 	        		lp.add(lblDiaMesSem[contador], new Integer(7));
 	      
 	        		
 	        		ArrayList<String> atvd = new ArrayList<String>();
 	        		atvd=controla.retornaAtividadesDeUmaData(dataS, aluno.getEmail());
 	        		
-	        			int yAtvD=yDMS+100;
+	        			int yAtvD=yDMS+85;
 	        			int xAtvD=xDMS;
 	        			 lblAtividades = new JLabel[atvd.size()];
 	        			 int indiceAtv =0;
@@ -229,12 +235,12 @@ public class TelaAgendaInicia extends JFrame{
 	        				 lblAtividades[indiceAtv] = new JLabel(atv);
 	        				 lblAtividades[indiceAtv].setForeground(Color.BLACK);
 	        				 lblAtividades[indiceAtv].setFont(new Font("Trebuchet MS", Font.BOLD, 15));
-	        				 lblAtividades[indiceAtv].setBounds(xDMS, yAtvD, 100, 25);
+	        				 lblAtividades[indiceAtv].setBounds(xDMS, yAtvD, 80, 25);
 	        				 lp.add(lblAtividades[indiceAtv], new Integer(8));
 	        				
 
 	        				 
-   							int XBtnEdit=xDMS+110;
+   							int XBtnEdit=xDMS+90;
    							int xBtnExc= xDMS+150;
    							int YBotoes = yAtvD;
    							
@@ -275,7 +281,7 @@ public class TelaAgendaInicia extends JFrame{
 	        			 
 	        		
 	        		contador+=1;
-	        		xDMS+=160;
+	        		xDMS+=170;
 	        	}
 	        	
 	        	lblMes = new JLabel(mesAtual);
@@ -312,7 +318,9 @@ public class TelaAgendaInicia extends JFrame{
 		btnAdicionarAtividade.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				TelaAdicionarAtividade adicionaAtv = new TelaAdicionarAtividade(aluno, mesAtual);
+				adicionaAtv.setLocationRelativeTo(null);
+
 			}
 			
 		});
