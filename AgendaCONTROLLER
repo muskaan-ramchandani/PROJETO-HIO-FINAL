@@ -12,9 +12,9 @@ public class AgendaCONTROLLER {
 		bo.iniciarAgenda(dataSemana, diaSemana, mes, emailAluno);
 	}
 	
-	public boolean adicionarAtividade(String atividade, LocalDate dataSemana, String diaSemana,String mes, String emailAluno) {
+	public boolean adicionarAtividade(String atividade, LocalDate dataSemana,String diaSemana,String mes, String emailAluno) {
 		AgendaBO bo = new AgendaBO();
-		return bo.adicionarAtividade(atividade, dataSemana, diaSemana, mes, emailAluno);
+		return bo.adicionarAtividade(atividade, dataSemana,diaSemana, mes, emailAluno);
 	}
 	
 	public ArrayList<String> retornaAtividadesDeUmaData(LocalDate dataSemana, String emailAluno){
