@@ -18,7 +18,7 @@ public class AgendaBO {
 		dao.iniciarAgenda(dataSemana, diaSemana, mes, emailAluno);
 	}
 	
-	public boolean adicionarAtividade(String atividade, LocalDate dataSemana, String diaSemana,String mes, String emailAluno) {
+	public boolean adicionarAtividade(String atividade, LocalDate dataSemana, String diaSemana, String mes, String emailAluno) {
 		AgendaDAO dao = new AgendaDAO();
 		return dao.adicionarAtividade(atividade, dataSemana, diaSemana, mes, emailAluno);
 	}
