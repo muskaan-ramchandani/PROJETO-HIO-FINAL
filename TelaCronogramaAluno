@@ -1,4 +1,4 @@
-package Projeto_testes;
+package Testeprojeto;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -28,9 +28,16 @@ public class TelaCronogramaAluno extends JFrame {
 	private JButton btnAssuntos;
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
-	private DefaultTableModel modelo;
-	private JTable tabela;
-	private JScrollPane scrollPane;
+	private JLabel txtEvento;
+	
+	int tamanho = 56;
+	private JLabel[] TabelaData = new JLabel[tamanho];
+	int linhaD = 230;
+	int colunaD = 200;
+	int limite = 7;
+	
+	private JLabel[] TabelaEvento = new JLabel[8];
+	int colunaE = 200;
 	
 	
 	public TelaCronogramaAluno() {
@@ -48,6 +55,7 @@ public class TelaCronogramaAluno extends JFrame {
 		setLayout(null);
 		
 		
+		
 		lp = new JLayeredPane();
         Barra = new JMenuBar();
         lblLogo  = new JLabel(new ImageIcon("C:\\Breno\\bonequinhoSFMEDIO.png"));
@@ -56,20 +64,8 @@ public class TelaCronogramaAluno extends JFrame {
 		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
-		
-		modelo = new DefaultTableModel(new String[]{"Nome", "janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"}, 0) {
-	           @Override
-	           public boolean isCellEditable(int row, int column) {
-	               return false; // Isso torna todas as células não editáveis
-	           }
-	       };
+		txtEvento = new JLabel("Eventos Importantes");
 
-	    modelo.addRow(new Object[]{"Inicio inscrição", "10"});
-	    modelo.addRow(new Object[]{"Fim da inscrição", null, "10"});
-
-	    tabela = new JTable(modelo);
-		
-		scrollPane = new JScrollPane(tabela);
 		
 		//tira o foco ao aperta o botão
 		btnLivros.setFocusPainted(false);
@@ -102,6 +98,9 @@ public class TelaCronogramaAluno extends JFrame {
 		btnCronograma.setFont(fonteBarra);
 		
 		
+		Font fontetxt = new Font("Trebuchet MS", Font.PLAIN, 25);
+		txtEvento.setFont(fontetxt);
+		
 		//definir as posições
         Barra.setBounds(0,0,screenSize.width, 50); 
         lblLogo.setBounds(10,5,44,35);
@@ -110,8 +109,8 @@ public class TelaCronogramaAluno extends JFrame {
 		btnAssuntos.setBounds(578,7,100,35);
 		btnFlashcards.setBounds(765,7,130,35);
 		btnCronograma.setBounds(980,7,130,35);
-		scrollPane.setBounds(90,140,1360,600);
-
+		txtEvento.setBounds(50,80,300,50);
+		
 		
 		contentPane.add(lp);
         lp.add(Barra, new Integer(1));
@@ -121,8 +120,38 @@ public class TelaCronogramaAluno extends JFrame {
 		lp.add(btnAssuntos, new Integer(6));
 		lp.add(btnFlashcards, new Integer(7));
 		lp.add(btnCronograma, new Integer(8));
-		lp.add(scrollPane, new Integer(8));
+		lp.add(txtEvento, new Integer(9));
 		
+		for(int i = 0;i < tamanho;i++) {
+			TabelaData[i] = new JLabel("");
+			TabelaData[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+			TabelaData[i].setHorizontalAlignment(SwingConstants.CENTER);
+			TabelaData[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+			TabelaData[i].setBackground(Color.WHITE);
+			TabelaData[i].setForeground(Color.BLACK);
+			if(i >= limite) {
+				colunaD = colunaD+40;
+				limite = limite + 7;
+				linhaD = 230;
+			}
+			TabelaData[i].setBounds(linhaD,colunaD,130,40);
+			lp.add(TabelaData[i], new Integer(100));
+			linhaD = linhaD + 130;
+		}
+		
+		for(int i = 0; i< 8;i++) {
+			TabelaEvento[i] = new JLabel("");
+			TabelaEvento[0] = new JLabel("Evento");
+			TabelaEvento[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+			TabelaEvento[i].setHorizontalAlignment(SwingConstants.CENTER);
+			TabelaEvento[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+			TabelaEvento[i].setBackground(Color.WHITE);
+			TabelaEvento[i].setForeground(Color.BLACK);
+			TabelaEvento[i].setBounds(63,colunaE,170,40);
+			lp.add(TabelaEvento[i], new Integer(100));
+			colunaE += 40;
+			
+		}
 		//tirar bordar
         setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
