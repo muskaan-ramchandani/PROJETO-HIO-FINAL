@@ -33,6 +33,7 @@ public class TelaAgendaAluno extends JFrame{
 	private JMenuBar barra;
 	private JButton btnVoltar;
 	private JLabel lblMinhaAgenda;
+	private JButton btnAtualizar;
 	private JButton btnIniciar;
 	private JButton btnAdicionarAtividade;
 	private JButton btnApagar;
@@ -65,6 +66,12 @@ public class TelaAgendaAluno extends JFrame{
 		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
 		btnVoltar.setBorderPainted(false); // Remove a borda
 		btnVoltar.setFocusPainted(false);
+		
+		btnAtualizar= new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnAtualizarAgenda.png"));
+		btnAtualizar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnAtualizar.setBorderPainted(false); // Remove a borda
+		btnAtualizar.setFocusPainted(false);
 		
 		btnIniciar= new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnIniciarAgenda.png"));
@@ -103,7 +110,8 @@ public class TelaAgendaAluno extends JFrame{
     	btnVoltar.setBounds(10, 12, 28,25);
     	lblMinhaAgenda.setBounds(600, 12, 150, 26);
     	lblInicieSuaAgenda.setBounds(450, 350, 700, 40);
-    	btnIniciar.setBounds(1150, 100, 41, 40);
+    	btnIniciar.setBounds(1100, 100, 41, 40);
+    	btnAtualizar.setBounds(1150, 100, 41, 40);
 		btnAdicionarAtividade.setBounds(1200, 100, 41, 40);
 		btnApagar.setBounds(1250, 100, 41, 40); //50 diferenca
 
@@ -116,6 +124,7 @@ public class TelaAgendaAluno extends JFrame{
     	lp.add(btnIniciar, new Integer(6));
     	lp.add(btnAdicionarAtividade, new Integer(7));
     	lp.add(btnApagar, new Integer(8));
+    	lp.add(btnAtualizar, new Integer(9));
     	
     	setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
@@ -128,7 +137,6 @@ public class TelaAgendaAluno extends JFrame{
 	}
 
 	private void definirEventos(Aluno aluno) {
-		int camada=9;
 
 		btnIniciar.addActionListener(new ActionListener() {
 			@Override
@@ -151,6 +159,29 @@ public class TelaAgendaAluno extends JFrame{
 	                btnIniciar.setToolTipText(" ");
 	            }
 	        });
+		
+		btnAtualizar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Só é possível atualizar uma agenda se"
+						+ "\na agenda for iniciada!");
+			}
+			
+		});
+		btnAtualizar.addMouseListener(new MouseAdapter() {
+			@Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                btnAtualizar.setToolTipText("Atualizar agenda");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                btnAtualizar.setToolTipText(" ");
+            }
+        });
+		
 		
 		btnAdicionarAtividade.addActionListener(new ActionListener() {
 			@Override
