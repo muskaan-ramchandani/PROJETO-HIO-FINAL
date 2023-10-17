@@ -171,16 +171,11 @@ public class AgendaDAO {
 		boolean taOK=false;
 		
 		try {
-			String deleteSql = "DELETE FROM AgendaAluno WHERE emailAluno=?";
 	        String insertSql = "INSERT INTO AgendaAluno (dataSemana, diaSemana, mes, emailAluno) VALUES (?,?,?,?)";
 	        
 	        conn.setAutoCommit(false);
 
-	        //excluir
-	        PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
-	        
-	        int linhasExcluidas = deleteStatement.executeUpdate();
-	        if(linhasExcluidas>0) {
+	 
 	        	 PreparedStatement insertStatement = conn.prepareStatement(insertSql);
 	             	Date data = Date.from(dataSemana.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	                java.sql.Date dataSql = new java.sql.Date(data.getTime());
@@ -196,31 +191,29 @@ public class AgendaDAO {
 			        }else {
 			        	taOK= false;
 			        }
-	        }else {
-	        	taOK=false;
-	        }
 
-	        conn.commit();	        
-	        conn.close();
-	        return taOK;
-
-		}catch (SQLException e) {
-            try {
-                // Em caso de erro, reverter a transação
-                conn.rollback();
-            } catch (SQLException rollbackException) {
-                rollbackException.printStackTrace();
-            }
-            e.printStackTrace();
-            return false;
-        } finally {
-            try {
-                // Restaurar o modo de autocommit
-                conn.setAutoCommit(true);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+			        conn.commit();
+			    } catch (SQLException e) {
+			        try {
+			            // Em caso de erro, reverter a transação
+			            conn.rollback();
+			        } catch (SQLException rollbackException) {
+			            rollbackException.printStackTrace();
+			        }
+			        e.printStackTrace();
+			        taOK = false;
+			    } finally {
+			        try {
+			            // Fechar a conexão somente após todas as operações terem sido concluídas
+			            if (conn != null) {
+			                conn.setAutoCommit(true);
+			                conn.close();
+			            }
+			        } catch (SQLException e) {
+			            e.printStackTrace();
+			        }
+			    }
+			    return taOK;
 	}
 	
 	public boolean deletarAgenda(String emailAluno) {
@@ -230,6 +223,7 @@ public class AgendaDAO {
 		try {
 			String deleteSql = "DELETE FROM AgendaAluno WHERE emailAluno=?";
 			PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
+			deleteStatement.setString(1, emailAluno);
 	        int linhasExcluidas = deleteStatement.executeUpdate();
 	        
 	        deleteStatement.close();
@@ -253,10 +247,16 @@ public class AgendaDAO {
 		ArrayList<Agenda> diasDaAgenda = new ArrayList<Agenda>();
 		 
 		 try {
-            String selectQuery = "SELECT * FROM AgendaAluno WHERE emailAluno = ?";
+            String selectQuery = "SELECT DISTINCT * FROM AgendaAluno "
+            		+ "WHERE emailAluno = ?";
+            
+            /*String selectQuery = "SELECT DISTINCT * FROM AgendaAluno "
+            		+ "WHERE emailAluno = ? ORDER BY dataCriacaoAgenda DESC LIMIT 7";*/
             PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
             preparedStatement.setString(1, emailAluno);
             ResultSet resultSet = preparedStatement.executeQuery();
+
+            Set<LocalDate> datasDistintas = new HashSet<>();
 
             while (resultSet.next()) {
                 Date date = resultSet.getDate("dataSemana");
@@ -269,13 +269,17 @@ public class AgendaDAO {
 
                 java.time.LocalDate dataSemana = java.time.LocalDate.of(year, month, day);
 
-                String diaSemana = resultSet.getString("diaSemana");
-                String mes = resultSet.getString("mes");
-                String atividade = resultSet.getString("atividade");
+                
+                if (!datasDistintas.contains(dataSemana)) {
+                    String diaSemana = resultSet.getString("diaSemana");
+                    String mes = resultSet.getString("mes");
+                    String atividade = resultSet.getString("atividade");
 
-                Agenda agenda = new Agenda(dataSemana, diaSemana, mes, atividade, emailAluno);
-
-                diasDaAgenda.add(agenda);
+                    Agenda agenda = new Agenda(dataSemana, diaSemana, mes, atividade, emailAluno);
+                    
+                    diasDaAgenda.add(agenda);
+                    datasDistintas.add(dataSemana);
+                }
             }
 
             resultSet.close();
@@ -295,10 +299,9 @@ public class AgendaDAO {
 		conn = new Conexao().getConnection();
 		
 		try {
-			String sql = "UPDATE AgendaAluno"
-					+ "SET atividade = NULL"
-					+ "WHERE atividade = ? AND dataSemana=? AND emailAluno=?";
-			
+			String sql =  "UPDATE AgendaAluno "
+			        + "SET atividade = NULL "
+			        + "WHERE atividade = ? AND dataSemana=? AND emailAluno=?";			
 			
 			 ps = conn.prepareStatement(sql);
           	 Date dataConvertida = Date.from(data.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -329,9 +332,9 @@ public class AgendaDAO {
 		conn = new Conexao().getConnection();
 		
 		try {
-			String sql = "UPDATE AgendaAluno"
-					+ "SET atividade = ?"
-					+ "WHERE atividade = ? AND dataSemana=? AND emailAluno=?";
+			 String sql = "UPDATE AgendaAluno "
+	                    + "SET atividade = ? "
+	                    + "WHERE atividade = ? AND dataSemana=? AND emailAluno=?";
 			
 			
 			 ps = conn.prepareStatement(sql);
