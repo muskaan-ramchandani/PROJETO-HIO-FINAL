@@ -155,7 +155,7 @@ public class TelaAdicionarAtividade extends JFrame{
 	            		JOptionPane.showMessageDialog(null, "Erro ao adicionar atividade!");
 	            	}else if(foi==true) {
 	            		JOptionPane.showMessageDialog(null, "Atividade adicionada com sucesso!");
-
+	            		setVisible(false);
 	            	}
 	            }
 			}
