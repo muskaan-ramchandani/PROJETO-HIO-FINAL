@@ -13,8 +13,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -36,6 +39,7 @@ public class TelaAgendaInicia extends JFrame{
 	private JButton btnVoltar;
 	private JLabel lblMinhaAgenda;
 	private JButton btnIniciar;
+	private JButton btnAtualizar;
 	private JButton btnAdicionarAtividade;
 	private JButton btnApagar;
 	
@@ -81,6 +85,13 @@ public class TelaAgendaInicia extends JFrame{
 				btnIniciar.setBorderPainted(false); // Remove a borda
 				btnIniciar.setFocusPainted(false);
 				
+				btnAtualizar= new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+						+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnAtualizarAgenda.png"));
+				btnAtualizar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				btnAtualizar.setBorderPainted(false); // Remove a borda
+				btnAtualizar.setFocusPainted(false);
+				
+				
 				btnAdicionarAtividade= new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 						+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//btnAdicionarAtv.png"));
 				btnAdicionarAtividade.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
@@ -108,7 +119,8 @@ public class TelaAgendaInicia extends JFrame{
 			    barra.setBounds(0,0,screenSize.width, 50);
 		    	btnVoltar.setBounds(10, 12, 28,25);
 		    	lblMinhaAgenda.setBounds(600, 12, 150, 26);
-		    	btnIniciar.setBounds(1150, 100, 41, 40);
+		    	btnIniciar.setBounds(1100, 100, 41, 40);
+		    	btnAtualizar.setBounds(1150, 100, 41, 40);
 				btnAdicionarAtividade.setBounds(1200, 100, 41, 40);
 				btnApagar.setBounds(1250, 100, 41, 40); //50 diferenca
 
@@ -119,7 +131,7 @@ public class TelaAgendaInicia extends JFrame{
 				if(arrayVerifica.isEmpty()) {//o usuario não criou uma agenda, primeira vez
 					
 					//inicia valores da agenda
-			        LocalDate dataAtual = LocalDate.now();
+					LocalDate dataAtual = LocalDate.now();
 			        LocalDate dataFinalDaSemana = dataAtual.with(DayOfWeek.SUNDAY); // Encontre o próximo domingo
 			        LocalDate primeiraData = dataFinalDaSemana.minusDays(6); // A primeira data é 6 dias antes da data final da semana
 			        LocalDate ultimaData = dataFinalDaSemana;
@@ -184,10 +196,13 @@ public class TelaAgendaInicia extends JFrame{
 				LocalDate dataV;
 				LocalDate dataIA;
 				
-				for(Agenda IA : itensAtuais) {
-					dataIA = IA.getDataSemana();
+				for(int j=0; j<itensAtuais.size();j++) {
+					Agenda IA = itensAtuais.get(j);
+					dataIA = itensAtuais.get(j).getDataSemana();
+					
 					for(int i=0; i<verificaDatasIguais.size();i++) {
 						dataV= verificaDatasIguais.get(i).getDataSemana();
+					
 						if(dataIA.isEqual(dataV)) {
 							//datas diferentes
 							agendaNRepete.add(IA);
@@ -195,17 +210,22 @@ public class TelaAgendaInicia extends JFrame{
 					}
 				}
 				
-				/*for(int i=0; i<agendaNRepete.size();i++) {
-					JOptionPane.showMessageDialog(null, "Item agenda n repete n"+i+" Agenda:"+agendaNRepete.get(i));
-
-				}*/
+				//verifica se mes ou semana acabou
+	        	boolean vSemana =verificaSeSemanaAcabou( aluno, agendaNRepete);
+	        	boolean vMes=verificaSeMesAcabou( aluno, agendaNRepete);
+				
+	        	if(vSemana==true||vMes==true) {
+	        		TelaAgendaInicia inicia = new TelaAgendaInicia(aluno);
+					setVisible(false);
+	        	}
+				//acaba verificaçao
+				
 	            lblDiaMesSem = new JLabel[7];
 	            mesAtual = null;
 	        	int xDMS =100;
 	        	int yDMS=190;
 	        	int contador=0;
 	        	
-
 	        	for(Agenda agendinha :agendaNRepete) {
 					LocalDate dataS=agendinha.getDataSemana();
 	            	mesAtual= agendinha.getMes();
@@ -240,8 +260,8 @@ public class TelaAgendaInicia extends JFrame{
 	        				
 
 	        				 
-   							int XBtnEdit=xDMS+90;
-   							int xBtnExc= xDMS+150;
+   							int XBtnEdit=xDMS+75;
+   							int xBtnExc= xDMS+110;
    							int YBotoes = yAtvD;
    							
 							String ATIVIDADE = lblAtividades[indiceAtv].getText();
@@ -300,6 +320,7 @@ public class TelaAgendaInicia extends JFrame{
 		    	lp.add(btnIniciar, new Integer(4));
 		    	lp.add(btnAdicionarAtividade, new Integer(5));
 		    	lp.add(btnApagar, new Integer(6));
+		    	lp.add(btnAtualizar, new Integer(7));
 		    	
 		    	
 		    	
@@ -315,6 +336,31 @@ public class TelaAgendaInicia extends JFrame{
 	}
 
 	private void definirEventos(Aluno aluno) {
+		
+		btnAtualizar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaAgendaInicia inicia = new TelaAgendaInicia(aluno);
+				inicia.setLocationRelativeTo(null);
+				setVisible(false);
+			}
+			
+		});
+		
+		btnAtualizar.addMouseListener(new MouseAdapter() {
+			@Override
+	            public void mouseEntered(MouseEvent e) {
+	                super.mouseEntered(e);
+	                btnAtualizar.setToolTipText("Adicionar atividade");
+	            }
+
+	            @Override
+	            public void mouseExited(MouseEvent e) {
+	                super.mouseExited(e);
+	                btnAtualizar.setToolTipText(" ");
+	            }
+	        });
+		
 		btnAdicionarAtividade.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -342,7 +388,16 @@ public class TelaAgendaInicia extends JFrame{
 		btnApagar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				boolean foi=controla.deletarAgenda(aluno.getEmail());
 				
+				if(foi==true) {
+					JOptionPane.showMessageDialog(null, "Agenda deletada com sucesso!");
+					TelaAgendaInicia inicia = new TelaAgendaInicia(aluno);
+					setVisible(false);
+					
+				}else if(foi==false) {
+					JOptionPane.showMessageDialog(null, "Erro ao deletar agenda!");
+				}
 			}
 			
 		});
@@ -383,7 +438,7 @@ public class TelaAgendaInicia extends JFrame{
 		btnEditar.setFocusPainted(false);
 		
 		
-		btnEditar.setBounds(XBtnEdit, YBotoes, 25, 25);
+		btnEditar.setBounds(XBtnEdit, YBotoes, 26, 25);
 
 		lp.add(btnEditar, new Integer(10));
 		
@@ -391,6 +446,8 @@ public class TelaAgendaInicia extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaEditarAtividade edita = new TelaEditarAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				edita.setLocationRelativeTo(null);
+
 				//controla.editarAtividade(atividadeatual, dataFinalDaSemana, emailaluno, novaatv)
 			}
 		});
@@ -401,7 +458,7 @@ public class TelaAgendaInicia extends JFrame{
 		btnExcluir.setBorderPainted(false); // Remove a borda
 		btnExcluir.setFocusPainted(false);
 		
-		btnExcluir.setBounds(xBtnExc, YBotoes, 25, 25);
+		btnExcluir.setBounds(xBtnExc, YBotoes, 26, 25);
 
 		lp.add(btnExcluir, new Integer(11));
 	
@@ -410,9 +467,114 @@ public class TelaAgendaInicia extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaExcluirAtividade exclui = new TelaExcluirAtividade(ATIVIDADE, dataS, aluno.getEmail());
+				exclui.setLocationRelativeTo(null);
+
 				//controla.deletarAtividade(ATIVIDADE, dataFinalDaSemana, mesAtual)
 			}
 		});
+	}
+	
+	private boolean verificaSeMesAcabou(Aluno aluno,  ArrayList<Agenda> agendaNRepete) {
+		ArrayList<Agenda> agendaPVerificar= agendaNRepete;
+		 ArrayList<LocalDate> datas = new ArrayList<>();
+			
+			for(Agenda a : agendaPVerificar) {
+				datas.add(a.getDataSemana());
+			}
+			
+		int ano = datas.get(0).getYear();
+		int mes = datas.get(0).getMonthValue();;
+
+		YearMonth yearMonthObject = YearMonth.of(ano, mes);
+		int diasNoMes = yearMonthObject.lengthOfMonth();
+		LocalDate dataAtual = LocalDate.now();
+ 
+	       if (dataAtual.getDayOfMonth() == diasNoMes) {
+	    	   //mes acabou
+	   			controla.deletarAgenda(aluno.getEmail());
+	        	iniciaAgendaNovamente(aluno);
+	        	return true;
+	       } else {
+	    	   //mes nao acabou
+	    	   return false;
+	       }
+	}
+	
+	private boolean verificaSeSemanaAcabou(Aluno aluno, ArrayList<Agenda> agendaNRepete) {
+		ArrayList<Agenda> agendaPVerificar= agendaNRepete;
+		 ArrayList<LocalDate> datas = new ArrayList<>();
+			
+			for(Agenda a : agendaPVerificar) {
+				datas.add(a.getDataSemana());
+			}
+			
+        LocalDate ultimaData = Collections.max(datas);
+		LocalDate dataAtual = LocalDate.now();
+
+        if (dataAtual.isEqual(ultimaData.plusDays(1))) {
+            //A semana acabou
+    		controla.deletarAgenda(aluno.getEmail());
+        	iniciaAgendaNovamente(aluno);
+        	return true;
+        } else {
+            //A semana ainda não acabou
+        	return false;
+        }
+	}
+	
+	private void iniciaAgendaNovamente(Aluno aluno) {
+				
+		 	LocalDate dataAtual = LocalDate.now();
+	        LocalDate dataFinalDaSemana = dataAtual.with(DayOfWeek.SUNDAY); // Encontre o próximo domingo
+	        LocalDate primeiraData = dataFinalDaSemana.minusDays(6); // A primeira data é 6 dias antes da data final da semana
+	        LocalDate ultimaData = dataFinalDaSemana;
+	        
+	        for (int i = 0; i < 7; i++) {
+	        	LocalDate data=primeiraData.plusDays(i);
+	        	String diaSemana = String.valueOf(data.getDayOfWeek().getDisplayName(TextStyle.SHORT, new Locale("pt", "BR")));
+	        	int mesAtualNumero= data.getMonthValue();
+	        	String mes=null;
+	        	
+	        	if(mesAtualNumero==1) {
+	        		mes="Janeiro";
+	        	}else if(mesAtualNumero==2) {
+	        		mes="Fevereiro";
+	        	}else if(mesAtualNumero==3) {
+	        		mes="Março";
+
+	        	}else if(mesAtualNumero==4) {
+	        		mes="Abril";
+
+	        	}else if(mesAtualNumero==5) {
+	        		mes="Maio";
+
+	        	}else if(mesAtualNumero==6) {
+	        		mes="Junho";
+
+	        	}else if(mesAtualNumero==7) {
+	        		mes="Julho";
+
+	        	}else if(mesAtualNumero==8) {
+	        		mes="Agosto";
+
+	        	}else if(mesAtualNumero==9) {
+	        		mes="Setembro";
+
+	        	}else if(mesAtualNumero==10) {
+	        		mes="Outubro";
+
+	        	}else if(mesAtualNumero==11) {
+	        		mes="Novembro";
+
+	        	}else if(mesAtualNumero==12) {
+	        		mes="Dezembro";
+
+	        	}
+	        	controla.deletarAgenda(aluno.getEmail());
+	            controla.atualizarSemana(aluno.getEmail(), data, diaSemana, mes);
+
+	        }
+		//finaliza a iniciação dos itens da agenda
 	}
 	
 	private void escondeBotoes(String ATIVIDADE) {
@@ -423,9 +585,7 @@ public class TelaAgendaInicia extends JFrame{
 		        JButton button = (JButton) component; 
 		        String texto = button.getText(); 
 		        if (texto != null && texto.equals(ATIVIDADE)) {
-		            lp.remove(component);
-		            lp.repaint();
-		            lp.revalidate();
+		            component.setVisible(false);
 		        }
 		    }
 		}
