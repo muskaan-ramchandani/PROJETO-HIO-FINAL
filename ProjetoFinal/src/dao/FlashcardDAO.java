@@ -1,0 +1,250 @@
+package dao;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
+import com.mysql.cj.jdbc.Blob;
+
+import conexaoBD.Conexao;
+import vo.Flashcard;
+import vo.Olimpiada;
+
+public class FlashcardDAO {
+
+	public boolean cadastrar(Flashcard flash, File imagem) {
+		try {
+			 Connection conn =  null;
+			 PreparedStatement ps = null;
+			 conn = new Conexao().getConnection();
+				try {
+					InputStream is = new FileInputStream( imagem );
+			        byte[] bytes = new byte[(int)imagem.length() ];
+			        int offset = 0;
+			        int numRead = 0;
+			        while (offset < bytes.length
+			               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+			            offset += numRead;
+			        }
+					
+					String sql= "INSERT INTO Flashcards(titulo, resumo, palavraChave, imagem, emailProf)VALUES(?,?,?,?,?)";
+					
+					ps = conn.prepareStatement(sql);
+					ps.setString(1, flash.getTitulo());
+					ps.setString(2, flash.getResumo());
+					ps.setString(3, flash.getPalavrasChave());
+					ps.setBytes(4, bytes);
+					ps.setString(5, flash.getEmailProf());
+										
+					int  linhasAfetadas= ps.executeUpdate();
+					ps.close();
+					conn.close();
+					if(linhasAfetadas>0) {
+						return true;
+					}else {
+						return false;
+					}
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return false;
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}	
+	}
+	
+	public boolean relacionarComOlimp(Olimpiada olimp, String titulo) {
+		try {
+			 Connection conn =  null;
+			 PreparedStatement ps = null;
+			 conn = new Conexao().getConnection();
+					
+			 String sql= "INSERT INTO OlimpiadaFlashcards(tituloFlash, nomeOlimpiada)VALUES(?,?)";
+				
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, titulo);
+				ps.setString(2, olimp.getNome());
+				
+				int  linhasAfetadas= ps.executeUpdate();
+	            ps.close();
+				conn.close();
+				
+				if(linhasAfetadas>0) {
+					return true;
+				}else {
+					return false;
+				}
+					
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public ArrayList retornaFlashOlimpiada(Olimpiada olimp) {
+		ArrayList<Flashcard> flashs = new ArrayList<Flashcard>();
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    	    
+        
+         // Consulta SQL para selecionar vídeos com base no nome da Olimpíada
+            String sql = "SELECT * FROM Flashcards " +
+                         "INNER JOIN OlimpiadaFlashcards ON Flashcards.titulo = OlimpiadaFlashcards.tituloFlash " +
+                         "WHERE OlimpiadaFlashcards.nomeOlimpiada = ?";
+
+            // Preparar a consulta
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, olimp.getNome());
+
+            // Executar a consulta
+            ResultSet resultSet = ps.executeQuery();
+
+            // Processar o resultado
+            while (resultSet.next()) {
+            	InputStream inputStream = resultSet.getBinaryStream("imagem");
+            	BufferedImage arquivo = criarArquivoAPartirDoBlob(resultSet.getString("imagem"));
+
+                Flashcard flash = new Flashcard(resultSet.getString("titulo"), resultSet.getString("resumo"),
+						 resultSet.getString("palavraChave"),arquivo, resultSet.getString("emailProf"));
+                
+				 //adiciona o video na lista
+			     flashs.add(flash);
+ 			}
+            resultSet.close();
+            ps.close();
+			conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        return flashs;
+    }
+	
+	//PARA PODER RETORNAR O ARQUIVO
+	public BufferedImage criarArquivoAPartirDoBlob(String tituloF) throws IOException {
+		Connection conn =  null;
+		conn = new Conexao().getConnection();
+		BufferedImage arquivo = null;
+	    try {
+	        PreparedStatement ps = conn.prepareStatement("SELECT titulo, imagem FROM Flashcards WHERE titulo = ?");
+	        ps.setString(1, tituloF);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        if ( rs.next() ){	        	
+	        	Blob blob = (Blob) rs.getBlob("imagem");
+                byte[] imageBytes = blob.getBytes(1, (int) blob.length());
+                
+                ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+                arquivo= ImageIO.read(bis);
+	            
+	        }
+	        rs.close();
+            ps.close();
+			conn.close();
+	} catch (SQLException ex) {
+	ex.printStackTrace();
+	} catch (IOException ex) {
+		ex.printStackTrace();
+	}
+	    return arquivo;
+    }
+
+	 
+	public ArrayList<Flashcard> consultarFlashcardsPorTitulo(String tituloFlash, Olimpiada olimp) {
+	    ArrayList<Flashcard> flashsPorNome = new ArrayList<>();
+	    try {
+	        Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        
+	        String sql = "SELECT * FROM Flashcards " +
+                    "INNER JOIN OlimpiadaFlashcards ON Flashcards.titulo = OlimpiadaFlashcards.tituloFlash " +
+                    "WHERE OlimpiadaFlashcards.nomeOlimpiada = ? AND Flashcards.titulo LIKE ?";
+
+
+	        // Preparar a consulta
+	        ps = conn.prepareStatement(sql);
+            ps.setString(1, olimp.getNome());
+	        ps.setString(2, "%" + tituloFlash + "%");
+
+	        // Executar a consulta
+	        ResultSet resultSet = ps.executeQuery();
+
+	        // Processar o resultado
+	        while (resultSet.next()) {
+	        	BufferedImage arquivo = criarArquivoAPartirDoBlob( resultSet.getString("titulo"));
+
+	            Flashcard flash = new Flashcard(resultSet.getString("titulo"), resultSet.getString("resumo"),
+						 resultSet.getString("palavraChave"),arquivo, resultSet.getString("emailProf"));
+
+	            // Adiciona o livro na lista
+	            flashsPorNome.add(flash);
+	        }
+	        resultSet.close();
+            ps.close();
+			conn.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return flashsPorNome;
+	}
+	
+	public Flashcard obterFlashExistente(String titulo) {
+        Flashcard flashcard = null;
+
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    		 
+            String selectQuery = "SELECT * FROM Flashcards WHERE titulo = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setString(1, titulo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String tituloF = resultSet.getString("titulo");
+                String resumo = resultSet.getString("resumo");
+                String palavrasChave = resultSet.getString("palavraChave");
+                String emailProf = resultSet.getString("emailProf");
+                BufferedImage arquivo = criarArquivoAPartirDoBlob( resultSet.getString("imagem"));
+	            
+				flashcard = new Flashcard(tituloF, resumo, palavrasChave, arquivo, emailProf);
+            }
+            resultSet.close();
+            preparedStatement.close();
+			conn.close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return flashcard;
+    }
+}
+
+//	public Flashcard(String titulo, String resumo, String palavrasChave, File imagem, String emailProf) {

@@ -1,0 +1,90 @@
+package view;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+import controller.FlashcardCONTROLLER;
+import dao.FlashcardDAO;
+import vo.Flashcard;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+public class ExibirFlashcard extends JFrame{
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JPanel panelBranco;
+	private JLabel lblTitulo;
+	private JLabel lblResumo;
+	private JLabel palavrasChave;
+	private JLabel lblImagem;
+	
+    private Color roxoIndigo = new Color(75,0,130);
+	
+	public ExibirFlashcard(String titulo) {
+		inicializarComponentes(titulo);
+	}
+
+	private void inicializarComponentes(String titulo) {
+		try {
+			FlashcardCONTROLLER controla = new FlashcardCONTROLLER();
+			FlashcardDAO dao = new FlashcardDAO();
+			Flashcard flash = controla.obterFlashExistente(titulo);
+			
+			//configurações da tela
+			Toolkit toolkit = Toolkit.getDefaultToolkit();
+			Dimension screenSize = toolkit.getScreenSize();
+			setBounds(0, 0, 505, 648);
+			contentPane=getContentPane();
+	        contentPane.setBackground(new Color(220,220,220));
+	        
+	        //inicializa
+	        String textoResumo="<html>"+flash.getResumo()+"<html>";
+
+	        lp= new JLayeredPane();
+	        panelBranco = new JPanel();
+	        lblTitulo = new JLabel(titulo);
+	        lblResumo= new JLabel(textoResumo);
+	        palavrasChave = new JLabel("Palavras-chave:"+flash.getPalavrasChave());
+	        
+	        lblResumo.setHorizontalAlignment(JLabel.CENTER); // Centraliza horizontalmente
+	        lblResumo.setVerticalAlignment(JLabel.CENTER);
+	        
+	        BufferedImage fotoPNG = dao.criarArquivoAPartirDoBlob(titulo);
+	        lblImagem = new JLabel(new ImageIcon(fotoPNG));
+	        
+	        //configurações
+	        panelBranco.setBackground(Color.white);
+	        lblTitulo.setForeground(roxoIndigo);
+	        lblResumo.setForeground(Color.BLACK);
+	        palavrasChave.setForeground(Color.BLACK);
+	        
+	        
+	        //fontes
+	        lblTitulo.setFont(new Font("Sniglet", Font.PLAIN, 35));
+	        lblResumo.setFont(new Font("Sniglet", Font.PLAIN, 20));
+	        palavrasChave.setFont(new Font("Sniglet", Font.PLAIN, 15));
+	        
+	        //coordenadas
+	        panelBranco.setBounds(17, 20, 450, 570);
+	        lblTitulo.setBounds(180, 30, 300, 45);
+	        lblImagem.setBounds(100, 130, 250, 250);
+	        lblResumo.setBounds(50, 375, 400, 250);
+	        palavrasChave.setBounds(115, 80,300, 25);
+	        
+
+	        //adiciona
+	        contentPane.add(lp);
+	        lp.add(panelBranco, new Integer(1));
+	        lp.add(lblTitulo, new Integer(2));
+	        lp.add(lblImagem, new Integer(3));
+	        lp.add(lblResumo, new Integer(4));
+	        lp.add(palavrasChave, new Integer(5));
+	        
+		}catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+}

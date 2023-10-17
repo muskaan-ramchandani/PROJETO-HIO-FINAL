@@ -1,0 +1,63 @@
+package vo;
+import java.io.File;
+import java.util.Date;
+import javax.swing.*;
+
+public class Video {
+	private String titulo;
+	private String upc;
+	private String produtor;
+	private Date dataPublicacao;
+	private String emailProf;
+	private File arquivoVideo;
+
+	
+	public Video (String titulo, String upc, String produtor, Date dataPublicacao, String emailProf, File arquivoVideo) {
+		setTitulo (titulo);
+		setUpc (upc);
+		setProdutor (produtor);
+		setDataPublicacao (dataPublicacao);
+		setEmailProf (emailProf);
+		setArquivoVideo(arquivoVideo);
+	}
+	
+	public String getTitulo() {
+		return titulo;
+	}
+	public void setTitulo (String titulo) {
+		this.titulo=titulo;
+	}
+	public String getUpc() {
+		return upc;
+	}
+	public void setUpc (String upc) {
+		this.upc=upc;
+	}
+	public String getProdutor() {
+		return produtor;
+	}
+	public void setProdutor (String produtor) {
+		this.produtor=produtor;
+	}
+	public Date getDataPublicacao() {
+		return dataPublicacao;
+	}
+	public void setDataPublicacao (Date dataPublicacao) {
+		this.dataPublicacao=dataPublicacao;
+	}
+	public String getEmailProf() {
+		return emailProf;
+	}
+	public void setEmailProf(String emailProf) {
+		this.emailProf=emailProf;
+	}
+
+	public File getArquivoVideo() {
+		return arquivoVideo;
+	}
+
+	public void setArquivoVideo(File arquivoVideo) {
+		this.arquivoVideo = arquivoVideo;
+	}
+	
+}

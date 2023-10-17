@@ -1,0 +1,108 @@
+package view;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import vo.Professor;
+import controller.ProfessorCONTROLLER;
+
+public class TelaDeletaContaProf extends JFrame{
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JLabel lblDeletarConta;
+	private JButton btnDeletarConta;
+	private JPasswordField  pfRepeteSenha;
+	private JLabel lblRepitaSenha;
+	
+	public TelaDeletaContaProf (Professor prof, String email) {
+		inicializarComponentes(prof);
+		definirEventos(prof, email);
+	}
+
+	private void inicializarComponentes(Professor prof) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, 400, 255);
+        contentPane=getContentPane();
+        contentPane.setBackground(Color.WHITE);
+        setLayout(null);
+        
+        //inicializa
+        lp= new JLayeredPane();
+        lblDeletarConta = new JLabel("Deletar conta");
+        lblRepitaSenha = new JLabel("Digite sua senha:");
+        pfRepeteSenha = new JPasswordField(10);
+        btnDeletarConta = new JButton("Deletar");
+        
+        //cores
+    	Color roxoEscuro=new Color(75,0,130); 
+
+    	lblDeletarConta.setForeground(roxoEscuro);
+        lblRepitaSenha.setForeground(Color.BLACK);
+        pfRepeteSenha.setForeground(Color.BLACK);
+        btnDeletarConta.setForeground(Color.WHITE);
+        btnDeletarConta.setBackground(roxoEscuro);
+        
+        //formatação
+        Font fonteLabelsInsira = new Font( "Trebuchet MS", Font.PLAIN, 20);
+        lblRepitaSenha.setFont(fonteLabelsInsira);
+        
+        Font fonteTXT = new Font( "Trebuchet MS", Font.PLAIN, 20);
+        pfRepeteSenha.setFont(fonteTXT);
+     
+        
+        Font fonteTitle = new Font( "Trebuchet MS", Font.PLAIN, 25);
+        lblDeletarConta.setFont(fonteTitle);
+        
+        Font fonteBotao = new Font( "Trebuchet MS", Font.PLAIN, 25);
+        btnDeletarConta.setFont(fonteBotao);
+        
+        
+        //coordenadas
+        lp.setBounds(0, 0, 400, 255);
+        lblDeletarConta.setBounds(110, 20, 300, 25);
+        lblRepitaSenha.setBounds(15, 85, 200, 20);
+        pfRepeteSenha.setBounds(15, 110, 350, 23);
+        btnDeletarConta.setBounds(115, 175, 150, 35);
+        
+
+        //adiciona
+        contentPane.add(lp);
+        lp.add(lblDeletarConta, new Integer(1));
+        lp.add(lblRepitaSenha, new Integer(2));
+        lp.add(pfRepeteSenha, new Integer(3));
+        lp.add(btnDeletarConta, new Integer(6));
+        
+		setVisible(true);
+	}
+
+	private void definirEventos(Professor prof, String email) {
+		btnDeletarConta.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ProfessorCONTROLLER controla = new ProfessorCONTROLLER();
+				String senha = String.valueOf(pfRepeteSenha.getPassword());
+				
+				if(senha.equals(prof.getSenha())) {
+					if(controla.remover(email, prof.getSenha())==true) {
+						
+						controla.remover(email, prof.getSenha());
+						JOptionPane.showMessageDialog(null, "Conta deletada com sucesso");
+						setVisible(false);
+						System.exit(0);
+						
+					}else {
+						JOptionPane.showMessageDialog(null, "Erro ao executar ação!");
+						setVisible(false);
+					}
+				}else {
+					JOptionPane.showMessageDialog(null, "Senha incorreta! Conta não pode ser deletada!");
+					pfRepeteSenha.setText(null);
+					return;
+				}
+				
+				
+			} 
+		});
+
+	}
+}

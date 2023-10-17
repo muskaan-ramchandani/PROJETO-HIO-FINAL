@@ -1,0 +1,69 @@
+package vo;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+public class Flashcard {
+
+	private String titulo;
+	private String resumo;
+	private String palavrasChave;
+	private BufferedImage imagem;
+	private String emailProf;
+	
+	public Flashcard(String titulo, String resumo, String palavrasChave, BufferedImage imagem, String emailProf) {
+		setTitulo(titulo);
+		setResumo(resumo);
+		setPalavrasChave(palavrasChave);
+		setImagem(imagem);
+		setEmailProf(emailProf);
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getResumo() {
+		return resumo;
+	}
+
+	public void setResumo(String resumo) {
+		this.resumo = resumo;
+	}
+
+	public String getPalavrasChave() {
+		return palavrasChave;
+	}
+
+	public void setPalavrasChave(String palavrasChave) {
+		this.palavrasChave = palavrasChave;
+	}
+
+	public BufferedImage getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(BufferedImage imagem) {
+		this.imagem = imagem;
+	}
+
+	public String getEmailProf() {
+		return emailProf;
+	}
+
+	public void setEmailProf(String emailProf) {
+		this.emailProf = emailProf;
+	}
+	
+	
+}
+
+/*titulo VARCHAR(100) NOT NULL,
+imagem LONGBLOB NOT NULL,
+palavraChave VARCHAR (100) NOT NULL,
+resumo VARCHAR(250) NOT NULL,
+emailProf VARCHAR(100) NOT NULL,*/

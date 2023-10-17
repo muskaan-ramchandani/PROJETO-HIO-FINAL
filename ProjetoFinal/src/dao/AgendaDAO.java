@@ -1,0 +1,362 @@
+package dao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.*;
+import java.util.*;
+
+import conexaoBD.Conexao;
+import vo.Agenda;
+import vo.Aluno;
+
+public class AgendaDAO {
+
+	public void iniciarAgenda(LocalDate dataSemana, String diaSemana, String mes, String emailAluno) {
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+		
+        String sql = "INSERT INTO AgendaAluno (dataSemana, diaSemana, mes, emailAluno) VALUES (?,?,?,?)";
+        
+        try {
+        	ps= conn.prepareStatement(sql);
+            Date data = Date.from(dataSemana.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+            java.sql.Date dataSql = new java.sql.Date(data.getTime());
+
+            ps.setDate(1, (java.sql.Date) dataSql);
+            ps.setString(2, diaSemana);
+            ps.setString(3, mes);
+            ps.setString(4, emailAluno);
+            
+            ps.executeUpdate();
+            ps.close();
+            conn.close();
+        	
+        }catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean adicionarAtividade(String atividade, LocalDate dataSemana, String diaSemana, String mes, String emailAluno) {
+		boolean retorno=false;
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+	
+        try {
+        	
+            boolean atvPreenchida = verificarAtividadePreenchida(dataSemana, mes, emailAluno);
+            java.sql.Date dataSql = java.sql.Date.valueOf(dataSemana);
+
+            
+            if(atvPreenchida==false) {
+            	
+            	String sql = "UPDATE AgendaAluno SET atividade=? WHERE dataSemana = ?"
+            			+ "AND diaSemana =? AND mes = ? AND emailAluno = ?";
+            	
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, atividade);
+                ps.setDate(2, dataSql);
+                ps.setString(3, diaSemana);
+                ps.setString(4, mes);
+                ps.setString(5, emailAluno); 
+
+                int linhasAfetadas = ps.executeUpdate();
+                if(linhasAfetadas>0) {
+                	retorno= true;
+                }else {
+                	retorno= false;
+                }
+                    
+           
+            }else if(atvPreenchida==true) {
+                
+        		PreparedStatement psNovaLinha = null;
+            	String sqlNovaLinha = "INSERT INTO AgendaAluno (dataSemana, diaSemana, mes, atividade, emailAluno) VALUES (?, ?, ?, ?, ?)";
+                ps = conn.prepareStatement(sqlNovaLinha);
+                ps.setDate(1, dataSql);
+                ps.setString(2, diaSemana);
+                ps.setString(3, mes);
+                ps.setString(4, atividade);
+                ps.setString(5, emailAluno);
+
+                int linhasCriadas = ps.executeUpdate();
+                if (linhasCriadas > 0) {
+                    retorno = true;
+                }else {
+                    	retorno= false;
+                    }
+                    
+            }
+     
+            
+        }catch (SQLException e) {
+			e.printStackTrace();
+			retorno= false;
+		}
+		return retorno;
+	}
+	
+	private boolean verificarAtividadePreenchida(LocalDate dataSemana, String mes, String emailAluno) {
+	    Connection conn = null;
+	    PreparedStatement ps = null;
+	    conn = new Conexao().getConnection();
+
+	    try {
+	        String selectSql = "SELECT * FROM AgendaAluno WHERE dataSemana = ? AND mes = ? AND emailAluno = ? AND atividade IS NOT NULL";
+	        ps = conn.prepareStatement(selectSql);
+	        Date data = Date.from(dataSemana.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	        java.sql.Date dataSql = new java.sql.Date(data.getTime());
+
+	        ps.setDate(1, (java.sql.Date) dataSql);
+	        ps.setString(2, mes);
+	        ps.setString(3, emailAluno);
+
+	        ResultSet resultSet = ps.executeQuery();
+
+	        boolean atividadePreenchida = resultSet.next();
+
+	        resultSet.close();
+	        ps.close();
+	        conn.close();
+
+	        return atividadePreenchida;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
+	
+	public ArrayList<String> retornaAtividadesDeUmaData(LocalDate dataSemana, String emailAluno){
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+		
+		ArrayList<String> listaAtividades = new ArrayList<String>();
+		
+		try {
+			String selectSql = "SELECT atividade FROM AgendaAluno WHERE dataSemana = ?"
+        			+ "AND emailAluno = ?";
+            ps = conn.prepareStatement(selectSql);
+            Date data = Date.from(dataSemana.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            java.sql.Date dataSql = new java.sql.Date(data.getTime());
+
+            ps.setDate(1, (java.sql.Date) dataSql);
+            ps.setString(2, emailAluno);
+           
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                String atividade = resultSet.getString("atividade");
+                
+                if(atividade!=null) {
+                	listaAtividades.add(atividade);
+                }
+            } 
+            resultSet.close();
+            ps.close();
+		     conn.close();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return listaAtividades;
+	}
+	
+	public boolean atualizarSemana(String emailAluno, LocalDate dataSemana, String diaSemana, String mes) {
+		Connection conn =  null;
+		conn = new Conexao().getConnection();
+		boolean taOK=false;
+		
+		try {
+	        String insertSql = "INSERT INTO AgendaAluno (dataSemana, diaSemana, mes, emailAluno) VALUES (?,?,?,?)";
+	        
+	        conn.setAutoCommit(false);
+
+	 
+	        	 PreparedStatement insertStatement = conn.prepareStatement(insertSql);
+	             	Date data = Date.from(dataSemana.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	                java.sql.Date dataSql = new java.sql.Date(data.getTime());
+
+			        insertStatement.setDate(1, (java.sql.Date) dataSql);
+			        insertStatement.setString(2, diaSemana);
+			        insertStatement.setString(3, mes);
+			        insertStatement.setString(4, emailAluno);	        
+			        int linhasInseridas = insertStatement.executeUpdate();
+			        
+			        if(linhasInseridas>0) {
+			        	taOK= true;
+			        }else {
+			        	taOK= false;
+			        }
+
+			        conn.commit();
+			    } catch (SQLException e) {
+			        try {
+			            // Em caso de erro, reverter a transação
+			            conn.rollback();
+			        } catch (SQLException rollbackException) {
+			            rollbackException.printStackTrace();
+			        }
+			        e.printStackTrace();
+			        taOK = false;
+			    } finally {
+			        try {
+			            // Fechar a conexão somente após todas as operações terem sido concluídas
+			            if (conn != null) {
+			                conn.setAutoCommit(true);
+			                conn.close();
+			            }
+			        } catch (SQLException e) {
+			            e.printStackTrace();
+			        }
+			    }
+			    return taOK;
+	}
+	
+	public boolean deletarAgenda(String emailAluno) {
+		Connection conn =  null;
+		conn = new Conexao().getConnection();
+		
+		try {
+			String deleteSql = "DELETE FROM AgendaAluno WHERE emailAluno=?";
+			PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
+			deleteStatement.setString(1, emailAluno);
+	        int linhasExcluidas = deleteStatement.executeUpdate();
+	        
+	        deleteStatement.close();
+		     conn.close();
+		     
+	        if(linhasExcluidas>0) {
+	        	return true;
+	        }else {
+	        	return false;
+	        }
+	        
+		}catch (SQLException e) {
+            return false;
+		}
+	}
+	
+	public ArrayList<Agenda> retornaAgendaExistente(String emailAluno) {
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+		ArrayList<Agenda> diasDaAgenda = new ArrayList<Agenda>();
+		 
+		 try {
+            String selectQuery = "SELECT DISTINCT * FROM AgendaAluno "
+            		+ "WHERE emailAluno = ?";
+            
+            /*String selectQuery = "SELECT DISTINCT * FROM AgendaAluno "
+            		+ "WHERE emailAluno = ? ORDER BY dataCriacaoAgenda DESC LIMIT 7";*/
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setString(1, emailAluno);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            Set<LocalDate> datasDistintas = new HashSet<>();
+
+            while (resultSet.next()) {
+                Date date = resultSet.getDate("dataSemana");
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH) + 1; // Adicionando 1 pois os meses em Calendar começam de 0
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                java.time.LocalDate dataSemana = java.time.LocalDate.of(year, month, day);
+
+                
+                if (!datasDistintas.contains(dataSemana)) {
+                    String diaSemana = resultSet.getString("diaSemana");
+                    String mes = resultSet.getString("mes");
+                    String atividade = resultSet.getString("atividade");
+
+                    Agenda agenda = new Agenda(dataSemana, diaSemana, mes, atividade, emailAluno);
+                    
+                    diasDaAgenda.add(agenda);
+                    datasDistintas.add(dataSemana);
+                }
+            }
+
+            resultSet.close();
+            preparedStatement.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return diasDaAgenda;
+		
+	}
+	
+	public boolean deletarAtividade(String atividade, LocalDate data, String emailAluno) {
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+		
+		try {
+			String sql =  "UPDATE AgendaAluno "
+			        + "SET atividade = NULL "
+			        + "WHERE atividade = ? AND dataSemana=? AND emailAluno=?";			
+			
+			 ps = conn.prepareStatement(sql);
+          	 Date dataConvertida = Date.from(data.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+             java.sql.Date dataSql = new java.sql.Date(dataConvertida.getTime());
+
+	         ps.setString(1, atividade);
+			 ps.setDate(2, (java.sql.Date) dataSql);
+	         ps.setString(3, emailAluno);
+	            
+		     int linhasModificadas = ps.executeUpdate();
+		     ps.close();
+		     conn.close();
+		     if(linhasModificadas>0) {
+		       	return true;
+		     }else {
+		       	return false;
+	        }
+		}catch(SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+	}
+	
+	public boolean editarAtividade(String atividadeAtual, LocalDate data, String emailAluno, String novaAtividade) {
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+		
+		try {
+			 String sql = "UPDATE AgendaAluno "
+	                    + "SET atividade = ? "
+	                    + "WHERE atividade = ? AND dataSemana=? AND emailAluno=?";
+			
+			
+			 ps = conn.prepareStatement(sql);
+          	 Date dataConvertida = Date.from(data.atStartOfDay(ZoneId.systemDefault()).toInstant());
+             java.sql.Date dataSql = new java.sql.Date(dataConvertida.getTime());
+
+	         ps.setString(1, novaAtividade);
+	         ps.setString(2, atividadeAtual);
+			 ps.setDate(3, (java.sql.Date) dataSql);
+	         ps.setString(4, emailAluno);
+	            
+		     int linhasModificadas = ps.executeUpdate();
+		     ps.close();
+		     conn.close();
+		     if(linhasModificadas>0) {
+		       	return true;
+		     }else {
+		       	return false;
+	        }
+		}catch(SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+	}
+}

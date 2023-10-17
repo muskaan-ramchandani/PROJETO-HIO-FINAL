@@ -1,0 +1,364 @@
+package dao;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
+import conexaoBD.Conexao;
+import vo.Aluno;
+import vo.Livro;
+import vo.Olimpiada;
+
+public class LivroDAO {
+	public boolean cadastrar(Livro livro, java.util.Date dataPublicacao, File arquivoPDF, Olimpiada olimp) {
+		try {
+			 Connection conn =  null;
+			 PreparedStatement ps = null;
+			 conn = new Conexao().getConnection();
+			 byte[] videoData;
+				try {
+					InputStream is = new FileInputStream( arquivoPDF );
+			        byte[] bytes = new byte[(int)arquivoPDF.length() ];
+			        int offset = 0;
+			        int numRead = 0;
+			        while (offset < bytes.length
+			               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+			            offset += numRead;
+			        }
+					
+					String sql= "INSERT INTO Livro(isbn, titulo, editora, autor, dataPublicacao, emailProf, arquivo_PDF)VALUES(?,?,?,?,?,?,?)";
+					
+					ps = conn.prepareStatement(sql);
+					ps.setString(1, livro.getIsbn());
+					ps.setString(2, livro.getTitulo());
+					ps.setString(3, livro.getEditora());
+					ps.setString(4, livro.getAutor());
+					ps.setDate(5, (Date) dataPublicacao);
+					ps.setString(6, livro.getEmailProf());
+		            ps.setBytes(7, bytes);
+										
+					int  linhasAfetadas= ps.executeUpdate();
+		            ps.close();
+					conn.close();
+					if(linhasAfetadas>0) {
+						return true;
+					}else {
+						return false;
+					}
+		           
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return false;
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}	
+	}
+	
+	public boolean relacionarComOlimp(Olimpiada olimp, String isbn) {
+		try {
+			 Connection conn =  null;
+			 PreparedStatement ps = null;
+			 conn = new Conexao().getConnection();
+					
+			 String sql= "INSERT INTO OlimpiadaLivro(isbn, nomeOlimpiada)VALUES(?,?)";
+				
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, isbn);
+				ps.setString(2, olimp.getNome());
+				
+				int  linhasAfetadas= ps.executeUpdate();
+	            ps.close();
+				conn.close();
+				if(linhasAfetadas>0) {
+					return true;
+				}else {
+					return false;
+				}
+					
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public ArrayList retornaLivroOlimpiada(Olimpiada olimp) {
+		ArrayList<Livro> livros = new ArrayList<Livro>();
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    	    
+        
+         // Consulta SQL para selecionar vídeos com base no nome da Olimpíada
+            String sql = "SELECT * FROM Livro " +
+                         "INNER JOIN OlimpiadaLivro ON Livro.isbn = OlimpiadaLivro.isbn " +
+                         "WHERE OlimpiadaLivro.nomeOlimpiada = ?";
+
+            // Preparar a consulta
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, olimp.getNome());
+
+            // Executar a consulta
+            ResultSet resultSet = ps.executeQuery();
+
+            // Processar o resultado
+            while (resultSet.next()) {
+            	InputStream inputStream = resultSet.getBinaryStream("arquivo_PDF");
+                File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("isbn"));
+
+                Livro livro = new Livro(resultSet.getString("isbn"), resultSet.getString("titulo"),
+						 resultSet.getString("editora"),resultSet.getString("autor"),
+						 resultSet.getDate("dataPublicacao"),
+						 resultSet.getString("emailProf"), arquivo);
+			    
+				 //adiciona o video na lista
+			     livros.add(livro);
+ 			}
+            resultSet.close();
+            ps.close();
+			conn.close();
+               
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        return livros;
+    }
+	
+	//PARA PODER RETORNAR O ARQUIVO
+	private File criarArquivoAPartirDoBlob(InputStream inputStream, String isbn) throws IOException {
+		Connection conn =  null;
+		conn = new Conexao().getConnection();
+	    File arquivo = null;
+	    try {
+	        PreparedStatement ps = conn.prepareStatement("SELECT titulo, arquivo_PDF FROM Livro WHERE isbn = ?");
+	        ps.setString(1, isbn);
+	        ResultSet rs = ps.executeQuery();
+	        
+	        if ( rs.next() ){
+	        	byte [] bytes = rs.getBytes("arquivo_PDF");
+	            String titulo = rs.getString("titulo");
+
+	            //converte o array de bytes em file
+	            File diretorioDaAplicacao = new File(System.getProperty("user.dir"));
+	            arquivo = new File(diretorioDaAplicacao, "dados/"+titulo+".pdf");
+
+	            FileOutputStream fos = new FileOutputStream(arquivo);
+	            fos.write( bytes );
+	            fos.close();
+	        }
+	        rs.close();
+            ps.close();
+			conn.close();
+	} catch (SQLException ex) {
+	ex.printStackTrace();
+	}
+	catch (IOException ex) {
+	ex.printStackTrace();
+	}
+	    return arquivo;
+    }
+
+	 
+	public ArrayList<Livro> consultarLivrosPorNome(String tituloLivro, Olimpiada olimp) {
+	    ArrayList<Livro> livrosPorNome = new ArrayList<>();
+	    try {
+	        Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        
+	        String sql = "SELECT * FROM Livro " +
+                    "INNER JOIN OlimpiadaLivro ON Livro.isbn = OlimpiadaLivro.isbn " +
+                    "WHERE OlimpiadaLivro.nomeOlimpiada = ? AND Livro.titulo LIKE ?";
+
+
+	        // Preparar a consulta
+	        ps = conn.prepareStatement(sql);
+            ps.setString(1, olimp.getNome());
+	        ps.setString(2, "%" + tituloLivro + "%");
+
+	        // Executar a consulta
+	        ResultSet resultSet = ps.executeQuery();
+
+	        // Processar o resultado
+	        while (resultSet.next()) {
+	            InputStream inputStream = resultSet.getBinaryStream("arquivo_PDF");
+	            File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("isbn"));
+
+	            Livro livro = new Livro(resultSet.getString("isbn"), resultSet.getString("titulo"),
+	                    resultSet.getString("editora"), resultSet.getString("autor"),
+	                    resultSet.getDate("dataPublicacao"),
+	                    resultSet.getString("emailProf"), arquivo);
+
+	            // Adiciona o livro na lista
+	            livrosPorNome.add(livro);
+	        }
+	        resultSet.close();
+            ps.close();
+			conn.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return livrosPorNome;
+	}
+	
+	public ArrayList<Livro> consultarLivrosPorIsbn(String isbn, Olimpiada olimp) {
+	    ArrayList<Livro> livrosPorNome = new ArrayList<>();
+	    try {
+	        Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        
+	        String sql = "SELECT * FROM Livro " +
+                    "INNER JOIN OlimpiadaLivro ON Livro.isbn = OlimpiadaLivro.isbn " +
+                    "WHERE OlimpiadaLivro.nomeOlimpiada = ? AND Livro.isbn LIKE ?";
+
+
+	        // Preparar a consulta
+	        ps = conn.prepareStatement(sql);
+            ps.setString(1, olimp.getNome());
+	        ps.setString(2, isbn + "%");
+
+	        // Executar a consulta
+	        ResultSet resultSet = ps.executeQuery();
+
+	        // Processar o resultado
+	        while (resultSet.next()) {
+	            InputStream inputStream = resultSet.getBinaryStream("arquivo_PDF");
+	            File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("isbn"));
+
+	            Livro livro = new Livro(resultSet.getString("isbn"), resultSet.getString("titulo"),
+	                    resultSet.getString("editora"), resultSet.getString("autor"),
+	                    resultSet.getDate("dataPublicacao"),
+	                    resultSet.getString("emailProf"), arquivo);
+
+	            // Adiciona o livro na lista
+	            livrosPorNome.add(livro);
+	        }
+	        resultSet.close();
+            ps.close();
+			conn.close();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return livrosPorNome;
+	}
+	
+	public boolean HistoricoLivrosProf(String emailProf, String isbn, String titulo) {
+		try {
+			Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        
+	        String sql = "INSERT INTO HistoricoLivrosProf (isbn, titulo, emailProf) VALUES (?, ?, ?)";
+	        ps = conn.prepareStatement(sql);
+	        ps.setString(1, isbn);
+	        ps.setString(2, titulo);
+	        ps.setString(3, emailProf);
+
+	        int  linhasAfetadas= ps.executeUpdate();
+            ps.close();
+			conn.close();
+			if(linhasAfetadas>0) {
+				return true;
+			}else {
+				return false;
+			}
+            
+		} catch (SQLException e) {
+	        e.printStackTrace();
+			return false;
+	    }
+	}
+	public ArrayList<String> exibirHistoricoLivrosProfISBN(String emailProfessor) {
+		ArrayList<String> listaISBNRec = new ArrayList<String>();
+
+        try {
+        	Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        String sql = "SELECT isbn, dataAcesso FROM HistoricoLivrosProf " +
+                         "WHERE emailProf = ? " +
+                         "ORDER BY dataAcesso DESC " +
+                         "LIMIT 2";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, emailProfessor);
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                String isbn = resultSet.getString("isbn");
+                listaISBNRec.add(isbn);
+                
+            }
+            resultSet.close();
+            ps.close();
+			conn.close();
+            return listaISBNRec;
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+
+        }
+    }
+	
+	public ArrayList<String> exibirHistoricoLivrosProfTITULO(String emailProfessor) {
+		ArrayList<String> listaTiTULORec = new ArrayList<String>();
+
+        try {
+        	Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        String sql = "SELECT titulo, dataAcesso FROM HistoricoLivrosProf " +
+                         "WHERE emailProf = ? " +
+                         "ORDER BY dataAcesso DESC " +
+                         "LIMIT 2";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, emailProfessor);
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                String titulo = resultSet.getString("titulo");
+                listaTiTULORec.add(titulo);
+                
+            }
+            resultSet.close();
+            ps.close();
+			conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaTiTULORec;
+
+    }
+}

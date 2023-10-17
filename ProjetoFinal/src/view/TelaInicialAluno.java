@@ -1,0 +1,353 @@
+package view;
+import vo.Aluno;
+import vo.Olimpiada;
+
+import javax.swing.*;
+
+import controller.AlunoCONTROLLER;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+public class TelaInicialAluno extends JFrame{
+	Color roxoEscuro=new Color(75,0,130);
+	
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JMenuBar barra;
+	private JButton btnFavoritos;
+	private JButton btnAgenda;
+	private JButton btnAdicionarOlimp;
+	private ImageIcon imagemMais;
+	private JLabel lblEstatisticas;
+	private JLabel lblAcertos;
+	private JLabel lblContaAcertos;
+	private JLabel lblErros;
+	private JLabel lblContaErros;
+	private JLabel lblQuestoesHj;
+	private JLabel lblQuestoesPeriodo;
+	private JLabel lblAdicionar;
+	private JLabel lblAOlimp;
+	private JLabel lblFundoQuestoesHj;
+	private JLabel lblFundoQuestoesPeriodo;
+	private JButton btnPerfil;
+	private ImageIcon imagemPerfil;
+	private JLabel lblEstrela;
+	private JLabel lblCronograma;
+	private JLabel lblOlimpiadas;
+	//private JLabel lblImagem;
+    private ArrayList<JButton> botoesOlimp = new ArrayList<>();
+
+
+	
+	public TelaInicialAluno(Aluno aluno, boolean login) {
+		inicializarComponentes(aluno, login);
+		definirEventos(aluno);
+	}
+
+	private void inicializarComponentes(Aluno aluno, boolean login) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+        contentPane=getContentPane();
+        contentPane.setBackground(Color.white);
+		
+        //inicializa
+        lp= new JLayeredPane();
+        barra= new JMenuBar();
+        btnFavoritos = new JButton("Favoritos");
+        btnAgenda = new JButton("Agenda");
+        lblEstatisticas = new JLabel("Estatísticas (últimos 7 dias):");
+        lblAcertos = new JLabel("Acertos");
+        lblErros = new JLabel("Erros");
+        lblContaAcertos= new JLabel("0");
+        lblContaErros = new JLabel("0");
+        lblQuestoesHj = new JLabel("Questões hoje:");
+        lblFundoQuestoesHj = new JLabel("0");
+        lblQuestoesPeriodo= new JLabel("Questões por período:");
+        lblFundoQuestoesPeriodo = new JLabel("0");
+        lblOlimpiadas= new JLabel("Olimpíadas:");
+        lblAdicionar= new JLabel("Adicionar");
+        lblAOlimp= new JLabel("olimpíada");
+        
+        
+        imagemPerfil = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//iconePerfilpequeno.png");
+        lblEstrela= new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaPequena.png"));
+        lblCronograma= new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//cronogramaPequeno.png"));
+        imagemMais = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//botaoMaisPequeno.png");
+        //lblImagem = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+        //+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//fundoPessoas.png"));
+        
+        btnAdicionarOlimp= new JButton(imagemMais);
+        btnAdicionarOlimp.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+        btnAdicionarOlimp.setBorderPainted(false); // Remove a borda
+        btnAdicionarOlimp.setFocusPainted(false);
+        
+        btnPerfil = new JButton(imagemPerfil);
+        btnPerfil.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+        btnPerfil.setBorderPainted(false); // Remove a borda
+        btnPerfil.setFocusPainted(false);
+        
+        
+        //cores e fontes
+        barra.setBackground(roxoEscuro);
+        btnFavoritos.setBackground(roxoEscuro);
+        btnFavoritos.setForeground(Color.WHITE);
+        btnAgenda.setBackground(roxoEscuro);
+        btnAgenda.setForeground(Color.WHITE);
+        lblEstatisticas.setBackground(Color.white);
+        lblEstatisticas.setForeground(Color.BLACK);
+        lblAcertos.setBackground(Color.white);
+        lblAcertos.setForeground(Color.BLACK);
+        lblErros.setBackground(Color.white);
+        lblErros.setForeground(Color.BLACK);
+        lblQuestoesHj.setBackground(Color.white);
+        lblQuestoesHj.setForeground(Color.BLACK);
+        lblQuestoesPeriodo.setBackground(Color.white);
+        lblQuestoesPeriodo.setForeground(Color.BLACK);
+        lblAOlimp.setBackground(Color.white);
+        lblAOlimp.setForeground(Color.BLACK);
+        lblAdicionar.setBackground(Color.white);
+        lblAdicionar.setForeground(Color.BLACK);
+        
+        lblContaAcertos.setBackground(Color.white);
+        lblContaAcertos.setForeground(Color.BLACK);
+        lblContaErros.setBackground(Color.white);
+        lblContaErros.setForeground(Color.BLACK);
+        lblFundoQuestoesHj.setBackground(Color.white);
+        lblFundoQuestoesHj.setForeground(Color.BLACK);
+        lblFundoQuestoesPeriodo.setBackground(Color.white);
+        lblFundoQuestoesPeriodo.setForeground(Color.BLACK);
+        lblOlimpiadas.setBackground(Color.white);
+        lblOlimpiadas.setForeground(Color.BLACK);
+
+        lblContaAcertos.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura em preto
+        lblContaAcertos.setHorizontalAlignment(SwingConstants.CENTER); 
+        lblContaErros.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura em preto
+        lblContaErros.setHorizontalAlignment(SwingConstants.CENTER); 
+        lblFundoQuestoesHj.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura em preto
+        lblFundoQuestoesHj.setHorizontalAlignment(SwingConstants.CENTER); 
+        lblFundoQuestoesPeriodo.setBorder(BorderFactory.createLineBorder(roxoEscuro, 2)); // Cria uma borda de 2 pixels de largura em preto
+        lblFundoQuestoesPeriodo.setHorizontalAlignment(SwingConstants.CENTER); 
+        
+        Font fonteBarra = new Font( "Trebuchet MS", Font.PLAIN, 20);
+		btnFavoritos.setFont(fonteBarra);
+		btnAgenda.setFont(fonteBarra);
+		
+		Font fonteLabels = new Font("Trebuchet MS", Font.PLAIN, 25);
+		lblEstatisticas.setFont(fonteLabels);
+		
+		Font fonteAE = new Font("Trebuchet MS", Font.PLAIN, 20);
+		lblErros.setFont(fonteAE);
+		lblAcertos.setFont(fonteAE);
+		lblContaAcertos.setFont(fonteAE);
+		lblContaErros.setFont(fonteAE);	
+		lblFundoQuestoesHj.setFont(fonteAE);
+		lblQuestoesHj.setFont(fonteAE);
+		lblFundoQuestoesPeriodo.setFont(fonteAE);
+		lblQuestoesPeriodo.setFont(fonteAE);
+		lblOlimpiadas.setFont(fonteAE);
+		lblAdicionar.setFont(fonteAE);
+		lblAOlimp.setFont(fonteAE);
+				
+        //coordenadas
+        lp.setBounds(0, 0, screenSize.width, screenSize.height-40);
+        barra.setBounds(0,0,screenSize.width, 50);
+        btnFavoritos.setBounds(60, 7, 140, 35);
+        lblEstrela.setBounds(180, 10, 20, 20);
+        btnPerfil.setBounds(10,5,44, 35);
+        btnAgenda.setBounds(220, 7, 150, 35);
+        lblCronograma.setBounds(360, 15, 20, 20);
+        lblEstatisticas.setBounds(30, 80, 350, 25);
+        lblAcertos.setBounds(30, 120, 100, 20);
+        lblContaAcertos.setBounds(30, 150, 100, 35);
+        lblErros.setBounds(210, 120, 100, 20);
+        lblContaErros.setBounds(210, 150, 100, 35);
+        lblEstrela.setBounds(180, 13, 20, 20);
+        lblQuestoesHj.setBounds(30, 225, 150, 20);
+        lblFundoQuestoesHj.setBounds(30, 255, 150, 35);
+        lblQuestoesPeriodo.setBounds(30, 325, 250, 20);
+        lblFundoQuestoesPeriodo.setBounds(30, 355, 185, 35);
+        lblOlimpiadas.setBounds(600, 100, 200,35);
+        btnAdicionarOlimp.setBounds(930, 525, 60, 61);
+        lblAdicionar.setBounds(920, 600, 100, 20);
+        lblAOlimp.setBounds(920, 625, 100, 20);
+        //lblImagem.setBounds(30,380, 637,361);
+        
+        
+        //adiciona
+        contentPane.add(lp);
+        lp.add(barra, new Integer(1));
+        lp.add(btnFavoritos, new Integer(2));
+        lp.add(btnPerfil, new Integer(3)); 
+        lp.add(btnAgenda, new Integer(4));
+        lp.add(lblEstatisticas, new Integer(5));
+        lp.add(lblAcertos, new Integer(6));
+        lp.add(lblErros, new Integer(7));
+        lp.add(lblEstrela, new Integer(8));
+        lp.add(lblContaAcertos, new Integer(9));
+        lp.add(lblContaErros, new Integer(10));
+        lp.add(lblFundoQuestoesHj, new Integer(11));
+        lp.add(lblQuestoesHj, new Integer(12));
+        lp.add(lblFundoQuestoesPeriodo, new Integer(13));
+        lp.add(lblQuestoesPeriodo, new Integer(14));
+        lp.add(lblCronograma, new Integer(15));
+        lp.add(lblOlimpiadas, new Integer(16));
+        lp.add(btnAdicionarOlimp, new Integer(17));
+        lp.add(lblAdicionar, new Integer(18));
+        lp.add(lblAOlimp, new Integer(19));
+        //lp.add(lblImagem, new Integer(20));
+        
+      //botões olimpiadas
+        if(login==true) {
+        	ArrayList<String> lista = new ArrayList<String>();
+    		AlunoCONTROLLER controla = new AlunoCONTROLLER();
+    		lista = controla.retornaOlimpiadasSelecionadas(aluno);
+    		int x= 600;
+    		int y=150;
+    		int largura=100;
+    		int altura=80;
+    		int camada=21;
+    		int cont=0, qntd=5;
+
+    		for(String nomes : lista) {
+    	         	cont++;
+    				JButton novaOlimp = new JButton(nomes);
+    				novaOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+    				novaOlimp.setForeground(Color.white);
+    				novaOlimp.setBackground(roxoEscuro);
+    				novaOlimp.setBounds(x, y, largura, altura);
+    				
+    				novaOlimp.addActionListener(new ActionListener() {
+    					@Override
+    					public void actionPerformed(ActionEvent e) {
+    						Olimpiada olimp = new Olimpiada(nomes);
+    						GuiOlimpiadasAluno olimpiada = new GuiOlimpiadasAluno(olimp, aluno);
+    						setVisible(false);
+    					}
+    				});
+    				
+    				
+    				botoesOlimp.add(novaOlimp);
+    				lp.add(novaOlimp, new Integer(camada));
+    				contentPane.revalidate();
+    		        contentPane.repaint();
+    		        
+    		        camada+=1;
+    		      //após 5 olimpiadas, as outras devem se locomover para baixo
+    		        if(cont==qntd) {
+    		        	y+=90;
+    		        	x=600;
+    		        	cont=0;
+    		        }else{
+    			        x+=150;
+    		        }
+
+    		
+    		}
+        	
+        	
+        }else {
+        	ArrayList<String> lista = new ArrayList<String>();
+    		AlunoCONTROLLER controla = new AlunoCONTROLLER();
+    		lista = controla.retornaOlimpiadasSelecionadas(aluno);
+    		int x= 600;
+    		int y=150;
+    		int largura=100;
+    		int altura=80;
+    		int camada=21;
+    		int cont=0, qntd=5;
+
+    		for(String nomes : lista) {
+    	         	cont++;
+    				JButton novaOlimp = new JButton(nomes);
+    				novaOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+    				novaOlimp.setForeground(Color.white);
+    				novaOlimp.setBackground(roxoEscuro);
+    				novaOlimp.setBounds(x, y, largura, altura);
+    				
+    				novaOlimp.addActionListener(new ActionListener() {
+    					@Override
+    					public void actionPerformed(ActionEvent e) {
+    						Olimpiada olimp = new Olimpiada(nomes);
+    						GuiOlimpiadasAluno olimpiada = new GuiOlimpiadasAluno(olimp, aluno);
+    						setVisible(false);
+    					}
+    				});
+    				
+    				
+    				botoesOlimp.add(novaOlimp);
+    				lp.add(novaOlimp, new Integer(camada));
+    				contentPane.revalidate();
+    		        contentPane.repaint();
+    		        
+    		        camada+=1;
+    		      //após 5 olimpiadas, as outras devem se locomover para baixo
+    		        if(cont==qntd) {
+    		        	y+=90;
+    		        	x=600;
+    		        	cont=0;
+    		        }else{
+    			        x+=150;
+    		        }
+
+    		
+    		}
+        }
+		
+        
+        setLayout(new BorderLayout());
+        add(lp, BorderLayout.CENTER);
+        btnFavoritos.setBorderPainted(false);
+        btnAgenda.setBorderPainted(false);
+        
+		setVisible(true);
+	}
+
+	private void definirEventos(Aluno aluno) {
+		btnPerfil.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaPerfilAluno tela = new TelaPerfilAluno(aluno);
+			     setVisible(false);
+
+			}
+			 
+		 });
+		
+		btnFavoritos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaFavoritos favs = new TelaFavoritos(aluno);
+			     setVisible(false);
+			}
+			 
+		 });
+		
+		btnAgenda.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaAgendaAluno agenda = new TelaAgendaAluno(aluno);
+			     setVisible(false);
+			}
+			 
+		 });
+		
+		btnAdicionarOlimp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaOlimpiadas tela = new TelaOlimpiadas(aluno, true);
+			     setVisible(false);
+			}
+			 
+		 });
+	}
+	
+	
+}
