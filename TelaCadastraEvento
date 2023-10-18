@@ -1,0 +1,53 @@
+package Projeto_testes;
+
+import java.awt.*;
+
+import javax.swing.border.AbstractBorder;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
+public class TelaCadastraEvento extends JFrame{
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JLabel TxtAdicionarAtividade;
+	private JLabel txtData;
+	private JTextField Data;   
+	private JLabel txtAdicionarEvento;
+	private JTextField Evento;
+	
+	public TelaCadastraEvento() {
+		inicializarComponentes();
+		setVisible(true);
+	}
+	
+	
+	private void inicializarComponentes() {
+		//instanciação
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, 600, 700);
+		contentPane=getContentPane();
+		contentPane.setBackground(Color.white);
+		setLayout(null);
+		
+		lp = new JLayeredPane();
+		
+		contentPane.add(lp);
+	
+	
+	}
+	
+	public static void abrir() {
+		TelaCadastraEvento frame = new TelaCadastraEvento();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation((tela.width - frame.getSize().width) / 2, (tela.height - frame.getSize().height) / 2);
+        frame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        abrir();
+    }
+	
+}
