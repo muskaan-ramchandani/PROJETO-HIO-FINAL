@@ -1,4 +1,5 @@
-package Projeto_testes;
+package Testeprojeto;
+
 
 import java.awt.*;
 
@@ -15,26 +16,79 @@ public class TelaCadastraEvento extends JFrame{
 	private JTextField Data;   
 	private JLabel txtAdicionarEvento;
 	private JTextField Evento;
+	private JButton Adicionar;
+	private JButton Cancelar;
 	
 	public TelaCadastraEvento() {
 		inicializarComponentes();
-		setVisible(true);
+		
 	}
 	
 	
+	//@SuppressWarnings("removal")
 	private void inicializarComponentes() {
 		//instanciação
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		Dimension screenSize = toolkit.getScreenSize();
-		setBounds(0, 0, 600, 700);
+		//Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, 500, 500);
 		contentPane=getContentPane();
 		contentPane.setBackground(Color.white);
-		setLayout(null);
+		//setLayout(null);
 		
 		lp = new JLayeredPane();
+		TxtAdicionarAtividade = new JLabel("Adicionar Atividade");
+		txtData = new JLabel("Data");
+		Data = new JTextField ();
+		txtAdicionarEvento = new JLabel("Adicionar Evento");
+		Evento = new JTextField();
+		Adicionar = new JButton("Adiconar");
+		Cancelar = new JButton("Cancelar");
+		
+		TxtAdicionarAtividade.setFont(new Font("Trebuchet MS", Font.BOLD, 35));
+		
+		
+		Color roxoIndigo = new Color(75,0,130);
+		TxtAdicionarAtividade.setForeground(roxoIndigo);
+		txtData.setForeground(Color.black);
+		txtAdicionarEvento.setForeground(Color.black);		
+		Adicionar.setBackground(roxoIndigo);
+		Adicionar.setForeground(Color.WHITE);
+		Cancelar.setBackground(roxoIndigo);
+		Cancelar.setForeground(Color.WHITE);
+		
+		
+		Font txtFonte = new Font("Trebuchet MS", Font.PLAIN, 25);
+		txtData.setFont(txtFonte);
+		txtAdicionarEvento.setFont(txtFonte);
+		
+		Font txtBotao = new Font("Trebuchet MS", Font.PLAIN, 20);
+		Adicionar.setFont(txtBotao);
+		Cancelar.setFont(txtBotao);
+		
+		TxtAdicionarAtividade.setBounds(90,10,350,50);
+		txtData.setBounds(50,70,300,50);
+		Data.setBounds(40,120,400,40);   
+		txtAdicionarEvento.setBounds(50,160,300,50);
+		Evento.setBounds(40,210,400,40);
+		Adicionar.setBounds(50,350,170,50);
+		Cancelar.setBounds(260,350,170,50);
+		
+		/*TxtAdicionarAtividade
+		txtData
+		Data 
+		txtAdicionarEvento
+		Evento*/
 		
 		contentPane.add(lp);
-	
+		lp.add(TxtAdicionarAtividade, new Integer(1));
+		lp.add(txtData, new Integer(2));
+		lp.add(Data, new Integer(3));
+		lp.add(txtAdicionarEvento, new Integer(4));
+		lp.add(Evento, new Integer(5));
+		lp.add(Adicionar, new Integer(5));
+		lp.add(Cancelar, new Integer(5)); 
+		
+		setVisible(true);
 	
 	}
 	
