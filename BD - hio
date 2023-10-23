@@ -157,5 +157,28 @@ CREATE TABLE AgendaAluno(
     PRIMARY KEY(id),
     FOREIGN KEY(emailAluno) REFERENCES Aluno(email)
 );
-#SET FOREIGN_KEY_CHECKS=1;
+
+CREATE TABLE CronogramaOlimpiada(
+	id INT AUTO_INCREMENT NOT NULL,
+    nomeOlimpiada  VARCHAR(10),
+	comecoInscricoes DATE NOT NULL,
+    fimInscricoes DATE NOT NULL,
+    comecoFase1 DATE NOT NULL,
+	fimFase1 DATE NOT NULL,
+    comecoFase2 DATE NOT NULL,
+    fimFase2 DATE NOT NULL,
+    comecoFase3 DATE,
+    fimFase3 DATE,
+	comecoFase4 DATE,
+    fimFase4 DATE,
+    comecoPremiacoes DATE NOT NULL,
+    fimPremiacoes DATE NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome)
+);
+
+USE hio;
+#SET FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS=1;
+#delete from AgendaAluno where emailAluno = 'isassevalho@gmail.com';
 #DELETE FROM Video Where emailProf='juju@gmail.com';
