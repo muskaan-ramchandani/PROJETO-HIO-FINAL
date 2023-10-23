@@ -1,0 +1,125 @@
+package dao;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Date;
+
+import conexaoBD.Conexao;
+import vo.Cronograma;
+public class CronogramaDAO {
+	
+	public boolean criarCronograma(Cronograma c) {
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+		
+		String sql= "INSERT INTO CronogramaOlimpiada(nomeOlimpiada, comecoInscrições, fimInscrições, comecoFase1"+
+		", fimFase1, comecoFase2, fimFase2, comecoFase3, fimFase3, comecoFase4, fimFase4, comecoPremiacoes"+
+		", fimPremiacoes)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		
+		try {
+            java.sql.Date comecoInscricoes = java.sql.Date.valueOf(c.getComecoInscricoes());
+            java.sql.Date fimInscricoes = java.sql.Date.valueOf(c.getFimInscricoes());
+            java.sql.Date comecoFase1 = java.sql.Date.valueOf(c.getComecoFase1());
+            java.sql.Date fimFase1 = java.sql.Date.valueOf(c.getFimFase1());
+            java.sql.Date comecoFase2 = java.sql.Date.valueOf(c.getComecoFase2());
+            java.sql.Date fimFase2 = java.sql.Date.valueOf(c.getFimFase2());
+            java.sql.Date comecoFase3 = java.sql.Date.valueOf(c.getComecoFase3());
+            java.sql.Date fimFase3 = java.sql.Date.valueOf(c.getFimFase3());
+            java.sql.Date comecoFase4 = java.sql.Date.valueOf(c.getComecoFase4());
+            java.sql.Date fimFase4 = java.sql.Date.valueOf(c.getFimFase4());
+            java.sql.Date comecoPremiacoes = java.sql.Date.valueOf(c.getComecoPremiacoes());
+            java.sql.Date fimPremiacoes = java.sql.Date.valueOf(c.getFimPremiacoes());
+
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, c.getNomeOlimpiada());
+			ps.setDate(2, comecoInscricoes);
+			ps.setDate(3, fimInscricoes);
+			ps.setDate(4, comecoFase1);
+			ps.setDate(5, fimFase1);
+			ps.setDate(6, comecoFase2);
+			ps.setDate(7, fimFase2);
+			ps.setDate(8, comecoFase3);
+			ps.setDate(9, fimFase3);
+			ps.setDate(10, comecoFase4);
+			ps.setDate(11, fimFase4);
+			ps.setDate(12, comecoPremiacoes);
+			ps.setDate(13, fimPremiacoes);
+
+						
+			int linhasAfetadas = ps.executeUpdate();
+			
+			ps.close();
+			conn.close();
+			
+            if(linhasAfetadas>0) {
+            	return true;
+            }else {
+            	return false;
+            }
+            
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean atualizarCronograma(Cronograma c) {
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+		
+		String sql= "UPDATE CronogramaOlimpiada SET comecoInscrições = ?, fimInscrições = ?, comecoFase1 = ?"+
+		", fimFase1 = ?, comecoFase2 = ?, fimFase2 = ?, comecoFase3 = ?, fimFase3 = ?, comecoFase4 = ?, fimFase4 = ?,"
+		+ " comecoPremiacoes = ?"+
+		", fimPremiacoes = ? WHERE nomeOlimpiada = ?";
+		
+		try {
+            java.sql.Date comecoInscricoes = java.sql.Date.valueOf(c.getComecoInscricoes());
+            java.sql.Date fimInscricoes = java.sql.Date.valueOf(c.getFimInscricoes());
+            java.sql.Date comecoFase1 = java.sql.Date.valueOf(c.getComecoFase1());
+            java.sql.Date fimFase1 = java.sql.Date.valueOf(c.getFimFase1());
+            java.sql.Date comecoFase2 = java.sql.Date.valueOf(c.getComecoFase2());
+            java.sql.Date fimFase2 = java.sql.Date.valueOf(c.getFimFase2());
+            java.sql.Date comecoFase3 = java.sql.Date.valueOf(c.getComecoFase3());
+            java.sql.Date fimFase3 = java.sql.Date.valueOf(c.getFimFase3());
+            java.sql.Date comecoFase4 = java.sql.Date.valueOf(c.getComecoFase4());
+            java.sql.Date fimFase4 = java.sql.Date.valueOf(c.getFimFase4());
+            java.sql.Date comecoPremiacoes = java.sql.Date.valueOf(c.getComecoPremiacoes());
+            java.sql.Date fimPremiacoes = java.sql.Date.valueOf(c.getFimPremiacoes());
+
+
+			ps = conn.prepareStatement(sql);
+			ps.setDate(1, comecoInscricoes);
+			ps.setDate(2, fimInscricoes);
+			ps.setDate(3, comecoFase1);
+			ps.setDate(4, fimFase1);
+			ps.setDate(5, comecoFase2);
+			ps.setDate(6, fimFase2);
+			ps.setDate(7, comecoFase3);
+			ps.setDate(8, fimFase3);
+			ps.setDate(9, comecoFase4);
+			ps.setDate(10, fimFase4);
+			ps.setDate(11, comecoPremiacoes);
+			ps.setDate(12, fimPremiacoes);
+			ps.setString(13, c.getNomeOlimpiada());
+
+						
+			int linhasAfetadas = ps.executeUpdate();
+			
+			ps.close();
+			conn.close();
+			
+            if(linhasAfetadas>0) {
+            	return true;
+            }else {
+            	return false;
+            }
+            
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+}
