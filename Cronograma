@@ -1,0 +1,162 @@
+package vo;
+
+import java.util.Date;
+
+public class Cronograma {
+	private String nomeOlimpiada;
+	private Date comecoInscricoes;
+	private Date fimInscricoes;
+	private Date comecoFase1;
+	private Date fimFase1;
+	private Date comecoFase2;
+	private Date fimFase2;
+	private Date comecoFase3;
+	private Date fimFase3;
+	private Date comecoFase4;
+	private Date fimFase4;
+	private Date comecoPremiacoes;
+	private Date fimPremiacoes;
+
+	public Cronograma(String nomeOlimpiada, Date comecoInscricoes, Date fimInscricoes, Date comecoFase1,
+			Date fimFase1, Date comecoFase2, Date fimFase2, Date comecoFase3, Date fimFase3, Date comecoFase4,
+			Date fimFase4, Date comecoPremiacoes, Date fimPremiacoes) {
+		
+		setNomeOlimpiada(nomeOlimpiada);
+		setComecoInscricoes(comecoInscricoes);
+		setFimInscricoes(fimInscricoes);
+		setComecoFase1(comecoFase1);
+		setFimFase1(fimFase1);
+		setComecoFase2(comecoFase2);
+		setFimFase2(fimFase2);
+		setComecoFase3(comecoFase3);
+		setFimFase3(fimFase3);
+		setComecoFase4(comecoFase4);
+		setFimFase4(fimFase4);
+		setComecoPremiacoes(comecoPremiacoes);
+		setFimPremiacoes(fimPremiacoes);
+	}
+
+	public String getNomeOlimpiada() {
+		return nomeOlimpiada;
+	}
+
+	public void setNomeOlimpiada(String nomeOlimpiada) {
+		this.nomeOlimpiada = nomeOlimpiada;
+	}
+
+	public Date getComecoInscricoes() {
+		return comecoInscricoes;
+	}
+
+	public void setComecoInscricoes(Date comecoInscricoes) {
+		this.comecoInscricoes = comecoInscricoes;
+	}
+
+	public Date getFimInscricoes() {
+		return fimInscricoes;
+	}
+
+	public void setFimInscricoes(Date fimInscricoes) {
+		this.fimInscricoes = fimInscricoes;
+	}
+
+	public Date getComecoFase1() {
+		return comecoFase1;
+	}
+
+	public void setComecoFase1(Date comecoFase1) {
+		this.comecoFase1 = comecoFase1;
+	}
+
+	public Date getFimFase1() {
+		return fimFase1;
+	}
+
+	public void setFimFase1(Date fimFase1) {
+		this.fimFase1 = fimFase1;
+	}
+
+	public Date getComecoFase2() {
+		return comecoFase2;
+	}
+
+	public void setComecoFase2(Date comecoFase2) {
+		this.comecoFase2 = comecoFase2;
+	}
+
+	public Date getFimFase2() {
+		return fimFase2;
+	}
+
+	public void setFimFase2(Date fimFase2) {
+		this.fimFase2 = fimFase2;
+	}
+
+	public Date getComecoFase3() {
+		return comecoFase3;
+	}
+
+	public void setComecoFase3(Date comecoFase3) {
+		this.comecoFase3 = comecoFase3;
+	}
+
+	public Date getFimFase3() {
+		return fimFase3;
+	}
+
+	public void setFimFase3(Date fimFase3) {
+		this.fimFase3 = fimFase3;
+	}
+
+	public Date getComecoFase4() {
+		return comecoFase4;
+	}
+
+	public void setComecoFase4(Date comecoFase4) {
+		this.comecoFase4 = comecoFase4;
+	}
+
+	public Date getFimFase4() {
+		return fimFase4;
+	}
+
+	public void setFimFase4(Date fimFase4) {
+		this.fimFase4 = fimFase4;
+	}
+
+	public Date getComecoPremiacoes() {
+		return comecoPremiacoes;
+	}
+
+	public void setComecoPremiacoes(Date comecoPremiacoes) {
+		this.comecoPremiacoes = comecoPremiacoes;
+	}
+
+	public Date getFimPremiacoes() {
+		return fimPremiacoes;
+	}
+
+	public void setFimPremiacoes(Date fimPremiacoes) {
+		this.fimPremiacoes = fimPremiacoes;
+	}
+	
+	
+}
+
+/* CronogramaOlimpiada(
+	id INT AUTO_INCREMENT NOT NULL,
+    nomeOlimpiada  VARCHAR(10),
+	comecoInscrições DATE NOT NULL,
+    fimInscrições DATE NOT NULL,
+    comecoFase1 DATE NOT NULL,
+	fimFase1 DATE NOT NULL,
+    comecoFase2 DATE NOT NULL,
+    fimFase2 DATE NOT NULL,
+    comecoFase3 DATE,
+    fimFase3 DATE,
+	comecoFase4 DATE,
+    fimFase4 DATE,
+    comecoPremiacoes DATE NOT NULL,
+    fimPremiacoes DATE NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome)*/
