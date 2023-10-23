@@ -19,6 +19,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import view.TelaCadastraEvento;
 import view.TelaInicialProf;
 import vo.Olimpiada;
 import vo.Professor;
@@ -35,8 +36,8 @@ public class TelaCronogramaProf extends JFrame{
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
 	private JLabel lblEvento;
-	private JButton bntAdicionar;
-	private JButton bntDeletar;
+	private JButton btnAdicionar;
+	private JButton btnDeletar;
 	private JButton btnVoltar;
 	
 	int tamanho = 56;
@@ -74,8 +75,8 @@ public class TelaCronogramaProf extends JFrame{
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
 		lblEvento = new JLabel("Adicionar Evento:");
-		bntAdicionar = new JButton("Adicionar :D");
-		bntDeletar = new JButton("Deletar D:");
+		btnAdicionar = new JButton("Adicionar :D");
+		btnDeletar = new JButton("Deletar D:");
 
 		
 		btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
@@ -84,14 +85,14 @@ public class TelaCronogramaProf extends JFrame{
 		btnVoltar.setBorderPainted(false); // Remove a borda
 		btnVoltar.setFocusPainted(false);
 		
-		bntAdicionar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
-		bntAdicionar.setBorderPainted(false); // Remove a borda
-		bntAdicionar.setFocusPainted(false);
+		btnAdicionar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnAdicionar.setBorderPainted(false); // Remove a borda
+		btnAdicionar.setFocusPainted(false);
 		
 		
-		bntDeletar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
-		bntDeletar.setBorderPainted(false); // Remove a borda
-		bntDeletar.setFocusPainted(false);
+		btnDeletar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnDeletar.setBorderPainted(false); // Remove a borda
+		btnDeletar.setFocusPainted(false);
 		
 		//tira o foco ao aperta o botão
 		btnLivros.setFocusPainted(false);
@@ -128,8 +129,8 @@ public class TelaCronogramaProf extends JFrame{
 		Font fontetxt = new Font("Trebuchet MS", Font.PLAIN, 30);
 		lblEvento.setFont(fontetxt);
 		
-		bntDeletar.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
-		bntAdicionar.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+		btnDeletar.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+		btnAdicionar.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
 		
 		//definir as posições
         Barra.setBounds(0,0,screenSize.width, 50); 
@@ -140,8 +141,8 @@ public class TelaCronogramaProf extends JFrame{
 		btnFlashcards.setBounds(765,7,130,35);
 		btnCronograma.setBounds(980,7,130,35);
 		lblEvento.setBounds(100,100,300,50);
-		bntAdicionar.setBounds(900, 100, 150, 50);
-		bntDeletar.setBounds(1030, 100, 150, 50);
+		btnAdicionar.setBounds(900, 100, 150, 50);
+		btnDeletar.setBounds(1030, 100, 150, 50);
     	btnVoltar.setBounds(10, 650, 28,25);
 		
 		contentPane.add(lp);
@@ -153,8 +154,8 @@ public class TelaCronogramaProf extends JFrame{
 		lp.add(btnFlashcards, new Integer(7));
 		lp.add(btnCronograma, new Integer(8));
 		lp.add(lblEvento, new Integer(9));
-		lp.add(bntAdicionar, new Integer(9));
-		lp.add(bntDeletar, new Integer(9));
+		lp.add(btnAdicionar, new Integer(9));
+		lp.add(btnDeletar, new Integer(9));
 		lp.add(btnVoltar, new Integer(10));
 		
 		for(int i = 0;i < tamanho;i++) {
@@ -195,11 +196,31 @@ public class TelaCronogramaProf extends JFrame{
         btnAssuntos.setBorderPainted(false);
         btnFlashcards.setBorderPainted(false);
         btnCronograma.setBorderPainted(false);
+        btnVoltar.setBorderPainted(false);
+        btnDeletar.setBorderPainted(false);
+        btnAdicionar.setBorderPainted(false);
 
         setVisible(true);
 	}
 	
 	private void definirEventos(Olimpiada olimp, Professor prof) {
+		btnAdicionar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaCadastraEvento cadastra = new TelaCadastraEvento(olimp);
+				cadastra.setLocationRelativeTo(null);
+			}
+		});
+		
+		btnDeletar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+
+			}
+		});
+
+
 		btnLivros.addMouseListener(new MouseListener() {
 			Color roxoIndigo = new Color(75,0,130);
 			Color roxoVioleta = new Color(148,0,211);
