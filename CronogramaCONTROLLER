@@ -1,0 +1,32 @@
+package controller;
+
+import java.time.LocalDate;
+
+import bo.CronogramaBO;
+
+public class CronogramaCONTROLLER {
+	public boolean criarCronograma(String nomeOlimpiada, LocalDate comecoInscricoes, LocalDate fimInscricoes,
+			LocalDate comecoFase1, LocalDate fimFase1, LocalDate comecoFase2,
+			LocalDate fimFase2, LocalDate comecoFase3, LocalDate fimFase3,
+			LocalDate comecoFase4, LocalDate fimFase4, LocalDate comecoPremiacoes, LocalDate fimPremiacoes) {
+		
+		CronogramaBO bo = new CronogramaBO();
+		
+		return bo.criarCronograma(nomeOlimpiada, comecoInscricoes, fimInscricoes,
+				 comecoFase1, fimFase1, comecoFase2,
+				 fimFase2, comecoFase3, fimFase3,
+				 comecoFase4, fimFase4, comecoPremiacoes, fimPremiacoes);
+	}
+	
+	public boolean atualizarCronograma(String nomeOlimpiada, LocalDate comecoInscricoes, LocalDate fimInscricoes,
+			LocalDate comecoFase1, LocalDate fimFase1, LocalDate comecoFase2,
+			LocalDate fimFase2, LocalDate comecoFase3, LocalDate fimFase3,
+			LocalDate comecoFase4, LocalDate fimFase4, LocalDate comecoPremiacoes, LocalDate fimPremiacoes) {
+		
+		CronogramaBO bo = new CronogramaBO();
+		return bo.atualizarCronograma(nomeOlimpiada, comecoInscricoes, fimInscricoes,
+				 comecoFase1, fimFase1, comecoFase2,
+				 fimFase2, comecoFase3, fimFase3,
+				 comecoFase4, fimFase4, comecoPremiacoes, fimPremiacoes);
+	}
+}
