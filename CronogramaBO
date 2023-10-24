@@ -1,15 +1,16 @@
 package bo;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import dao.CronogramaDAO;
 import vo.Cronograma;
 
 public class CronogramaBO {
-	public boolean criarCronograma(String nomeOlimpiada, LocalDate comecoInscricoes, LocalDate fimInscricoes,
-			LocalDate comecoFase1, LocalDate fimFase1, LocalDate comecoFase2,
-			LocalDate fimFase2, LocalDate comecoFase3, LocalDate fimFase3,
-			LocalDate comecoFase4, LocalDate fimFase4, LocalDate comecoPremiacoes, LocalDate fimPremiacoes) {
+	public boolean criarCronograma(String nomeOlimpiada, Date comecoInscricoes, Date fimInscricoes,
+			Date comecoFase1, Date fimFase1, Date comecoFase2,
+			Date fimFase2, Date comecoFase3, Date fimFase3,
+			Date comecoFase4, Date fimFase4, Date comecoPremiacoes,Date fimPremiacoes) {
 		
 		CronogramaDAO dao = new CronogramaDAO();
 		Cronograma c = new Cronograma(nomeOlimpiada, comecoInscricoes, fimInscricoes,
@@ -20,10 +21,10 @@ public class CronogramaBO {
 		return dao.criarCronograma(c);
 	}
 	
-	public boolean atualizarCronograma(String nomeOlimpiada, LocalDate comecoInscricoes, LocalDate fimInscricoes,
-			LocalDate comecoFase1, LocalDate fimFase1, LocalDate comecoFase2,
-			LocalDate fimFase2, LocalDate comecoFase3, LocalDate fimFase3,
-			LocalDate comecoFase4, LocalDate fimFase4, LocalDate comecoPremiacoes, LocalDate fimPremiacoes) {
+	public boolean atualizarCronograma(String nomeOlimpiada, Date comecoInscricoes, Date fimInscricoes,
+			Date comecoFase1, Date fimFase1, Date comecoFase2,
+			Date fimFase2, Date comecoFase3, Date fimFase3,
+			Date comecoFase4, Date fimFase4, Date comecoPremiacoes,Date fimPremiacoes) {
 		
 		CronogramaDAO dao = new CronogramaDAO();
 		Cronograma c = new Cronograma(nomeOlimpiada, comecoInscricoes, fimInscricoes,
@@ -35,26 +36,3 @@ public class CronogramaBO {
 	}
 }
 
-/* CronogramaOlimpiada(
-id INT AUTO_INCREMENT NOT NULL,
-nomeOlimpiada  VARCHAR(10),
-comecoInscrições DATE NOT NULL,
-fimInscrições DATE NOT NULL,
-comecoFase1 DATE NOT NULL,
-fimFase1 DATE NOT NULL,
-comecoFase2 DATE NOT NULL,
-fimFase2 DATE NOT NULL,
-comecoFase3 DATE,
-fimFase3 DATE,
-comecoFase4 DATE,
-fimFase4 DATE,
-comecoPremiacoes DATE NOT NULL,
-fimPremiacoes DATE NOT NULL,
-PRIMARY KEY(id),
-FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome)
-
-
-	
-	public Cronograma(String nomeOlimpiada, Date comecoInscricoes, Date fimInscricoes, Date comecoFase1,
-		Date fimFase1, Date comecoFase2, Date fimFase2, Date comecoFase3, Date fimFase3, Date comecoFase4,
-		Date fimFase4, Date comecoPremiacoes, Date fimPremiacoes)*/
