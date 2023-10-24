@@ -35,9 +35,8 @@ public class TelaCronogramaProf extends JFrame{
 	private JButton btnAssuntos;
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
-	private JLabel lblEvento;
-	private JButton btnAdicionar;
-	private JButton btnDeletar;
+	private JButton btnCriar;
+	private JButton btnAtualizar;
 	private JButton btnVoltar;
 	
 	int tamanho = 56;
@@ -52,6 +51,7 @@ public class TelaCronogramaProf extends JFrame{
 	public TelaCronogramaProf(Olimpiada olimp, Professor prof) {
 		inicializarComponentes(olimp, prof);
 		definirEventos(olimp, prof);
+        setVisible(true);
 	}
 	
 	private void inicializarComponentes(Olimpiada olimp, Professor prof) {
@@ -74,9 +74,8 @@ public class TelaCronogramaProf extends JFrame{
 		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
-		lblEvento = new JLabel("Adicionar Evento:");
-		btnAdicionar = new JButton("Adicionar :D");
-		btnDeletar = new JButton("Deletar D:");
+		btnCriar = new JButton("Criar");
+		btnAtualizar = new JButton("Atualizar");
 
 		
 		btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
@@ -85,14 +84,14 @@ public class TelaCronogramaProf extends JFrame{
 		btnVoltar.setBorderPainted(false); // Remove a borda
 		btnVoltar.setFocusPainted(false);
 		
-		btnAdicionar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
-		btnAdicionar.setBorderPainted(false); // Remove a borda
-		btnAdicionar.setFocusPainted(false);
+		btnCriar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnCriar.setBorderPainted(false); // Remove a borda
+		btnCriar.setFocusPainted(false);
 		
 		
-		btnDeletar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
-		btnDeletar.setBorderPainted(false); // Remove a borda
-		btnDeletar.setFocusPainted(false);
+		btnAtualizar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnAtualizar.setBorderPainted(false); // Remove a borda
+		btnAtualizar.setFocusPainted(false);
 		
 		//tira o foco ao aperta o botão
 		btnLivros.setFocusPainted(false);
@@ -126,11 +125,8 @@ public class TelaCronogramaProf extends JFrame{
 		btnCronograma.setFont(fonteBarra);
 
 		
-		Font fontetxt = new Font("Trebuchet MS", Font.PLAIN, 30);
-		lblEvento.setFont(fontetxt);
-		
-		btnDeletar.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
-		btnAdicionar.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+		btnAtualizar.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+		btnCriar.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
 		
 		//definir as posições
         Barra.setBounds(0,0,screenSize.width, 50); 
@@ -140,9 +136,8 @@ public class TelaCronogramaProf extends JFrame{
 		btnAssuntos.setBounds(578,7,100,35);
 		btnFlashcards.setBounds(765,7,130,35);
 		btnCronograma.setBounds(980,7,130,35);
-		lblEvento.setBounds(100,100,300,50);
-		btnAdicionar.setBounds(900, 100, 150, 50);
-		btnDeletar.setBounds(1030, 100, 150, 50);
+		btnCriar.setBounds(910, 100, 150, 50);
+		btnAtualizar.setBounds(1030, 100, 150, 50);
     	btnVoltar.setBounds(10, 650, 28,25);
 		
 		contentPane.add(lp);
@@ -153,9 +148,8 @@ public class TelaCronogramaProf extends JFrame{
 		lp.add(btnAssuntos, new Integer(6));
 		lp.add(btnFlashcards, new Integer(7));
 		lp.add(btnCronograma, new Integer(8));
-		lp.add(lblEvento, new Integer(9));
-		lp.add(btnAdicionar, new Integer(9));
-		lp.add(btnDeletar, new Integer(9));
+		lp.add(btnCriar, new Integer(9));
+		lp.add(btnAtualizar, new Integer(9));
 		lp.add(btnVoltar, new Integer(10));
 		
 		for(int i = 0;i < tamanho;i++) {
@@ -197,14 +191,13 @@ public class TelaCronogramaProf extends JFrame{
         btnFlashcards.setBorderPainted(false);
         btnCronograma.setBorderPainted(false);
         btnVoltar.setBorderPainted(false);
-        btnDeletar.setBorderPainted(false);
-        btnAdicionar.setBorderPainted(false);
+        btnAtualizar.setBorderPainted(false);
+        btnCriar.setBorderPainted(false);
 
-        setVisible(true);
 	}
 	
 	private void definirEventos(Olimpiada olimp, Professor prof) {
-		btnAdicionar.addActionListener(new ActionListener() {
+		btnCriar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaCadastraEvento cadastra = new TelaCadastraEvento(olimp);
@@ -212,14 +205,68 @@ public class TelaCronogramaProf extends JFrame{
 			}
 		});
 		
-		btnDeletar.addActionListener(new ActionListener() {
+		btnCriar.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnCriar.setBackground(roxoIndigo);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnLivros.setBackground(Color.BLACK); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnAtualizar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 
 			}
 		});
-
+		btnAtualizar.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnAtualizar.setBackground(roxoIndigo);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnAtualizar.setBackground(Color.BLACK); // Retorna à cor padrão do botão
+			}
+        });
 
 		btnLivros.addMouseListener(new MouseListener() {
 			Color roxoIndigo = new Color(75,0,130);
