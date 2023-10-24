@@ -1,107 +1,447 @@
-package Testeprojeto;
-
-
+package view;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import javax.swing.border.AbstractBorder;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import controller.CronogramaCONTROLLER;
+import vo.Olimpiada;
+
 public class TelaCadastraEvento extends JFrame{
 	private Container contentPane;
 	private JLayeredPane lp;
-	private JLabel TxtAdicionarAtividade;
-	private JLabel txtData;
-	private JTextField Data;   
-	private JLabel txtAdicionarEvento;
-	private JTextField Evento;
-	private JButton Adicionar;
-	private JButton Cancelar;
+	private JLabel lblComecoInscricoes;
+	private JFormattedTextField txtComecoInscricoes;
+	private JLabel lblFimInscricoes;
+	private JFormattedTextField txtFimInscricoes;
+	private JLabel lblComecoF1;
+	private JFormattedTextField txtComecoF1; 
+	private JLabel lblFimF1;
+	private JFormattedTextField txtFimF1;
+	private JLabel lblComecoF2;
+	private JFormattedTextField txtComecoF2; 
+	private JLabel lblFimF2;
+	private JFormattedTextField txtFimF2;
 	
-	public TelaCadastraEvento() {
-		inicializarComponentes();
-		
+	private JLabel lblComecoF3;
+	private JFormattedTextField txtComecoF3; 
+	private JLabel lblFimF3;
+	private JFormattedTextField txtFimF3;
+	private JLabel lblComecoF4;
+	private JFormattedTextField txtComecoF4; 
+	private JLabel lblFimF4;
+	private JFormattedTextField txtFimF4;
+	
+	private JLabel lblComecoPremiacao;
+	private JFormattedTextField txtComecoPremiacao; 
+	private JLabel lblFimPremiacao;
+	private JFormattedTextField txtFimPremiacao;
+	
+	private JButton btnCriar;
+	private JButton btnCancelar;
+	private JLabel lblCriarCronograma;
+	
+	public TelaCadastraEvento(Olimpiada olimp) {
+		inicializarComponentes(olimp);
+		definirEventos(olimp);
 	}
 	
-	
+
 	//@SuppressWarnings("removal")
-	private void inicializarComponentes() {
+	private void inicializarComponentes(Olimpiada olimp) {
 		//instanciação
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		//Dimension screenSize = toolkit.getScreenSize();
-		setBounds(0, 0, 500, 500);
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, 765, screenSize.height-50);
 		contentPane=getContentPane();
 		contentPane.setBackground(Color.white);
 		//setLayout(null);
 		
 		lp = new JLayeredPane();
-		TxtAdicionarAtividade = new JLabel("Adicionar Atividade");
-		txtData = new JLabel("Data");
-		Data = new JTextField ();
-		txtAdicionarEvento = new JLabel("Adicionar Evento");
-		Evento = new JTextField();
-		Adicionar = new JButton("Adiconar");
-		Cancelar = new JButton("Cancelar");
+		lblCriarCronograma= new JLabel("Criar cronograma");
+		lblComecoInscricoes = new JLabel("Começo das Inscrições:");
+		txtComecoInscricoes = new JFormattedTextField();
+		lblFimInscricoes= new JLabel("Fim das Inscrições:");
+		txtFimInscricoes= new JFormattedTextField();
+		lblComecoF1= new JLabel("Começo da Fase 1:");
+		txtComecoF1= new JFormattedTextField();
+		lblFimF1= new JLabel("Fim da Fase 1:");
+		txtFimF1= new JFormattedTextField();
+		lblComecoF2= new JLabel("Começo da Fase 2:");
+		txtComecoF2= new JFormattedTextField();
+		lblFimF2= new JLabel("Fim da Fase 2:");
+		txtFimF2= new JFormattedTextField();
 		
-		TxtAdicionarAtividade.setFont(new Font("Trebuchet MS", Font.BOLD, 35));
+		lblComecoF3= new JLabel("Começo da Fase 3:");
+		txtComecoF3= new JFormattedTextField();
+		lblFimF3= new JLabel("Fim da Fase 3:");
+		txtFimF3= new JFormattedTextField();
+		lblComecoF4= new JLabel("Começo da Fase 4:");
+		txtComecoF4= new JFormattedTextField();
+		lblFimF4= new JLabel("Fim da Fase 4:");
+		txtFimF4= new JFormattedTextField();
 		
+		lblComecoPremiacao= new JLabel("Começo da Premiações:");
+		txtComecoPremiacao= new JFormattedTextField();
+		lblFimPremiacao= new JLabel("Fim da Premiações:");
+		txtFimPremiacao= new JFormattedTextField();
 		
-		Color roxoIndigo = new Color(75,0,130);
-		TxtAdicionarAtividade.setForeground(roxoIndigo);
-		txtData.setForeground(Color.black);
-		txtAdicionarEvento.setForeground(Color.black);		
-		Adicionar.setBackground(roxoIndigo);
-		Adicionar.setForeground(Color.WHITE);
-		Cancelar.setBackground(roxoIndigo);
-		Cancelar.setForeground(Color.WHITE);
+		btnCriar = new JButton("Criar");
+		btnCancelar = new JButton("Cancelar");
 		
+		try {
+			txtComecoInscricoes.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtComecoInscricoes.setHorizontalAlignment(JFormattedTextField.CENTER);
+   		} catch (ParseException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
 		
-		Font txtFonte = new Font("Trebuchet MS", Font.PLAIN, 25);
-		txtData.setFont(txtFonte);
-		txtAdicionarEvento.setFont(txtFonte);
+		try {
+			txtFimInscricoes.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtFimInscricoes.setHorizontalAlignment(JFormattedTextField.CENTER);
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			txtComecoF1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtComecoF1.setHorizontalAlignment(JFormattedTextField.CENTER);
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			txtFimF1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtFimF1.setHorizontalAlignment(JFormattedTextField.CENTER);
+		}catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			txtComecoF2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtComecoF2.setHorizontalAlignment(JFormattedTextField.CENTER);
+		}catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			txtFimF2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtFimF2.setHorizontalAlignment(JFormattedTextField.CENTER);
+		}catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			txtComecoF3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtComecoF3.setHorizontalAlignment(JFormattedTextField.CENTER);
+		}catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			txtFimF3.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtFimF3.setHorizontalAlignment(JFormattedTextField.CENTER);
+		}catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			txtComecoF4.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtComecoF4.setHorizontalAlignment(JFormattedTextField.CENTER);
+		}catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			txtFimF4.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtFimF4.setHorizontalAlignment(JFormattedTextField.CENTER);
+		}catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			txtComecoPremiacao.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtComecoPremiacao.setHorizontalAlignment(JFormattedTextField.CENTER);
+		}catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			txtFimPremiacao.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+			txtFimPremiacao.setHorizontalAlignment(JFormattedTextField.CENTER);
+		}catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
+		
+		Color roxoIndigo = new Color(75,0,130);	
+		btnCriar.setBackground(roxoIndigo);
+		btnCriar.setForeground(Color.WHITE);
+		btnCancelar.setBackground(roxoIndigo);
+		btnCancelar.setForeground(Color.WHITE);
+		lblCriarCronograma.setForeground(roxoIndigo);
+		lblComecoInscricoes.setForeground(Color.BLACK);
+		txtComecoInscricoes.setForeground(Color.BLACK);
+		lblFimInscricoes.setForeground(Color.BLACK);
+		txtFimInscricoes.setForeground(Color.BLACK);
+		lblComecoF1.setForeground(Color.BLACK);
+		txtComecoF1.setForeground(Color.BLACK); 
+		lblFimF1.setForeground(Color.BLACK);
+		txtFimF1.setForeground(Color.BLACK);
+		lblComecoF2.setForeground(Color.BLACK);
+		txtComecoF2.setForeground(Color.BLACK); 
+		lblFimF2.setForeground(Color.BLACK);
+		txtFimF2.setForeground(Color.BLACK);
+		
+		lblComecoF3.setForeground(Color.BLACK);
+		txtComecoF3.setForeground(Color.BLACK); 
+		lblFimF3.setForeground(Color.BLACK);
+		txtFimF3.setForeground(Color.BLACK);
+		lblComecoF4.setForeground(Color.BLACK);
+		txtComecoF4.setForeground(Color.BLACK); 
+		lblFimF4.setForeground(Color.BLACK);
+		txtFimF4.setForeground(Color.BLACK);
+		
+		lblComecoPremiacao.setForeground(Color.BLACK);
+		txtComecoPremiacao.setForeground(Color.BLACK); 
+		lblFimPremiacao.setForeground(Color.BLACK);
+		txtFimPremiacao.setForeground(Color.BLACK);
+		
+		lblCriarCronograma.setFont(new Font("Trebuchet MS", Font.BOLD, 35));
+
+		Font txtFonte = new Font("Trebuchet MS", Font.PLAIN, 18);
+		txtComecoInscricoes.setFont(txtFonte);
+		txtFimInscricoes.setFont(txtFonte);
+		txtComecoF1.setFont(txtFonte); 
+		txtFimF1.setFont(txtFonte);
+		txtComecoF2.setFont(txtFonte); 
+		txtFimF2.setFont(txtFonte);
+		
+		txtComecoF3.setFont(txtFonte); 
+		txtFimF3.setFont(txtFonte);
+		txtComecoF4.setFont(txtFonte); 
+		txtFimF4.setFont(txtFonte);
+		
+		txtComecoPremiacao.setFont(txtFonte); 
+		txtFimPremiacao.setFont(txtFonte);
+
+		Font lblFonte = new Font("Trebuchet MS", Font.PLAIN, 20);
+		lblComecoInscricoes.setFont(lblFonte);
+		lblFimInscricoes.setFont(lblFonte);
+		lblComecoF1.setFont(lblFonte);
+		lblFimF1.setFont(lblFonte);
+		lblComecoF2.setFont(lblFonte);
+		lblFimF2.setFont(lblFonte);
+		
+		lblComecoF3.setFont(lblFonte);
+		lblFimF3.setFont(lblFonte);
+		lblComecoF4.setFont(lblFonte);
+		lblFimF4.setFont(lblFonte);
+		
+		lblComecoPremiacao.setFont(lblFonte);
+		lblFimPremiacao.setFont(lblFonte);
 		
 		Font txtBotao = new Font("Trebuchet MS", Font.PLAIN, 20);
-		Adicionar.setFont(txtBotao);
-		Cancelar.setFont(txtBotao);
+		btnCriar.setFont(txtBotao);
+		btnCancelar.setFont(txtBotao);
 		
-		TxtAdicionarAtividade.setBounds(90,10,350,50);
-		txtData.setBounds(50,70,300,50);
-		Data.setBounds(40,120,400,40);   
-		txtAdicionarEvento.setBounds(50,160,300,50);
-		Evento.setBounds(40,210,400,40);
-		Adicionar.setBounds(50,350,170,50);
-		Cancelar.setBounds(260,350,170,50);
+		//coordenadas 			setBounds(0, 0, 1010, screenSize.height-40==728);
+		lblCriarCronograma.setBounds(195,10,350,50);
 		
-		/*TxtAdicionarAtividade
-		txtData
-		Data 
-		txtAdicionarEvento
-		Evento*/
+		lblComecoInscricoes.setBounds(100, 100, 250, 25);
+		txtComecoInscricoes.setBounds(100, 125, 250, 30);
+		lblFimInscricoes.setBounds(390, 100, 250, 25);
+		txtFimInscricoes.setBounds(390, 125, 250, 30);
+		
+		lblComecoF1.setBounds(100, 175, 250, 25);
+		txtComecoF1.setBounds(100, 200, 250, 30); 
+		lblFimF1.setBounds(390, 175, 250, 25);
+		txtFimF1.setBounds(390, 200, 250, 30);
+		
+		lblComecoF2.setBounds(100, 250, 250, 25); //dif 50
+		txtComecoF2.setBounds(100, 275, 250, 30); //dif 25
+		lblFimF2.setBounds(390, 250, 250, 25);
+		txtFimF2.setBounds(390, 275, 250, 30);
+		
+		lblComecoF3.setBounds(100, 325, 250, 25);
+		txtComecoF3.setBounds(100, 350, 250, 30); 
+		lblFimF3.setBounds(390, 325, 250, 25);
+		txtFimF3.setBounds(390, 350, 250, 30);
+		
+		lblComecoF4.setBounds(100, 400, 250, 25);
+		txtComecoF4.setBounds(100, 425, 250, 30); 
+		lblFimF4.setBounds(390, 400, 250, 25);
+		txtFimF4.setBounds(390, 425, 250, 30);
+		
+		lblComecoPremiacao.setBounds(100, 475, 250, 25);
+		txtComecoPremiacao.setBounds(100, 500, 250, 30); 
+		lblFimPremiacao.setBounds(390, 475, 250, 25);
+		txtFimPremiacao.setBounds(390, 500, 250, 30);
+		
+		btnCriar.setBounds(180,600,170,50);
+		btnCancelar.setBounds(400,600,170,50);
+		
 		
 		contentPane.add(lp);
-		lp.add(TxtAdicionarAtividade, new Integer(1));
-		lp.add(txtData, new Integer(2));
-		lp.add(Data, new Integer(3));
-		lp.add(txtAdicionarEvento, new Integer(4));
-		lp.add(Evento, new Integer(5));
-		lp.add(Adicionar, new Integer(5));
-		lp.add(Cancelar, new Integer(5)); 
+		lp.add(lblCriarCronograma, new Integer(1));
+		lp.add(btnCriar, new Integer(2));
+		lp.add(btnCancelar, new Integer(3)); 
+		lp.add(lblComecoInscricoes, new Integer(4));
+		lp.add(txtComecoInscricoes, new Integer(5));
+		lp.add(lblFimInscricoes, new Integer(6));
+		lp.add(txtFimInscricoes, new Integer(7));
+		lp.add(lblComecoF1, new Integer(8));
+		lp.add(txtComecoF1, new Integer(9));
+		lp.add(lblFimF1, new Integer(10));
+		lp.add(txtFimF1, new Integer(11));
+		lp.add(lblComecoF2, new Integer(12));
+		lp.add(txtComecoF2, new Integer(13));
+		lp.add(lblFimF2, new Integer(14));
+		lp.add(txtFimF2, new Integer(15));
+		
+		lp.add(lblComecoF3, new Integer(16));
+		lp.add(txtComecoF3, new Integer(17)); 
+		lp.add(lblFimF3, new Integer(18));
+		lp.add(txtFimF3, new Integer(19));
+		lp.add(lblComecoF4, new Integer(20));
+		lp.add(txtComecoF4, new Integer(21)); 
+		lp.add(lblFimF4, new Integer(22));
+		lp.add(txtFimF4, new Integer(23));
+		
+		lp.add(lblComecoPremiacao, new Integer(24));
+		lp.add(txtComecoPremiacao, new Integer(25)); 
+		lp.add(lblFimPremiacao, new Integer(26));
+		lp.add(txtFimPremiacao, new Integer(27));
 		
 		setVisible(true);
-	
 	}
 	
-	public static void abrir() {
-		TelaCadastraEvento frame = new TelaCadastraEvento();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation((tela.width - frame.getSize().width) / 2, (tela.height - frame.getSize().height) / 2);
-        frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        abrir();
-    }
+	private void definirEventos(Olimpiada olimp) {
+		btnCriar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // Define o formato da data
+				String nomeOlimpiada = olimp.getNome();
+		            
+				
+				if(txtComecoInscricoes.getText().isEmpty()||txtFimInscricoes.getText().isEmpty()||
+						txtComecoF1.getText().isEmpty()||txtFimF1.getText().isEmpty()||txtComecoF2.getText().isEmpty()||
+						txtFimF2.getText().isEmpty()||txtComecoPremiacao.getText().isEmpty()
+						||txtFimPremiacao.getText().isEmpty()) {
+					
+					JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios!"
+							+ "\nApenas os itens relacionados as fases 3  e 4 podem estar vazios!");
+					
+				}else {
+						String comecoInscricoes = String.valueOf(txtComecoInscricoes.getText());
+					 	comecoInscricoes = comecoInscricoes.trim();
+			            LocalDate comecoInscricoesLD = LocalDate.parse(comecoInscricoes, formatter);
+			            Date comecoInscricoesD = java.sql.Date.valueOf(comecoInscricoesLD);
+			            
+			            String fimInscricoes = String.valueOf(txtFimInscricoes.getText());
+			            fimInscricoes = fimInscricoes.trim();
+			            LocalDate fimInscricoesLD = LocalDate.parse(fimInscricoes, formatter);
+			            Date fimInscricoesD = java.sql.Date.valueOf(fimInscricoesLD);	
+			            
+			            String comecoFase1 = String.valueOf(txtComecoF1.getText());
+			            comecoFase1 = comecoFase1.trim();
+			            LocalDate comecoFase1LD = LocalDate.parse(comecoFase1, formatter);
+			            Date comecoFase1D = java.sql.Date.valueOf(comecoFase1LD);	
+			            
+			            String fimFase1 = String.valueOf(txtFimF1.getText());
+			            fimFase1 = fimFase1.trim();
+			            LocalDate fimFase1LD = LocalDate.parse(fimFase1, formatter);
+			            Date fimFase1D = java.sql.Date.valueOf(fimFase1LD);	
+			            
+			            String comecoFase2 = String.valueOf(txtComecoF2.getText());
+			            comecoFase2 = comecoFase2.trim();
+			            LocalDate comecoFase2LD = LocalDate.parse(comecoFase2, formatter);
+			            Date comecoFase2D = java.sql.Date.valueOf(comecoFase2LD);	
+			            
+			            String fimFase2 = String.valueOf(txtFimF2.getText());
+			            fimFase2 = fimFase2.trim();
+			            LocalDate fimFase2LD = LocalDate.parse(fimFase2, formatter);
+			            Date fimFase2D = java.sql.Date.valueOf(fimFase2LD);	
+			            
+			            String comecoFase3 = String.valueOf(txtComecoF3.getText());
+			            comecoFase3 = comecoFase3.trim();
+			            LocalDate comecoFase3LD = LocalDate.parse(comecoFase3, formatter);
+			            Date comecoFase3D = java.sql.Date.valueOf(comecoFase3LD);	
+			            
+			            String fimFase3 = String.valueOf(txtFimF3.getText());
+			            fimFase3 = fimFase3.trim();
+			            LocalDate fimFase3LD = LocalDate.parse(fimFase3, formatter);
+			            Date fimFase3D = java.sql.Date.valueOf(fimFase3LD);	
+			            
+			            String comecoFase4 = String.valueOf(txtComecoF4.getText()); 
+			            comecoFase4 = comecoFase4.trim();
+			            LocalDate comecoFase4LD = LocalDate.parse(comecoFase4, formatter);
+			            Date comecoFase4D = java.sql.Date.valueOf(comecoFase4LD);	
+			            
+			            String fimFase4 = String.valueOf(txtFimF4.getText());
+			            fimFase4 = fimFase4.trim();
+			            LocalDate fimFase4LD = LocalDate.parse(fimFase4, formatter);
+			            Date fimFase4D = java.sql.Date.valueOf(fimFase4LD);	
+			            
+			            String comecoPremiacoes = String.valueOf(txtComecoPremiacao.getText());
+			            comecoPremiacoes = comecoPremiacoes.trim();
+			            LocalDate comecoPremiacoesLD = LocalDate.parse(comecoPremiacoes, formatter);
+			            Date comecoPremiacoesD = java.sql.Date.valueOf(comecoPremiacoesLD);	
+			            
+			            String fimPremiacoes = String.valueOf(txtFimPremiacao.getText());
+			            fimPremiacoes = fimPremiacoes.trim();
+			            LocalDate fimPremiacoesLD = LocalDate.parse(fimPremiacoes, formatter);
+			            Date fimPremiacoesD = java.sql.Date.valueOf(fimPremiacoesLD);
+			            
+			            CronogramaCONTROLLER controla = new CronogramaCONTROLLER();
+						boolean cadastrou = controla.criarCronograma(nomeOlimpiada, comecoInscricoesD, fimInscricoesD,
+								comecoFase1D, fimFase1D, comecoFase2D, fimFase2D, comecoFase3D, fimFase3D,
+								comecoFase4D, fimFase4D, comecoPremiacoesD, fimPremiacoesD);
+						
+						if(cadastrou==true) {
+							JOptionPane.showMessageDialog(null, "Cronograma criado com sucesso!");
+							
+						}else if(cadastrou==false){
+							JOptionPane.showMessageDialog(null, "Erro ao criar cronograma!");
+						}
+				}
+				
+			}
+		});
+		
+		btnCancelar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+	}
 	
+	public static void main(String[]args) {
+		Olimpiada olimp= new Olimpiada("ONC");
+		TelaCadastraEvento tela = new TelaCadastraEvento(olimp);
+		tela.setLocationRelativeTo(null);
+	}
 }
