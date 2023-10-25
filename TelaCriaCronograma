@@ -15,7 +15,7 @@ import javax.swing.table.TableColumn;
 import controller.CronogramaCONTROLLER;
 import vo.Olimpiada;
 
-public class TelaCadastraEvento extends JFrame{
+public class TelaCriaCronograma extends JFrame{
 	private Container contentPane;
 	private JLayeredPane lp;
 	private JLabel lblComecoInscricoes;
@@ -49,7 +49,7 @@ public class TelaCadastraEvento extends JFrame{
 	private JButton btnCancelar;
 	private JLabel lblCriarCronograma;
 	
-	public TelaCadastraEvento(Olimpiada olimp) {
+	public TelaCriaCronograma(Olimpiada olimp) {
 		inicializarComponentes(olimp);
 		definirEventos(olimp);
 	}
@@ -437,11 +437,5 @@ public class TelaCadastraEvento extends JFrame{
 				dispose();
 			}
 		});
-	}
-	
-	public static void main(String[]args) {
-		Olimpiada olimp= new Olimpiada("ONC");
-		TelaCadastraEvento tela = new TelaCadastraEvento(olimp);
-		tela.setLocationRelativeTo(null);
 	}
 }
