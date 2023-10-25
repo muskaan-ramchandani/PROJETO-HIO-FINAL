@@ -1,10 +1,12 @@
 package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
 import conexaoBD.Conexao;
+import vo.Aluno;
 import vo.Cronograma;
 public class CronogramaDAO {
 	
@@ -94,4 +96,47 @@ public class CronogramaDAO {
 			return false;
 		}
 	}
+	
+	public static Cronograma obterCronogramaExistente(String nomeOlimp) {
+		Cronograma c = null;
+
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    		 
+            String selectQuery = "SELECT * FROM CronogramaOlimpiada WHERE nomeOlimpiada = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setString(1, nomeOlimp);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String nomeOlimpiada= resultSet.getString("nomeOlimpiada");
+    			Date comecoInscricoes= resultSet.getDate("comecoInscricoes");
+    			Date fimInscricoes= resultSet.getDate("fimInscricoes");
+    			Date comecoFase1= resultSet.getDate("comecoFase1");
+    			Date fimFase1= resultSet.getDate("fimFase1");
+    			Date comecoFase2= resultSet.getDate("comecoFase2");
+    			Date fimFase2= resultSet.getDate("fimFase2");
+    			Date comecoFase3= resultSet.getDate("comecoFase3");
+    			Date fimFase3= resultSet.getDate("fimFase3");
+    			Date comecoFase4= resultSet.getDate("comecoFase4");
+    			Date fimFase4= resultSet.getDate("fimFase4");
+    			Date comecoPremiacoes= resultSet.getDate("comecoPremiacoes");
+    			Date fimPremiacoes= resultSet.getDate("fimPremiacoes");
+    			
+    			c = new Cronograma(nomeOlimpiada, comecoInscricoes, fimInscricoes,
+    					 comecoFase1, fimFase1, comecoFase2,
+    					 fimFase2, comecoFase3, fimFase3,
+    					 comecoFase4, fimFase4, comecoPremiacoes, fimPremiacoes);
+            }
+            resultSet.close();
+            preparedStatement.close();
+			conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return c;
+    }
 }
