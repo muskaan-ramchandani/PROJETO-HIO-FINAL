@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.Date;
 
 import bo.CronogramaBO;
+import dao.CronogramaDAO;
+import vo.Cronograma;
 
 public class CronogramaCONTROLLER {
 	public boolean criarCronograma(String nomeOlimpiada, Date comecoInscricoes, Date fimInscricoes,
@@ -30,4 +32,9 @@ public class CronogramaCONTROLLER {
 				 fimFase2, comecoFase3, fimFase3,
 				 comecoFase4, fimFase4, comecoPremiacoes, fimPremiacoes);
 	}
+	
+	public static Cronograma obterCronogramaExistente(String nomeOlimp) {
+		CronogramaBO bo = new CronogramaBO();
+        return bo.obterCronogramaExistente(nomeOlimp);
+    }
 }
