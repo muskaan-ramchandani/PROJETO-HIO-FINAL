@@ -176,6 +176,34 @@ CREATE TABLE CronogramaOlimpiada(
     PRIMARY KEY(id),
     FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome)
 );
+ 
+ CREATE TABLE TopicosPrincipais(
+	id INT AUTO_INCREMENT NOT NULL,
+	topico VARCHAR(100) NOT NULL,
+	nomeOlimpiada VARCHAR(10) NOT NULL,
+	CONSTRAINT TopicoNRepeteOlimp UNIQUE (nomeOlimpiada, topicoPrincipal),
+	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
+	PRIMARY KEY(id)
+ );
+ 
+CREATE TABLE TopicoESubtopico(
+	id INT AUTO_INCREMENT NOT NULL,
+	topicoPrincipal VARCHAR(100) NOT NULL,
+	subtopico VARCHAR(150) NOT NULL,
+    nomeOlimpiada VARCHAR(10) NOT NULL,
+	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
+	FOREIGN KEY(topicoPrincipal) REFERENCES TopicosPrincipais(topico),
+    FOREIGN KEY(subtopico) REFERENCES Subtopico(descricaoSub),
+	PRIMARY KEY(id)
+);
+  
+CREATE TABLE Subtopico(
+	id INT AUTO_INCREMENT NOT NULL,
+	descricaoSub VARCHAR(200) NOT NULL,
+    nomeOlimpiada VARCHAR(10) NOT NULL,
+	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
+	PRIMARY KEY(id)
+);
 
 USE hio;
 #SET FOREIGN_KEY_CHECKS=0;
