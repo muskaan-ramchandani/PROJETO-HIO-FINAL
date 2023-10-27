@@ -1,4 +1,4 @@
-package Testeprojeto;
+package view.TelasGuiOlimpiadasAluno;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -11,13 +11,28 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.border.AbstractBorder;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-public class TelaCronogramaAluno extends JFrame {
+import controller.CronogramaCONTROLLER;
+import view.TelaAtualizaCronograma;
+import view.TelaCriaCronograma;
+import view.TelaInicialAluno;
+import view.TelaInicialProf;
+import vo.Aluno;
+import vo.Cronograma;
+import vo.Olimpiada;
+import vo.Professor;
+
+public class TelaCronogramaAluno extends JFrame{
 	private Container contentPane;
 	private JLayeredPane lp;
 	private JMenuBar Barra;
@@ -28,24 +43,24 @@ public class TelaCronogramaAluno extends JFrame {
 	private JButton btnAssuntos;
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
-	private JLabel txtEvento;
+	private JButton btnVoltar;
 	
-	int tamanho = 56;
+	int tamanho = 14;
 	private JLabel[] TabelaData = new JLabel[tamanho];
-	int linhaD = 230;
+	int linhaD = 267;
 	int colunaD = 200;
-	int limite = 7;
+	int limite = 2;
 	
-	private JLabel[] TabelaEvento = new JLabel[8];
+	private JLabel[] TabelaEvento = new JLabel[7];
 	int colunaE = 200;
-	
-	
-	public TelaCronogramaAluno() {
-		inicializarComponentes();
+
+	public TelaCronogramaAluno(Olimpiada olimp, Aluno aluno) {
+		inicializarComponentes(olimp, aluno);
+		definirEventos(olimp, aluno);
+        setVisible(true);
 	}
 	
-	
-	private void inicializarComponentes() {
+	private void inicializarComponentes(Olimpiada olimp, Aluno aluno) {
 		//instanciação
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = toolkit.getScreenSize();
@@ -58,14 +73,22 @@ public class TelaCronogramaAluno extends JFrame {
 		
 		lp = new JLayeredPane();
         Barra = new JMenuBar();
-        lblLogo  = new JLabel(new ImageIcon("C:\\Breno\\bonequinhoSFMEDIO.png"));
+        lblLogo  = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//bonequinhoSFMEDIO.png"));
         btnLivros = new JButton("<html><u>Livros</u></html>"); //Sublinhado
 		btnVideos= new JButton("<html><u>Videos</u></html>");
 		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
-		txtEvento = new JLabel("Eventos Importantes");
 
+
+		
+		btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaPequenaRoxa.png"));
+		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnVoltar.setBorderPainted(false); // Remove a borda
+		btnVoltar.setFocusPainted(false);
+		
 		
 		//tira o foco ao aperta o botão
 		btnLivros.setFocusPainted(false);
@@ -85,7 +108,8 @@ public class TelaCronogramaAluno extends JFrame {
 		btnAssuntos.setForeground(Color.WHITE);
 		btnFlashcards.setBackground(roxoIndigo);
 		btnFlashcards.setForeground(Color.WHITE);
-		btnCronograma.setBackground(roxoIndigo);
+		Color roxoVioleta = new Color(148,0,211);
+		btnCronograma.setBackground(roxoVioleta);
 		btnCronograma.setForeground(Color.WHITE);
 		
 		
@@ -96,10 +120,7 @@ public class TelaCronogramaAluno extends JFrame {
 		btnAssuntos.setFont(fonteBarra);
 		btnFlashcards.setFont(fonteBarra);
 		btnCronograma.setFont(fonteBarra);
-		
-		
-		Font fontetxt = new Font("Trebuchet MS", Font.PLAIN, 25);
-		txtEvento.setFont(fontetxt);
+
 		
 		//definir as posições
         Barra.setBounds(0,0,screenSize.width, 50); 
@@ -109,8 +130,7 @@ public class TelaCronogramaAluno extends JFrame {
 		btnAssuntos.setBounds(578,7,100,35);
 		btnFlashcards.setBounds(765,7,130,35);
 		btnCronograma.setBounds(980,7,130,35);
-		txtEvento.setBounds(50,80,300,50);
-		
+    	btnVoltar.setBounds(10, 650, 28,25);
 		
 		contentPane.add(lp);
         lp.add(Barra, new Integer(1));
@@ -120,34 +140,113 @@ public class TelaCronogramaAluno extends JFrame {
 		lp.add(btnAssuntos, new Integer(6));
 		lp.add(btnFlashcards, new Integer(7));
 		lp.add(btnCronograma, new Integer(8));
-		lp.add(txtEvento, new Integer(9));
+		lp.add(btnVoltar, new Integer(9));
 		
-		for(int i = 0;i < tamanho;i++) {
-			TabelaData[i] = new JLabel("");
-			TabelaData[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
-			TabelaData[i].setHorizontalAlignment(SwingConstants.CENTER);
-			TabelaData[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
-			TabelaData[i].setBackground(Color.WHITE);
-			TabelaData[i].setForeground(Color.BLACK);
-			if(i >= limite) {
-				colunaD = colunaD+40;
-				limite = limite + 7;
-				linhaD = 230;
+		
+		CronogramaCONTROLLER controla = new CronogramaCONTROLLER();
+		Cronograma cronograma = controla.obterCronogramaExistente(olimp.getNome());
+		
+		String comecoInscricoes;
+		String fimInscricoes;
+		String comecoFase1;
+		String fimFase1;
+		String comecoFase2;
+		String fimFase2;
+		String comecoFase3;
+		String fimFase3;
+		String comecoFase4;
+		String fimFase4;
+		String comecoPremiacoes;
+		String fimPremiacoes;
+		
+		if(cronograma!=null) { //cronogrma existe
+	        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+			comecoInscricoes= formatter.format(cronograma.getComecoInscricoes());
+			fimInscricoes= formatter.format(cronograma.getFimInscricoes());
+			comecoFase1= formatter.format(cronograma.getComecoFase1());
+			fimFase1= formatter.format(cronograma.getFimFase1());
+			comecoFase2= formatter.format(cronograma.getComecoFase2());
+			fimFase2= formatter.format(cronograma.getFimFase2());
+			comecoFase3= formatter.format(cronograma.getComecoFase3());
+			fimFase3= formatter.format(cronograma.getFimFase3());
+			comecoFase4= formatter.format(cronograma.getComecoFase4());
+			fimFase4= formatter.format(cronograma.getFimFase4());
+			comecoPremiacoes= formatter.format(cronograma.getComecoPremiacoes());
+			fimPremiacoes= formatter.format(cronograma.getFimPremiacoes());
+			
+			
+			for(int i = 0;i < tamanho;i++) { //tamanho é 14
+				TabelaData[0] = new JLabel("Começo");
+				TabelaData[1] = new JLabel("Fim");
+				TabelaData[2] = new JLabel(comecoInscricoes);
+				TabelaData[3] = new JLabel(fimInscricoes);
+				TabelaData[4] = new JLabel(comecoFase1);
+				TabelaData[5] = new JLabel(fimFase1);
+				TabelaData[6] = new JLabel(comecoFase2);
+				TabelaData[7] = new JLabel(fimFase2);
+				TabelaData[8] = new JLabel(comecoFase3);
+				TabelaData[9] = new JLabel(fimFase3);
+				TabelaData[10] = new JLabel(comecoFase4);
+				TabelaData[11] = new JLabel(fimFase4);
+				TabelaData[12] = new JLabel(comecoPremiacoes);
+				TabelaData[13] = new JLabel(fimPremiacoes);
+			
+				
+				
+				TabelaData[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+				TabelaData[i].setHorizontalAlignment(SwingConstants.CENTER);
+				TabelaData[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+				TabelaData[i].setBackground(Color.WHITE);
+				TabelaData[i].setForeground(Color.BLACK);
+				if(i >= limite) { //2 colunas = limite
+					colunaD = colunaD+40;
+					limite = limite + 2;
+					linhaD = 267;
+				}
+				TabelaData[i].setBounds(linhaD,colunaD,170,40);
+				lp.add(TabelaData[i], new Integer(100));
+				linhaD = linhaD + 170;
 			}
-			TabelaData[i].setBounds(linhaD,colunaD,130,40);
-			lp.add(TabelaData[i], new Integer(100));
-			linhaD = linhaD + 130;
+			
+		} else if(cronograma==null) { //cronograma n existe
+			
+			for(int i = 0;i < tamanho;i++) { //tamanho é 14
+				TabelaData[i] = new JLabel("");
+				TabelaData[0] = new JLabel("Começo");
+				TabelaData[1] = new JLabel("Fim");
+				TabelaData[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+				TabelaData[i].setHorizontalAlignment(SwingConstants.CENTER);
+				TabelaData[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+				TabelaData[i].setBackground(Color.WHITE);
+				TabelaData[i].setForeground(Color.BLACK);
+				if(i >= limite) { //2 colunas = limite
+					colunaD = colunaD+40;
+					limite = limite + 2;
+					linhaD = 267;
+				}
+				TabelaData[i].setBounds(linhaD,colunaD,170,40);
+				lp.add(TabelaData[i], new Integer(100));
+				linhaD = linhaD + 170;
+			}
 		}
 		
-		for(int i = 0; i< 8;i++) {
-			TabelaEvento[i] = new JLabel("");
+		for(int i = 0; i< 7;i++) {
 			TabelaEvento[0] = new JLabel("Evento");
+			TabelaEvento[1] = new JLabel("Inscrições");
+			TabelaEvento[2] = new JLabel("Fase 1");
+			TabelaEvento[3] = new JLabel("Fase 2");
+			TabelaEvento[4] = new JLabel("Fase 3");
+			TabelaEvento[5] = new JLabel("Fase 4");
+			TabelaEvento[6] = new JLabel("Premiações");
+
+			
 			TabelaEvento[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
 			TabelaEvento[i].setHorizontalAlignment(SwingConstants.CENTER);
 			TabelaEvento[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
 			TabelaEvento[i].setBackground(Color.WHITE);
 			TabelaEvento[i].setForeground(Color.BLACK);
-			TabelaEvento[i].setBounds(63,colunaE,170,40);
+			TabelaEvento[i].setBounds(100,colunaE,170,40);
 			lp.add(TabelaEvento[i], new Integer(100));
 			colunaE += 40;
 			
@@ -160,21 +259,170 @@ public class TelaCronogramaAluno extends JFrame {
         btnAssuntos.setBorderPainted(false);
         btnFlashcards.setBorderPainted(false);
         btnCronograma.setBorderPainted(false);
+        btnVoltar.setBorderPainted(false);
+        
 
-        setVisible(true);
-		
 	}
 	
-	 public static void abrir() {
-		 	TelaCronogramaAluno frame = new TelaCronogramaAluno();
-	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        Dimension tela = Toolkit.getDefaultToolkit().getScreenSize();
-	        frame.setLocation((tela.width - frame.getSize().width) / 2, (tela.height - frame.getSize().height) / 2);
-	        frame.setVisible(true);
-	    }
+	private void definirEventos(Olimpiada olimp, Aluno aluno) {
+		
+		btnLivros.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnLivros.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnLivros.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnLivros.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaLivrosAluno livro = new TelaLivrosAluno(olimp, aluno);
+				setVisible(false);
 
-	    public static void main(String[] args) {
-	        abrir();
-	    }
+			}
+		});
+		
+		btnAssuntos.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnAssuntos.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnAssuntos.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnAssuntos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//TelaAssuntosProf video = new TelaAssuntosProf(olimp, prof);
+			     setVisible(false);
+
+			}
+		});
+		
+		btnVideos.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnVideos.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnVideos.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnVideos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaVideosAluno videos = new TelaVideosAluno(olimp, aluno);
+			     setVisible(false);
+
+			}
+		});
+		
+		btnFlashcards.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnFlashcards.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnFlashcards.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnFlashcards.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 TelaFlashcardsAluno flash = new TelaFlashcardsAluno(olimp, aluno);
+			     setVisible(false);
+			}
+		});
+		
+		 btnVoltar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					TelaInicialAluno tela = new TelaInicialAluno(aluno, true);
+				     setVisible(false);
+				}
+			});
+		
+	}
 }
-
