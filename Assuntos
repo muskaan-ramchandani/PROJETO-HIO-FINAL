@@ -1,0 +1,24 @@
+package vo;
+
+public class Assuntos {
+	private String tituloAssunto;
+	private String nomeOlimpiada;
+	
+	public String getTituloAssunto() {
+		return tituloAssunto;
+	}
+	public void setTituloAssunto(String tituloAssunto) {
+		this.tituloAssunto = tituloAssunto;
+	}
+	public String getNomeOlimpiada() {
+		return nomeOlimpiada;
+	}
+	public void setNomeOlimpiada(String nomeOlimpiada) {
+		this.nomeOlimpiada = nomeOlimpiada;
+	}
+	
+	
+}
+
+/*tituloAssunto VARCHAR(100) NOT NULL,
+	nomeOlimpiada VARCHAR(10) NOT NULL,*/
