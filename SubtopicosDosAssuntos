@@ -1,0 +1,24 @@
+package vo;
+
+public class SubtopicosDosAssuntos {
+	private String descricao;
+	private String nomeOlimpiada;
+	
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	public String getNomeOlimpiada() {
+		return nomeOlimpiada;
+	}
+	public void setNomeOlimpiada(String nomeOlimpiada) {
+		this.nomeOlimpiada = nomeOlimpiada;
+	}
+	
+	
+}
+
+/*descricaoSub VARCHAR(200) NOT NULL,
+    nomeOlimpiada VARCHAR(10) NOT NULL,*/
