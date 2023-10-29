@@ -37,6 +37,7 @@ public class TelaInicialAluno extends JFrame{
 	private JLabel lblEstrela;
 	private JLabel lblCronograma;
 	private JLabel lblOlimpiadas;
+	private JButton btnVoltar;
 	//private JLabel lblImagem;
     private ArrayList<JButton> botoesOlimp = new ArrayList<>();
 
@@ -180,6 +181,12 @@ public class TelaInicialAluno extends JFrame{
         lblAOlimp.setBounds(920, 625, 100, 20);
         //lblImagem.setBounds(30,380, 637,361);
         
+        btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaPequenaRoxa.png"));
+		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnVoltar.setBorderPainted(false); // Remove a borda
+		btnVoltar.setFocusPainted(false);
+    	btnVoltar.setBounds(10, 650, 28,25);
         
         //adiciona
         contentPane.add(lp);
@@ -202,7 +209,7 @@ public class TelaInicialAluno extends JFrame{
         lp.add(btnAdicionarOlimp, new Integer(17));
         lp.add(lblAdicionar, new Integer(18));
         lp.add(lblAOlimp, new Integer(19));
-        //lp.add(lblImagem, new Integer(20));
+        lp.add(btnVoltar, new Integer(20));
         
       //botões olimpiadas
         if(login==true) {
@@ -311,6 +318,14 @@ public class TelaInicialAluno extends JFrame{
 	}
 
 	private void definirEventos(Aluno aluno) {
+		btnVoltar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaBoasVindas telaBV = new TelaBoasVindas();
+				setVisible(false);
+			}
+		});
+		
 		btnPerfil.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
