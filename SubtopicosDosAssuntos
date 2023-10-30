@@ -4,6 +4,11 @@ public class SubtopicosDosAssuntos {
 	private String descricao;
 	private String nomeOlimpiada;
 	
+	public SubtopicosDosAssuntos(String descricao, String nomeOlimpiada) {
+		setDescricao(descricao);
+		setNomeOlimpiada(nomeOlimpiada);
+	}
+	
 	public String getDescricao() {
 		return descricao;
 	}
