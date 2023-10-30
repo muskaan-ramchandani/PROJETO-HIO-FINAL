@@ -1,0 +1,25 @@
+package bo;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import conexaoBD.Conexao;
+import dao.SubtopicosDosAssuntosDAO;
+import vo.Assuntos;
+import vo.SubtopicosDosAssuntos;
+
+public class SubtopicosDosAssuntosBO {
+		public boolean criarSubtopico(String descricao, String nomeOlimpiada, Assuntos a) {
+			SubtopicosDosAssuntosDAO dao = new SubtopicosDosAssuntosDAO();
+			SubtopicosDosAssuntos s = new SubtopicosDosAssuntos(descricao, nomeOlimpiada);
+			return dao.criarSubtopico(s, a);
+		}
+		
+		public static ArrayList<SubtopicosDosAssuntos> retornaSubtopicosAssunto(String nomeOlimp, String topicoPrincipal) {
+			SubtopicosDosAssuntosDAO dao = new SubtopicosDosAssuntosDAO();
+	        return dao.retornaSubtopicosAssunto(nomeOlimp, topicoPrincipal);
+	    }
+}
