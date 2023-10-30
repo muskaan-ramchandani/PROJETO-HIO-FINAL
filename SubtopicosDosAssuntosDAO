@@ -1,0 +1,105 @@
+package dao;
+
+import java.io.File;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import conexaoBD.Conexao;
+import vo.Assuntos;
+import vo.Livro;
+import vo.SubtopicosDosAssuntos;
+
+public class SubtopicosDosAssuntosDAO {
+	
+	public boolean criarSubtopico(SubtopicosDosAssuntos s, Assuntos a) {
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+
+		
+		String sql= "INSERT INTO Subtopico(descricaoSub, nomeOlimpiada)VALUES(?,?)";
+		
+		String sql2 = "INSERT INTO AssuntoSubtopico(topicoPrincipal, subtopico, nomeOlimpiada)";    
+			    
+		try {
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, s.getDescricao());
+			ps.setString(2, s.getNomeOlimpiada());
+
+			int linhasAfetadas = ps.executeUpdate();
+			
+            if(linhasAfetadas>0) {
+            	
+            	ps = conn.prepareStatement(sql2);
+    			ps.setString(1, a.getTituloAssunto());
+    			ps.setString(2, s.getDescricao());
+    			ps.setString(3, s.getNomeOlimpiada());
+
+    			ps.close();
+    			conn.close();
+    			int linhasAfetadas2 = ps.executeUpdate();
+    			
+    			if(linhasAfetadas2>0) {
+    				return true;
+    			}else {
+    				return false;
+    			}
+    			
+
+            }else {
+            	ps.close();
+    			conn.close();
+            	return false;
+            }
+            
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static ArrayList<SubtopicosDosAssuntos> retornaSubtopicosAssunto(String nomeOlimp, String topicoPrincipal) {
+		SubtopicosDosAssuntos s = null;
+		ArrayList<SubtopicosDosAssuntos> listaSubtopicos = new ArrayList();
+		
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    		 
+            String selectQuery = "SELECT * FROM Subtopico"+
+            		 "INNER JOIN AssuntoSubtopico ON Subtopico.descricaoSub = AssuntoSubtopico.subtopico " +
+                     "WHERE AssuntoSubtopico.topicoPrincipal = ? AND AssuntoSubtopico.nomeOlimpiada = ?";
+            
+            ps = conn.prepareStatement(selectQuery);
+            ps.setString(1, topicoPrincipal);
+            ps.setString(2, nomeOlimp);
+
+
+            // Executar a consulta
+            ResultSet resultSet = ps.executeQuery();
+
+            // Processar o resultado
+            while (resultSet.next()) {
+            	
+            	s= new SubtopicosDosAssuntos(resultSet.getString("descricaoSub"),
+            			resultSet.getString("nomeOlimpiada"));
+          			    
+				 //adiciona o video na lista
+            	listaSubtopicos.add(s);
+ 			}
+            resultSet.close();
+            ps.close();
+			conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaSubtopicos;
+    }
+}
