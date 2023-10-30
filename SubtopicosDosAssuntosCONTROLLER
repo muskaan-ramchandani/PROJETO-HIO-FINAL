@@ -1,0 +1,20 @@
+package controller;
+
+import java.util.ArrayList;
+
+import bo.SubtopicosDosAssuntosBO;
+import vo.Assuntos;
+import vo.SubtopicosDosAssuntos;
+
+public class SubtopicosDosAssuntosCONTROLLER {
+	public boolean criarSubtopico(String descricao, String nomeOlimpiada, Assuntos a) {
+		
+		SubtopicosDosAssuntosBO bo = new SubtopicosDosAssuntosBO();
+		return bo.criarSubtopico(descricao, nomeOlimpiada, a);
+	}
+	
+	public static ArrayList<SubtopicosDosAssuntos> retornaSubtopicosAssunto(String nomeOlimp, String topicoPrincipal) {
+		SubtopicosDosAssuntosBO bo = new SubtopicosDosAssuntosBO();
+        return bo.retornaSubtopicosAssunto(nomeOlimp, topicoPrincipal);
+    }
+}
