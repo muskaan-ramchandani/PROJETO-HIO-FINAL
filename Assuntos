@@ -4,6 +4,11 @@ public class Assuntos {
 	private String tituloAssunto;
 	private String nomeOlimpiada;
 	
+	public Assuntos(String tituloAssunto, String nomeOlimpiada) {
+		setTituloAssunto(tituloAssunto);
+		setNomeOlimpiada(nomeOlimpiada);
+	}
+	
 	public String getTituloAssunto() {
 		return tituloAssunto;
 	}
