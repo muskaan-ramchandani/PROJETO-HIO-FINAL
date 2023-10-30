@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import controller.CronogramaCONTROLLER;
+import controller.ProfessorCONTROLLER;
 import view.TelaAtualizaCronograma;
 import view.TelaCriaCronograma;
 import view.TelaInicialProf;
@@ -46,7 +47,7 @@ public class TelaCronogramaProf extends JFrame{
 	
 	int tamanho = 14;
 	private JLabel[] TabelaData = new JLabel[tamanho];
-	int linhaD = 267;
+	int linhaD = 270;
 	int colunaD = 200;
 	int limite = 2;
 	
@@ -124,6 +125,7 @@ public class TelaCronogramaProf extends JFrame{
 		//definir as fontes
 		Font fonteBarra = new Font("Trebuchet MS", Font.PLAIN, 21);
 		btnLivros.setFont(fonteBarra);
+
 		btnVideos.setFont(fonteBarra);
 		btnAssuntos.setFont(fonteBarra);
 		btnFlashcards.setFont(fonteBarra);
@@ -215,13 +217,13 @@ public class TelaCronogramaProf extends JFrame{
 				TabelaData[i].setBackground(Color.WHITE);
 				TabelaData[i].setForeground(Color.BLACK);
 				if(i >= limite) { //2 colunas = limite
-					colunaD = colunaD+40;
+					colunaD = colunaD+50;
 					limite = limite + 2;
-					linhaD = 267;
+					linhaD = 270;
 				}
-				TabelaData[i].setBounds(linhaD,colunaD,170,40);
+				TabelaData[i].setBounds(linhaD+270,colunaD,270,50);
 				lp.add(TabelaData[i], new Integer(100));
-				linhaD = linhaD + 170;
+				linhaD = linhaD + 270;
 			}
 			
 		} else if(cronograma==null) { //cronograma n existe
@@ -236,13 +238,13 @@ public class TelaCronogramaProf extends JFrame{
 				TabelaData[i].setBackground(Color.WHITE);
 				TabelaData[i].setForeground(Color.BLACK);
 				if(i >= limite) { //2 colunas = limite
-					colunaD = colunaD+40;
+					colunaD = colunaD+50;
 					limite = limite + 2;
-					linhaD = 267;
+					linhaD = 270;
 				}
-				TabelaData[i].setBounds(linhaD,colunaD,170,40);
+				TabelaData[i].setBounds(linhaD,colunaD,270,50);
 				lp.add(TabelaData[i], new Integer(100));
-				linhaD = linhaD + 170;
+				linhaD = linhaD + 190;
 			}
 		}
 		
@@ -261,9 +263,9 @@ public class TelaCronogramaProf extends JFrame{
 			TabelaEvento[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
 			TabelaEvento[i].setBackground(Color.WHITE);
 			TabelaEvento[i].setForeground(Color.BLACK);
-			TabelaEvento[i].setBounds(100,colunaE,170,40);
+			TabelaEvento[i].setBounds(270,colunaE,270,50);
 			lp.add(TabelaEvento[i], new Integer(100));
-			colunaE += 40;
+			colunaE += 50;
 			
 		}
 		//tirar bordar
