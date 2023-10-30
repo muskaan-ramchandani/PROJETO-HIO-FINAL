@@ -177,19 +177,19 @@ CREATE TABLE CronogramaOlimpiada(
     FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome)
 );
  
- CREATE TABLE TopicosPrincipais(
+ CREATE TABLE Assunto(
 	id INT AUTO_INCREMENT NOT NULL,
-	topico VARCHAR(100) NOT NULL,
+	tituloAssunto VARCHAR(100) NOT NULL,
 	nomeOlimpiada VARCHAR(10) NOT NULL,
-	CONSTRAINT TopicoNRepeteOlimp UNIQUE (nomeOlimpiada, topicoPrincipal),
+	CONSTRAINT TopicoNRepeteOlimp UNIQUE (nomeOlimpiada, tituloAssunto),
 	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
 	PRIMARY KEY(id)
  );
  
-CREATE TABLE TopicoESubtopico(
+CREATE TABLE AssuntoSubtopico(
 	id INT AUTO_INCREMENT NOT NULL,
 	topicoPrincipal VARCHAR(100) NOT NULL,
-	subtopico VARCHAR(150) NOT NULL,
+	subtopico VARCHAR(200) NOT NULL,
     nomeOlimpiada VARCHAR(10) NOT NULL,
 	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
 	FOREIGN KEY(topicoPrincipal) REFERENCES TopicosPrincipais(topico),
@@ -205,8 +205,46 @@ CREATE TABLE Subtopico(
 	PRIMARY KEY(id)
 );
 
+CREATE TABLE Exercicios(
+	id INT AUTO_INCREMENT NOT NULL,
+	alternativaA VARCHAR(100) NOT NULL,
+	alternativaB VARCHAR(100) NOT NULL,
+	alternativaC VARCHAR(100) NOT NULL,
+	alternativaD VARCHAR(100) NOT NULL,
+	alternativaE VARCHAR(100),
+	alternativaCorreta VARCHAR(100) NOT NULL,
+	emailProf VARCHAR(100) NOT NULL,
+    nomeOlimpiada  VARCHAR(10) NOT NULL,
+	PRIMARY KEY(id),
+	FOREIGN KEY(emailProf) REFERENCES Professor(email),
+	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome)
+);
+
+CREATE TABLE AssuntosExercicios(
+	id INT AUTO_INCREMENT NOT NULL,
+	idSubtopico INT NOT NULL,
+	idExercicio INT NOT NULL,
+    PRIMARY KEY(id),
+	FOREIGN KEY(idSubtopico) REFERENCES Subtopico(id),
+	FOREIGN KEY(idExercicio) REFERENCES Exercicios(id)
+);
+CREATE TABLE Textos(
+	id INT AUTO_INCREMENT NOT NULL,
+	texto VARCHAR(1000) NOT NULL,
+	emailProf VARCHAR(100) NOT NULL,
+	PRIMARY KEY(id),
+	FOREIGN KEY(emailProf) REFERENCES Professor(email)
+);
+
+CREATE TABLE AssuntosTextos(
+	id INT AUTO_INCREMENT NOT NULL,
+	idSubtopico INT NOT NULL,
+	idTextos INT NOT NULL,
+    PRIMARY KEY(id),
+	FOREIGN KEY(idSubtopico) REFERENCES Subtopico(id),
+	FOREIGN KEY(idTextos) REFERENCES Textos(id)
+);
+
 USE hio;
 #SET FOREIGN_KEY_CHECKS=0;
-SET FOREIGN_KEY_CHECKS=1;
-#delete from AgendaAluno where emailAluno = 'isassevalho@gmail.com';
-#DELETE FROM Video Where emailProf='juju@gmail.com';
+#SET FOREIGN_KEY_CHECKS=1;
