@@ -1,0 +1,24 @@
+package bo;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import conexaoBD.Conexao;
+import dao.AssuntosDAO;
+import vo.Assuntos;
+
+public class AssuntosBO {
+	public boolean criarAssunto(String tituloAssunto, String nomeOlimpiada) {
+		AssuntosDAO dao = new AssuntosDAO();
+		Assuntos a = new Assuntos(tituloAssunto, nomeOlimpiada);
+		return dao.criarAssunto(a);
+	}
+	
+	public static ArrayList<Assuntos> retornaAssuntos(String nomeOlimp) {
+		AssuntosDAO dao = new AssuntosDAO();
+        return dao.retornaAssuntos(nomeOlimp);
+    }
+}
