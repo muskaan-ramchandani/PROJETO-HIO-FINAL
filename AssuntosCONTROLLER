@@ -1,0 +1,18 @@
+package controller;
+
+import java.util.ArrayList;
+
+import bo.AssuntosBO;
+import vo.Assuntos;
+
+public class AssuntosCONTROLLER {
+	public boolean criarAssunto(String tituloAssunto, String nomeOlimpiada) {
+		AssuntosBO bo = new AssuntosBO();
+		return bo.criarAssunto(tituloAssunto, nomeOlimpiada);
+	}
+	
+	public static ArrayList<Assuntos> retornaAssuntos(String nomeOlimp) {
+		AssuntosBO bo = new AssuntosBO();
+        return bo.retornaAssuntos(nomeOlimp);
+    }
+}
