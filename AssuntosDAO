@@ -1,0 +1,86 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+
+import conexaoBD.Conexao;
+import vo.Assuntos;
+
+public class AssuntosDAO {
+	
+	public boolean criarAssunto(Assuntos a) {
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+
+		
+		String sql= "INSERT INTO Assunto(tituloAssunto, nomeOlimpiada)VALUES(?,?)";
+		
+		try {
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, a.getTituloAssunto());
+			ps.setString(2, a.getNomeOlimpiada());
+
+			int linhasAfetadas = ps.executeUpdate();
+			
+			ps.close();
+			conn.close();
+			
+            if(linhasAfetadas>0) {
+            	return true;
+            }else {
+            	return false;
+            }
+            
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static ArrayList<Assuntos> retornaAssuntos(String nomeOlimp) {
+		Assuntos a = null;
+		ArrayList<Assuntos> listaAssuntos = new ArrayList();
+		
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    		 
+            String selectQuery = "SELECT * FROM Assunto WHERE nomeOlimpiada = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setString(1, nomeOlimp);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String nomeOlimpiada= resultSet.getString("nomeOlimpiada");
+                String tituloAssunto= resultSet.getString("tituloAssunto");
+
+    			
+    			a = new Assuntos(tituloAssunto, nomeOlimpiada);
+    			listaAssuntos.add(a);
+            }
+            resultSet.close();
+            preparedStatement.close();
+			conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaAssuntos;
+    }
+}
+
+/*CREATE TABLE Assunto(
+	id INT AUTO_INCREMENT NOT NULL,
+	tituloAssunto VARCHAR(100) NOT NULL,
+	nomeOlimpiada VARCHAR(10) NOT NULL,
+	CONSTRAINT TopicoNRepeteOlimp UNIQUE (nomeOlimpiada, tituloAssunto),
+	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
+	PRIMARY KEY(id)
+ );*/
