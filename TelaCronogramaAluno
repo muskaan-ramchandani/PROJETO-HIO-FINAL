@@ -75,6 +75,7 @@ public class TelaCronogramaAluno extends JFrame{
         Barra = new JMenuBar();
         lblLogo  = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//bonequinhoSFMEDIO.png"));
+  		lblNomeOlimp = new JLabel(olimp.getNome());
         btnLivros = new JButton("<html><u>Livros</u></html>"); //Sublinhado
 		btnVideos= new JButton("<html><u>Videos</u></html>");
 		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
@@ -114,6 +115,8 @@ public class TelaCronogramaAluno extends JFrame{
 		
 		
 		//definir as fontes
+  		lblNomeOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 25));
+
 		Font fonteBarra = new Font("Trebuchet MS", Font.PLAIN, 21);
 		btnLivros.setFont(fonteBarra);
 		btnVideos.setFont(fonteBarra);
@@ -123,13 +126,14 @@ public class TelaCronogramaAluno extends JFrame{
 
 		
 		//definir as posições
-        Barra.setBounds(0,0,screenSize.width, 50); 
+		Barra.setBounds(0,0,screenSize.width, 50);
         lblLogo.setBounds(10,5,44,35);
+        lblNomeOlimp.setBounds(80, 15, 250, 20);
         btnLivros.setBounds(235,7, 100, 35);
-		btnVideos.setBounds(403,7,100,35);
-		btnAssuntos.setBounds(578,7,100,35);
-		btnFlashcards.setBounds(765,7,130,35);
-		btnCronograma.setBounds(980,7,130,35);
+  		btnVideos.setBounds(403,7,100,35);
+  		btnAssuntos.setBounds(578,7,100,35);
+  		btnFlashcards.setBounds(765,7,130,35);
+  		btnCronograma.setBounds(980,7,130,35);
     	btnVoltar.setBounds(10, 650, 28,25);
 		
 		contentPane.add(lp);
@@ -141,6 +145,7 @@ public class TelaCronogramaAluno extends JFrame{
 		lp.add(btnFlashcards, new Integer(7));
 		lp.add(btnCronograma, new Integer(8));
 		lp.add(btnVoltar, new Integer(9));
+		lp.add(lblNomeOlimp, new Integer(10));
 		
 		
 		CronogramaCONTROLLER controla = new CronogramaCONTROLLER();
