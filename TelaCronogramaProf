@@ -75,6 +75,7 @@ public class TelaCronogramaProf extends JFrame{
         Barra = new JMenuBar();
         lblLogo  = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//bonequinhoSFMEDIO.png"));
+  		lblNomeOlimp = new JLabel(olimp.getNome());
         btnLivros = new JButton("<html><u>Livros</u></html>"); //Sublinhado
 		btnVideos= new JButton("<html><u>Videos</u></html>");
 		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
@@ -123,6 +124,8 @@ public class TelaCronogramaProf extends JFrame{
 		
 		
 		//definir as fontes
+  		lblNomeOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 25));
+
 		Font fonteBarra = new Font("Trebuchet MS", Font.PLAIN, 21);
 		btnLivros.setFont(fonteBarra);
 
@@ -136,16 +139,18 @@ public class TelaCronogramaProf extends JFrame{
 		btnCriar.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
 		
 		//definir as posições
-        Barra.setBounds(0,0,screenSize.width, 50); 
-        lblLogo.setBounds(10,5,44,35);
-        btnLivros.setBounds(235,7, 100, 35);
-		btnVideos.setBounds(403,7,100,35);
-		btnAssuntos.setBounds(578,7,100,35);
-		btnFlashcards.setBounds(765,7,130,35);
-		btnCronograma.setBounds(980,7,130,35);
+		 Barra.setBounds(0,0,screenSize.width, 50);
+         lblLogo.setBounds(10,5,44,35);
+         lblNomeOlimp.setBounds(80, 15, 250, 20);
+         btnLivros.setBounds(235,7, 100, 35);
+   		btnVideos.setBounds(403,7,100,35);
+   		btnAssuntos.setBounds(578,7,100,35);
+   		btnFlashcards.setBounds(765,7,130,35);
+   		btnCronograma.setBounds(980,7,130,35);
 		btnCriar.setBounds(910, 100, 150, 50);
 		btnAtualizar.setBounds(1030, 100, 150, 50);
     	btnVoltar.setBounds(10, 650, 28,25);
+    	
 		
 		contentPane.add(lp);
         lp.add(Barra, new Integer(1));
@@ -158,6 +163,7 @@ public class TelaCronogramaProf extends JFrame{
 		lp.add(btnCriar, new Integer(9));
 		lp.add(btnAtualizar, new Integer(9));
 		lp.add(btnVoltar, new Integer(10));
+		lp.add(lblNomeOlimp, new Integer(11));
 		
 		
 		CronogramaCONTROLLER controla = new CronogramaCONTROLLER();
