@@ -60,7 +60,7 @@ public class OlimpiadaDAO {
            ResultSet resultSet = preparedStatement.executeQuery();
 
            if (resultSet.next()) {
-               String nomeOlimp = resultSet.getString("nomeCompleto");
+               String nomeOlimp = resultSet.getString("nome");
 
                olimp = new Olimpiada(nomeOlimp);
            }
