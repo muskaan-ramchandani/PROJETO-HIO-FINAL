@@ -5,7 +5,7 @@ import vo.Olimpiada;
 
 public class OlimpiadaCONTROLLER {
 	
-	public static Olimpiada obterAlunoExistente(String nome) {
+	public static Olimpiada obterOlimpiadaExistente(String nome) {
 		OlimpiadaBO bo = new OlimpiadaBO();
 		return bo.obterOlimpiadaExistente(nome);
 	}
