@@ -1,7 +1,10 @@
 package view.TelasGuiOlimpiadasProf;
 
+import vo.Assuntos;
 import vo.Olimpiada;
 import vo.Professor;
+import vo.SubtopicosDosAssuntos;
+
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,14 +19,17 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.border.AbstractBorder;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import controller.AssuntosCONTROLLER;
 import controller.OlimpiadaCONTROLLER;
 import controller.ProfessorCONTROLLER;
+import controller.SubtopicosDosAssuntosCONTROLLER;
 import view.TelaInicialProf;
 
 public class TelaAssuntosProf extends JFrame{
@@ -38,6 +44,8 @@ public class TelaAssuntosProf extends JFrame{
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
 	private JButton btnVoltar;
+	private JButton btnAdicionarAssunto;
+	private JButton btnAdicionarSubtopico;
 	
 	int tamanho = 21;
 	int limite = 7;
@@ -48,7 +56,6 @@ public class TelaAssuntosProf extends JFrame{
 	public TelaAssuntosProf(Olimpiada olimp, Professor prof) {
 		inicializarComponentes(olimp, prof);
 		definirEventos(olimp, prof);
-        setVisible(true);
 	}
 	
 
@@ -73,6 +80,8 @@ public class TelaAssuntosProf extends JFrame{
 		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
 		
+		btnAdicionarAssunto= new JButton("Adicionar assunto");
+		btnAdicionarSubtopico = new JButton("Adicionar subtópico");
 		
 		btnLivros.setFocusPainted(false);
 		btnVideos.setFocusPainted(false);
@@ -99,6 +108,9 @@ public class TelaAssuntosProf extends JFrame{
 		btnFlashcards.setForeground(Color.WHITE);
 		btnCronograma.setBackground(roxoIndigo);
 		btnCronograma.setForeground(Color.WHITE);
+		lblNomeOlimp.setForeground(Color.WHITE);
+		btnAdicionarAssunto.setForeground(Color.BLACK);
+		btnAdicionarSubtopico.setForeground(Color.BLACK);
 		
 		//definir as fontes
   		lblNomeOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 25));
@@ -109,6 +121,10 @@ public class TelaAssuntosProf extends JFrame{
 		btnAssuntos.setFont(fonteBarra);
 		btnFlashcards.setFont(fonteBarra);
 		btnCronograma.setFont(fonteBarra);
+		
+		Font fonteBtnsA = new Font("Trebuchet MS", Font.PLAIN, 20);
+		btnAdicionarAssunto.setFont(fonteBtnsA);
+		btnAdicionarSubtopico.setFont(fonteBtnsA);
 		
 		
 		//definir as posições
@@ -121,6 +137,8 @@ public class TelaAssuntosProf extends JFrame{
   		btnFlashcards.setBounds(765,7,130,35);
   		btnCronograma.setBounds(980,7,130,35);
     	btnVoltar.setBounds(10, 650, 28,25);
+    	btnAdicionarAssunto.setBounds(770, 20, 300, 25);
+		btnAdicionarSubtopico.setBounds(916, 20, 350, 25);
 
 		contentPane.add(lp);
         lp.add(Barra, new Integer(1));
@@ -132,30 +150,83 @@ public class TelaAssuntosProf extends JFrame{
 		lp.add(btnCronograma, new Integer(8));
 		lp.add(btnVoltar, new Integer(9));
 		lp.add(lblNomeOlimp, new Integer(10));
+		lp.add(btnAdicionarAssunto, new Integer(11));
+		lp.add(btnAdicionarSubtopico, new Integer(12));
+		//verificar se há assuntos e subtopicos, botao de adicionar assuntos
 		
-		for(int i = 0;i < tamanho;i++) {
-			int contar = 1;
-			Assunto[i] = new JButton("Assunto "+ contar);
-			contar++;
-			Assunto[i].setFocusPainted(false);
-			Assunto[i].setBackground(Color.WHITE);
-			Assunto[i].setForeground(Color.BLACK);
-			Assunto[i].setHorizontalAlignment(SwingConstants.CENTER);
-			Assunto[i].setBorder(BorderFactory.createLineBorder(new Color(75, 0, 130), 3));
-			Font fonteTxt = new Font("Trebuchet MS", Font.PLAIN, 20);
-			Assunto[i].setFont(fonteTxt);
-			if(i >= limite) {
-				linha += 360;
-				limite += 7;
-				coluna = 150;
+		AssuntosCONTROLLER controlaAssuntos = new AssuntosCONTROLLER();
+		ArrayList<Assuntos> listaAssuntos = controlaAssuntos.retornaAssuntos(olimp.getNome());
+		
+		if(listaAssuntos==null) {
+			JLabel lblNaoTem = new JLabel("Não há assuntos cadastrados nesta olimpíada");
+			lblNaoTem.setForeground(Color.BLACK);
+			lblNaoTem.setFont(new Font("Trebuchet MS", Font.BOLD, 40));
+			lblNaoTem.setBounds(250, 350, 1000, 50);
+			lp.add(lblNaoTem, new Integer(30));
+			
+		}else {
+			
+			for(int i = 0;i < tamanho;i++) {
+				Assunto[i]= new JButton("");
+
 				
+				SubtopicosDosAssuntosCONTROLLER controlaSub = new SubtopicosDosAssuntosCONTROLLER();
+				ArrayList<SubtopicosDosAssuntos> listaSubtopicos0= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+						listaAssuntos.get(0).getTituloAssunto());
 				
+				ArrayList<SubtopicosDosAssuntos> listaSubtopicos1= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+						listaAssuntos.get(1).getTituloAssunto());
+						
+				ArrayList<SubtopicosDosAssuntos> listaSubtopicos2= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+						listaAssuntos.get(2).getTituloAssunto());
+				
+				//tab 1
+				Assunto[0]= new JButton(listaAssuntos.get(0).getTituloAssunto());
+				
+				for(int indice=0; indice<listaSubtopicos0.size(); indice++) {
+					
+					Assunto[i+1]= new JButton(listaSubtopicos0.get(0).getDescricao());
+					
+					Assunto[i+1].addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, listaSubtopicos0.get(0).getDescricao());
+							setVisible(false);
+						}
+					});
+				}
+				
+				//tab 2
+				Assunto[7]= new JButton(listaAssuntos.get(1).getTituloAssunto());
+				
+				//tab 3
+				Assunto[14]= new JButton(listaAssuntos.get(2).getTituloAssunto());
+				
+
+				Assunto[i].setFocusPainted(false);
+				Assunto[i].setBackground(Color.WHITE);
+				Assunto[i].setForeground(Color.BLACK);
+				Assunto[i].setHorizontalAlignment(SwingConstants.CENTER);
+				Assunto[i].setBorder(BorderFactory.createLineBorder(new Color(75, 0, 130), 3));
+				Font fonteTxt = new Font("Trebuchet MS", Font.PLAIN, 20);
+				Assunto[i].setFont(fonteTxt);
+				if(i >= limite) {
+					linha += 360;
+					limite += 7;
+					coluna = 150;
+					
+					
+				}
+				Assunto[i].setBounds(linha,coluna,340,69);
+				lp.add(Assunto[i], new Integer(13));
+				coluna=coluna+ 69;
 			}
-			Assunto[i].setBounds(linha,coluna,340,69);
-			lp.add(Assunto[i], new Integer(11));
-			coluna=coluna+ 69;
+			
 		}
-		//tirar bordar
+		
+		
+		
+		//tirar borda
         setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
         btnLivros.setBorderPainted(false);
@@ -163,6 +234,9 @@ public class TelaAssuntosProf extends JFrame{
         btnAssuntos.setBorderPainted(false);
         btnFlashcards.setBorderPainted(false);
         btnCronograma.setBorderPainted(false);
+        
+        setVisible(true);
+
 		
 	}
 	
@@ -236,10 +310,10 @@ public class TelaAssuntosProf extends JFrame{
 			}
         });
 		
-		btnAssuntos.addActionListener(new ActionListener() {
+		btnCronograma.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TelaAssuntosProf video = new TelaAssuntosProf(olimp, prof);
+				TelaCronogramaProf tela = new TelaCronogramaProf(olimp, prof);
 			     setVisible(false);
 
 			}
@@ -337,7 +411,7 @@ public class TelaAssuntosProf extends JFrame{
     	OlimpiadaCONTROLLER contOlimp = new OlimpiadaCONTROLLER();
     	Olimpiada olimp = contOlimp.obterOlimpiadaExistente("ONC");
         TelaAssuntosProf tela = new TelaAssuntosProf(olimp, prof);
-        tela.setVisible(true);;
+        
     }
 
 }
