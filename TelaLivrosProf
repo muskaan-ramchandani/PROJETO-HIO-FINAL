@@ -685,7 +685,7 @@ public class TelaLivrosProf extends JFrame{
 		btnAssuntos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TelaAssuntosProf video = new TelaAssuntosProf(olimp, prof);
+		        TelaAssuntosProf tela = new TelaAssuntosProf(olimp, prof);
 			     setVisible(false);
 
 			}
@@ -760,6 +760,7 @@ public class TelaLivrosProf extends JFrame{
 		btnCronograma.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				TelaCronogramaProf cronograma = new TelaCronogramaProf(olimp, prof);
 			     setVisible(false);
 
 			}
