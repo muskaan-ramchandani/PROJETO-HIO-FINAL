@@ -1,0 +1,123 @@
+package view;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.*;
+import java.awt.*;
+
+import controller.AssuntosCONTROLLER;
+import controller.ProfessorCONTROLLER;
+import view.TelasGuiOlimpiadasProf.TelaAssuntosProf;
+import vo.Olimpiada;
+import vo.Professor;
+
+public class TelaAdicionaAssunto extends JFrame{
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JLabel lblAdicionarAssunto;
+	private JButton btnAdicionarAssunto;
+	private JTextField  txtAssunto;
+	private JLabel lblAssunto;
+	
+	public TelaAdicionaAssunto (Olimpiada olimp, Professor prof) {
+		inicializarComponentes(olimp);
+		definirEventos(olimp, prof);
+	}
+
+	private void inicializarComponentes(Olimpiada olimp) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, 400, 255);
+        contentPane=getContentPane();
+        contentPane.setBackground(Color.WHITE);
+        setLayout(null);
+        
+        //inicializa
+        lp= new JLayeredPane();
+        lblAdicionarAssunto = new JLabel("Adicionar assunto");
+        lblAssunto = new JLabel("Assunto:");
+        txtAssunto = new JTextField(100);
+        btnAdicionarAssunto = new JButton("Adicionar");
+        
+        //cores
+    	Color roxoEscuro=new Color(75,0,130); 
+
+    	lblAdicionarAssunto.setForeground(roxoEscuro);
+        lblAssunto.setForeground(Color.BLACK);
+        txtAssunto.setForeground(Color.BLACK);
+        btnAdicionarAssunto.setForeground(Color.WHITE);
+        btnAdicionarAssunto.setBackground(roxoEscuro);
+        
+        //formatação
+        Font fonteLabelsInsira = new Font( "Trebuchet MS", Font.PLAIN, 20);
+        lblAssunto.setFont(fonteLabelsInsira);
+        
+        Font fonteTXT = new Font( "Trebuchet MS", Font.PLAIN, 20);
+        txtAssunto.setFont(fonteTXT);
+     
+        
+        Font fonteTitle = new Font( "Trebuchet MS", Font.PLAIN, 25);
+        lblAdicionarAssunto.setFont(fonteTitle);
+        
+        Font fonteBotao = new Font( "Trebuchet MS", Font.PLAIN, 25);
+        btnAdicionarAssunto.setFont(fonteBotao);
+        
+        
+        //coordenadas
+        lp.setBounds(0, 0, 400, 255);
+        lblAdicionarAssunto.setBounds(110, 20, 300, 25);
+        lblAssunto.setBounds(15, 85, 200, 20);
+        txtAssunto.setBounds(15, 110, 350, 23);
+        btnAdicionarAssunto.setBounds(115, 175, 150, 35);
+        
+
+        //adiciona
+        contentPane.add(lp);
+        lp.add(lblAdicionarAssunto, new Integer(1));
+        lp.add(lblAssunto, new Integer(2));
+        lp.add(txtAssunto, new Integer(3));
+        lp.add(btnAdicionarAssunto, new Integer(6));
+        
+		setVisible(true);
+	}
+
+	private void definirEventos(Olimpiada olimp, Professor prof) {
+		btnAdicionarAssunto.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			
+				if(txtAssunto.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Não é possível realizar o cadastro sem\npreencher"
+							+ " os dados!");
+				}else {
+					String assunto = txtAssunto.getText();
+					AssuntosCONTROLLER controla = new AssuntosCONTROLLER();
+					boolean foi= controla.criarAssunto(assunto, olimp.getNome());
+					
+					if(foi==true) {
+						
+						TelaAssuntosProf tela = new TelaAssuntosProf(olimp, prof);
+				        setVisible(false);
+				        
+					}else if(foi==false){
+						JOptionPane.showMessageDialog(null, "Não foi possível cadastrar o assunto!");
+
+					}
+				}
+			}
+		});
+
+	}
+}
