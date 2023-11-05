@@ -103,6 +103,7 @@ public class TelaCronogramaAluno extends JFrame{
         Barra.setBackground(roxoIndigo);
         btnLivros.setBackground(roxoIndigo);
 		btnLivros.setForeground(Color.WHITE);
+        lblNomeOlimp.setForeground(Color.WHITE);
 		btnVideos.setBackground(roxoIndigo);
 		btnVideos.setForeground(Color.WHITE);
 		btnAssuntos.setBackground(roxoIndigo);
@@ -341,7 +342,7 @@ public class TelaCronogramaAluno extends JFrame{
 		btnAssuntos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TelaAssuntosProf video = new TelaAssuntosProf(olimp, prof);
+				TelaAssuntosAluno tela = new TelaAssuntosAluno(olimp, aluno);
 			     setVisible(false);
 
 			}
