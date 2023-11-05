@@ -57,7 +57,7 @@ public class AssuntosDAO {
             preparedStatement.setString(1, nomeOlimp);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 String nomeOlimpiada= resultSet.getString("nomeOlimpiada");
                 String tituloAssunto= resultSet.getString("tituloAssunto");
 
