@@ -627,16 +627,5 @@ public class TelaAssuntosProf extends JFrame{
 			});
 		
 	}
-		
-	
-
-    public static void main(String[] args) {
-    	ProfessorCONTROLLER controla= new ProfessorCONTROLLER();
-    	Professor prof = controla.obterProfExistente("juju@gmail.com");
-    	OlimpiadaCONTROLLER contOlimp = new OlimpiadaCONTROLLER();
-    	Olimpiada olimp = contOlimp.obterOlimpiadaExistente("ONC");
-        TelaAssuntosProf tela = new TelaAssuntosProf(olimp, prof);
-        
-    }
 
 }
