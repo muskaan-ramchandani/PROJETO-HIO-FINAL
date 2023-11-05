@@ -1,0 +1,231 @@
+package view;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.*;
+import java.awt.*;
+
+import controller.AssuntosCONTROLLER;
+import controller.ProfessorCONTROLLER;
+import controller.SubtopicosDosAssuntosCONTROLLER;
+import view.TelasGuiOlimpiadasProf.TelaAssuntosProf;
+import vo.Assuntos;
+import vo.Olimpiada;
+import vo.Professor;
+import vo.SubtopicosDosAssuntos;
+
+public class TelaAdicionaSub extends JFrame{
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JLabel lblAdicionarSub;
+	private JButton btnAdicionar;
+	private JTextField txtAssunto;
+	private JLabel lblAssunto;
+	private JTextField txtSubtopico;
+	private JLabel lblSubtopico;
+	
+	public TelaAdicionaSub(Olimpiada olimp, Professor prof) {
+		inicializarComponentes(olimp);
+		definirEventos(olimp, prof);
+	}
+
+	private void inicializarComponentes(Olimpiada olimp) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, 400, 300);
+        contentPane=getContentPane();
+        contentPane.setBackground(Color.WHITE);
+        setLayout(null);
+        
+        //inicializa
+        lp= new JLayeredPane();
+        lblAdicionarSub= new JLabel("Adicionar subtópico");
+        lblSubtopico = new JLabel("Subtópico:");
+        txtSubtopico = new JTextField(200);
+        lblAssunto = new JLabel("Número do assunto do subtópico:");
+        txtAssunto = new JTextField(1);
+        btnAdicionar = new JButton("Adicionar");
+        
+        //cores
+    	Color roxoEscuro=new Color(75,0,130); 
+
+    	lblAdicionarSub.setForeground(roxoEscuro);
+    	lblSubtopico.setForeground(Color.BLACK);
+        txtSubtopico.setForeground(Color.BLACK);
+        lblAssunto.setForeground(Color.BLACK);
+        txtAssunto.setForeground(Color.BLACK);
+        btnAdicionar.setForeground(Color.WHITE);
+        btnAdicionar.setBackground(roxoEscuro);
+        
+        //formatação
+        Font fonteLabelsInsira = new Font( "Trebuchet MS", Font.PLAIN, 20);
+        lblAssunto.setFont(fonteLabelsInsira);
+        lblSubtopico.setFont(fonteLabelsInsira);
+        
+        Font fonteTXT = new Font( "Trebuchet MS", Font.PLAIN, 20);
+        txtSubtopico.setFont(fonteTXT);
+        txtAssunto.setFont(fonteTXT);
+        
+        Font fonteTitle = new Font( "Trebuchet MS", Font.PLAIN, 25);
+        lblAdicionarSub.setFont(fonteTitle);
+        
+        Font fonteBotao = new Font( "Trebuchet MS", Font.PLAIN, 25);
+        btnAdicionar.setFont(fonteBotao);
+        
+        
+        //coordenadas
+        lp.setBounds(0, 0, 400, 300);
+        lblAdicionarSub.setBounds(50, 20, 300, 25);
+        lblSubtopico.setBounds(15, 85, 200, 20);
+        txtSubtopico.setBounds(15, 110, 350, 23);
+        lblAssunto.setBounds(15, 150, 350, 20);
+        txtAssunto.setBounds(15, 175, 350, 23);
+        btnAdicionar.setBounds(115, 220, 150, 35);
+        
+        //adiciona
+        contentPane.add(lp);
+        lp.add(lblAdicionarSub, new Integer(1));
+        lp.add(lblSubtopico, new Integer(2));
+        lp.add(txtSubtopico, new Integer(3));
+        lp.add(lblAssunto, new Integer(4));
+        lp.add(txtAssunto, new Integer(5));
+        lp.add(btnAdicionar, new Integer(6));
+        
+		setVisible(true);
+	}
+
+	private void definirEventos(Olimpiada olimp, Professor prof) {
+		btnAdicionar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if(txtSubtopico.getText().isEmpty()||txtAssunto.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Preencha todos os dados para cadastrar um subtópico!");
+					
+				}else {
+					String subtopico = txtSubtopico.getText();
+					int numeroAssunto;
+					 
+					
+					try {
+						numeroAssunto = Integer.valueOf(txtAssunto.getText());
+						
+						if(numeroAssunto>3){
+							
+							JOptionPane.showMessageDialog(null, "Número inválido para assunto!");
+							
+						}else {
+							AssuntosCONTROLLER controlaA = new AssuntosCONTROLLER();
+							ArrayList<Assuntos> listaAssuntos = controlaA.retornaAssuntos(olimp.getNome());
+							Assuntos assunto = listaAssuntos.get(numeroAssunto-1);
+							
+							if(assunto==null) {
+								
+								JOptionPane.showMessageDialog(null, "O número não corresponde a nenhum assunto!");
+								
+							}else {
+								
+								if(numeroAssunto==1) {
+									SubtopicosDosAssuntosCONTROLLER controlaSub = new SubtopicosDosAssuntosCONTROLLER();
+									ArrayList<SubtopicosDosAssuntos> listaSub = controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+											listaAssuntos.get(0).getTituloAssunto());
+									
+									if(listaSub.size()==7) {
+										JOptionPane.showMessageDialog(null,"Não é mais possível cadastrar subtópicos a esse assunto!");
+									}else {
+										
+										SubtopicosDosAssuntosCONTROLLER controla = new SubtopicosDosAssuntosCONTROLLER();
+										boolean criou = controla.criarSubtopico(subtopico, olimp.getNome(), assunto);
+										
+										if(criou==true) {
+											JOptionPane.showMessageDialog(null, "O subtópico foi cadastrado!");
+										
+											TelaAssuntosProf tela = new TelaAssuntosProf(olimp, prof);
+									        setVisible(false);
+									        
+										}else if(criou==false) {
+											JOptionPane.showMessageDialog(null, "O subtópico não foi cadastrado!");
+										}
+									}
+									
+								}else if(numeroAssunto==2) {
+									SubtopicosDosAssuntosCONTROLLER controlaSub = new SubtopicosDosAssuntosCONTROLLER();
+									ArrayList<SubtopicosDosAssuntos> listaSub = controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+											listaAssuntos.get(1).getTituloAssunto());
+									
+									if(listaSub.size()==7) {
+										JOptionPane.showMessageDialog(null,"Não é mais possível cadastrar subtópicos a esse assunto!");
+									}else {
+										
+										SubtopicosDosAssuntosCONTROLLER controla = new SubtopicosDosAssuntosCONTROLLER();
+										boolean criou = controla.criarSubtopico(subtopico, olimp.getNome(), assunto);
+										
+										if(criou==true) {
+											JOptionPane.showMessageDialog(null, "O subtópico foi cadastrado!");
+											
+											TelaAssuntosProf tela = new TelaAssuntosProf(olimp, prof);
+									        setVisible(false);
+									        
+										}else if(criou==false) {
+											JOptionPane.showMessageDialog(null, "O subtópico não foi cadastrado!");
+										}
+									}
+								}else if(numeroAssunto==3) {
+									SubtopicosDosAssuntosCONTROLLER controlaSub = new SubtopicosDosAssuntosCONTROLLER();
+									ArrayList<SubtopicosDosAssuntos> listaSub = controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+											listaAssuntos.get(2).getTituloAssunto());
+									
+									if(listaSub.size()==7) {
+										JOptionPane.showMessageDialog(null,"Não é mais possível cadastrar subtópicos a esse assunto!");
+									}else {
+										
+										SubtopicosDosAssuntosCONTROLLER controla = new SubtopicosDosAssuntosCONTROLLER();
+										boolean criou = controla.criarSubtopico(subtopico, olimp.getNome(), assunto);
+										
+										if(criou==true) {
+											JOptionPane.showMessageDialog(null, "O subtópico foi cadastrado!");
+											
+										       
+												TelaAssuntosProf tela = new TelaAssuntosProf(olimp, prof);
+										        setVisible(false);
+										        
+									        
+										}else if(criou==false) {
+											JOptionPane.showMessageDialog(null, "O subtópico não foi cadastrado!");
+										}
+									}
+								}
+								
+								
+								
+							}
+						}
+						
+						
+						
+			        } catch (NumberFormatException e1) {
+						JOptionPane.showMessageDialog(null, "Preencha um valor numérico para assunto!");
+			        }
+					
+					
+				}
+				
+				
+			} 
+		});
+
+	}
+}
