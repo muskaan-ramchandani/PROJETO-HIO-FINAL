@@ -30,6 +30,9 @@ import controller.AssuntosCONTROLLER;
 import controller.OlimpiadaCONTROLLER;
 import controller.ProfessorCONTROLLER;
 import controller.SubtopicosDosAssuntosCONTROLLER;
+import view.TelaAdicionaAssunto;
+import view.TelaAdicionaSub;
+import view.TelaAtualizaCronograma;
 import view.TelaInicialProf;
 
 public class TelaAssuntosProf extends JFrame{
@@ -88,6 +91,13 @@ public class TelaAssuntosProf extends JFrame{
 		btnAssuntos.setFocusPainted(false);
 		btnFlashcards.setFocusPainted(false);
 		btnCronograma.setFocusPainted(false);
+		btnAdicionarAssunto.setFocusPainted(false);
+		btnAdicionarSubtopico.setFocusPainted(false);
+		
+		btnAdicionarAssunto.setContentAreaFilled(false);
+		btnAdicionarSubtopico.setContentAreaFilled(false);
+		btnAdicionarAssunto.setBorderPainted(false);
+		btnAdicionarSubtopico.setBorderPainted(false);
 		
 		btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaPequenaRoxa.png"));
@@ -137,8 +147,8 @@ public class TelaAssuntosProf extends JFrame{
   		btnFlashcards.setBounds(765,7,130,35);
   		btnCronograma.setBounds(980,7,130,35);
     	btnVoltar.setBounds(10, 650, 28,25);
-    	btnAdicionarAssunto.setBounds(770, 20, 300, 25);
-		btnAdicionarSubtopico.setBounds(916, 20, 350, 25);
+    	btnAdicionarAssunto.setBounds(730, 100, 230, 25);
+		btnAdicionarSubtopico.setBounds(980, 100, 230, 25);
 
 		contentPane.add(lp);
         lp.add(Barra, new Integer(1));
@@ -157,52 +167,50 @@ public class TelaAssuntosProf extends JFrame{
 		AssuntosCONTROLLER controlaAssuntos = new AssuntosCONTROLLER();
 		ArrayList<Assuntos> listaAssuntos = controlaAssuntos.retornaAssuntos(olimp.getNome());
 		
-		if(listaAssuntos==null) {
+		if(listaAssuntos.isEmpty()==true) {
 			JLabel lblNaoTem = new JLabel("Não há assuntos cadastrados nesta olimpíada");
 			lblNaoTem.setForeground(Color.BLACK);
 			lblNaoTem.setFont(new Font("Trebuchet MS", Font.BOLD, 40));
-			lblNaoTem.setBounds(250, 350, 1000, 50);
+			lblNaoTem.setBounds(260, 350, 1000, 50);
 			lp.add(lblNaoTem, new Integer(30));
 			
 		}else {
 			
-			for(int i = 0;i < tamanho;i++) {
-				Assunto[i]= new JButton("");
-
+			SubtopicosDosAssuntosCONTROLLER controlaSub = new SubtopicosDosAssuntosCONTROLLER();
+			ArrayList<SubtopicosDosAssuntos> listaSubtopicos0= new ArrayList<SubtopicosDosAssuntos>();
+			
+			ArrayList<SubtopicosDosAssuntos> listaSubtopicos1= new ArrayList<SubtopicosDosAssuntos>();
+					
+			ArrayList<SubtopicosDosAssuntos> listaSubtopicos2= new ArrayList<SubtopicosDosAssuntos>();
+			
+			if(listaAssuntos.size()==1) {
 				
-				SubtopicosDosAssuntosCONTROLLER controlaSub = new SubtopicosDosAssuntosCONTROLLER();
-				ArrayList<SubtopicosDosAssuntos> listaSubtopicos0= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+				listaSubtopicos0= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
 						listaAssuntos.get(0).getTituloAssunto());
 				
-				ArrayList<SubtopicosDosAssuntos> listaSubtopicos1= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+			}
+			if(listaAssuntos.size()==2) {
+				listaSubtopicos0= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+						listaAssuntos.get(0).getTituloAssunto());
+				
+				listaSubtopicos1= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
 						listaAssuntos.get(1).getTituloAssunto());
-						
-				ArrayList<SubtopicosDosAssuntos> listaSubtopicos2= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+				
+			}
+			if(listaAssuntos.size()==3) {
+				listaSubtopicos0= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+						listaAssuntos.get(0).getTituloAssunto());
+				
+				listaSubtopicos1= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
+						listaAssuntos.get(1).getTituloAssunto());
+				
+				listaSubtopicos2= controlaSub.retornaSubtopicosAssunto(olimp.getNome(),
 						listaAssuntos.get(2).getTituloAssunto());
 				
-				//tab 1
-				Assunto[0]= new JButton(listaAssuntos.get(0).getTituloAssunto());
-				
-				for(int indice=0; indice<listaSubtopicos0.size(); indice++) {
-					
-					Assunto[i+1]= new JButton(listaSubtopicos0.get(0).getDescricao());
-					
-					Assunto[i+1].addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, listaSubtopicos0.get(0).getDescricao());
-							setVisible(false);
-						}
-					});
-				}
-				
-				//tab 2
-				Assunto[7]= new JButton(listaAssuntos.get(1).getTituloAssunto());
-				
-				//tab 3
-				Assunto[14]= new JButton(listaAssuntos.get(2).getTituloAssunto());
-				
-
+			}
+		
+			for(int i = 0;i < tamanho;i++) {
+				Assunto[i]= new JButton("");
 				Assunto[i].setFocusPainted(false);
 				Assunto[i].setBackground(Color.WHITE);
 				Assunto[i].setForeground(Color.BLACK);
@@ -220,6 +228,132 @@ public class TelaAssuntosProf extends JFrame{
 				Assunto[i].setBounds(linha,coluna,340,69);
 				lp.add(Assunto[i], new Integer(13));
 				coluna=coluna+ 69;
+				
+			}
+			
+			
+			for(int i = 0;i < tamanho;i++) {
+				
+				if(listaAssuntos.size()==1) {
+					//tab 1
+					Assunto[0].setText(listaAssuntos.get(0).getTituloAssunto());
+					Font fonteTxt = new Font("Trebuchet MS", Font.BOLD, 25);
+					Assunto[0].setFont(fonteTxt);
+				
+					int tamL0 = listaSubtopicos0.size();
+					
+					for(int indice =0; indice<tamL0;indice++) {
+						String descricao = listaSubtopicos0.get(indice).getDescricao();
+						Assunto[indice+1].setText(descricao);
+
+						Assunto[indice+1].addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
+								setVisible(false);
+							}
+						});
+						
+					}
+				}else if(listaAssuntos.size()==2) {
+					//tab 1
+					Assunto[0].setText(listaAssuntos.get(0).getTituloAssunto());
+					Font fonteTxt = new Font("Trebuchet MS", Font.BOLD, 25);
+					Assunto[0].setFont(fonteTxt);
+				
+					int tamL0 = listaSubtopicos0.size();
+					
+					for(int indice =0; indice<tamL0;indice++) {
+						String descricao = listaSubtopicos0.get(indice).getDescricao();
+						Assunto[indice+1].setText(descricao);
+
+						Assunto[indice+1].addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
+								setVisible(false);
+							}
+						});
+						
+					}
+					
+					//tab 2
+					Assunto[7].setText(listaAssuntos.get(1).getTituloAssunto());
+					Assunto[7].setFont(fonteTxt);
+					int tamL1 = listaSubtopicos1.size();
+					
+					for(int indice =0; indice<tamL1;indice++) {
+						String descricao = listaSubtopicos1.get(indice).getDescricao();
+						Assunto[indice+8].setText(descricao);
+
+						Assunto[indice+8].addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
+								setVisible(false);
+							}
+						});
+					}
+				}else if(listaAssuntos.size()==3) {
+					//tab 1
+					Assunto[0].setText(listaAssuntos.get(0).getTituloAssunto());
+					Font fonteTxt = new Font("Trebuchet MS", Font.BOLD, 25);
+					Assunto[0].setFont(fonteTxt);
+				
+					int tamL0 = listaSubtopicos0.size();
+					
+					for(int indice =0; indice<tamL0;indice++) {
+						String descricao = listaSubtopicos0.get(indice).getDescricao();
+						Assunto[indice+1].setText(descricao);
+
+						Assunto[indice+1].addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
+								setVisible(false);
+							}
+						});
+						
+					}
+					
+					//tab 2
+					Assunto[7].setText(listaAssuntos.get(1).getTituloAssunto());
+					Assunto[7].setFont(fonteTxt);
+					int tamL1 = listaSubtopicos1.size();
+					
+					for(int indice =0; indice<tamL1;indice++) {
+						String descricao = listaSubtopicos1.get(indice).getDescricao();
+						Assunto[indice+8].setText(descricao);
+
+						Assunto[indice+8].addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
+								setVisible(false);
+							}
+						});
+					}
+					
+					//tab 3
+					Assunto[14].setText(listaAssuntos.get(2).getTituloAssunto());
+					Assunto[14].setFont(fonteTxt);
+					int tamL2 = listaSubtopicos2.size();
+					
+					for(int indice =0; indice<tamL2;indice++) {
+						String descricao = listaSubtopicos2.get(indice).getDescricao();
+						Assunto[indice+15].setText(descricao);
+
+						Assunto[indice+15].addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
+								setVisible(false);
+							}
+						});
+					}
+				}
+
+			
 			}
 			
 		}
@@ -241,7 +375,98 @@ public class TelaAssuntosProf extends JFrame{
 	}
 	
 	private void definirEventos(Olimpiada olimp, Professor prof) {
+		btnAdicionarAssunto.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AssuntosCONTROLLER controlaA = new AssuntosCONTROLLER();
+				ArrayList<Assuntos> listaAssuntos = controlaA.retornaAssuntos(olimp.getNome());
+				int tamanhoLista = listaAssuntos.size();
+				
+				if(tamanhoLista==3) {
+					JOptionPane.showMessageDialog(null, "Não é possível cadastrar mais assuntos!");
+				}else {
+					
+					TelaAdicionaAssunto adicionaAssunto = new TelaAdicionaAssunto(olimp, prof);
+					adicionaAssunto.setLocationRelativeTo(null);
+					
+				}
+			}
+		});
 		
+		btnAdicionarAssunto.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnAdicionarAssunto.setForeground(roxoIndigo);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnAdicionarAssunto.setForeground(Color.BLACK); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnAdicionarSubtopico.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AssuntosCONTROLLER controlaA = new AssuntosCONTROLLER();
+				ArrayList<Assuntos> listaAssuntos = controlaA.retornaAssuntos(olimp.getNome());
+				int tamanhoLista = listaAssuntos.size();
+				
+				if(tamanhoLista==0){
+					JOptionPane.showMessageDialog(null, "Não é possível cadastrar subtópicos sem assuntos!");
+
+				}else {
+					
+					TelaAdicionaSub atualizaSub = new TelaAdicionaSub(olimp, prof);
+					atualizaSub.setLocationRelativeTo(null);
+					
+				}
+			}
+		});
+		
+		btnAdicionarSubtopico.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnAdicionarSubtopico.setForeground(roxoIndigo);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnAdicionarSubtopico.setForeground(Color.BLACK); // Retorna à cor padrão do botão
+			}
+        });
 		
 		btnLivros.addMouseListener(new MouseListener() {
 			Color roxoIndigo = new Color(75,0,130);
