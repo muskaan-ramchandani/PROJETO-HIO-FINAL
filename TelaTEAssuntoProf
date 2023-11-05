@@ -1,0 +1,11 @@
+package view.TelasGuiOlimpiadasProf;
+
+import vo.Professor;
+
+public class TelaTEAssuntoProf {
+
+	public TelaTEAssuntoProf(String nome, Professor prof, String descricao) {
+		// TODO Auto-generated constructor stub
+	}
+
+}
