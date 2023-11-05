@@ -14,7 +14,7 @@ import vo.Livro;
 import vo.SubtopicosDosAssuntos;
 
 public class SubtopicosDosAssuntosDAO {
-	
+	//String descricao, String nomeOlimpiada
 	public boolean criarSubtopico(SubtopicosDosAssuntos s, Assuntos a) {
 		Connection conn =  null;
 		PreparedStatement ps = null;
@@ -23,7 +23,7 @@ public class SubtopicosDosAssuntosDAO {
 		
 		String sql= "INSERT INTO Subtopico(descricaoSub, nomeOlimpiada)VALUES(?,?)";
 		
-		String sql2 = "INSERT INTO AssuntoSubtopico(topicoPrincipal, subtopico, nomeOlimpiada)";    
+		String sql2 = "INSERT INTO AssuntoSubtopico(topicoPrincipal, subtopico, nomeOlimpiada)VALUES(?,?,?)";    
 			    
 		try {
 
@@ -40,9 +40,10 @@ public class SubtopicosDosAssuntosDAO {
     			ps.setString(2, s.getDescricao());
     			ps.setString(3, s.getNomeOlimpiada());
 
+    			int linhasAfetadas2 = ps.executeUpdate();
+
     			ps.close();
     			conn.close();
-    			int linhasAfetadas2 = ps.executeUpdate();
     			
     			if(linhasAfetadas2>0) {
     				return true;
@@ -72,9 +73,9 @@ public class SubtopicosDosAssuntosDAO {
     		 PreparedStatement ps = null;
     		 conn = new Conexao().getConnection();
     		 
-            String selectQuery = "SELECT * FROM Subtopico"+
-            		 "INNER JOIN AssuntoSubtopico ON Subtopico.descricaoSub = AssuntoSubtopico.subtopico " +
-                     "WHERE AssuntoSubtopico.topicoPrincipal = ? AND AssuntoSubtopico.nomeOlimpiada = ?";
+            String selectQuery = "SELECT * FROM Subtopico " +
+                    "INNER JOIN AssuntoSubtopico ON Subtopico.descricaoSub = AssuntoSubtopico.subtopico " +
+                    "WHERE AssuntoSubtopico.topicoPrincipal = ? AND AssuntoSubtopico.nomeOlimpiada = ?";
             
             ps = conn.prepareStatement(selectQuery);
             ps.setString(1, topicoPrincipal);
