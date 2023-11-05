@@ -192,11 +192,17 @@ CREATE TABLE AssuntoSubtopico(
 	subtopico VARCHAR(200) NOT NULL,
     nomeOlimpiada VARCHAR(10) NOT NULL,
 	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
-	FOREIGN KEY(topicoPrincipal) REFERENCES TopicosPrincipais(topico),
+	FOREIGN KEY(topicoPrincipal) REFERENCES Assunto(tituloAssunto),
     FOREIGN KEY(subtopico) REFERENCES Subtopico(descricaoSub),
+	CONSTRAINT SubNRepetePrincipal UNIQUE (topicoPrincipal, subtopico),
 	PRIMARY KEY(id)
 );
-  
+
+CREATE INDEX index_tituloAssunto ON Assunto(tituloAssunto);
+CREATE INDEX index_descricaoSub ON Subtopico(descricaoSub);
+
+
+
 CREATE TABLE Subtopico(
 	id INT AUTO_INCREMENT NOT NULL,
 	descricaoSub VARCHAR(200) NOT NULL,
@@ -246,5 +252,5 @@ CREATE TABLE AssuntosTextos(
 );
 
 USE hio;
-#SET FOREIGN_KEY_CHECKS=0;
-#SET FOREIGN_KEY_CHECKS=1;
+SET FOREIGN_KEY_CHECKS=0;
+SET FOREIGN_KEY_CHECKS=1;
