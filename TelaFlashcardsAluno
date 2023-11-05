@@ -144,6 +144,7 @@ public class TelaFlashcardsAluno extends JFrame{
     		lp.add(lblFiltro, new Integer(24));
     		lp.add(txtFiltro, new Integer(25));
     		lp.add(lblPesquisar, new Integer(26));
+    		lp.add(btnVoltar, new Integer(27));
     		
     		setLayout(new BorderLayout());
             add(lp, BorderLayout.CENTER);
@@ -607,7 +608,7 @@ public class TelaFlashcardsAluno extends JFrame{
 		btnAssuntos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TelaAssuntosAluno video = new TelaAssuntosAluno(olimp, aluno);
+				TelaAssuntosAluno tela = new TelaAssuntosAluno(olimp, aluno);
 			     setVisible(false);
 
 			}
@@ -682,6 +683,7 @@ public class TelaFlashcardsAluno extends JFrame{
 		btnCronograma.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				TelaCronogramaAluno cronog = new TelaCronogramaAluno( olimp,  aluno);
 			     setVisible(false);
 
 			}
