@@ -231,9 +231,9 @@ public class TelaCronogramaAluno extends JFrame{
 					limite = limite + 2;
 					linhaD = 270;
 				}
-				TabelaData[i].setBounds(linhaD,colunaD,270,50);
+				TabelaData[i].setBounds(linhaD+270,colunaD,270,50);
 				lp.add(TabelaData[i], new Integer(100));
-				linhaD = linhaD + 190;
+				linhaD = linhaD + 270;
 			}
 		}
 		
