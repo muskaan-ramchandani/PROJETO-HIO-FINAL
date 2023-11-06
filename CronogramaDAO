@@ -66,20 +66,19 @@ public class CronogramaDAO {
 		
 		try {
 			ps = conn.prepareStatement(sql);
-			ps.setString(1, c.getNomeOlimpiada());
-			ps.setDate(2, (java.sql.Date) c.getComecoInscricoes());
-			ps.setDate(3, (java.sql.Date) c.getFimInscricoes());
-			ps.setDate(4, (java.sql.Date) c.getComecoFase1());
-			ps.setDate(5, (java.sql.Date) c.getFimFase1());
-			ps.setDate(6, (java.sql.Date) c.getComecoFase2());
-			ps.setDate(7, (java.sql.Date) c.getFimFase2());
-			ps.setDate(8, (java.sql.Date) c.getComecoFase3());
-			ps.setDate(9, (java.sql.Date) c.getFimFase3());
-			ps.setDate(10, (java.sql.Date) c.getComecoFase4());
-			ps.setDate(11, (java.sql.Date) c.getFimFase4());
-			ps.setDate(12, (java.sql.Date) c.getComecoPremiacoes());
-			ps.setDate(13, (java.sql.Date) c.getFimPremiacoes());
-			ps.setString(14, c.getNomeOlimpiada());
+			ps.setDate(1, (java.sql.Date) c.getComecoInscricoes());
+			ps.setDate(2, (java.sql.Date) c.getFimInscricoes());
+			ps.setDate(3, (java.sql.Date) c.getComecoFase1());
+			ps.setDate(4, (java.sql.Date) c.getFimFase1());
+			ps.setDate(5, (java.sql.Date) c.getComecoFase2());
+			ps.setDate(6, (java.sql.Date) c.getFimFase2());
+			ps.setDate(7, (java.sql.Date) c.getComecoFase3());
+			ps.setDate(8, (java.sql.Date) c.getFimFase3());
+			ps.setDate(9, (java.sql.Date) c.getComecoFase4());
+			ps.setDate(10, (java.sql.Date) c.getFimFase4());
+			ps.setDate(11, (java.sql.Date) c.getComecoPremiacoes());
+			ps.setDate(12, (java.sql.Date) c.getFimPremiacoes());
+			ps.setString(13, c.getNomeOlimpiada());
 						
 			int linhasAfetadas = ps.executeUpdate();
 			
