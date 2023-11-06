@@ -13,7 +13,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import controller.CronogramaCONTROLLER;
+import view.TelasGuiOlimpiadasProf.TelaCronogramaProf;
 import vo.Olimpiada;
+import vo.Professor;
 
 public class TelaAtualizaCronograma extends JFrame{
 	private Container contentPane;
@@ -49,14 +51,14 @@ public class TelaAtualizaCronograma extends JFrame{
 	private JButton btnCancelar;
 	private JLabel lblAtualizarCronograma;
 	
-	public TelaAtualizaCronograma(Olimpiada olimp) {
-		inicializarComponentes(olimp);
-		definirEventos(olimp);
+	public TelaAtualizaCronograma(Olimpiada olimp, Professor prof) {
+		inicializarComponentes(olimp, prof);
+		definirEventos(olimp, prof);
 	}
 	
 
 	//@SuppressWarnings("removal")
-	private void inicializarComponentes(Olimpiada olimp) {
+	private void inicializarComponentes(Olimpiada olimp, Professor prof) {
 		//instanciação
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = toolkit.getScreenSize();
@@ -338,7 +340,7 @@ public class TelaAtualizaCronograma extends JFrame{
 		setVisible(true);
 	}
 	
-	private void definirEventos(Olimpiada olimp) {
+	private void definirEventos(Olimpiada olimp, Professor prof) {
 		btnAtualizar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -422,7 +424,8 @@ public class TelaAtualizaCronograma extends JFrame{
 						
 						if(cadastrou==true) {
 							JOptionPane.showMessageDialog(null, "Cronograma atualizado com sucesso!");
-							
+							TelaCronogramaProf cronograma = new TelaCronogramaProf(olimp, prof);
+							fecharTodasJFramesExcetoEspecifica(cronograma);
 						}else if(cadastrou==false){
 							JOptionPane.showMessageDialog(null, "Erro ao atualizar cronograma!");
 						}
@@ -438,4 +441,13 @@ public class TelaAtualizaCronograma extends JFrame{
 			}
 		});
 	}
+	
+	private static void fecharTodasJFramesExcetoEspecifica(JFrame frameParaManterAberta) {
+        Window[] windows = Window.getWindows();
+        for (Window window : windows) {
+            if (window instanceof JFrame && window != frameParaManterAberta) {
+                window.dispose();
+            }
+        }
+ }
 }
