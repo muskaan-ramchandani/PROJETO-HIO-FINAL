@@ -79,6 +79,7 @@ public class CronogramaDAO {
 			ps.setDate(11, (java.sql.Date) c.getFimFase4());
 			ps.setDate(12, (java.sql.Date) c.getComecoPremiacoes());
 			ps.setDate(13, (java.sql.Date) c.getFimPremiacoes());
+			ps.setString(14, c.getNomeOlimpiada());
 						
 			int linhasAfetadas = ps.executeUpdate();
 			
