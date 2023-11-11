@@ -23,6 +23,7 @@ import vo.Video;
 import vo.Aluno;
 import vo.Livro;
 import vo.Olimpiada;
+import vo.Professor;
 
 
 public class VideoDAO {
@@ -124,23 +125,33 @@ public class VideoDAO {
 	        	byte [] bytes = rs.getBytes("arquivo_Video");
 	            String titulo = rs.getString("titulo");
 
-	            //converte o array de bytes em file
-	            File diretorioDaAplicacao = new File(System.getProperty("user.dir"));
-	            arquivo = new File(diretorioDaAplicacao, "dados/"+titulo+".mp4");
+	         // Obtém o diretório do usuário
+	            String diretorioUsuario = System.getProperty("user.dir");
 
-	            FileOutputStream fos = new FileOutputStream(arquivo);
-	            fos.write( bytes );
-	            fos.close();
+	            // Cria o diretório "dados" se não existir
+	            File diretorioDados = new File(diretorioUsuario, "dados");
+	            if (!diretorioDados.exists()) {
+	                diretorioDados.mkdirs();
+	            }
+
+	            // Cria o arquivo no diretório "dados" com base no título
+	            arquivo = new File(diretorioDados, titulo + ".mp4");
+
+	            // Cria o fluxo de saída
+	            try (FileOutputStream fos = new FileOutputStream(arquivo)) {
+	                fos.write(bytes);
+	            }
 	        }
+
 	        rs.close();
-            ps.close();
-			conn.close();
-	} catch (SQLException ex) {
-	ex.printStackTrace();
-	}
-	catch (IOException ex) {
-	ex.printStackTrace();
-	}
+	        ps.close();
+	        conn.close();
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
+
 	    return arquivo;
     }
 	
@@ -357,4 +368,92 @@ public class VideoDAO {
 
         }
     }
+	
+	public ArrayList retornaVideoProf(Professor prof) {
+		ArrayList<Video> videos = new ArrayList<Video>();
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    	    
+        
+         // Consulta SQL para selecionar vídeos com base no nome da Olimpíada
+            String sql = "SELECT * FROM Video " +
+                         "WHERE emailProf = ?";
+
+            // Preparar a consulta
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, prof.getEmail());
+
+            // Executar a consulta
+            ResultSet resultSet = ps.executeQuery();
+
+            // Processar o resultado
+            while (resultSet.next()) {
+            	InputStream inputStream = resultSet.getBinaryStream("arquivo_Video");
+                File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("upc"));
+                
+				 Video video = new Video(resultSet.getString("titulo"), resultSet.getString("upc"),
+						 resultSet.getString("produtor"), resultSet.getDate("dataPublicacao"),
+						 resultSet.getString("emailProf"), arquivo);
+			    
+				 //adiciona o video na lista
+			     videos.add(video);
+ 			}
+            resultSet.close();
+            ps.close();
+			conn.close();
+               
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        return videos;
+    }
+	public ArrayList<Video> consultarVideosProfPorNome(String tituloVideo, Professor prof) {
+	    ArrayList<Video> videosPorNome = new ArrayList<>();
+	    try {
+	        Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        
+	        String sql = "SELECT * FROM Video " +
+                    "WHERE emailProf = ? AND titulo LIKE ?";
+
+
+	        // Preparar a consulta
+	        ps = conn.prepareStatement(sql);
+            ps.setString(1, prof.getEmail());
+	        ps.setString(2, "%" + tituloVideo + "%");
+
+	        // Executar a consulta
+	        ResultSet resultSet = ps.executeQuery();
+
+	        // Processar o resultado
+	        while (resultSet.next()) {
+	        	InputStream inputStream = resultSet.getBinaryStream("arquivo_Video");
+                File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("upc"));
+                
+				 Video video = new Video(resultSet.getString("titulo"), resultSet.getString("upc"),
+						 resultSet.getString("produtor"), resultSet.getDate("dataPublicacao"),
+						 resultSet.getString("emailProf"), arquivo);
+
+	            // Adiciona o livro na lista
+				 videosPorNome.add(video);
+	        }
+	        resultSet.close();
+            ps.close();
+			conn.close();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return videosPorNome;
+	}
 }
