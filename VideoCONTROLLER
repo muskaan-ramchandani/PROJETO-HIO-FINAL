@@ -20,6 +20,7 @@ import bo.VideoBO;
 import vo.Video;
 import vo.Livro;
 import vo.Olimpiada;
+import vo.Professor;
 
 public class VideoCONTROLLER {
 	
@@ -62,4 +63,13 @@ public class VideoCONTROLLER {
 		VideoBO bo = new VideoBO();
         return bo.exibirHistoricoVideosProfTITULO(emailProfessor);
     }
+	
+	public ArrayList retornaVideoProf(Professor prof) {
+		VideoBO bo = new VideoBO();
+        return bo.retornaVideoProf(prof);
+    }
+	public ArrayList<Video> consultarVideosProfPorNome(String tituloVideo, Professor prof) {
+		VideoBO bo = new VideoBO();
+	    return bo.consultarVideosProfPorNome(tituloVideo, prof);
+	}
 }
