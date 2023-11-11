@@ -149,37 +149,48 @@ public class LivroDAO {
 	
 	//PARA PODER RETORNAR O ARQUIVO
 	private File criarArquivoAPartirDoBlob(InputStream inputStream, String isbn) throws IOException {
-		Connection conn =  null;
-		conn = new Conexao().getConnection();
+	    Connection conn = null;
+	    conn = new Conexao().getConnection();
 	    File arquivo = null;
+
 	    try {
 	        PreparedStatement ps = conn.prepareStatement("SELECT titulo, arquivo_PDF FROM Livro WHERE isbn = ?");
 	        ps.setString(1, isbn);
 	        ResultSet rs = ps.executeQuery();
-	        
-	        if ( rs.next() ){
-	        	byte [] bytes = rs.getBytes("arquivo_PDF");
+
+	        if (rs.next()) {
+	            byte[] bytes = rs.getBytes("arquivo_PDF");
 	            String titulo = rs.getString("titulo");
 
-	            //converte o array de bytes em file
-	            File diretorioDaAplicacao = new File(System.getProperty("user.dir"));
-	            arquivo = new File(diretorioDaAplicacao, "dados/"+titulo+".pdf");
+	            // Obtém o diretório do usuário
+	            String diretorioUsuario = System.getProperty("user.dir");
 
-	            FileOutputStream fos = new FileOutputStream(arquivo);
-	            fos.write( bytes );
-	            fos.close();
+	            // Cria o diretório "dados" se não existir
+	            File diretorioDados = new File(diretorioUsuario, "dados");
+	            if (!diretorioDados.exists()) {
+	                diretorioDados.mkdirs();
+	            }
+
+	            // Cria o arquivo no diretório "dados" com base no título
+	            arquivo = new File(diretorioDados, titulo + ".pdf");
+
+	            // Cria o fluxo de saída
+	            try (FileOutputStream fos = new FileOutputStream(arquivo)) {
+	                fos.write(bytes);
+	            }
 	        }
+
 	        rs.close();
-            ps.close();
-			conn.close();
-	} catch (SQLException ex) {
-	ex.printStackTrace();
-	}
-	catch (IOException ex) {
-	ex.printStackTrace();
-	}
+	        ps.close();
+	        conn.close();
+	    } catch (SQLException ex) {
+	        ex.printStackTrace();
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
+
 	    return arquivo;
-    }
+	}
 
 	 
 	public ArrayList<Livro> consultarLivrosPorNome(String tituloLivro, Olimpiada olimp) {
