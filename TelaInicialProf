@@ -129,6 +129,14 @@ public class TelaInicialProf extends JFrame{
 				setVisible(false);
 			}
 		});
+		
+		Livros.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaLivrosCadastradosProf telaLCP = new TelaLivrosCadastradosProf(prof);
+				setVisible(false);
+			}
+		});
 	}
 
 	private void inicializarComponentes(Professor prof) {
