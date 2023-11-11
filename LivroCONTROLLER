@@ -19,6 +19,7 @@ import bo.LivroBO;
 import bo.VideoBO;
 import vo.Livro;
 import vo.Olimpiada;
+import vo.Professor;
 
 public class LivroCONTROLLER {
 
@@ -61,4 +62,14 @@ public class LivroCONTROLLER {
 		LivroBO bo = new LivroBO();
         return bo.exibirHistoricoLivrosProfTITULO(emailProfessor);
     }
+	
+	public ArrayList retornaLivroProf(Professor prof) {
+		LivroBO bo = new LivroBO();
+        return bo.retornaLivroProf(prof);
+    }
+	
+	public ArrayList<Livro> consultarLivrosProfPorNome(String tituloLivro, Professor prof) {
+		LivroBO bo = new LivroBO();
+	    return bo.consultarLivrosProfPorNome(tituloLivro, prof);
+	}
 }
