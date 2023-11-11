@@ -22,6 +22,7 @@ import conexaoBD.Conexao;
 import vo.Aluno;
 import vo.Livro;
 import vo.Olimpiada;
+import vo.Professor;
 
 public class LivroDAO {
 	public boolean cadastrar(Livro livro, java.util.Date dataPublicacao, File arquivoPDF, Olimpiada olimp) {
@@ -196,6 +197,96 @@ public class LivroDAO {
 	        // Preparar a consulta
 	        ps = conn.prepareStatement(sql);
             ps.setString(1, olimp.getNome());
+	        ps.setString(2, "%" + tituloLivro + "%");
+
+	        // Executar a consulta
+	        ResultSet resultSet = ps.executeQuery();
+
+	        // Processar o resultado
+	        while (resultSet.next()) {
+	            InputStream inputStream = resultSet.getBinaryStream("arquivo_PDF");
+	            File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("isbn"));
+
+	            Livro livro = new Livro(resultSet.getString("isbn"), resultSet.getString("titulo"),
+	                    resultSet.getString("editora"), resultSet.getString("autor"),
+	                    resultSet.getDate("dataPublicacao"),
+	                    resultSet.getString("emailProf"), arquivo);
+
+	            // Adiciona o livro na lista
+	            livrosPorNome.add(livro);
+	        }
+	        resultSet.close();
+            ps.close();
+			conn.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return livrosPorNome;
+	}
+	
+	public ArrayList retornaLivroProf(Professor prof) {
+		ArrayList<Livro> livros = new ArrayList<Livro>();
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    	    
+        
+         // Consulta SQL para selecionar vídeos com base no nome da Olimpíada
+            String sql = "SELECT * FROM Livro " +
+                         "WHERE emailProf = ?";
+
+            // Preparar a consulta
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, prof.getEmail());
+
+            // Executar a consulta
+            ResultSet resultSet = ps.executeQuery();
+
+            // Processar o resultado
+            while (resultSet.next()) {
+            	InputStream inputStream = resultSet.getBinaryStream("arquivo_PDF");
+                File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("isbn"));
+
+                Livro livro = new Livro(resultSet.getString("isbn"), resultSet.getString("titulo"),
+						 resultSet.getString("editora"),resultSet.getString("autor"),
+						 resultSet.getDate("dataPublicacao"),
+						 resultSet.getString("emailProf"), arquivo);
+			    
+				 //adiciona o video na lista
+			     livros.add(livro);
+ 			}
+            resultSet.close();
+            ps.close();
+			conn.close();
+               
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        return livros;
+    }
+	
+	public ArrayList<Livro> consultarLivrosProfPorNome(String tituloLivro, Professor prof) {
+	    ArrayList<Livro> livrosPorNome = new ArrayList<>();
+	    try {
+	        Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        
+	        String sql = "SELECT * FROM Livro " +
+                    "WHERE emailProf = ? AND titulo LIKE ?";
+
+
+	        // Preparar a consulta
+	        ps = conn.prepareStatement(sql);
+            ps.setString(1, prof.getEmail());
 	        ps.setString(2, "%" + tituloLivro + "%");
 
 	        // Executar a consulta
