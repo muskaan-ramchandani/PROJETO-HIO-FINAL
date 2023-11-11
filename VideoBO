@@ -21,6 +21,7 @@ import dao.VideoDAO;
 import vo.Video;
 import vo.Livro;
 import vo.Olimpiada;
+import vo.Professor;
 
 public class VideoBO {
 
@@ -65,4 +66,13 @@ public class VideoBO {
 		VideoDAO dao= new VideoDAO();
         return dao.exibirHistoricoVideosProfTITULO(emailProfessor);
     }
+	
+	public ArrayList retornaVideoProf(Professor prof) {
+		VideoDAO dao= new VideoDAO();
+        return dao.retornaVideoProf(prof);
+    }
+	public ArrayList<Video> consultarVideosProfPorNome(String tituloVideo, Professor prof) {
+		VideoDAO dao= new VideoDAO();
+	    return dao.consultarVideosProfPorNome(tituloVideo, prof);
+	}
 }
