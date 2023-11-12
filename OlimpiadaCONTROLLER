@@ -1,7 +1,10 @@
 package controller;
 
+import java.util.ArrayList;
+
 import bo.OlimpiadaBO;
 import vo.Olimpiada;
+import vo.Professor;
 
 public class OlimpiadaCONTROLLER {
 	
@@ -14,4 +17,15 @@ public class OlimpiadaCONTROLLER {
 		OlimpiadaBO bo = new OlimpiadaBO();
 		return bo.consultar(nome);
 	}
+	
+	public boolean HistoricoOlimpiadasProf(Professor prof, Olimpiada olimp) {
+		OlimpiadaBO bo = new OlimpiadaBO();
+		return bo.HistoricoOlimpiadasProf(prof, olimp);
+	}
+	
+	public ArrayList<String> exibirHistoricoOlimpiadasProf(Professor prof) {
+		OlimpiadaBO bo = new OlimpiadaBO();
+        return bo.exibirHistoricoOlimpiadasProf(prof);
+
+    }
 }
