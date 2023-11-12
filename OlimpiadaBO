@@ -1,7 +1,11 @@
 package bo;
 
+
+import java.util.ArrayList;
+
 import dao.OlimpiadaDAO;
 import vo.Olimpiada;
+import vo.Professor;
 
 public class OlimpiadaBO {
 
@@ -14,4 +18,15 @@ public class OlimpiadaBO {
 		OlimpiadaDAO dao = new OlimpiadaDAO();
 		return dao.obterOlimpiadaExistente(nome);
 	}
+	
+	public boolean HistoricoOlimpiadasProf(Professor prof, Olimpiada olimp) {
+		OlimpiadaDAO dao = new OlimpiadaDAO();
+		return dao.HistoricoOlimpiadasProf(prof, olimp);
+	}
+	
+	public ArrayList<String> exibirHistoricoOlimpiadasProf(Professor prof) {
+		OlimpiadaDAO dao = new OlimpiadaDAO();
+        return dao.exibirHistoricoOlimpiadasProf(prof);
+
+    }
 }
