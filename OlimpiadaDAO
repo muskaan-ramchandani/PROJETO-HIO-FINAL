@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 
 import conexaoBD.Conexao;
 import vo.Olimpiada;
+import vo.Professor;
 
 public class OlimpiadaDAO {
 	
@@ -73,4 +74,62 @@ public class OlimpiadaDAO {
 
        return olimp;
    }
+	
+	public boolean HistoricoOlimpiadasProf(Professor prof, Olimpiada olimp) {
+		try {
+			Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        
+	        String sql = "INSERT INTO HistoricoOlimpiadasProf (nomeOlimp, emailProf) VALUES (?, ?)";
+	        	    
+	        ps = conn.prepareStatement(sql);
+	        ps.setString(1, olimp.getNome());
+	        ps.setString(2, prof.getEmail());
+
+	        int  linhasAfetadas= ps.executeUpdate();
+            ps.close();
+			conn.close();
+			if(linhasAfetadas>0) {
+				return true;
+			}else {
+				return false;
+			}
+            
+		} catch (SQLException e) {
+	        e.printStackTrace();
+			return false;
+	    }
+	}
+	
+	public ArrayList<String> exibirHistoricoOlimpiadasProf(Professor prof) {
+		ArrayList<String> listaOlimpRec = new ArrayList<String>();
+
+        try {
+        	Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        String sql = "SELECT nomeOlimp, dataAcesso FROM HistoricoOlimpiadasProf " +
+                         "WHERE emailProf = ? " +
+                         "ORDER BY dataAcesso DESC " +
+                         "LIMIT 6";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, prof.getEmail());
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+                String nomeOlimp = resultSet.getString("nomeOlimp");
+                listaOlimpRec.add(nomeOlimp);
+                
+            }
+            resultSet.close();
+            ps.close();
+			conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaOlimpRec;
+
+    }
 }
