@@ -54,7 +54,7 @@ public class TelaInicialProf extends JFrame{
 	
 	private JTextField PesOlimpiadas;
 	
-	//private ArrayList<JButton> botoesOlimp = new ArrayList<>();
+	private ArrayList<String> olimpRec = new ArrayList<>();
 
 	 
 	public TelaInicialProf(Professor prof, boolean login) {
@@ -94,6 +94,7 @@ public class TelaInicialProf extends JFrame{
 								public void actionPerformed(ActionEvent e) {
 									Olimpiada nomeOlimp=new Olimpiada(olimp);
 									GuiOlimpiadasProf olimpiada = new GuiOlimpiadasProf(nomeOlimp, prof);
+									controlaOlimp.HistoricoOlimpiadasProf(prof, nomeOlimp);
 		    						setVisible(false);
 								}
 							});
@@ -156,15 +157,18 @@ public class TelaInicialProf extends JFrame{
         lp = new JLayeredPane();
 
         
-        //logica para videos e livros recentes
+        //logica para videos, livros e olimpiadas recentes
         LivroCONTROLLER controlaLiv = new LivroCONTROLLER();
         VideoCONTROLLER controlaVid  = new VideoCONTROLLER();
         ArrayList<String> listaISBNLiv = controlaLiv.exibirHistoricoLivrosProfISBN(prof.getEmail());
         ArrayList<String> listaTituloLiv = controlaLiv.exibirHistoricoLivrosProfTITULO(prof.getEmail());
-
+        
         ArrayList<String> listaUPCVid = controlaVid.exibirHistoricoVideosProfUPC(prof.getEmail());
         ArrayList<String> listaTituloVid = controlaVid.exibirHistoricoVideosProfTITULO(prof.getEmail());
 
+        OlimpiadaCONTROLLER controlaOlimp = new OlimpiadaCONTROLLER();
+        olimpRec = controlaOlimp.exibirHistoricoOlimpiadasProf(prof);
+        
     	JLabel LivrosRecente1;
     	JLabel LivrosRecente2;
     	JButton btLivrosRecente1;
@@ -334,7 +338,52 @@ public class TelaInicialProf extends JFrame{
     	   //não há historico
        }
 
+       if(olimpRec.size()==0) {
 
+    	   JLabel nTeveAcesso = new JLabel("<html><center><b>Nenhuma olimpíada foi</b><br>acessada anteriormente!</center></html>");
+    	   nTeveAcesso.setHorizontalAlignment(SwingConstants.CENTER);
+    	   nTeveAcesso.setFont(new Font( "Trebuchet MS", Font.BOLD, 25));
+    	   nTeveAcesso.setForeground(Color.BLACK);
+    	   nTeveAcesso.setBounds(740,365,550,100);
+    	   lp.add(nTeveAcesso, new Integer(25));
+       }else {
+    	   JButton[] botoesOlimpsRec = new JButton[olimpRec.size()];
+    	   int x=790;
+    	   int y=300;
+    	   int largura=200;
+    	   int altura=60;
+    	   int limite = 2;
+    	   int cont=1;
+    	   
+    	   for(int i=0; i<olimpRec.size();i++) {
+    		   botoesOlimpsRec[i] = new JButton(olimpRec.get(i));
+			   Olimpiada nomeDaOlimp=new Olimpiada(olimpRec.get(i));
+    		   botoesOlimpsRec[i].setFont(new Font( "Trebuchet MS", Font.PLAIN, 20));
+    		   botoesOlimpsRec[i].setForeground(Color.WHITE);
+    		   botoesOlimpsRec[i].setBackground(roxoEscuro);
+    				   
+    		   if(i >= limite) { //2 botoes = limite
+    				y+=120;
+    				limite = limite + 2;
+    				x = 790;
+    		   }
+    		   
+    		   botoesOlimpsRec[i].setBounds(x,y,largura,altura);
+    		   lp.add(botoesOlimpsRec[i], new Integer(30));
+    		   x +=250;
+    		   
+    		   botoesOlimpsRec[i].addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						GuiOlimpiadasProf olimpiada = new GuiOlimpiadasProf(nomeDaOlimp, prof);
+						controlaOlimp.HistoricoOlimpiadasProf(prof, nomeDaOlimp);
+						setVisible(false);
+					}
+			   });
+    		   
+    	   }
+    	   
+       }
         //
         
         Barra = new JMenuBar();
