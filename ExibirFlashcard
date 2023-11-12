@@ -41,7 +41,8 @@ public class ExibirFlashcard extends JFrame{
 	        contentPane.setBackground(new Color(220,220,220));
 	        
 	        //inicializa
-	        String textoResumo="<html>"+flash.getResumo()+"<html>";
+	
+	        String textoResumo="<html><div style='text-align: justify;'>"+flash.getResumo()+"</div></html>";
 
 	        lp= new JLayeredPane();
 	        panelBranco = new JPanel();
