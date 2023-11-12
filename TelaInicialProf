@@ -137,6 +137,14 @@ public class TelaInicialProf extends JFrame{
 				setVisible(false);
 			}
 		});
+		
+		Videos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaVideosCadastradosProf telaVCP = new TelaVideosCadastradosProf(prof);
+				setVisible(false);
+			}
+		});
 	}
 
 	private void inicializarComponentes(Professor prof) {
