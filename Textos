@@ -1,0 +1,30 @@
+package vo;
+
+public class Textos {
+	private String texto;
+	private String emailProf;
+	
+	public Textos(String texto, String emailProf) {
+		setTexto(texto);
+		setEmailProf(emailProf);
+	}
+
+	public String getTexto() {
+		return texto;
+	}
+
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+
+	public String getEmailProf() {
+		return emailProf;
+	}
+
+	public void setEmailProf(String emailProf) {
+		this.emailProf = emailProf;
+	}
+	
+	
+}
+
