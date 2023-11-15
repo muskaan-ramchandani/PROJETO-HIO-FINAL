@@ -3,6 +3,7 @@ package vo;
 public class Textos {
 	private String texto;
 	private String emailProf;
+	private int id;
 	
 	public Textos(String texto, String emailProf) {
 		setTexto(texto);
@@ -23,6 +24,14 @@ public class Textos {
 
 	public void setEmailProf(String emailProf) {
 		this.emailProf = emailProf;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	
