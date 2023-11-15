@@ -1,0 +1,107 @@
+package vo;
+
+public class Exercicios {
+	private String alternativaA;
+	private String alternativaB;
+	private String alternativaC;
+	private String alternativaD;
+	private String alternativaE;
+	private String alternativaCorreta;
+	private String emailProf;
+	private String nomeOlimpiada;
+	
+	public Exercicios(String alternativaA, String alternativaB, String alternativaC, String alternativaD,
+			String alternativaE, String alternativaCorreta, String emailProf, String nomeOlimpiada) {
+		
+		setAlternativaA(alternativaA);
+		setAlternativaB(alternativaB);
+		setAlternativaC(alternativaC);
+		setAlternativaD(alternativaD);
+		setAlternativaE(alternativaE);
+		setAlternativaCorreta(alternativaCorreta);
+		setEmailProf(emailProf);
+		setNomeOlimpiada(nomeOlimpiada);
+
+		
+	}
+
+	public String getAlternativaA() {
+		return alternativaA;
+	}
+
+	public void setAlternativaA(String alternativaA) {
+		this.alternativaA = alternativaA;
+	}
+
+	public String getAlternativaB() {
+		return alternativaB;
+	}
+
+	public void setAlternativaB(String alternativaB) {
+		this.alternativaB = alternativaB;
+	}
+
+	public String getAlternativaC() {
+		return alternativaC;
+	}
+
+	public void setAlternativaC(String alternativaC) {
+		this.alternativaC = alternativaC;
+	}
+
+	public String getAlternativaD() {
+		return alternativaD;
+	}
+
+	public void setAlternativaD(String alternativaD) {
+		this.alternativaD = alternativaD;
+	}
+
+	public String getAlternativaE() {
+		return alternativaE;
+	}
+
+	public void setAlternativaE(String alternativaE) {
+		this.alternativaE = alternativaE;
+	}
+
+	public String getAlternativaCorreta() {
+		return alternativaCorreta;
+	}
+
+	public void setAlternativaCorreta(String alternativaCorreta) {
+		this.alternativaCorreta = alternativaCorreta;
+	}
+
+	public String getEmailProf() {
+		return emailProf;
+	}
+
+	public void setEmailProf(String emailProf) {
+		this.emailProf = emailProf;
+	}
+
+	public String getNomeOlimpiada() {
+		return nomeOlimpiada;
+	}
+
+	public void setNomeOlimpiada(String nomeOlimpiada) {
+		this.nomeOlimpiada = nomeOlimpiada;
+	}
+
+}
+
+/*CREATE TABLE Exercicios(
+	id INT AUTO_INCREMENT NOT NULL,
+	alternativaA VARCHAR(100) NOT NULL,
+	alternativaB VARCHAR(100) NOT NULL,
+	alternativaC VARCHAR(100) NOT NULL,
+	alternativaD VARCHAR(100) NOT NULL,
+	alternativaE VARCHAR(100),
+	alternativaCorreta VARCHAR(100) NOT NULL,
+	emailProf VARCHAR(100) NOT NULL,
+    nomeOlimpiada  VARCHAR(10) NOT NULL,
+	PRIMARY KEY(id),
+	FOREIGN KEY(emailProf) REFERENCES Professor(email),
+	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome)
+);*/
