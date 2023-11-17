@@ -55,7 +55,7 @@ public class ExerciciosDAO {
 
 	}
 	
-	public static ArrayList<Exercicios> retornaTextos(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
+	public static ArrayList<Exercicios> retornaExercicios(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
 		Exercicios e = null;
 		ArrayList<Exercicios> listaExercicios = new ArrayList();
 		
