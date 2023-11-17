@@ -53,7 +53,8 @@ public class TelaTEAssuntoProf extends JFrame{
 	private JButton btnFlashcards;
 	private JButton btnCronograma;
 	private JButton btnVoltar;
-
+	private JButton btnCadastraT;
+	private JButton btnCadastraE;
 	
 	int tamanho = 14;
 	int limite = 7;
@@ -91,13 +92,20 @@ public class TelaTEAssuntoProf extends JFrame{
 		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
 		lblAssunto = new JLabel(assunto.getTituloAssunto());
 		lblSub= new JLabel(assunto.getTituloAssunto()+" - "+sub.getDescricao()); //TITULOZINHO
+		btnCadastraT= new JButton("Cadastrar texto");
+		btnCadastraE = new JButton("Cadastrar exercício");
 		
 		btnLivros.setFocusPainted(false);
 		btnVideos.setFocusPainted(false);
 		btnAssuntos.setFocusPainted(false);
 		btnFlashcards.setFocusPainted(false);
 		btnCronograma.setFocusPainted(false);
-		
+		btnCadastraT.setFocusPainted(false);
+		btnCadastraE.setFocusPainted(false);
+		btnCadastraT.setContentAreaFilled(false);
+		btnCadastraE.setContentAreaFilled(false);
+		btnCadastraT.setBorderPainted(false);
+		btnCadastraE.setBorderPainted(false);
 		
 		btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
 				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaPequenaRoxa.png"));
@@ -120,6 +128,8 @@ public class TelaTEAssuntoProf extends JFrame{
 		btnCronograma.setForeground(Color.WHITE);
 		lblNomeOlimp.setForeground(Color.WHITE);
 		lblSub.setForeground(Color.BLACK);
+		btnCadastraT.setForeground(Color.BLACK);
+		btnCadastraE.setForeground(Color.BLACK);
 				
 		//definir as fontes
   		lblNomeOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 25));
@@ -133,6 +143,11 @@ public class TelaTEAssuntoProf extends JFrame{
 		
 		lblSub.setFont(new Font("Trebuchet MS", Font.PLAIN, 30));
 		
+		Font fonteBtnsA = new Font("Trebuchet MS", Font.PLAIN, 20);
+		btnCadastraT.setFont(fonteBtnsA);
+		btnCadastraE.setFont(fonteBtnsA);
+		
+		
 		//definir as posições
 		Barra.setBounds(0,0,screenSize.width, 50);
         lblLogo.setBounds(10,5,44,35);
@@ -143,8 +158,10 @@ public class TelaTEAssuntoProf extends JFrame{
   		btnFlashcards.setBounds(765,7,130,35);
   		btnCronograma.setBounds(980,7,130,35);
     	btnVoltar.setBounds(10, 650, 28,25);
-    	lblSub.setBounds(550, 80, 500, 35);
-    	
+    	lblSub.setBounds(545, 80, 500, 35);
+    	btnCadastraT.setBounds(760, 140, 230, 25);
+    	btnCadastraE.setBounds(1000, 140, 230, 25);
+		
 		contentPane.add(lp);
         lp.add(Barra, new Integer(1));
         lp.add(lblLogo, new Integer(2));
@@ -156,6 +173,8 @@ public class TelaTEAssuntoProf extends JFrame{
 		lp.add(btnVoltar, new Integer(9));
 		lp.add(lblNomeOlimp, new Integer(10));
 		lp.add(lblSub, new Integer(11));
+		lp.add(btnCadastraT, new Integer(12));
+		lp.add(btnCadastraE, new Integer(13));
 		
 		
 		TextosCONTROLLER controlaTextos = new TextosCONTROLLER();
@@ -241,11 +260,28 @@ public class TelaTEAssuntoProf extends JFrame{
 				
 				for(int cont=0; cont<listaTextos.size();cont++) {
 					Assunto[i+1]= new JButton("Texto nº"+listaTextos.get(cont).getId());
+					
+					int val= cont;
+					Assunto[i+1].addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							TelaTextos txt = new TelaTextos(listaTextos.get(val));
+							txt.setLocationRelativeTo(null);
+						}
+					});
 				}
 				Assunto[7] = new JButton("Exercícios");	
 				
 				for(int cont=0; cont<listaExercicios.size();cont++) {
-					Assunto[i+8]= new JButton("Texto nº"+listaExercicios.get(cont).getId());
+					Assunto[i+8]= new JButton("Exercício nº"+listaExercicios.get(cont).getId());
+					int val= cont;
+					Assunto[i+1].addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							TelaExercicio ex = new TelaExercicio(listaExercicios.get(val));
+							ex.setLocationRelativeTo(null);
+						}
+					});
 				}
 				
 				Assunto[i].setFocusPainted(false);
@@ -290,6 +326,22 @@ public class TelaTEAssuntoProf extends JFrame{
 	}
 	
 	private void definirEventos(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
+		
+		btnCadastraT.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+
+			}
+		});
+		
+		btnCadastraE.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+
+			}
+		});
 		
 		btnLivros.addMouseListener(new MouseListener() {
 			Color roxoIndigo = new Color(75,0,130);
