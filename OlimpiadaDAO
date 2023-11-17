@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,34 +104,34 @@ public class OlimpiadaDAO {
 	    }
 	}
 	
-	public ArrayList<String> exibirHistoricoOlimpiadasProf(Professor prof) {
-		ArrayList<String> listaOlimpRec = new ArrayList<String>();
+	public Set<String> exibirHistoricoOlimpiadasProf(Professor prof) {
+	    Set<String> setOlimpRec = new HashSet<>();
 
-        try {
-        	Connection conn = null;
+	    try {
+	        Connection conn = null;
 	        PreparedStatement ps = null;
 	        conn = new Conexao().getConnection();
 	        String sql = "SELECT nomeOlimp, dataAcesso FROM HistoricoOlimpiadasProf " +
-                         "WHERE emailProf = ? " +
-                         "ORDER BY dataAcesso DESC " +
-                         "LIMIT 6";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, prof.getEmail());
-            ResultSet resultSet = ps.executeQuery();
+	                     "WHERE emailProf = ? " +
+	                     "ORDER BY dataAcesso DESC " +
+	                     "LIMIT 6";
+	        ps = conn.prepareStatement(sql);
+	        ps.setString(1, prof.getEmail());
+	        ResultSet resultSet = ps.executeQuery();
 
-            while (resultSet.next()) {
-                String nomeOlimp = resultSet.getString("nomeOlimp");
-                listaOlimpRec.add(nomeOlimp);
-                
-            }
-            resultSet.close();
-            ps.close();
-			conn.close();
+	        while (resultSet.next()) {
+	            String nomeOlimp = resultSet.getString("nomeOlimp");
+	            setOlimpRec.add(nomeOlimp);
+	        }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return listaOlimpRec;
+	        resultSet.close();
+	        ps.close();
+	        conn.close();
 
-    }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return setOlimpRec;
+	}
 }
