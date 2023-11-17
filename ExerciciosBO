@@ -20,8 +20,8 @@ public class ExerciciosBO {
 		return dao.criarExercicio(e);
 	}
 	
-	public static ArrayList<Exercicios> retornaTextos(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
+	public static ArrayList<Exercicios> retornaExercicios(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
 		ExerciciosDAO dao = new ExerciciosDAO();
-        return dao.retornaTextos(nomeOlimp, sub, a);
+        return dao.retornaExercicios(nomeOlimp, sub, a);
     }
 }
