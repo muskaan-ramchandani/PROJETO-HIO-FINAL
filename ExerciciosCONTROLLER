@@ -1,0 +1,22 @@
+package controller;
+
+import java.util.ArrayList;
+
+import bo.ExerciciosBO;
+import vo.Assuntos;
+import vo.Exercicios;
+import vo.SubtopicosDosAssuntos;
+
+public class ExerciciosCONTROLLER {
+	public boolean criarExercicio(String alternativaA, String alternativaB, String alternativaC, String alternativaD,
+			String alternativaCorreta, String emailProf, String nomeOlimpiada,
+			String subtopico, String topicoPrincipal) {
+		ExerciciosBO bo = new ExerciciosBO();
+		return bo.criarExercicio(alternativaA, alternativaB, alternativaC, alternativaD, alternativaCorreta, emailProf, nomeOlimpiada, subtopico, topicoPrincipal);
+	}
+	
+	public static ArrayList<Exercicios> retornaTextos(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
+		ExerciciosBO bo = new ExerciciosBO();
+        return bo.retornaTextos(nomeOlimp, sub, a);
+    }
+}
