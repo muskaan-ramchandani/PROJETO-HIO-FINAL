@@ -1,0 +1,95 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import conexaoBD.Conexao;
+import vo.Assuntos;
+import vo.SubtopicosDosAssuntos;
+import vo.Textos;
+
+public class TextosDAO {
+	public boolean criarTexto(Textos t) {
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+
+
+		String sql= "INSERT INTO Textos(texto, emailProf, subtopico, topicoPrincipal, nomeOlimpiada)VALUES(?,?,?,?,?)";
+		
+		try {
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, t.getTexto());
+			ps.setString(2, t.getEmailProf());
+			ps.setString(3, t.getSubtopico());
+			ps.setString(4, t.getTopicoPrincipal());
+			ps.setString(5, t.getNomeOlimpiada());
+
+
+			int linhasAfetadas = ps.executeUpdate();
+			
+			ps.close();
+			conn.close();
+			
+            if(linhasAfetadas>0) {
+            	return true;
+            }else {
+            	return false;
+            }
+            
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+	
+	public static ArrayList<Textos> retornaTextos(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
+		Textos t = null;
+		ArrayList<Textos> listaTextos = new ArrayList();
+		
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    		 
+    		 
+    		 String selectQuery = "SELECT * FROM Textos " +
+             "WHERE nomeOlimpiada = ? AND subtopico = ? AND topicoPrincipal=?";  
+
+    		 
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setString(1, nomeOlimp);
+            preparedStatement.setString(2, sub.getDescricao());
+            preparedStatement.setString(3, a.getTituloAssunto());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+    			String texto= resultSet.getString("texto");
+                String nomeOlimpiada= resultSet.getString("nomeOlimpiada");
+                String subtopico= resultSet.getString("subtopico");
+                String topicoPrincipal= resultSet.getString("topicoPrincipal");
+
+                String emailProf= resultSet.getString("emailProf");
+
+    			
+    			t = new Textos(texto, emailProf, nomeOlimpiada, subtopico, topicoPrincipal);
+    			listaTextos.add(t);
+            }
+            resultSet.close();
+            preparedStatement.close();
+			conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaTextos;
+    }
+}
+
