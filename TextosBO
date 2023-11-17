@@ -1,0 +1,25 @@
+package bo;
+
+import java.util.ArrayList;
+
+import conexaoBD.Conexao;
+import dao.TextosDAO;
+import vo.Assuntos;
+import vo.SubtopicosDosAssuntos;
+import vo.Textos;
+
+public class TextosBO {
+	
+	public boolean criarTexto(String texto, String emailProf, String nomeOlimpiada, String subtopico, String 
+			topicoPrincipal) {
+		Textos t = new Textos(texto, emailProf, nomeOlimpiada, subtopico, topicoPrincipal);
+		TextosDAO dao = new TextosDAO();
+		return dao.criarTexto(t);
+
+	}
+	
+	public static ArrayList<Textos> retornaTextos(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
+		TextosDAO dao = new TextosDAO();
+		return dao.retornaTextos(nomeOlimp, sub, a);
+	}
+}
