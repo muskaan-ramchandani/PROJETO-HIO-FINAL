@@ -1,0 +1,109 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import conexaoBD.Conexao;
+import vo.Assuntos;
+import vo.SubtopicosDosAssuntos;
+import vo.Exercicios;
+
+
+
+public class ExerciciosDAO {
+	public boolean criarExercicio(Exercicios e) {
+		Connection conn =  null;
+		PreparedStatement ps = null;
+		conn = new Conexao().getConnection();
+
+
+		String sql= "INSERT INTO Exercicios(alternativaA, alternativaB, alternativaC, alternativaD,"
+				+ " alternativaCorreta, emailProf, nomeOlimpiada, subtopico, topicoPrincipal)VALUES(?,?,?,?,?,?,?,?,?)";
+		
+		try {
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, e.getAlternativaA());
+			ps.setString(2, e.getAlternativaB());
+			ps.setString(3, e.getAlternativaC());
+			ps.setString(4, e.getAlternativaD());
+			ps.setString(5, e.getAlternativaCorreta());
+			ps.setString(6, e.getEmailProf());
+			ps.setString(7, e.getNomeOlimpiada());
+			ps.setString(8, e.getSubtopico());
+			ps.setString(9, e.getTopicoPrincipal());
+
+
+			int linhasAfetadas = ps.executeUpdate();
+			
+			ps.close();
+			conn.close();
+			
+            if(linhasAfetadas>0) {
+            	return true;
+            }else {
+            	return false;
+            }
+            
+		}catch (SQLException e1) {
+			e1.printStackTrace();
+			return false;
+		}
+
+	}
+	
+	public static ArrayList<Exercicios> retornaTextos(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
+		Exercicios e = null;
+		ArrayList<Exercicios> listaExercicios = new ArrayList();
+		
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    		 
+    		 
+    		 String selectQuery = "SELECT * FROM Textos " +
+             "WHERE nomeOlimpiada = ? AND subtopico = ? AND topicoPrincipal=?";  
+
+    		 
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setString(1, nomeOlimp);
+            preparedStatement.setString(2, sub.getDescricao());
+            preparedStatement.setString(3, a.getTituloAssunto());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+            	
+            	int id = resultSet.getInt("id");
+    			String alternativaA= resultSet.getString("alternativaA");
+                String alternativaB= resultSet.getString("alternativaB");
+                String alternativaC= resultSet.getString("alternativaC");
+                String alternativaD= resultSet.getString("alternativaD");
+                String alternativaCorreta= resultSet.getString("alternativaCorreta");
+                String emailProf= resultSet.getString("emailProf");
+                String nomeOlimpiada= resultSet.getString("nomeOlimpiada");
+                String subtopico= resultSet.getString("subtopico");
+                String topicoPrincipal= resultSet.getString("topicoPrincipal");
+
+
+    			
+    			e = new Exercicios( alternativaA,  alternativaB,  alternativaC,  alternativaD,
+    		 			 alternativaCorreta,  emailProf,  nomeOlimpiada,
+    		 			 subtopico,  topicoPrincipal);
+    			e.setId(id);
+    			listaExercicios.add(e);
+            }
+            resultSet.close();
+            preparedStatement.close();
+			conn.close();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+
+        return listaExercicios;
+    }
+}
