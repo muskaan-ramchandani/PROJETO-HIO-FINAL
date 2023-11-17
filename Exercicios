@@ -9,9 +9,12 @@ public class Exercicios {
 	private String alternativaCorreta;
 	private String emailProf;
 	private String nomeOlimpiada;
+	private String subtopico;
+	private String topicoPrincipal;
 	
 	public Exercicios(String alternativaA, String alternativaB, String alternativaC, String alternativaD,
-			String alternativaE, String alternativaCorreta, String emailProf, String nomeOlimpiada) {
+			String alternativaE, String alternativaCorreta, String emailProf, String nomeOlimpiada,
+			String subtopico, String topicoPrincipal) {
 		
 		setAlternativaA(alternativaA);
 		setAlternativaB(alternativaB);
@@ -21,7 +24,8 @@ public class Exercicios {
 		setAlternativaCorreta(alternativaCorreta);
 		setEmailProf(emailProf);
 		setNomeOlimpiada(nomeOlimpiada);
-
+		setSubtopico(subtopico);
+		setTopicoPrincipal(topicoPrincipal);
 		
 	}
 
@@ -89,19 +93,21 @@ public class Exercicios {
 		this.nomeOlimpiada = nomeOlimpiada;
 	}
 
-}
+	public String getSubtopico() {
+		return subtopico;
+	}
 
-/*CREATE TABLE Exercicios(
-	id INT AUTO_INCREMENT NOT NULL,
-	alternativaA VARCHAR(100) NOT NULL,
-	alternativaB VARCHAR(100) NOT NULL,
-	alternativaC VARCHAR(100) NOT NULL,
-	alternativaD VARCHAR(100) NOT NULL,
-	alternativaE VARCHAR(100),
-	alternativaCorreta VARCHAR(100) NOT NULL,
-	emailProf VARCHAR(100) NOT NULL,
-    nomeOlimpiada  VARCHAR(10) NOT NULL,
-	PRIMARY KEY(id),
-	FOREIGN KEY(emailProf) REFERENCES Professor(email),
-	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome)
-);*/
+	public void setSubtopico(String subtopico) {
+		this.subtopico = subtopico;
+	}
+
+	public String getTopicoPrincipal() {
+		return topicoPrincipal;
+	}
+
+	public void setTopicoPrincipal(String topicoPrincipal) {
+		this.topicoPrincipal = topicoPrincipal;
+	}
+
+	
+}
