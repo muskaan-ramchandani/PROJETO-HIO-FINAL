@@ -1,11 +1,462 @@
 package view.TelasGuiOlimpiadasProf;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JMenuBar;
+import javax.swing.SwingConstants;
+
+import controller.ExerciciosCONTROLLER;
+import controller.OlimpiadaCONTROLLER;
+import controller.ProfessorCONTROLLER;
+import controller.TextosCONTROLLER;
+import view.TelaExercicio;
+import view.TelaInicialProf;
+import view.TelaTextos;
+import view.TelasGuiOlimpiadasProf.TelaCronogramaProf;
+import view.TelasGuiOlimpiadasProf.TelaFlashcardsProf;
+import view.TelasGuiOlimpiadasProf.TelaLivrosProf;
+import view.TelasGuiOlimpiadasProf.TelaVideosProf;
 import vo.Professor;
+import vo.Assuntos;
+import vo.Exercicios;
+import vo.Olimpiada;
+import vo.Professor;
+import vo.SubtopicosDosAssuntos;
+import vo.Textos;
 
-public class TelaTEAssuntoProf {
+public class TelaTEAssuntoProf extends JFrame{
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JMenuBar Barra;
+	private JLabel lblLogo;
+	private JLabel lblNomeOlimp;
+	private JLabel lblAssunto;
+	private JLabel lblSub;
+	private JButton btnLivros;
+	private JButton btnVideos;
+	private JButton btnAssuntos;
+	private JButton btnFlashcards;
+	private JButton btnCronograma;
+	private JButton btnVoltar;
 
-	public TelaTEAssuntoProf(String nome, Professor prof, String descricao) {
-		// TODO Auto-generated constructor stub
+	
+	int tamanho = 14;
+	int limite = 7;
+	private JButton[] Assunto = new JButton[tamanho];
+	int linha = 200;
+	int coluna = 150;
+	
+	public TelaTEAssuntoProf(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
+		inicializarComponentes( olimp,  prof,  sub,  assunto);
+		definirEventos( olimp,  prof,  sub,  assunto);
 	}
+	
 
+	
+
+	private void inicializarComponentes(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+		contentPane=getContentPane();
+		contentPane.setBackground(Color.white);
+		//contentPane.setBackground(new Color (238, 130, 238));
+		setLayout(null);
+		
+
+		lp = new JLayeredPane();
+        Barra = new JMenuBar();
+  		lblNomeOlimp = new JLabel(olimp.getNome());
+        lblLogo  = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//bonequinhoSFMEDIO.png"));
+        btnLivros = new JButton("<html><u>Livros</u></html>"); //Sublinhado
+		btnVideos= new JButton("<html><u>Videos</u></html>");
+		btnAssuntos = new JButton("<html><u>Assuntos</u></html>");
+		btnFlashcards= new JButton("<html><u>Flashcards</u></html>");
+		btnCronograma= new JButton("<html><u>Cronograma</u></html>");
+		lblAssunto = new JLabel(assunto.getTituloAssunto());
+		lblSub= new JLabel(assunto.getTituloAssunto()+" - "+sub.getDescricao()); //TITULOZINHO
+		
+		btnLivros.setFocusPainted(false);
+		btnVideos.setFocusPainted(false);
+		btnAssuntos.setFocusPainted(false);
+		btnFlashcards.setFocusPainted(false);
+		btnCronograma.setFocusPainted(false);
+		
+		
+		btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaPequenaRoxa.png"));
+		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnVoltar.setBorderPainted(false); // Remove a borda
+		btnVoltar.setFocusPainted(false);
+		
+		Color roxoIndigo = new Color(75,0,130);
+		Color roxoVioleta = new Color(148,0,211);
+        Barra.setBackground(roxoIndigo);
+        btnLivros.setBackground(roxoIndigo);
+		btnLivros.setForeground(Color.WHITE);
+		btnVideos.setBackground(roxoIndigo);
+		btnVideos.setForeground(Color.WHITE);
+		btnAssuntos.setBackground(roxoVioleta);
+		btnAssuntos.setForeground(Color.WHITE);
+		btnFlashcards.setBackground(roxoIndigo);
+		btnFlashcards.setForeground(Color.WHITE);
+		btnCronograma.setBackground(roxoIndigo);
+		btnCronograma.setForeground(Color.WHITE);
+		lblNomeOlimp.setForeground(Color.WHITE);
+		lblSub.setForeground(Color.BLACK);
+				
+		//definir as fontes
+  		lblNomeOlimp.setFont(new Font("Trebuchet MS", Font.PLAIN, 25));
+
+		Font fonteBarra = new Font("Trebuchet MS", Font.PLAIN, 21);
+		btnLivros.setFont(fonteBarra);
+		btnVideos.setFont(fonteBarra);
+		btnAssuntos.setFont(fonteBarra);
+		btnFlashcards.setFont(fonteBarra);
+		btnCronograma.setFont(fonteBarra);
+		
+		lblSub.setFont(new Font("Trebuchet MS", Font.PLAIN, 30));
+		
+		//definir as posições
+		Barra.setBounds(0,0,screenSize.width, 50);
+        lblLogo.setBounds(10,5,44,35);
+        lblNomeOlimp.setBounds(80, 15, 250, 20);
+        btnLivros.setBounds(235,7, 100, 35);
+  		btnVideos.setBounds(403,7,100,35);
+  		btnAssuntos.setBounds(578,7,100,35);
+  		btnFlashcards.setBounds(765,7,130,35);
+  		btnCronograma.setBounds(980,7,130,35);
+    	btnVoltar.setBounds(10, 650, 28,25);
+    	lblSub.setBounds(550, 80, 500, 35);
+    	
+		contentPane.add(lp);
+        lp.add(Barra, new Integer(1));
+        lp.add(lblLogo, new Integer(2));
+        lp.add(btnLivros, new Integer(4));
+		lp.add(btnVideos, new Integer(5));
+		lp.add(btnAssuntos, new Integer(6));
+		lp.add(btnFlashcards, new Integer(7));
+		lp.add(btnCronograma, new Integer(8));
+		lp.add(btnVoltar, new Integer(9));
+		lp.add(lblNomeOlimp, new Integer(10));
+		lp.add(lblSub, new Integer(11));
+		
+		
+		TextosCONTROLLER controlaTextos = new TextosCONTROLLER();
+		ArrayList<Textos> listaTextos = controlaTextos.retornaTextos(olimp.getNome(), sub, assunto);
+		
+		ExerciciosCONTROLLER controlaExercicios = new ExerciciosCONTROLLER();
+		ArrayList<Exercicios> listaExercicios = controlaExercicios.retornaExercicios(olimp.getNome(), sub, assunto);
+		
+		if(listaTextos.isEmpty()==true&&listaExercicios.isEmpty()==false) { //existem apenas exercicios
+		
+
+		     for(int i = 0;i < tamanho/2;i++) {
+					Assunto[i]= new JButton("");
+					Assunto[0] = new JButton("Exercícios");			
+					Assunto[i+1]= new JButton("Exercício nº"+listaExercicios.get(i).getId());
+					Assunto[i].setFocusPainted(false);
+					Assunto[i].setBackground(Color.WHITE);
+					Assunto[i].setForeground(Color.BLACK);
+					Assunto[i].setHorizontalAlignment(SwingConstants.CENTER);
+					Assunto[i].setBorder(BorderFactory.createLineBorder(new Color(75, 0, 130), 3));
+					Font fonteTxt = new Font("Trebuchet MS", Font.PLAIN, 20);
+					Assunto[i].setFont(fonteTxt);
+					Assunto[0].setFont(new Font("Trebuchet MS", Font.BOLD, 25));
+
+					Assunto[i].setBounds(linha+300,coluna,425,69);
+					lp.add(Assunto[i], new Integer(13));
+					coluna=coluna+ 69;
+					int val=i;
+					Assunto[i+1].addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							TelaExercicio exer = new TelaExercicio(listaExercicios.get(val));
+							exer.setLocationRelativeTo(null);
+						}
+					});
+					
+				}
+		     
+		}else if(listaTextos.isEmpty()==false&&listaExercicios.isEmpty()==true) {//existem apenas textos
+			
+
+		     for(int i = 0;i < tamanho/2;i++) {
+					Assunto[i]= new JButton("");
+					Assunto[0] = new JButton("Textos");			
+					Assunto[i+1]= new JButton("Texto nº"+listaTextos.get(i).getId());
+					Assunto[i].setFocusPainted(false);
+					Assunto[i].setBackground(Color.WHITE);
+					Assunto[i].setForeground(Color.BLACK);
+					Assunto[i].setHorizontalAlignment(SwingConstants.CENTER);
+					Assunto[i].setBorder(BorderFactory.createLineBorder(new Color(75, 0, 130), 3));
+					Font fonteTxt = new Font("Trebuchet MS", Font.PLAIN, 20);
+					Assunto[i].setFont(fonteTxt);
+					Assunto[0].setFont(new Font("Trebuchet MS", Font.BOLD, 25));
+
+					Assunto[i].setBounds(linha+300,coluna,425,69);
+					lp.add(Assunto[i], new Integer(13));
+					coluna=coluna+ 69;
+					int val= i;
+					Assunto[i+1].addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							TelaTextos txt = new TelaTextos(listaTextos.get(val));
+							txt.setLocationRelativeTo(null);
+						}
+					});
+					
+				}
+		     
+			
+		}else if(listaTextos.isEmpty()==true&&listaExercicios.isEmpty()==true) {
+				JLabel nExistem = new JLabel("<html><center><b>Não há textos e exercícios</b><br>cadastrados neste tema!</center></html>");
+				nExistem.setHorizontalAlignment(SwingConstants.CENTER);
+				nExistem.setFont(new Font( "Trebuchet MS", Font.BOLD, 30));
+				nExistem.setForeground(Color.BLACK);
+				nExistem.setBounds(400,230,550,200);
+	    	   lp.add(nExistem, new Integer(25));
+		}
+		else {
+			
+			for(int i = 0;i < tamanho;i++) {
+				Assunto[i]= new JButton("");
+				Assunto[0] = new JButton("Textos");
+				
+				for(int cont=0; cont<listaTextos.size();cont++) {
+					Assunto[i+1]= new JButton("Texto nº"+listaTextos.get(cont).getId());
+				}
+				Assunto[7] = new JButton("Exercícios");	
+				
+				for(int cont=0; cont<listaExercicios.size();cont++) {
+					Assunto[i+8]= new JButton("Texto nº"+listaExercicios.get(cont).getId());
+				}
+				
+				Assunto[i].setFocusPainted(false);
+				Assunto[i].setBackground(Color.WHITE);
+				Assunto[i].setForeground(Color.BLACK);
+				Assunto[i].setHorizontalAlignment(SwingConstants.CENTER);
+				Assunto[i].setBorder(BorderFactory.createLineBorder(new Color(75, 0, 130), 3));
+				Font fonteTxt = new Font("Trebuchet MS", Font.PLAIN, 20);
+				Assunto[i].setFont(fonteTxt);
+				if(i >= limite) {
+					linha += 500;
+					limite += 7;
+					coluna = 150;
+					
+					
+				}
+				Assunto[7].setFont(new Font("Trebuchet MS", Font.BOLD, 25));
+				Assunto[0].setFont(new Font("Trebuchet MS", Font.BOLD, 25));
+
+				Assunto[i].setBounds(linha,coluna,425,69);
+				lp.add(Assunto[i], new Integer(13));
+				coluna=coluna+ 69;
+				
+			}
+			
+		}
+		
+		
+		
+		//tirar borda
+        setLayout(new BorderLayout());
+        add(lp, BorderLayout.CENTER);
+        btnLivros.setBorderPainted(false);
+        btnVideos.setBorderPainted(false);
+        btnAssuntos.setBorderPainted(false);
+        btnFlashcards.setBorderPainted(false);
+        btnCronograma.setBorderPainted(false);
+        
+        setVisible(true);
+
+		
+	}
+	
+	private void definirEventos(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
+		
+		btnLivros.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnLivros.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnLivros.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnLivros.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaLivrosProf livro = new TelaLivrosProf(olimp, prof);
+				setVisible(false);
+
+			}
+		});
+		
+		btnCronograma.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnCronograma.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnCronograma.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnCronograma.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaCronogramaProf tela = new TelaCronogramaProf(olimp, prof);
+			     setVisible(false);
+
+			}
+		});
+		
+		btnVideos.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnVideos.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnVideos.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnVideos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaVideosProf videos = new TelaVideosProf(olimp, prof);
+			     setVisible(false);
+
+			}
+		});
+		
+		btnFlashcards.addMouseListener(new MouseListener() {
+			Color roxoIndigo = new Color(75,0,130);
+			Color roxoVioleta = new Color(148,0,211);
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(java.awt.event.MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				btnFlashcards.setBackground(roxoVioleta);
+			}
+			@Override
+			public void mouseExited(java.awt.event.MouseEvent e) {
+				btnFlashcards.setBackground(roxoIndigo); // Retorna à cor padrão do botão
+			}
+        });
+		
+		btnFlashcards.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 TelaFlashcardsProf flash = new TelaFlashcardsProf(olimp, prof);
+			     setVisible(false);
+			}
+		});
+		
+		 btnVoltar.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					TelaInicialProf tela = new TelaInicialProf(prof, true);
+				     setVisible(false);
+				}
+			});
+		
+	}
+	public static void main(String[] args) {
+    	ProfessorCONTROLLER controla= new ProfessorCONTROLLER();
+    	Professor prof = controla.obterProfExistente("juju@gmail.com");
+    	OlimpiadaCONTROLLER contOlimp = new OlimpiadaCONTROLLER();
+    	Olimpiada olimp = contOlimp.obterOlimpiadaExistente("ONC");
+        TelaAssuntosProf tela = new TelaAssuntosProf(olimp, prof);
+     //TelaTEAssuntoProf(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto
+   
+    }
 }
