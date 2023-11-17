@@ -24,6 +24,7 @@ import controller.ExerciciosCONTROLLER;
 import controller.OlimpiadaCONTROLLER;
 import controller.ProfessorCONTROLLER;
 import controller.TextosCONTROLLER;
+import view.TelaCadastraTexto;
 import view.TelaExercicio;
 import view.TelaInicialProf;
 import view.TelaTextos;
@@ -189,7 +190,6 @@ public class TelaTEAssuntoProf extends JFrame{
 		     for(int i = 0;i < tamanho/2;i++) {
 					Assunto[i]= new JButton("");
 					Assunto[0] = new JButton("Exercícios");			
-					Assunto[i+1]= new JButton("Exercício nº"+listaExercicios.get(i).getId());
 					Assunto[i].setFocusPainted(false);
 					Assunto[i].setBackground(Color.WHITE);
 					Assunto[i].setForeground(Color.BLACK);
@@ -202,14 +202,19 @@ public class TelaTEAssuntoProf extends JFrame{
 					Assunto[i].setBounds(linha+300,coluna,425,69);
 					lp.add(Assunto[i], new Integer(13));
 					coluna=coluna+ 69;
-					int val=i;
-					Assunto[i+1].addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							TelaExercicio exer = new TelaExercicio(listaExercicios.get(val));
-							exer.setLocationRelativeTo(null);
-						}
-					});
+					
+					for(int conta=0; conta<listaExercicios.size();conta++) {
+						Assunto[i+1]= new JButton("Exercício nº"+listaExercicios.get(conta).getId());
+
+						int val=conta;
+						Assunto[i+1].addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								TelaExercicio exer = new TelaExercicio(listaExercicios.get(val));
+								exer.setLocationRelativeTo(null);
+							}
+						});
+					}
 					
 				}
 		     
@@ -219,7 +224,6 @@ public class TelaTEAssuntoProf extends JFrame{
 		     for(int i = 0;i < tamanho/2;i++) {
 					Assunto[i]= new JButton("");
 					Assunto[0] = new JButton("Textos");			
-					Assunto[i+1]= new JButton("Texto nº"+listaTextos.get(i).getId());
 					Assunto[i].setFocusPainted(false);
 					Assunto[i].setBackground(Color.WHITE);
 					Assunto[i].setForeground(Color.BLACK);
@@ -232,14 +236,19 @@ public class TelaTEAssuntoProf extends JFrame{
 					Assunto[i].setBounds(linha+300,coluna,425,69);
 					lp.add(Assunto[i], new Integer(13));
 					coluna=coluna+ 69;
-					int val= i;
-					Assunto[i+1].addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							TelaTextos txt = new TelaTextos(listaTextos.get(val));
-							txt.setLocationRelativeTo(null);
-						}
-					});
+					
+					for(int conta=0; conta<listaTextos.size();conta++) {
+						Assunto[i+1]= new JButton("Texto nº"+listaTextos.get(conta).getId());
+
+						int val=conta;
+						Assunto[i+1].addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								TelaTextos txt = new TelaTextos(listaTextos.get(val));
+								txt.setLocationRelativeTo(null);
+							}
+						});
+					}
 					
 				}
 		     
@@ -325,13 +334,14 @@ public class TelaTEAssuntoProf extends JFrame{
 		
 	}
 	
+	
 	private void definirEventos(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
 		
 		btnCadastraT.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-
+				TelaCadastraTexto cadastra = new TelaCadastraTexto( olimp, prof, sub, assunto);
+				cadastra.setLocationRelativeTo(null);
 			}
 		});
 		
