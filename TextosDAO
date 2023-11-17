@@ -71,6 +71,7 @@ public class TextosDAO {
 
             while (resultSet.next()) {
 
+            	int id = resultSet.getInt("id");
     			String texto= resultSet.getString("texto");
                 String nomeOlimpiada= resultSet.getString("nomeOlimpiada");
                 String subtopico= resultSet.getString("subtopico");
@@ -80,6 +81,7 @@ public class TextosDAO {
 
     			
     			t = new Textos(texto, emailProf, nomeOlimpiada, subtopico, topicoPrincipal);
+    			t.setId(id);
     			listaTextos.add(t);
             }
             resultSet.close();
