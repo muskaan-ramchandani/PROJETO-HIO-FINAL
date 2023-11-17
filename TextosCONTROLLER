@@ -1,0 +1,23 @@
+package controller;
+
+import java.util.ArrayList;
+
+import bo.TextosBO;
+import vo.Assuntos;
+import vo.SubtopicosDosAssuntos;
+import vo.Textos;
+
+public class TextosCONTROLLER {
+	public boolean criarTexto(String texto, String emailProf, String nomeOlimpiada, String subtopico, String 
+			topicoPrincipal) {
+		Textos t = new Textos(texto, emailProf, nomeOlimpiada, subtopico, topicoPrincipal);
+		TextosBO bo = new TextosBO();
+		return bo.criarTexto(texto, emailProf, nomeOlimpiada, subtopico, topicoPrincipal);
+
+	}
+	
+	public static ArrayList<Textos> retornaTextos(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
+		TextosBO bo = new TextosBO();
+		return bo.retornaTextos(nomeOlimp, sub, a);
+	}
+}
