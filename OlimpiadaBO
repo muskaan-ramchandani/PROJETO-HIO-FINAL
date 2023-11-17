@@ -26,9 +26,7 @@ public class OlimpiadaBO {
 	
 	public ArrayList<String> exibirHistoricoOlimpiadasProf(Professor prof) {
 		OlimpiadaDAO dao = new OlimpiadaDAO();
-        ArrayList<String> arrayHist = new ArrayList<>(dao.exibirHistoricoOlimpiadasProf(prof));
-
-        return arrayHist;
+        return dao.exibirHistoricoOlimpiadasProf(prof);
 
     }
 }
