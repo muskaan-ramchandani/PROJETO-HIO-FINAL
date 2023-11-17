@@ -1,5 +1,6 @@
 package view.TelasGuiOlimpiadasProf;
 
+import vo.Aluno;
 import vo.Assuntos;
 import vo.Olimpiada;
 import vo.Professor;
@@ -231,6 +232,7 @@ public class TelaAssuntosProf extends JFrame{
 				
 			}
 			
+			boolean[] actionListenerAdded = new boolean[tamanho];
 			
 			for(int i = 0;i < tamanho;i++) {
 				
@@ -244,15 +246,25 @@ public class TelaAssuntosProf extends JFrame{
 					
 					for(int indice =0; indice<tamL0;indice++) {
 						String descricao = listaSubtopicos0.get(indice).getDescricao();
+						SubtopicosDosAssuntos sub = listaSubtopicos0.get(indice);
+						Assuntos assunto = listaAssuntos.get(0);
 						Assunto[indice+1].setText(descricao);
 
-						Assunto[indice+1].addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
-								setVisible(false);
-							}
-						});
+						final SubtopicosDosAssuntos finalSub = sub; // Declare variável final
+					    final Assuntos finalAssunto = assunto;
+					    int buttonIndex = indice + 1;
+
+				        if (!actionListenerAdded[buttonIndex]) {
+				            Assunto[buttonIndex].addActionListener(new ActionListener() {
+				                @Override
+				                public void actionPerformed(ActionEvent e) {
+				                	TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp, prof, finalSub, finalAssunto);
+				                    setVisible(false);
+				                }
+				            });
+
+				            actionListenerAdded[buttonIndex] = true;
+				        }
 						
 					}
 				}else if(listaAssuntos.size()==2) {
@@ -265,15 +277,25 @@ public class TelaAssuntosProf extends JFrame{
 					
 					for(int indice =0; indice<tamL0;indice++) {
 						String descricao = listaSubtopicos0.get(indice).getDescricao();
+						SubtopicosDosAssuntos sub = listaSubtopicos0.get(indice);
 						Assunto[indice+1].setText(descricao);
 
-						Assunto[indice+1].addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
-								setVisible(false);
-							}
-						});
+						Assuntos assunto = listaAssuntos.get(0);
+						final SubtopicosDosAssuntos finalSub = sub; // Declare variável final
+					    final Assuntos finalAssunto = assunto;
+					    int buttonIndex = indice + 1;
+
+				        if (!actionListenerAdded[buttonIndex]) {
+				            Assunto[buttonIndex].addActionListener(new ActionListener() {
+				                @Override
+				                public void actionPerformed(ActionEvent e) {
+				                	TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp, prof, finalSub, finalAssunto);
+				                    setVisible(false);
+				                }
+				            });
+
+				            actionListenerAdded[buttonIndex] = true;
+				        }
 						
 					}
 					
@@ -284,15 +306,26 @@ public class TelaAssuntosProf extends JFrame{
 					
 					for(int indice =0; indice<tamL1;indice++) {
 						String descricao = listaSubtopicos1.get(indice).getDescricao();
+						SubtopicosDosAssuntos sub = listaSubtopicos1.get(indice);
+
 						Assunto[indice+8].setText(descricao);
 
-						Assunto[indice+8].addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
-								setVisible(false);
-							}
-						});
+						Assuntos assunto = listaAssuntos.get(1);
+						final SubtopicosDosAssuntos finalSub = sub; // Declare variável final
+					    final Assuntos finalAssunto = assunto;
+					    int buttonIndex = indice + 8;
+
+				        if (!actionListenerAdded[buttonIndex]) {
+				            Assunto[buttonIndex].addActionListener(new ActionListener() {
+				                @Override
+				                public void actionPerformed(ActionEvent e) {
+				                	TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp, prof, finalSub, finalAssunto);
+				                    setVisible(false);
+				                }
+				            });
+
+				            actionListenerAdded[buttonIndex] = true;
+				        }
 					}
 				}else if(listaAssuntos.size()==3) {
 					//tab 1
@@ -304,15 +337,25 @@ public class TelaAssuntosProf extends JFrame{
 					
 					for(int indice =0; indice<tamL0;indice++) {
 						String descricao = listaSubtopicos0.get(indice).getDescricao();
+						SubtopicosDosAssuntos sub = listaSubtopicos0.get(indice);
 						Assunto[indice+1].setText(descricao);
 
-						Assunto[indice+1].addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
-								setVisible(false);
-							}
-						});
+						Assuntos assunto = listaAssuntos.get(0);
+						final SubtopicosDosAssuntos finalSub = sub; // Declare variável final
+					    final Assuntos finalAssunto = assunto;
+					    int buttonIndex = indice + 1;
+
+				        if (!actionListenerAdded[buttonIndex]) {
+				            Assunto[buttonIndex].addActionListener(new ActionListener() {
+				                @Override
+				                public void actionPerformed(ActionEvent e) {
+				                	TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp, prof, finalSub, finalAssunto);
+				                    setVisible(false);
+				                }
+				            });
+
+				            actionListenerAdded[buttonIndex] = true;
+				        }
 						
 					}
 					
@@ -323,15 +366,25 @@ public class TelaAssuntosProf extends JFrame{
 					
 					for(int indice =0; indice<tamL1;indice++) {
 						String descricao = listaSubtopicos1.get(indice).getDescricao();
+						SubtopicosDosAssuntos sub = listaSubtopicos1.get(indice);
 						Assunto[indice+8].setText(descricao);
 
-						Assunto[indice+8].addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
-								setVisible(false);
-							}
-						});
+						Assuntos assunto = listaAssuntos.get(1);
+						final SubtopicosDosAssuntos finalSub = sub; // Declare variável final
+					    final Assuntos finalAssunto = assunto;
+					    int buttonIndex = indice + 8;
+
+				        if (!actionListenerAdded[buttonIndex]) {
+				            Assunto[buttonIndex].addActionListener(new ActionListener() {
+				                @Override
+				                public void actionPerformed(ActionEvent e) {
+				                	TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp, prof, finalSub, finalAssunto);
+				                    setVisible(false);
+				                }
+				            });
+
+				            actionListenerAdded[buttonIndex] = true;
+				        }
 					}
 					
 					//tab 3
@@ -341,15 +394,26 @@ public class TelaAssuntosProf extends JFrame{
 					
 					for(int indice =0; indice<tamL2;indice++) {
 						String descricao = listaSubtopicos2.get(indice).getDescricao();
+						SubtopicosDosAssuntos sub = listaSubtopicos2.get(indice);
+
 						Assunto[indice+15].setText(descricao);
 
-						Assunto[indice+15].addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp.getNome(), prof, descricao);
-								setVisible(false);
-							}
-						});
+						Assuntos assunto = listaAssuntos.get(2);
+						final SubtopicosDosAssuntos finalSub = sub; // Declare variável final
+					    final Assuntos finalAssunto = assunto;
+					    int buttonIndex = indice + 15;
+
+				        if (!actionListenerAdded[buttonIndex]) {
+				            Assunto[buttonIndex].addActionListener(new ActionListener() {
+				                @Override
+				                public void actionPerformed(ActionEvent e) {
+				                	TelaTEAssuntoProf telaTE = new TelaTEAssuntoProf(olimp, prof, finalSub, finalAssunto);
+				                    setVisible(false);
+				                }
+				            });
+
+				            actionListenerAdded[buttonIndex] = true;
+				        }
 					}
 				}
 
