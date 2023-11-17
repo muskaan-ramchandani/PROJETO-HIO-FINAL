@@ -4,10 +4,17 @@ public class Textos {
 	private String texto;
 	private String emailProf;
 	private int id;
+	private String nomeOlimpiada;
+	private String subtopico;
+	private String topicoPrincipal;
 	
-	public Textos(String texto, String emailProf) {
+	
+	public Textos(String texto, String emailProf, String nomeOlimpiada, String subtopico, String topicoPrincipal) {
 		setTexto(texto);
 		setEmailProf(emailProf);
+		setNomeOlimpiada(nomeOlimpiada);
+		setSubtopico(subtopico);
+		setTopicoPrincipal(topicoPrincipal);
 	}
 
 	public String getTexto() {
@@ -32,6 +39,30 @@ public class Textos {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getNomeOlimpiada() {
+		return nomeOlimpiada;
+	}
+
+	public void setNomeOlimpiada(String nomeOlimpiada) {
+		this.nomeOlimpiada = nomeOlimpiada;
+	}
+
+	public String getSubtopico() {
+		return subtopico;
+	}
+
+	public void setSubtopico(String subtopico) {
+		this.subtopico = subtopico;
+	}
+
+	public String getTopicoPrincipal() {
+		return topicoPrincipal;
+	}
+
+	public void setTopicoPrincipal(String topicoPrincipal) {
+		this.topicoPrincipal = topicoPrincipal;
 	}
 	
 	
