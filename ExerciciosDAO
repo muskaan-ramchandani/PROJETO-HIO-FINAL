@@ -65,7 +65,7 @@ public class ExerciciosDAO {
     		 conn = new Conexao().getConnection();
     		 
     		 
-    		 String selectQuery = "SELECT * FROM Textos " +
+    		 String selectQuery = "SELECT * FROM Exercicios " +
              "WHERE nomeOlimpiada = ? AND subtopico = ? AND topicoPrincipal=?";  
 
     		 
@@ -78,6 +78,7 @@ public class ExerciciosDAO {
 
             while (resultSet.next()) {
             	
+                
             	int id = resultSet.getInt("id");
     			String alternativaA= resultSet.getString("alternativaA");
                 String alternativaB= resultSet.getString("alternativaB");
