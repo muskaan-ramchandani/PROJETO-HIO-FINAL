@@ -450,16 +450,4 @@ public class TelaTEAssuntoAluno extends JFrame{
 			});
 		
 	}
-	
-	public static void main(String[] args) {
-		AlunoCONTROLLER controla= new AlunoCONTROLLER();
-    	Aluno aluno = controla.obterAlunoExistente("isassevalho@gmail.com");
-    	OlimpiadaCONTROLLER contOlimp = new OlimpiadaCONTROLLER();
-    	Olimpiada olimp = contOlimp.obterOlimpiadaExistente("ONC");
-    	SubtopicosDosAssuntos sub = new SubtopicosDosAssuntos("DNA",  olimp.getNome());
-    	Assuntos assunto = new Assuntos("Genética", olimp.getNome());
-    	
-        TelaTEAssuntoAluno tela = new TelaTEAssuntoAluno(olimp, aluno, sub,  assunto);
-   
-    }
 }
