@@ -5,7 +5,6 @@ public class Exercicios {
 	private String alternativaB;
 	private String alternativaC;
 	private String alternativaD;
-	private String alternativaE;
 	private String alternativaCorreta;
 	private String emailProf;
 	private String nomeOlimpiada;
@@ -13,14 +12,13 @@ public class Exercicios {
 	private String topicoPrincipal;
 	
 	public Exercicios(String alternativaA, String alternativaB, String alternativaC, String alternativaD,
-			String alternativaE, String alternativaCorreta, String emailProf, String nomeOlimpiada,
+			String alternativaCorreta, String emailProf, String nomeOlimpiada,
 			String subtopico, String topicoPrincipal) {
 		
 		setAlternativaA(alternativaA);
 		setAlternativaB(alternativaB);
 		setAlternativaC(alternativaC);
 		setAlternativaD(alternativaD);
-		setAlternativaE(alternativaE);
 		setAlternativaCorreta(alternativaCorreta);
 		setEmailProf(emailProf);
 		setNomeOlimpiada(nomeOlimpiada);
@@ -59,14 +57,6 @@ public class Exercicios {
 
 	public void setAlternativaD(String alternativaD) {
 		this.alternativaD = alternativaD;
-	}
-
-	public String getAlternativaE() {
-		return alternativaE;
-	}
-
-	public void setAlternativaE(String alternativaE) {
-		this.alternativaE = alternativaE;
 	}
 
 	public String getAlternativaCorreta() {
