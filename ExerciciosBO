@@ -1,0 +1,27 @@
+package bo;
+
+import java.util.ArrayList;
+
+import dao.ExerciciosDAO;
+import vo.Assuntos;
+import vo.Exercicios;
+import vo.SubtopicosDosAssuntos;
+
+public class ExerciciosBO {
+
+	public boolean criarExercicio(String alternativaA, String alternativaB, String alternativaC, String alternativaD,
+			String alternativaCorreta, String emailProf, String nomeOlimpiada,
+			String subtopico, String topicoPrincipal) {
+		
+		Exercicios e = new Exercicios( alternativaA,  alternativaB,  alternativaC,  alternativaD,
+	 			 alternativaCorreta,  emailProf,  nomeOlimpiada,
+	 			 subtopico,  topicoPrincipal);
+		ExerciciosDAO dao = new ExerciciosDAO();
+		return dao.criarExercicio(e);
+	}
+	
+	public static ArrayList<Exercicios> retornaTextos(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
+		ExerciciosDAO dao = new ExerciciosDAO();
+        return dao.retornaTextos(nomeOlimp, sub, a);
+    }
+}
