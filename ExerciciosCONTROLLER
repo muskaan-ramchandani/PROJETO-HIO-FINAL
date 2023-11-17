@@ -15,8 +15,8 @@ public class ExerciciosCONTROLLER {
 		return bo.criarExercicio(alternativaA, alternativaB, alternativaC, alternativaD, alternativaCorreta, emailProf, nomeOlimpiada, subtopico, topicoPrincipal);
 	}
 	
-	public static ArrayList<Exercicios> retornaTextos(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
+	public static ArrayList<Exercicios> retornaExercicios(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
 		ExerciciosBO bo = new ExerciciosBO();
-        return bo.retornaTextos(nomeOlimp, sub, a);
+        return bo.retornaExercicios(nomeOlimp, sub, a);
     }
 }
