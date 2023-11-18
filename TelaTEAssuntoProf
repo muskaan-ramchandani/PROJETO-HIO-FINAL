@@ -217,7 +217,9 @@ public class TelaTEAssuntoProf extends JFrame{
 				        Assunto[i + 1].addActionListener(new ActionListener() {
 				            @Override
 				            public void actionPerformed(ActionEvent e) {
-				            	TelaExercicio exer = new TelaExercicio(exerAtual);
+								String user = "Professor";
+
+				            	TelaExercicio exer = new TelaExercicio(exerAtual, user);
 								exer.setLocationRelativeTo(null);
 				            }
 				        });
@@ -351,7 +353,9 @@ public class TelaTEAssuntoProf extends JFrame{
 			        Assunto[i].addActionListener(new ActionListener() {
 			            @Override
 			            public void actionPerformed(ActionEvent e) {
-			            	TelaExercicio exer = new TelaExercicio(exerAtual);
+							String user = "Professor";
+
+			            	TelaExercicio exer = new TelaExercicio(exerAtual, user);
 							exer.setLocationRelativeTo(null);
 			            }
 			        });
