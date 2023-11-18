@@ -1,0 +1,124 @@
+package view;
+import javax.swing.*;
+
+import controller.TextosCONTROLLER;
+import view.TelasGuiOlimpiadasProf.TelaAssuntosProf;
+import view.TelasGuiOlimpiadasProf.TelaTEAssuntoProf;
+import vo.Textos;
+import vo.Aluno;
+import vo.Assuntos;
+import vo.Olimpiada;
+import vo.Professor;
+import vo.SubtopicosDosAssuntos;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Locale;
+
+public class TelaCadastraTexto extends JFrame{
+	
+	private JLayeredPane lp;
+	private Container contentPane;
+	private JLabel lblCadastrartexto;
+	private JLabel lblTexto;
+	private JTextField txtTexto;
+	private JButton btnAdicionar;
+	
+    private Color roxoIndigo = new Color(75,0,130);
+    
+	public TelaCadastraTexto(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
+		inicializarComponentes( olimp,  prof,  sub,  assunto);
+		definirEventos( olimp,  prof,  sub,  assunto);
+		setVisible(true);
+	}
+
+	private void inicializarComponentes(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
+		//configura tela
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, 335, 400);
+		contentPane=getContentPane();
+		contentPane.setBackground(Color.white);
+		
+		//inicializa
+		lp= new JLayeredPane();
+		lblCadastrartexto= new JLabel("Cadastrar texto");
+		lblTexto = new JLabel("Texto:");
+		txtTexto= new JTextField();
+		btnAdicionar= new JButton("Cadastrar texto");
+	
+		
+		//cores
+		lblCadastrartexto.setForeground(roxoIndigo);
+		lblTexto.setForeground(Color.BLACK);
+		txtTexto.setForeground(Color.BLACK);
+		btnAdicionar.setForeground(Color.WHITE);
+		btnAdicionar.setBackground(roxoIndigo);
+				
+		//fontes
+		lblCadastrartexto.setFont(new Font("Trebuchet MS", Font.BOLD, 25));
+		lblTexto.setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+		txtTexto.setFont(new Font("Trebuchet MS", Font.PLAIN, 15));
+		btnAdicionar.setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
+		
+		//coordenadas 		setBounds(0, 0, 550, 585);
+		lblCadastrartexto.setBounds(40, 20, 300, 30);
+		lblTexto.setBounds(20, 75, 259, 25);
+		txtTexto.setBounds(20, 100, 275, 205);
+		btnAdicionar.setBounds(50, 310, 200, 30);
+		
+		//adiciona
+		contentPane.add(lp);
+		lp.add(lblCadastrartexto, new Integer(1));
+		lp.add(lblTexto, new Integer(2));
+		lp.add(txtTexto, new Integer(3));
+		lp.add(btnAdicionar, new Integer(4));
+		
+		setLayout(new BorderLayout());
+        add(lp, BorderLayout.CENTER);
+        btnAdicionar.setBorderPainted(false);
+	}
+
+	private void definirEventos(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
+		btnAdicionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TextosCONTROLLER controla = new TextosCONTROLLER();
+				String textoo= String.valueOf(txtTexto.getText());
+				
+				boolean foi= controla.criarTexto(textoo, prof.getEmail(), olimp.getNome(),
+						sub.getDescricao(), assunto.getTituloAssunto());
+						
+				if(foi==true) {
+					JOptionPane.showMessageDialog(null, "Texto cadastrado com sucesso!");
+					
+					TelaTEAssuntoProf tela = new TelaTEAssuntoProf( olimp,  prof,  sub,  assunto);
+					fecharTodasJFramesExcetoEspecifica(tela);
+			        setVisible(false);
+			        
+				}else if(foi==false) {
+					JOptionPane.showMessageDialog(null, "Erro ao cadastrar texto!");
+
+				}
+			}
+		});
+		
+	}
+
+	private static void fecharTodasJFramesExcetoEspecifica(JFrame frameParaManterAberta) {
+        Window[] windows = Window.getWindows();
+        for (Window window : windows) {
+            if (window instanceof JFrame && window != frameParaManterAberta) {
+                window.dispose();
+            }
+        }
+ }
+}
