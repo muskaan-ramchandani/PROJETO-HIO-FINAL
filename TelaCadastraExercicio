@@ -1,0 +1,284 @@
+package view;
+import javax.swing.*;
+
+import controller.ExerciciosCONTROLLER;
+import view.TelasGuiOlimpiadasProf.TelaTEAssuntoProf;
+import vo.Assuntos;
+import vo.Olimpiada;
+import vo.Professor;
+import vo.SubtopicosDosAssuntos;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
+public class TelaCadastraExercicio extends JFrame{
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JLabel lblPergunta;
+	private JTextField txtPergunta;
+	private JLabel lblAlternativaA;
+	private JTextField txtAlternativaA; 
+	private JLabel lblAlternativaB;
+	private JTextField txtAlternativaB; 
+	
+	private JLabel lblAlternativaC;
+	private JTextField txtAlternativaC; 
+	private JLabel lblAlternativaD;
+	private JTextField txtAlternativaD; 
+	
+	private JLabel lblAlternativaCorreta;
+    private ButtonGroup buttonGroup;
+	private JRadioButton rbAlternativaA;
+	private JRadioButton rbAlternativaB;
+	private JRadioButton rbAlternativaC;
+	private JRadioButton rbAlternativaD;
+
+	
+	private JButton btnCriar;
+	private JButton btnCancelar;
+	private JLabel lblCriarExercicio;
+	
+	public TelaCadastraExercicio(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
+		inicializarComponentes(olimp, prof, sub, assunto);
+		definirEventos(olimp, prof, sub, assunto);
+	}
+
+
+
+	//@SuppressWarnings("removal")
+	private void inicializarComponentes(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
+		//instanciação
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, 765, screenSize.height-50);
+		contentPane=getContentPane();
+		contentPane.setBackground(Color.white);
+		//setLayout(null);
+		
+		lp = new JLayeredPane();
+		lblCriarExercicio= new JLabel("Criar exercício");
+		lblPergunta = new JLabel("Pergunta:");
+		txtPergunta = new JTextField();
+		lblAlternativaA= new JLabel("Alternativa A:");
+		txtAlternativaA= new JTextField();
+		lblAlternativaB= new JLabel("Alternativa B:");
+		txtAlternativaB= new JTextField();
+		
+		lblAlternativaC= new JLabel("Alternativa C:");
+		txtAlternativaC= new JTextField();
+		lblAlternativaD= new JLabel("Alternativa D:");
+		txtAlternativaD= new JTextField();
+		
+		lblAlternativaCorreta = new JLabel("Alternativa correta:");
+        buttonGroup = new ButtonGroup();
+        rbAlternativaA = new JRadioButton("A");
+        rbAlternativaB = new JRadioButton("B");
+        rbAlternativaC = new JRadioButton("C");
+        rbAlternativaD = new JRadioButton("D");
+
+		
+		btnCriar = new JButton("Criar");
+		btnCancelar = new JButton("Cancelar");
+	
+				
+		
+		Color roxoIndigo = new Color(75,0,130);	
+		btnCriar.setBackground(roxoIndigo);
+		btnCriar.setForeground(Color.WHITE);
+		btnCancelar.setBackground(roxoIndigo);
+		btnCancelar.setForeground(Color.WHITE);
+		lblCriarExercicio.setForeground(roxoIndigo);
+		lblPergunta.setForeground(Color.BLACK);
+		txtPergunta.setForeground(Color.BLACK);
+		lblAlternativaA.setForeground(Color.BLACK);
+		txtAlternativaA.setForeground(Color.BLACK); 
+		lblAlternativaB.setForeground(Color.BLACK);
+		txtAlternativaB.setForeground(Color.BLACK); 
+		
+		lblAlternativaC.setForeground(Color.BLACK);
+		txtAlternativaC.setForeground(Color.BLACK); 
+		lblAlternativaD.setForeground(Color.BLACK);
+		txtAlternativaD.setForeground(Color.BLACK); 
+		
+		lblAlternativaCorreta.setForeground(Color.BLACK);
+		
+		rbAlternativaA.setForeground(Color.BLACK);
+        rbAlternativaB.setForeground(Color.BLACK);
+        rbAlternativaC.setForeground(Color.BLACK);
+        rbAlternativaD.setForeground(Color.BLACK);
+
+        rbAlternativaA.setBackground(Color.WHITE);
+        rbAlternativaB.setBackground(Color.WHITE);
+        rbAlternativaC.setBackground(Color.WHITE);
+        rbAlternativaD.setBackground(Color.WHITE);
+        
+        
+		lblCriarExercicio.setFont(new Font("Trebuchet MS", Font.BOLD, 35));
+
+		Font txtFonte = new Font("Trebuchet MS", Font.PLAIN, 18);
+		txtPergunta.setFont(txtFonte);
+		txtAlternativaA.setFont(txtFonte); 
+		txtAlternativaB.setFont(txtFonte); 
+		
+		txtAlternativaC.setFont(txtFonte); 
+		txtAlternativaD.setFont(txtFonte); 
+		
+		rbAlternativaA.setFont(txtFonte);
+        rbAlternativaB.setFont(txtFonte);
+        rbAlternativaC.setFont(txtFonte);
+        rbAlternativaD.setFont(txtFonte);
+        
+		Font lblFonte = new Font("Trebuchet MS", Font.PLAIN, 20);
+		lblPergunta.setFont(lblFonte);
+		lblAlternativaA.setFont(lblFonte);
+		lblAlternativaB.setFont(lblFonte);
+		
+		lblAlternativaC.setFont(lblFonte);
+		lblAlternativaD.setFont(lblFonte);
+		lblAlternativaCorreta.setFont(lblFonte);
+		
+		
+		Font txtBotao = new Font("Trebuchet MS", Font.PLAIN, 20);
+		btnCriar.setFont(txtBotao);
+		btnCancelar.setFont(txtBotao);
+		
+		//coordenadas 			setBounds(0, 0, 1010, screenSize.height-40==728);
+		lblCriarExercicio.setBounds(235,10,350,50);
+		
+		lblPergunta.setBounds(100, 100, 550, 25);
+		txtPergunta.setBounds(100, 125, 550, 30);
+		
+		lblAlternativaA.setBounds(100, 175, 550, 25);
+		txtAlternativaA.setBounds(100, 200, 550, 30); 
+
+		
+		lblAlternativaB.setBounds(100, 250, 550, 25); //dif 50
+		txtAlternativaB.setBounds(100, 275, 550, 30); //dif 25
+		
+		lblAlternativaC.setBounds(100, 325, 550, 25);
+		txtAlternativaC.setBounds(100, 350, 550, 30); 
+		
+		lblAlternativaD.setBounds(100, 400, 550, 25);
+		txtAlternativaD.setBounds(100, 425, 550, 30); 
+
+		rbAlternativaA.setBounds(100, 500, 100, 30);
+	    rbAlternativaB.setBounds(250, 500, 100, 30);
+	    rbAlternativaC.setBounds(400, 500, 100, 30);
+	    rbAlternativaD.setBounds(550, 500, 100, 30);
+		
+	    lblAlternativaCorreta.setBounds(100, 475, 700, 25);
+
+		btnCriar.setBounds(180,600,170,50);
+		btnCancelar.setBounds(400,600,170,50);
+		
+		buttonGroup.add(rbAlternativaA);
+        buttonGroup.add(rbAlternativaB);
+        buttonGroup.add(rbAlternativaC);
+        buttonGroup.add(rbAlternativaD);
+
+        
+		contentPane.add(lp);
+		lp.add(lblCriarExercicio, new Integer(1));
+		lp.add(btnCriar, new Integer(2));
+		lp.add(btnCancelar, new Integer(3)); 
+		lp.add(lblPergunta, new Integer(4));
+		lp.add(txtPergunta, new Integer(5));
+		lp.add(lblAlternativaA, new Integer(6));
+		lp.add(txtAlternativaA, new Integer(7));
+		lp.add(lblAlternativaB, new Integer(12));
+		lp.add(txtAlternativaB, new Integer(13));
+
+		
+		lp.add(lblAlternativaC, new Integer(16));
+		lp.add(txtAlternativaC, new Integer(17)); 
+		lp.add(lblAlternativaD, new Integer(20));
+		lp.add(txtAlternativaD, new Integer(21)); 
+
+		
+		lp.add(lblAlternativaCorreta, new Integer(24));
+		lp.add(rbAlternativaA, new Integer(25)); 
+		lp.add(rbAlternativaB, new Integer(26)); 
+		lp.add(rbAlternativaC, new Integer(27)); 
+		lp.add(rbAlternativaD, new Integer(28)); 
+
+
+		
+		setVisible(true);
+	}
+	
+	private void definirEventos(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
+		btnCriar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(txtAlternativaA.getText().isEmpty()||txtAlternativaB.getText().isEmpty()||
+						txtAlternativaC.getText().isEmpty()||txtAlternativaD.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+					
+				}else if(rbAlternativaA.isSelected()==false&&rbAlternativaB.isSelected()==false&&
+						rbAlternativaC.isSelected()==false&&rbAlternativaD.isSelected()==false){//verifica se tem algo nao selecionado como correto
+				
+					JOptionPane.showMessageDialog(null, "Escolha qual a alternativa correta!");
+					
+				}else { //ta tudo ok
+					String atA= String.valueOf(txtAlternativaA.getText());
+					String atB= String.valueOf(txtAlternativaB.getText());
+					String atC= String.valueOf(txtAlternativaC.getText());
+					String atD= String.valueOf(txtAlternativaD.getText());
+					String pergunta =  String.valueOf(txtPergunta.getText());
+					String atCorreta=null;
+					
+					if(rbAlternativaA.isSelected()==true) {
+						atCorreta = "A";
+					}else if(rbAlternativaB.isSelected()==true){
+						atCorreta = "B";
+					}else if(rbAlternativaC.isSelected()==true){
+						atCorreta = "C";
+					}else if(rbAlternativaD.isSelected()==true){
+						atCorreta = "D";
+					}
+					
+					ExerciciosCONTROLLER controla = new ExerciciosCONTROLLER();
+					boolean foi = controla.criarExercicio(atA, atB, atC, atD, atCorreta, prof.getEmail(), 
+							olimp.getNome(), sub.getDescricao(), assunto.getTituloAssunto(), pergunta);
+					
+					if(foi==true){
+						JOptionPane.showMessageDialog(null, "Exercício cadastrado com sucesso!");
+						
+						TelaTEAssuntoProf tela = new TelaTEAssuntoProf( olimp,  prof,  sub,  assunto);
+						fecharTodasJFramesExcetoEspecifica(tela);
+				        setVisible(false);
+				        
+					}else {
+						JOptionPane.showMessageDialog(null, "Erro ao cadastrar exercício!");
+
+					}
+					
+				}
+				
+
+				
+			}
+		});
+		
+		btnCancelar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+	}
+	
+	private static void fecharTodasJFramesExcetoEspecifica(JFrame frameParaManterAberta) {
+        Window[] windows = Window.getWindows();
+        for (Window window : windows) {
+            if (window instanceof JFrame && window != frameParaManterAberta) {
+                window.dispose();
+            }
+        }
+ }
+}
