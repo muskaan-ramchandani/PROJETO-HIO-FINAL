@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -61,7 +62,7 @@ public class TelaTEAssuntoProf extends JFrame{
 	int limite = 7;
 	private JButton[] Assunto = new JButton[tamanho];
 	int linha = 200;
-	int coluna = 150;
+	int coluna = 200;
 	
 	public TelaTEAssuntoProf(Olimpiada olimp, Professor prof, SubtopicosDosAssuntos sub, Assuntos assunto) {
 		inicializarComponentes( olimp,  prof,  sub,  assunto);
@@ -186,9 +187,11 @@ public class TelaTEAssuntoProf extends JFrame{
 		
 		if(listaTextos.isEmpty()==true&&listaExercicios.isEmpty()==false) { //existem apenas exercicios
 		
-
+			int contaSeJafoi=0;
+			
 		     for(int i = 0;i < tamanho/2;i++) {
 					Assunto[i]= new JButton("");
+					Assunto[i+1]= new JButton("");
 					Assunto[0] = new JButton("Exercícios");			
 					Assunto[i].setFocusPainted(false);
 					Assunto[i].setBackground(Color.WHITE);
@@ -200,21 +203,31 @@ public class TelaTEAssuntoProf extends JFrame{
 					Assunto[0].setFont(new Font("Trebuchet MS", Font.BOLD, 25));
 
 					Assunto[i].setBounds(linha+300,coluna,425,69);
+				
+					Exercicios ex = null;
+					if (listaExercicios.size() > i && listaExercicios.get(i) != null) {
+					    // A posição está ocupada
+						ex =listaExercicios.get(i);
+						
+				        final Exercicios exerAtual = ex;
+
+				        Assunto[i + 1].setText("Exercício nº" + exerAtual.getId());
+
+				        Assunto[i + 1].addActionListener(new ActionListener() {
+				            @Override
+				            public void actionPerformed(ActionEvent e) {
+				            	TelaExercicio exer = new TelaExercicio(exerAtual);
+								exer.setLocationRelativeTo(null);
+				            }
+				        });
+					
+					}else {
+				        Assunto[i + 1].setText("");
+					}		
 					lp.add(Assunto[i], new Integer(13));
 					coluna=coluna+ 69;
 					
-					for(int conta=0; conta<listaExercicios.size();conta++) {
-						Assunto[i+1]= new JButton("Exercício nº"+listaExercicios.get(conta).getId());
-
-						int val=conta;
-						Assunto[i+1].addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								TelaExercicio exer = new TelaExercicio(listaExercicios.get(val));
-								exer.setLocationRelativeTo(null);
-							}
-						});
-					}
+				
 					
 				}
 		     
@@ -222,7 +235,7 @@ public class TelaTEAssuntoProf extends JFrame{
 			
 
 		     for(int i = 0;i < tamanho/2;i++) {
-					Assunto[i]= new JButton("");
+					Assunto[i+1] = new JButton("");			
 					Assunto[0] = new JButton("Textos");			
 					Assunto[i].setFocusPainted(false);
 					Assunto[i].setBackground(Color.WHITE);
@@ -234,21 +247,31 @@ public class TelaTEAssuntoProf extends JFrame{
 					Assunto[0].setFont(new Font("Trebuchet MS", Font.BOLD, 25));
 
 					Assunto[i].setBounds(linha+300,coluna,425,69);
+					
+					Textos txto = null;
+					if (listaTextos.size() > i && listaTextos.get(i) != null) {
+					    // A posição está ocupada
+						txto =listaTextos.get(i);
+						
+						final Textos textoAtual = txto;
+
+				        Assunto[i + 1].setText("Texto nº" + textoAtual.getId());
+
+				        Assunto[i + 1].addActionListener(new ActionListener() {
+				            @Override
+				            public void actionPerformed(ActionEvent e) {
+				                TelaTextos txt = new TelaTextos(textoAtual);
+				                txt.setLocationRelativeTo(null);
+				            }
+				        });
+					
+					}else {
+				        Assunto[i + 1].setText("");
+					}				
+				    
+					
 					lp.add(Assunto[i], new Integer(13));
 					coluna=coluna+ 69;
-					
-					for(int conta=0; conta<listaTextos.size();conta++) {
-						Assunto[i+1]= new JButton("Texto nº"+listaTextos.get(conta).getId());
-
-						int val=conta;
-						Assunto[i+1].addActionListener(new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								TelaTextos txt = new TelaTextos(listaTextos.get(val));
-								txt.setLocationRelativeTo(null);
-							}
-						});
-					}
 					
 				}
 		     
@@ -264,7 +287,6 @@ public class TelaTEAssuntoProf extends JFrame{
 		else {
 			
 			for(int i = 0;i < tamanho;i++) {
-				Assunto[i]= new JButton("");
 				Assunto[0] = new JButton("Textos");
 				
 				for(int cont=0; cont<listaTextos.size();cont++) {
@@ -303,7 +325,7 @@ public class TelaTEAssuntoProf extends JFrame{
 				if(i >= limite) {
 					linha += 500;
 					limite += 7;
-					coluna = 150;
+					coluna = 200;
 					
 					
 				}
