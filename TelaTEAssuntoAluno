@@ -180,9 +180,6 @@ public class TelaTEAssuntoAluno extends JFrame{
 				Assunto[0].setFont(new Font("Trebuchet MS", Font.BOLD, 25));
 
 				Assunto[i].setBounds(linha+300,coluna,425,69);
-				lp.add(Assunto[i], new Integer(13));
-				coluna=coluna+ 69;
-				
 				for(int conta=0; conta<listaExercicios.size();conta++) {
 					Assunto[i+1]= new JButton("Exercício nº"+listaExercicios.get(conta).getId());
 
@@ -190,11 +187,15 @@ public class TelaTEAssuntoAluno extends JFrame{
 					Assunto[i+1].addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							TelaExercicio exer = new TelaExercicio(listaExercicios.get(val));
+							String user = "Aluno";
+							TelaExercicio exer = new TelaExercicio(listaExercicios.get(val), user);
 							exer.setLocationRelativeTo(null);
 						}
 					});
 				}
+				lp.add(Assunto[i], new Integer(13));
+				coluna=coluna+ 69;
+				
 				
 			}
 	     
@@ -214,8 +215,6 @@ public class TelaTEAssuntoAluno extends JFrame{
 				Assunto[0].setFont(new Font("Trebuchet MS", Font.BOLD, 25));
 
 				Assunto[i].setBounds(linha+300,coluna,425,69);
-				lp.add(Assunto[i], new Integer(13));
-				coluna=coluna+ 69;
 				
 				for(int conta=0; conta<listaTextos.size();conta++) {
 					Assunto[i+1]= new JButton("Texto nº"+listaTextos.get(conta).getId());
@@ -229,6 +228,10 @@ public class TelaTEAssuntoAluno extends JFrame{
 						}
 					});
 				}
+				
+				lp.add(Assunto[i], new Integer(13));
+				coluna=coluna+ 69;
+				
 				
 			}
 	     
@@ -244,18 +247,9 @@ public class TelaTEAssuntoAluno extends JFrame{
 		else {
 			
 			for(int i = 0;i < tamanho;i++) {
-				Assunto[i]= new JButton("");
+				Assunto[i] = new JButton("");
 				Assunto[0] = new JButton("Textos");
-				
-				for(int cont=0; cont<listaTextos.size();cont++) {
-					Assunto[i+1]= new JButton("Texto nº"+listaTextos.get(cont).getId());
-				}
 				Assunto[7] = new JButton("Exercícios");	
-				
-				for(int cont=0; cont<listaExercicios.size();cont++) {
-					Assunto[i+8]= new JButton("Texto nº"+listaExercicios.get(cont).getId());
-				}
-				
 				Assunto[i].setFocusPainted(false);
 				Assunto[i].setBackground(Color.WHITE);
 				Assunto[i].setForeground(Color.BLACK);
@@ -266,7 +260,7 @@ public class TelaTEAssuntoAluno extends JFrame{
 				if(i >= limite) {
 					linha += 500;
 					limite += 7;
-					coluna = 150;
+					coluna = 200;
 					
 					
 				}
@@ -279,8 +273,55 @@ public class TelaTEAssuntoAluno extends JFrame{
 				
 			}
 			
-		}
-		
+			for(int i=0;i<7;i++) {
+				Textos txto = null;
+				if (listaTextos.size() > i && listaTextos.get(i) != null) {
+				    // A posição está ocupada
+					txto =listaTextos.get(i);
+					
+					final Textos textoAtual = txto;
+
+			        Assunto[i + 1].setText("Texto nº" + textoAtual.getId());
+
+			        Assunto[i + 1].addActionListener(new ActionListener() {
+			            @Override
+			            public void actionPerformed(ActionEvent e) {
+			                TelaTextos txt = new TelaTextos(textoAtual);
+			                txt.setLocationRelativeTo(null);
+			            }
+			        });
+				
+				}else {
+			        Assunto[i + 1].setText("");
+				}
+			}
+			
+			
+			for(int i=8;i<14;i++) {
+				Exercicios ex = null;
+				if (listaExercicios.size() > i-8 && listaExercicios.get(i-8) != null) {
+				    // A posição está ocupada
+					ex =listaExercicios.get(i-8);
+					
+			        final Exercicios exerAtual = ex;
+
+			        Assunto[i].setText("Exercício nº" + exerAtual.getId());
+
+			        Assunto[i].addActionListener(new ActionListener() {
+			            @Override
+			            public void actionPerformed(ActionEvent e) {
+							String user = "Aluno";
+			            	TelaExercicio exer = new TelaExercicio(exerAtual, user);
+							exer.setLocationRelativeTo(null);
+			            }
+			        });
+				
+				}else {
+			        Assunto[i].setText("");
+				}	
+			}
+			
+		}		
 		
 		
 		//tirar borda
