@@ -1,0 +1,66 @@
+package view;
+import javax.swing.*;
+
+import controller.FlashcardCONTROLLER;
+import dao.FlashcardDAO;
+import vo.Flashcard;
+import vo.Textos;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+public class TelaTextos extends JFrame{
+	
+	public TelaTextos(Textos t) {
+		inicializarComponentes(t);
+		setVisible(true);
+	}
+	
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JPanel panelBranco;
+	private JLabel lblResumo;	
+    private Color roxoIndigo = new Color(75,0,130);
+	
+
+	private void inicializarComponentes(Textos t) {
+		
+			//configurações da tela
+			Toolkit toolkit = Toolkit.getDefaultToolkit();
+			Dimension screenSize = toolkit.getScreenSize();
+			setBounds(0, 0, 505, 648);
+			contentPane=getContentPane();
+	        contentPane.setBackground(new Color(220,220,220));
+	        
+	        //inicializa
+	
+	        String textoResumo="<html><div style='text-align: justify;'>"+t.getTexto()+"</div></html>";
+
+	        lp= new JLayeredPane();
+	        panelBranco = new JPanel();
+	        lblResumo= new JLabel(textoResumo);	        
+	        lblResumo.setHorizontalAlignment(JLabel.CENTER); // Centraliza horizontalmente
+	        lblResumo.setVerticalAlignment(JLabel.CENTER);
+	        
+
+	        
+	        //configurações
+	        panelBranco.setBackground(Color.white);
+	        lblResumo.setForeground(Color.BLACK);
+	        
+	        
+	        //fontes
+	        lblResumo.setFont(new Font("Sniglet", Font.PLAIN, 20));
+	        
+	        //coordenadas
+	        panelBranco.setBounds(17, 20, 450, 570);
+	        lblResumo.setBounds(50, 50, 400, 500);
+	        
+
+	        //adiciona
+	        contentPane.add(lp);
+	        lp.add(panelBranco, new Integer(1));
+	        lp.add(lblResumo, new Integer(4));
+	        
+	}
+}
