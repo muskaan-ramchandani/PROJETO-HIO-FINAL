@@ -20,7 +20,7 @@ public class TelaExercicio extends JFrame{
 	private JRadioButton rbAlternativaC;
 	private JRadioButton rbAlternativaD;
 	private JLabel lblExercicio;
-
+	private JLabel lblResposta;
 	
 	public TelaExercicio(Exercicios e, String alunoOuProf) {
 		inicializarComponentes(e, alunoOuProf);
@@ -112,7 +112,84 @@ public class TelaExercicio extends JFrame{
 			lp.add(rbAlternativaD, new Integer(28)); 
 			
 		}else if(alunoOuProf=="Professor") {
+			lblPergunta.setText("<html><div style='text-align: justify;'>Pergunta do exercício: "+e.getPergunta()+
+					"</div></html>");
+			lblResposta = new JLabel();
 			
+			ExerciciosCONTROLLER controla = new ExerciciosCONTROLLER();
+			String alternativa = controla.retornaAlternativaCorreta(e);
+			
+			if(alternativa.equals("A")) {
+				lblResposta.setText("Resposta: "+e.getAlternativaA());
+				
+			}else if(alternativa.equals("B")) {
+				lblResposta.setText("Resposta: "+e.getAlternativaB());
+				
+			}else if(alternativa.equals("C")) {
+				lblResposta.setText("Resposta: "+e.getAlternativaC());
+				
+			}else if(alternativa.equals("D")) {
+				lblResposta.setText("Resposta: "+e.getAlternativaD());
+			}
+			
+			Color roxoIndigo = new Color(75,0,130);	
+			lblExercicio.setForeground(roxoIndigo);
+			lblPergunta.setForeground(Color.BLACK);
+			
+			rbAlternativaA.setForeground(Color.BLACK);
+	        rbAlternativaB.setForeground(Color.BLACK);
+	        rbAlternativaC.setForeground(Color.BLACK);
+	        rbAlternativaD.setForeground(Color.BLACK);
+
+	        rbAlternativaA.setBackground(Color.WHITE);
+	        rbAlternativaB.setBackground(Color.WHITE);
+	        rbAlternativaC.setBackground(Color.WHITE);
+	        rbAlternativaD.setBackground(Color.WHITE);
+	        
+	        lblResposta.setForeground(Color.BLACK);
+	        
+	        lblExercicio.setFont(new Font("Trebuchet MS", Font.BOLD, 35));
+
+			Font txtFonte = new Font("Trebuchet MS", Font.PLAIN, 18);
+			
+			rbAlternativaA.setFont(txtFonte);
+	        rbAlternativaB.setFont(txtFonte);
+	        rbAlternativaC.setFont(txtFonte);
+	        rbAlternativaD.setFont(txtFonte);
+	        
+			Font lblFonte = new Font("Trebuchet MS", Font.PLAIN, 20);
+			lblPergunta.setFont(lblFonte);
+			
+			lblResposta.setFont(new Font("Trebuchet MS", Font.BOLD, 20));
+
+			
+			//coordenadas 			setBounds(0, 0, 1010, screenSize.height-40==728);
+			lblExercicio.setBounds(240,10,350,50);
+			
+			lblPergunta.setBounds(100, 100, 550, 60);
+			
+			rbAlternativaA.setBounds(100, 175, 550, 25);
+			rbAlternativaB.setBounds(100, 250, 550, 25); //dif 50
+			rbAlternativaC.setBounds(100, 325, 550, 25);
+			rbAlternativaD.setBounds(100, 400, 550, 25);
+
+			lblResposta.setBounds(150,500,550,50);
+			
+			buttonGroup.add(rbAlternativaA);
+	        buttonGroup.add(rbAlternativaB);
+	        buttonGroup.add(rbAlternativaC);
+	        buttonGroup.add(rbAlternativaD);
+
+	        
+			contentPane.add(lp);
+			lp.add(lblExercicio, new Integer(1));
+			lp.add(lblResposta, new Integer(2));
+			lp.add(lblPergunta, new Integer(4));
+		
+			lp.add(rbAlternativaA, new Integer(25)); 
+			lp.add(rbAlternativaB, new Integer(26)); 
+			lp.add(rbAlternativaC, new Integer(27)); 
+			lp.add(rbAlternativaD, new Integer(28)); 
 		}
 		
 		setVisible(true);
