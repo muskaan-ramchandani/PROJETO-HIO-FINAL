@@ -1,5 +1,6 @@
 package bo;
 
+
 import java.util.ArrayList;
 
 import dao.ExerciciosDAO;
@@ -11,11 +12,11 @@ public class ExerciciosBO {
 
 	public boolean criarExercicio(String alternativaA, String alternativaB, String alternativaC, String alternativaD,
 			String alternativaCorreta, String emailProf, String nomeOlimpiada,
-			String subtopico, String topicoPrincipal) {
+			String subtopico, String topicoPrincipal, String pergunta) {
 		
 		Exercicios e = new Exercicios( alternativaA,  alternativaB,  alternativaC,  alternativaD,
 	 			 alternativaCorreta,  emailProf,  nomeOlimpiada,
-	 			 subtopico,  topicoPrincipal);
+	 			 subtopico,  topicoPrincipal, pergunta);
 		ExerciciosDAO dao = new ExerciciosDAO();
 		return dao.criarExercicio(e);
 	}
@@ -23,5 +24,15 @@ public class ExerciciosBO {
 	public static ArrayList<Exercicios> retornaExercicios(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
 		ExerciciosDAO dao = new ExerciciosDAO();
         return dao.retornaExercicios(nomeOlimp, sub, a);
+    }
+	
+	public static Exercicios retornaExercicio(int id) {
+		ExerciciosDAO dao = new ExerciciosDAO();
+        return dao.retornaExercicio(id);
+    }
+	
+	public static String retornaAlternativaCorreta(Exercicios e) {
+		ExerciciosDAO dao = new ExerciciosDAO();
+        return dao.retornaAlternativaCorreta(e);
     }
 }
