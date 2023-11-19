@@ -1,0 +1,192 @@
+package view;
+import javax.swing.*;
+
+import controller.ExerciciosCONTROLLER;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import vo.Exercicios;
+
+public class TelaExercicio extends JFrame{
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JLabel lblPergunta;
+	private JButton btnVerificar;
+    private ButtonGroup buttonGroup;
+	private JRadioButton rbAlternativaA;
+	private JRadioButton rbAlternativaB;
+	private JRadioButton rbAlternativaC;
+	private JRadioButton rbAlternativaD;
+	private JLabel lblExercicio;
+
+	
+	public TelaExercicio(Exercicios e, String alunoOuProf) {
+		inicializarComponentes(e, alunoOuProf);
+		definirEventos(e, alunoOuProf);
+	}
+	
+	public void inicializarComponentes(Exercicios e, String alunoOuProf) {
+		//instanciação
+				Toolkit toolkit = Toolkit.getDefaultToolkit();
+				Dimension screenSize = toolkit.getScreenSize();
+				setBounds(0, 0, 765, screenSize.height-125);
+				contentPane=getContentPane();
+				contentPane.setBackground(Color.white);
+				//setLayout(null);
+
+				lp = new JLayeredPane();
+				lblExercicio= new JLabel("Exercício nº"+e.getId());
+				
+				lblPergunta = new JLabel("<html><div style='text-align: justify;'>Responda: "+e.getPergunta()+
+						"</div></html>");
+				
+		        buttonGroup = new ButtonGroup();
+		        rbAlternativaA = new JRadioButton(e.getAlternativaA());
+		        rbAlternativaB = new JRadioButton(e.getAlternativaB());
+		        rbAlternativaC = new JRadioButton(e.getAlternativaC());
+		        rbAlternativaD = new JRadioButton(e.getAlternativaD());
+		        btnVerificar = new JButton("Verificar");
+				
+		if(alunoOuProf=="Aluno") {
+									
+			
+			Color roxoIndigo = new Color(75,0,130);	
+			lblExercicio.setForeground(roxoIndigo);
+			lblPergunta.setForeground(Color.BLACK);
+			
+			rbAlternativaA.setForeground(Color.BLACK);
+	        rbAlternativaB.setForeground(Color.BLACK);
+	        rbAlternativaC.setForeground(Color.BLACK);
+	        rbAlternativaD.setForeground(Color.BLACK);
+
+	        rbAlternativaA.setBackground(Color.WHITE);
+	        rbAlternativaB.setBackground(Color.WHITE);
+	        rbAlternativaC.setBackground(Color.WHITE);
+	        rbAlternativaD.setBackground(Color.WHITE);
+	        
+	        btnVerificar.setBackground(roxoIndigo);
+	        btnVerificar.setForeground(Color.WHITE);
+	        
+	        lblExercicio.setFont(new Font("Trebuchet MS", Font.BOLD, 35));
+
+			Font txtFonte = new Font("Trebuchet MS", Font.PLAIN, 18);
+			
+			rbAlternativaA.setFont(txtFonte);
+	        rbAlternativaB.setFont(txtFonte);
+	        rbAlternativaC.setFont(txtFonte);
+	        rbAlternativaD.setFont(txtFonte);
+	        
+			Font lblFonte = new Font("Trebuchet MS", Font.PLAIN, 20);
+			lblPergunta.setFont(lblFonte);
+			btnVerificar.setFont(lblFonte);
+
+			
+			//coordenadas 			setBounds(0, 0, 1010, screenSize.height-40==728);
+			lblExercicio.setBounds(240,10,350,50);
+			
+			lblPergunta.setBounds(100, 100, 550, 60);
+			
+			rbAlternativaA.setBounds(100, 175, 550, 25);
+			rbAlternativaB.setBounds(100, 250, 550, 25); //dif 50
+			rbAlternativaC.setBounds(100, 325, 550, 25);
+			rbAlternativaD.setBounds(100, 400, 550, 25);
+
+			btnVerificar.setBounds(255,500,170,50);
+			
+			buttonGroup.add(rbAlternativaA);
+	        buttonGroup.add(rbAlternativaB);
+	        buttonGroup.add(rbAlternativaC);
+	        buttonGroup.add(rbAlternativaD);
+
+	        
+			contentPane.add(lp);
+			lp.add(lblExercicio, new Integer(1));
+			lp.add(btnVerificar, new Integer(2));
+			lp.add(lblPergunta, new Integer(4));
+		
+			lp.add(rbAlternativaA, new Integer(25)); 
+			lp.add(rbAlternativaB, new Integer(26)); 
+			lp.add(rbAlternativaC, new Integer(27)); 
+			lp.add(rbAlternativaD, new Integer(28)); 
+			
+		}else if(alunoOuProf=="Professor") {
+			
+		}
+		
+		setVisible(true);
+	}
+	
+	public void definirEventos(Exercicios e, String alunoOuProf) {
+		ExerciciosCONTROLLER controla= new ExerciciosCONTROLLER();
+		String alternativaCorreta = controla.retornaAlternativaCorreta(e);
+		
+		btnVerificar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e1) {
+				
+				if(rbAlternativaA.isSelected()==false&&rbAlternativaB.isSelected()==false&&
+						rbAlternativaC.isSelected()==false&&rbAlternativaD.isSelected()==false) {
+					
+					JOptionPane.showMessageDialog(null, "Selecione uma alternativa!");
+				}else {
+					
+					if(rbAlternativaA.isSelected()==true) {
+						
+						if(alternativaCorreta.equals("A")) {
+							JOptionPane.showMessageDialog(null, "Resposta correta!");
+							//contaAcertos e questoes
+							
+							dispose();
+						}else {
+							JOptionPane.showMessageDialog(null, "Resposta incorreta!");
+							//contaErros e questoes
+
+						}
+						
+					}else if(rbAlternativaB.isSelected()==true) {
+						
+						if(alternativaCorreta.equals("B")) {
+							JOptionPane.showMessageDialog(null, "Resposta correta!");
+							//contaAcertos e questoes
+							
+							dispose();
+						}else {
+							JOptionPane.showMessageDialog(null, "Resposta incorreta!");
+							//contaErros e questoes
+
+						}
+						
+					}else if(rbAlternativaC.isSelected()==true) {
+						
+						if(alternativaCorreta.equals("C")) {
+							JOptionPane.showMessageDialog(null, "Resposta correta!");
+							//contaAcertos e questoes
+							
+							dispose();
+						}else {
+							JOptionPane.showMessageDialog(null, "Resposta incorreta!");
+							//contaErros e questoes
+
+						}
+						
+					}else if(rbAlternativaD.isSelected()==true) {
+						
+						if(alternativaCorreta.equals("D")) {
+							JOptionPane.showMessageDialog(null, "Resposta correta!");
+							//contaAcertos e questoes
+							
+							dispose();
+						}else {
+							JOptionPane.showMessageDialog(null, "Resposta incorreta!");
+							//contaErros e questoes
+
+						}
+						
+					}
+				}
+			}
+		});
+	}
+}
