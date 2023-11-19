@@ -21,7 +21,7 @@ public class ExerciciosDAO {
 
 
 		String sql= "INSERT INTO Exercicios(alternativaA, alternativaB, alternativaC, alternativaD,"
-				+ " alternativaCorreta, emailProf, nomeOlimpiada, subtopico, topicoPrincipal)VALUES(?,?,?,?,?,?,?,?,?)";
+				+ " alternativaCorreta, emailProf, nomeOlimpiada, subtopico, topicoPrincipal, pergunta)VALUES(?,?,?,?,?,?,?,?,?,?)";
 		
 		try {
 
@@ -35,6 +35,7 @@ public class ExerciciosDAO {
 			ps.setString(7, e.getNomeOlimpiada());
 			ps.setString(8, e.getSubtopico());
 			ps.setString(9, e.getTopicoPrincipal());
+			ps.setString(10, e.getPergunta());
 
 
 			int linhasAfetadas = ps.executeUpdate();
@@ -89,12 +90,12 @@ public class ExerciciosDAO {
                 String nomeOlimpiada= resultSet.getString("nomeOlimpiada");
                 String subtopico= resultSet.getString("subtopico");
                 String topicoPrincipal= resultSet.getString("topicoPrincipal");
-
+                String pergunta= resultSet.getString("pergunta");
 
     			
     			e = new Exercicios( alternativaA,  alternativaB,  alternativaC,  alternativaD,
     		 			 alternativaCorreta,  emailProf,  nomeOlimpiada,
-    		 			 subtopico,  topicoPrincipal);
+    		 			 subtopico,  topicoPrincipal, pergunta);
     			e.setId(id);
     			listaExercicios.add(e);
             }
@@ -107,4 +108,87 @@ public class ExerciciosDAO {
 
         return listaExercicios;
     }
+	
+	public static Exercicios retornaExercicio(int id) {
+		Exercicios e = null;
+		
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    		 
+    		 
+    		 String selectQuery = "SELECT * FROM Exercicios " +
+             "WHERE id = ?";  
+
+    		 
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setInt(1, id);
+ 
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+            	
+                
+    			String alternativaA= resultSet.getString("alternativaA");
+                String alternativaB= resultSet.getString("alternativaB");
+                String alternativaC= resultSet.getString("alternativaC");
+                String alternativaD= resultSet.getString("alternativaD");
+                String alternativaCorreta= resultSet.getString("alternativaCorreta");
+                String emailProf= resultSet.getString("emailProf");
+                String nomeOlimpiada= resultSet.getString("nomeOlimpiada");
+                String subtopico= resultSet.getString("subtopico");
+                String topicoPrincipal= resultSet.getString("topicoPrincipal");
+                String pergunta= resultSet.getString("pergunta");
+
+    			
+    			e = new Exercicios( alternativaA,  alternativaB,  alternativaC,  alternativaD,
+    		 			 alternativaCorreta,  emailProf,  nomeOlimpiada,
+    		 			 subtopico,  topicoPrincipal, pergunta);
+    			e.setId(id);
+            }
+            resultSet.close();
+            preparedStatement.close();
+			conn.close();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+
+        return e;
+    }
+	
+	public static String retornaAlternativaCorreta(Exercicios e) {
+        String alternativaCorreta=null;
+
+        try {
+        	 Connection conn =  null;
+    		 PreparedStatement ps = null;
+    		 conn = new Conexao().getConnection();
+    		 
+    		 
+    		 String selectQuery = "SELECT alternativaCorreta FROM Exercicios " +
+             "WHERE id = ?";  
+
+    		 
+            PreparedStatement preparedStatement = conn.prepareStatement(selectQuery);
+            preparedStatement.setInt(1, e.getId());
+ 
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if (resultSet.next()) {
+                alternativaCorreta= resultSet.getString("alternativaCorreta");
+                
+            }
+            resultSet.close();
+            preparedStatement.close();
+			conn.close();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+
+        return alternativaCorreta;
+    }
+
 }
