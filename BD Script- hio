@@ -147,6 +147,7 @@ CREATE TABLE HistoricoOlimpiadasProf(
 	FOREIGN KEY(nomeOlimp) REFERENCES Olimpiada(nome)
 );
 
+
 CREATE TABLE AgendaAluno(
 	id INT AUTO_INCREMENT NOT NULL,
 	dataSemana DATE NOT NUll,
@@ -202,7 +203,6 @@ CREATE INDEX index_tituloAssunto ON Assunto(tituloAssunto);
 CREATE INDEX index_descricaoSub ON Subtopico(descricaoSub);
 
 
-
 CREATE TABLE Subtopico(
 	id INT AUTO_INCREMENT NOT NULL,
 	descricaoSub VARCHAR(200) NOT NULL,
@@ -210,47 +210,68 @@ CREATE TABLE Subtopico(
 	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
 	PRIMARY KEY(id)
 );
-
 CREATE TABLE Exercicios(
 	id INT AUTO_INCREMENT NOT NULL,
+    pergunta TEXT NOT NULL,
 	alternativaA VARCHAR(100) NOT NULL,
 	alternativaB VARCHAR(100) NOT NULL,
 	alternativaC VARCHAR(100) NOT NULL,
 	alternativaD VARCHAR(100) NOT NULL,
-	alternativaE VARCHAR(100),
 	alternativaCorreta VARCHAR(100) NOT NULL,
 	emailProf VARCHAR(100) NOT NULL,
     nomeOlimpiada  VARCHAR(10) NOT NULL,
+    subtopico VARCHAR(200) NOT NULL,
+    topicoPrincipal VARCHAR(100) NOT NULL,
 	PRIMARY KEY(id),
+	FOREIGN KEY(emailProf) REFERENCES Professor(email),
+	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
+    FOREIGN KEY(subtopico) REFERENCES Subtopico(descricaoSub),
+	FOREIGN KEY(topicoPrincipal) REFERENCES Assunto(tituloAssunto)
+);
+
+CREATE TABLE Textos(
+	id INT AUTO_INCREMENT NOT NULL,
+	texto TEXT NOT NULL,
+	subtopico VARCHAR(200) NOT NULL,
+    topicoPrincipal VARCHAR(100) NOT NULL,
+	emailProf VARCHAR(100) NOT NULL,
+	nomeOlimpiada  VARCHAR(10) NOT NULL,
+	PRIMARY KEY(id),
+    FOREIGN KEY(subtopico) REFERENCES Subtopico(descricaoSub),
+	FOREIGN KEY(topicoPrincipal) REFERENCES Assunto(tituloAssunto),
 	FOREIGN KEY(emailProf) REFERENCES Professor(email),
 	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome)
 );
 
-CREATE TABLE AssuntosExercicios(
-	id INT AUTO_INCREMENT NOT NULL,
-	idSubtopico INT NOT NULL,
-	idExercicio INT NOT NULL,
-    PRIMARY KEY(id),
-	FOREIGN KEY(idSubtopico) REFERENCES Subtopico(id),
-	FOREIGN KEY(idExercicio) REFERENCES Exercicios(id)
-);
-CREATE TABLE Textos(
-	id INT AUTO_INCREMENT NOT NULL,
-	texto VARCHAR(1000) NOT NULL,
-	emailProf VARCHAR(100) NOT NULL,
-	PRIMARY KEY(id),
-	FOREIGN KEY(emailProf) REFERENCES Professor(email)
+CREATE TABLE EstatisticasAlunoAcertos(
+	emailAluno VARCHAR(100) NOT NULL,
+    qntdAcertos INT NOT NULL,
+	dataAcesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY(emailAluno) REFERENCES Aluno(email)
 );
 
-CREATE TABLE AssuntosTextos(
-	id INT AUTO_INCREMENT NOT NULL,
-	idSubtopico INT NOT NULL,
-	idTextos INT NOT NULL,
-    PRIMARY KEY(id),
-	FOREIGN KEY(idSubtopico) REFERENCES Subtopico(id),
-	FOREIGN KEY(idTextos) REFERENCES Textos(id)
+CREATE TABLE EstatisticasAlunoErros(
+	emailAluno VARCHAR(100) NOT NULL,
+    qntdErros INT NOT NULL,
+	dataAcesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY(emailAluno) REFERENCES Aluno(email)
 );
+
+CREATE TABLE EstatisticasAlunoQuestoesHj(
+	emailAluno VARCHAR(100) NOT NULL,
+    qntd INT NOT NULL,
+	dataAcesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY(emailAluno) REFERENCES Aluno(email)
+);
+
+CREATE TABLE EstatisticasAlunoQuestoesSemana(
+	emailAluno VARCHAR(100) NOT NULL,
+    qntdAcertos INT NOT NULL,
+	dataAcesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY(emailAluno) REFERENCES Aluno(email)
+);
+
 
 USE hio;
-SET FOREIGN_KEY_CHECKS=0;
-SET FOREIGN_KEY_CHECKS=1;
+SET FOREIGN_KEY_CHECKS=0; #desativa
+SET FOREIGN_KEY_CHECKS=1; #ativa
