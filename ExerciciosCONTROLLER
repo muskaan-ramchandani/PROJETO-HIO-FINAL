@@ -10,13 +10,24 @@ import vo.SubtopicosDosAssuntos;
 public class ExerciciosCONTROLLER {
 	public boolean criarExercicio(String alternativaA, String alternativaB, String alternativaC, String alternativaD,
 			String alternativaCorreta, String emailProf, String nomeOlimpiada,
-			String subtopico, String topicoPrincipal) {
+			String subtopico, String topicoPrincipal, String pergunta) {
 		ExerciciosBO bo = new ExerciciosBO();
-		return bo.criarExercicio(alternativaA, alternativaB, alternativaC, alternativaD, alternativaCorreta, emailProf, nomeOlimpiada, subtopico, topicoPrincipal);
+		return bo.criarExercicio(alternativaA, alternativaB, alternativaC, alternativaD, alternativaCorreta, emailProf,
+				nomeOlimpiada, subtopico, topicoPrincipal, pergunta);
 	}
 	
 	public static ArrayList<Exercicios> retornaExercicios(String nomeOlimp, SubtopicosDosAssuntos sub, Assuntos a) {
 		ExerciciosBO bo = new ExerciciosBO();
         return bo.retornaExercicios(nomeOlimp, sub, a);
+    }
+	
+	public static Exercicios retornaExercicio(int id) {
+		ExerciciosBO bo = new ExerciciosBO();
+        return bo.retornaExercicio(id);
+    }
+	
+	public static String retornaAlternativaCorreta(Exercicios e) {
+		ExerciciosBO bo = new ExerciciosBO();
+        return bo.retornaAlternativaCorreta(e);
     }
 }
