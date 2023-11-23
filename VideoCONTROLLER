@@ -14,8 +14,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import conexaoBD.Conexao;
-import dao.VideoDAO;
-import bo.LivroBO;
 import bo.VideoBO;
 import vo.Video;
 import vo.Livro;
@@ -71,5 +69,21 @@ public class VideoCONTROLLER {
 	public ArrayList<Video> consultarVideosProfPorNome(String tituloVideo, Professor prof) {
 		VideoBO bo = new VideoBO();
 	    return bo.consultarVideosProfPorNome(tituloVideo, prof);
+	}
+	
+	public boolean favoritarVideo(String emailAluno, String upc) {
+		VideoBO bo = new VideoBO();
+		return bo.favoritarVideo(emailAluno, upc);
+	}
+	
+	public ArrayList<Video> retornaVideosFav(String emailAluno) {
+		VideoBO bo = new VideoBO();
+        return bo.retornaVideosFav(emailAluno);
+
+    }
+	
+	public boolean verificaSeEstaFavoritado(String upc, String emailAluno) {
+		VideoBO bo = new VideoBO();
+	    return bo.verificaSeEstaFavoritado(upc, emailAluno);
 	}
 }
