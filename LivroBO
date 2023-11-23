@@ -74,4 +74,20 @@ public class LivroBO {
 		LivroDAO dao= new LivroDAO();
 	    return dao.consultarLivrosProfPorNome(tituloLivro, prof);
 	}
+	
+	public boolean favoritarLivro(String emailAluno, String isbn) {
+		LivroDAO dao= new LivroDAO();
+		return dao.favoritarLivro(emailAluno, isbn);
+	}
+	
+	public ArrayList<Livro> retornaLivrosFav(String emailAluno) {
+		LivroDAO dao= new LivroDAO();
+        return dao.retornaLivrosFav(emailAluno);
+
+    }
+	
+	public boolean verificaSeEstaFavoritado(String isbn, String emailAluno) {
+		LivroDAO dao= new LivroDAO();
+	    return dao.verificaSeEstaFavoritado(isbn, emailAluno);
+	}
 }
