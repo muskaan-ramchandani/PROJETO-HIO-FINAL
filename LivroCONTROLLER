@@ -72,4 +72,20 @@ public class LivroCONTROLLER {
 		LivroBO bo = new LivroBO();
 	    return bo.consultarLivrosProfPorNome(tituloLivro, prof);
 	}
+	
+	public boolean favoritarLivro(String emailAluno, String isbn) {
+		LivroBO bo = new LivroBO();
+		return bo.favoritarLivro(emailAluno, isbn);
+	}
+	
+	public ArrayList<Livro> retornaLivrosFav(String emailAluno) {
+		LivroBO bo = new LivroBO();
+        return bo.retornaLivrosFav(emailAluno);
+
+    }
+	
+	public boolean verificaSeEstaFavoritado(String isbn, String emailAluno) {
+		LivroBO bo = new LivroBO();
+	    return bo.verificaSeEstaFavoritado(isbn, emailAluno);
+	}
 }
