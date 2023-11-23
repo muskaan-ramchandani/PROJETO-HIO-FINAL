@@ -684,6 +684,7 @@ public class TelaVideosAluno extends JFrame{
 		btnFlashcards.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				TelaFlashcardsAluno flash = new TelaFlashcardsAluno(olimp, aluno);
 			     setVisible(false);
 
 			}
