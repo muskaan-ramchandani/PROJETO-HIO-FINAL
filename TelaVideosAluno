@@ -25,12 +25,14 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.AbstractBorder;
@@ -64,6 +66,14 @@ public class TelaVideosAluno extends JFrame{
 	ArrayList<Video> videosDaOlimpiada = new ArrayList<Video>();
 	private JLabel[] EspacoVideo;
 	private JLabel[] espacoTitulo;
+	JButton[] btnFav;
+	
+	ImageIcon estrela2 = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+			+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavDourada (1).png");
+	ImageIcon estrela3 = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+			+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavCinza (1).png");	
+	ImageIcon estrela = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+			+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavVazia (1).png");
 	
 	public TelaVideosAluno(Olimpiada olimp, Aluno aluno){
 		inicializarComponentes(olimp, aluno);
@@ -95,6 +105,10 @@ public class TelaVideosAluno extends JFrame{
     	int linha = 100;
     	int coluna = 350;
         //
+    	
+    	//favoritar
+        btnFav= new JButton[numeroLabels];
+
         
         lp = new JLayeredPane();
         Barra = new JMenuBar();
@@ -181,6 +195,21 @@ public class TelaVideosAluno extends JFrame{
 				EspacoVideo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
 				EspacoVideo[i].setBackground(Color.WHITE);
 				EspacoVideo[i].setForeground(Color.BLACK);
+				
+				VideoCONTROLLER controlaV = new VideoCONTROLLER();
+				boolean verificaSeFav = controlaV.verificaSeEstaFavoritado(videoDaLista.getUpc(), aluno.getEmail());
+				
+				if(verificaSeFav==true) {
+					btnFav[i]= new JButton(estrela2);
+
+				}else {
+					btnFav[i]= new JButton(estrela);
+
+				}
+				btnFav[i].setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				btnFav[i].setBorderPainted(false); // Remove a borda
+				btnFav[i].setFocusPainted(false); //37 25
+				
 				if(i >= limite) {
 					colunaEL = colunaEL+250;
 					limite = limite + 6;
@@ -188,6 +217,84 @@ public class TelaVideosAluno extends JFrame{
 				}
 				EspacoVideo[i].setBounds(linhaEL,colunaEL,150,150);
 				lp.add(EspacoVideo[i], new Integer(camadasEL));
+				
+				btnFav[i].setBounds(linhaEL+113,colunaEL,37,25);
+				lp.add(btnFav[i], new Integer(camadasEL+1));
+				int conta =i;
+				
+				btnFav[i].addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						VideoCONTROLLER controla = new VideoCONTROLLER();
+						boolean foi = controla.favoritarVideo(aluno.getEmail(), videoDaLista.getUpc());
+						
+						if(foi==true) {
+							btnFav[conta].setIcon(estrela2);
+							lp.revalidate();
+							lp.repaint();
+							JOptionPane.showMessageDialog(null, "O vídeo '"+videoDaLista.getTitulo()+"' foi favoritado com sucesso!");
+						}else {
+							JOptionPane.showMessageDialog(null, "Erro ao favoritar o livro "+videoDaLista.getTitulo());
+						}
+					}
+				});
+				
+				btnFav[i].addMouseListener(new MouseListener() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+					}
+
+					@Override
+					public void mousePressed(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						// TODO Auto-generated method stub
+						Icon icon = btnFav[conta].getIcon();
+						ImageIcon imageIcon = (ImageIcon) icon;
+					    String iconName = imageIcon.getDescription();
+						boolean verificaFav = controlaV.verificaSeEstaFavoritado(videoDaLista.getUpc(), aluno.getEmail());
+
+					    
+						if(iconName=="estrela2"||verificaFav==true) {
+							
+						}else{
+							btnFav[conta].setIcon(estrela3);
+							lp.revalidate();
+							lp.repaint();
+						}
+												
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+						// TODO Auto-generated method stub
+						Icon icon = btnFav[conta].getIcon();
+						ImageIcon imageIcon = (ImageIcon) icon;
+					    String iconName = imageIcon.getDescription();
+						boolean verificaFav = controlaV.verificaSeEstaFavoritado(videoDaLista.getUpc(), aluno.getEmail());
+
+						if(iconName=="estrela2"||verificaFav==true) {
+							
+						}else{
+							btnFav[conta].setIcon(estrela);
+							lp.revalidate();
+							lp.repaint();	
+						}					
+					}
+					
+				});
+				
+				
 				linhaEL= linhaEL+200;
 				camadasEL++;
 				
@@ -214,88 +321,6 @@ public class TelaVideosAluno extends JFrame{
 				linha= linha+200;
 				camadas++;
 			}
-			
-			for(int i=0;i < numeroLabels; i++) {
-				JLabel lblFav = new JLabel();
-				ImageIcon estrela = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-						+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavVazia.png");
-				int camada=100;
-				int x= 150;
-				int y=215;
-				int limiteBotoes=1;
-
-
-				lblFav= new JLabel(estrela);
-
-				lblFav.setBounds(x, y, 37, 25);
-				Point coordenadas = lblFav.getLocation();
-				
-				lblFav.addMouseListener(new MouseListener() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						ImageIcon estrela2 = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-								+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavDourada.png");
-						
-						JLabel lblFavDourada = new JLabel(estrela2);
-						lblFavDourada.setLocation(coordenadas);
-						lp.add(lblFavDourada, new Integer(300));
-
-					}
-
-					@Override
-					public void mousePressed(MouseEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mouseReleased(MouseEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						// TODO Auto-generated method stub
-						ImageIcon estrela3 = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-								+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavCinza.png");
-						JLabel lblFavDourada = new JLabel(estrela3);
-						lblFavDourada.setLocation(coordenadas);
-						lp.add(lblFavDourada, new Integer(300));
-						
-					}
-
-					@Override
-					public void mouseExited(MouseEvent e) {
-						// TODO Auto-generated method stub
-						ImageIcon estrela = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-								+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavVazia.png");
-						
-						JLabel lblFavDourada = new JLabel(estrela);
-						lblFavDourada.setLocation(coordenadas);
-						lp.add(lblFavDourada, new Integer(300));
-						
-					}
-					
-				});
-				
-				
-				labelFavoritar.add(lblFav);
-				lp.add(lblFav, new Integer(camada));
-				contentPane.revalidate();
-		        contentPane.repaint();
-		        
-		        camada+=1;
-		        if(limiteBotoes==6) {
-		        	y+=250;
-		        	x=100;
-		        	limiteBotoes=0;
-		        }else{
-			        x+=150;
-		        }
-		        limiteBotoes++;
-		        camada+=1;
-		}
 	
 	}
 		
@@ -355,77 +380,14 @@ public class TelaVideosAluno extends JFrame{
 				for (JLabel label : espacoTitulo) {
 				    lp.remove(label); // Remove cada JLabel do JLayeredPane
 				}
+				for(JButton button : btnFav) {
+				    lp.remove(button); // Remove cada JButton do JLayeredPane
+				}
 		    	lp.repaint();
 		    	
-				if (numeros.length() == 12) {
-					ehUPC=true;
-			    } else {
-			    	ehUPC=false;
-			    }
+
 		    	
 		    	
-			    if (ehUPC==true) {
-			    	VideoCONTROLLER controller = new VideoCONTROLLER();
-			        ArrayList<Video> lista = controller.consultarVideosPorUpc(numeros, olimp);
-			        
-			        int numeroResultados=lista.size();
-			        JLabel[] EspacoLivroR;
-			    	EspacoVideo = new JLabel[numeroResultados];
-			    	int camadasEL = 30;
-			    	int linhaEL = 100;
-			    	int colunaEL = 200;
-			    	int limite = 6;
-			    	//
-			    	JLabel[] espacoTituloR;
-			    	espacoTitulo = new JLabel[numeroResultados];
-			    	int camadas = 60;
-			    	int linha = 100;
-			    	int coluna = 350;
-			    	
-					//JLabels dos espaços para a capa;
-					for(int i=0;i < numeroResultados; i++) {
-						Video videoDaLista = lista.get(i);
-						EspacoVideo[i] = new JLabel (videoDaLista.getTitulo());
-						EspacoVideo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
-						EspacoVideo[i].setHorizontalAlignment(SwingConstants.CENTER);
-						EspacoVideo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
-						EspacoVideo[i].setBackground(Color.WHITE);
-						EspacoVideo[i].setForeground(Color.BLACK);
-						if(i >= limite) {
-							colunaEL = colunaEL+250;
-							limite = limite + 6;
-							linhaEL = 100;
-						}
-						EspacoVideo[i].setBounds(linhaEL,colunaEL,150,150);
-						lp.add(EspacoVideo[i], new Integer(camadasEL));
-						linhaEL= linhaEL+200;
-						camadasEL++;
-						
-					}
-					
-					
-					//JLabels dos espaços para titulos
-					limite = 6;
-					for(int i=0;i < numeroResultados; i++) {
-						Video videoDaLista = lista.get(i);
-						espacoTitulo[i] = new JLabel(videoDaLista.getUpc());
-						espacoTitulo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
-						espacoTitulo[i].setHorizontalAlignment(SwingConstants.CENTER);
-						espacoTitulo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
-						espacoTitulo[i].setBackground(Color.WHITE);
-						espacoTitulo[i].setForeground(Color.BLACK);
-						if(i >= limite) {
-							coluna = colunaEL+150;
-							limite = limite + 6;
-							linha = 100;
-						}
-						espacoTitulo[i].setBounds(linha,coluna,150,40);
-						lp.add(espacoTitulo[i], new Integer(camadas));
-						linha= linha+200;
-						camadas++;
-					}
-					
-			    } else if(isInteger(tituloUPC)==false){
 			    	VideoCONTROLLER controller = new VideoCONTROLLER();
 			        ArrayList<Video> lista = controller.consultarVideosPorNome(tituloUPC, olimp);
 
@@ -452,6 +414,20 @@ public class TelaVideosAluno extends JFrame{
 						EspacoVideo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
 						EspacoVideo[i].setBackground(Color.WHITE);
 						EspacoVideo[i].setForeground(Color.BLACK);
+						VideoCONTROLLER controlaV = new VideoCONTROLLER();
+						boolean verificaSeFav = controlaV.verificaSeEstaFavoritado(videoDaLista.getUpc(), aluno.getEmail());
+						
+						if(verificaSeFav==true) {
+							btnFav[i]= new JButton(estrela2);
+
+						}else {
+							btnFav[i]= new JButton(estrela);
+
+						}
+						btnFav[i].setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+						btnFav[i].setBorderPainted(false); // Remove a borda
+						btnFav[i].setFocusPainted(false); //37 25
+						
 						if(i >= limite) {
 							colunaEL = colunaEL+250;
 							limite = limite + 6;
@@ -459,6 +435,84 @@ public class TelaVideosAluno extends JFrame{
 						}
 						EspacoVideo[i].setBounds(linhaEL,colunaEL,150,150);
 						lp.add(EspacoVideo[i], new Integer(camadasEL));
+						
+						btnFav[i].setBounds(linhaEL+113,colunaEL,37,25);
+						lp.add(btnFav[i], new Integer(camadasEL+1));
+						int conta =i;
+						
+						btnFav[i].addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								VideoCONTROLLER controla = new VideoCONTROLLER();
+								boolean foi = controla.favoritarVideo(aluno.getEmail(), videoDaLista.getUpc());
+								
+								if(foi==true) {
+									btnFav[conta].setIcon(estrela2);
+									lp.revalidate();
+									lp.repaint();
+									JOptionPane.showMessageDialog(null, "O vídeo '"+videoDaLista.getTitulo()+"' foi favoritado com sucesso!");
+								}else {
+									JOptionPane.showMessageDialog(null, "Erro ao favoritar o livro "+videoDaLista.getTitulo());
+								}
+							}
+						});
+						
+						btnFav[i].addMouseListener(new MouseListener() {
+							@Override
+							public void mouseClicked(MouseEvent e) {
+							}
+
+							@Override
+							public void mousePressed(MouseEvent e) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void mouseReleased(MouseEvent e) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void mouseEntered(MouseEvent e) {
+								// TODO Auto-generated method stub
+								Icon icon = btnFav[conta].getIcon();
+								ImageIcon imageIcon = (ImageIcon) icon;
+							    String iconName = imageIcon.getDescription();
+								boolean verificaFav = controlaV.verificaSeEstaFavoritado(videoDaLista.getUpc(), aluno.getEmail());
+
+							    
+								if(iconName=="estrela2"||verificaFav==true) {
+									
+								}else{
+									btnFav[conta].setIcon(estrela3);
+									lp.revalidate();
+									lp.repaint();
+								}
+														
+							}
+
+							@Override
+							public void mouseExited(MouseEvent e) {
+								// TODO Auto-generated method stub
+								Icon icon = btnFav[conta].getIcon();
+								ImageIcon imageIcon = (ImageIcon) icon;
+							    String iconName = imageIcon.getDescription();
+								boolean verificaFav = controlaV.verificaSeEstaFavoritado(videoDaLista.getUpc(), aluno.getEmail());
+
+								if(iconName=="estrela2"||verificaFav==true) {
+									
+								}else{
+									btnFav[conta].setIcon(estrela);
+									lp.revalidate();
+									lp.repaint();	
+								}					
+							}
+							
+						});
+						
+						
 						linhaEL= linhaEL+200;
 						camadasEL++;
 						
@@ -485,7 +539,6 @@ public class TelaVideosAluno extends JFrame{
 						linha= linha+200;
 						camadas++;
 					}
-			    }
 				
 			}
 
