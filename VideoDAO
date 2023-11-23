@@ -489,7 +489,7 @@ public class VideoDAO {
         	Connection conn = null;
 	        PreparedStatement ps = null;
 	        conn = new Conexao().getConnection();
-	        String sql = "SELECT * FROM FavoritosVideo " +
+	        String sql = "SELECT * FROM Video " +
                     "INNER JOIN FavoritosVideo ON Video.upc = FavoritosVideo.upcVideo " +
                     "WHERE FavoritosVideo.emailAluno = ?";
 	        
