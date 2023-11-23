@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
 import conexaoBD.Conexao;
 import vo.Video;
 import vo.Aluno;
-import vo.Livro;
 import vo.Olimpiada;
 import vo.Professor;
 
@@ -455,5 +454,107 @@ public class VideoDAO {
 	    }
 
 	    return videosPorNome;
+	}
+	
+	public boolean favoritarVideo(String emailAluno, String upc) {
+		try {
+			Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	    	
+	        String sql = "INSERT INTO FavoritosVideo (emailAluno, upcVideo) VALUES (?, ?)";
+	        ps = conn.prepareStatement(sql);
+	        ps.setString(1, emailAluno);
+	        ps.setString(2, upc);
+
+	        int  linhasAfetadas= ps.executeUpdate();
+            ps.close();
+			conn.close();
+			if(linhasAfetadas>0) {
+				return true;
+			}else {
+				return false;
+			}
+            
+		} catch (SQLException e) {
+	        e.printStackTrace();
+			return false;
+	    }
+	}
+	
+	public ArrayList<Video> retornaVideosFav(String emailAluno) {
+		ArrayList<Video> listaVideos = new ArrayList<Video>();
+
+        try {
+        	Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        String sql = "SELECT * FROM FavoritosVideo " +
+                    "INNER JOIN FavoritosVideo ON Video.upc = FavoritosVideo.upcVideo " +
+                    "WHERE FavoritosVideo.emailAluno = ?";
+	        
+	        
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, emailAluno);
+            ResultSet resultSet = ps.executeQuery();
+
+            while (resultSet.next()) {
+            	InputStream inputStream = resultSet.getBinaryStream("arquivo_Video");
+                File arquivo = criarArquivoAPartirDoBlob(inputStream, resultSet.getString("upc"));
+                
+				 Video video = new Video(resultSet.getString("titulo"), resultSet.getString("upc"),
+						 resultSet.getString("produtor"), resultSet.getDate("dataPublicacao"),
+						 resultSet.getString("emailProf"), arquivo);
+
+	            // Adiciona o livro na lista
+				 listaVideos.add(video);
+                
+            }
+            resultSet.close();
+            ps.close();
+			conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return listaVideos;
+
+    }
+	
+	public boolean verificaSeEstaFavoritado(String upc, String emailAluno) {
+		boolean favoritado=false;
+		try {
+	        Connection conn = null;
+	        PreparedStatement ps = null;
+	        conn = new Conexao().getConnection();
+	        
+	        String sql = "SELECT * FROM Video " +
+                    "INNER JOIN FavoritosVideo ON Video.upc = FavoritosVideo.upcVideo " +
+                    "WHERE FavoritosVideo.emailAluno = ? AND FavoritosVideo.upcVideo = ?";
+
+
+	        // Preparar a consulta
+	        ps = conn.prepareStatement(sql);
+            ps.setString(1, emailAluno);
+	        ps.setString(2, upc);
+
+	        // Executar a consulta
+	        ResultSet resultSet = ps.executeQuery();
+
+	        // Processar o resultado
+	        if (resultSet.next()) {
+	        	favoritado=true;
+	        }
+	        resultSet.close();
+            ps.close();
+			conn.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        favoritado=false;
+	    }
+
+	    return favoritado;
 	}
 }
