@@ -59,12 +59,19 @@ public class TelaLivrosAluno extends JFrame{
 	private JLabel lblFiltro;
 	private JLabel lblPesquisar;
 	private JButton btnVoltar;
-	ArrayList<JLabel> labelFavoritar = new ArrayList<JLabel>();
 
 	//
 	ArrayList<Livro> livrosDaOlimpiada = new ArrayList<Livro>();
 	JLabel[] EspacoLivro;
 	JLabel[] espacoTitulo;
+	JButton[] btnFav;
+	
+	ImageIcon estrela2 = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+			+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavDourada.png");
+	ImageIcon estrela3 = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+			+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavCinza.png");
+	ImageIcon estrela = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+			+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavVazia.png");
 	
 	
 	public TelaLivrosAluno(Olimpiada olimp, Aluno aluno){
@@ -97,6 +104,10 @@ public class TelaLivrosAluno extends JFrame{
     	int camadas = 60;
     	int linha = 100;
     	int coluna = 350;
+    	
+    	//Favoritar
+        btnFav= new JButton[numeroLabels];
+
     	
         //
         
@@ -170,6 +181,8 @@ public class TelaLivrosAluno extends JFrame{
 		lblPesquisar.setBounds(225, 100, 950, 35);
         lblNomeOlimp.setBounds(80, 15, 250, 20);
 
+ 
+        
 		if(numeroLabels==0) {
 			JLabel lblNaoTem = new JLabel("Não há livros cadastrados nesta olimpíada");
 			lblNaoTem.setForeground(Color.BLACK);
@@ -187,6 +200,12 @@ public class TelaLivrosAluno extends JFrame{
 				EspacoLivro[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
 				EspacoLivro[i].setBackground(Color.WHITE);
 				EspacoLivro[i].setForeground(Color.BLACK);
+				
+				btnFav[i]= new JButton(estrela);
+				btnFav[i].setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				btnFav[i].setBorderPainted(false); // Remove a borda
+				btnFav[i].setFocusPainted(false); //37 25
+				
 				if(i >= limite) {
 					colunaEL = colunaEL+250;
 					limite = limite + 6;
@@ -194,6 +213,53 @@ public class TelaLivrosAluno extends JFrame{
 				}
 				EspacoLivro[i].setBounds(linhaEL,colunaEL,150,150);
 				lp.add(EspacoLivro[i], new Integer(camadasEL));
+				
+				btnFav[i].setBounds(linhaEL,colunaEL,37,25);
+				lp.add(btnFav[i], new Integer(camadasEL+1));
+				int conta =i;
+				
+				btnFav[i].addMouseListener(new MouseListener() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						btnFav[conta].setIcon(estrela2);
+						lp.revalidate();
+						lp.repaint();
+					}
+
+					@Override
+					public void mousePressed(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+						btnFav[conta].setIcon(estrela3);
+						lp.revalidate();
+						lp.repaint();						
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+						btnFav[conta].setIcon(estrela);
+						lp.revalidate();
+						lp.repaint();						
+					}
+					
+				});
+				
+				
 				linhaEL= linhaEL+200;
 				camadasEL++;
 				
@@ -219,89 +285,7 @@ public class TelaLivrosAluno extends JFrame{
 				lp.add(espacoTitulo[i], new Integer(camadas));
 				linha= linha+200;
 				camadas++;
-			}
-			
-			for(int i=0;i < numeroLabels; i++) {
-				JLabel lblFav = new JLabel();
-				ImageIcon estrela = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-						+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavVazia.png");
-				int camada=100;
-				int x= 150;
-				int y=215;
-				int limiteBotoes=1;
-
-
-				lblFav= new JLabel(estrela);
-
-				lblFav.setBounds(x, y, 37, 25);
-				Point coordenadas = lblFav.getLocation();
-				
-				lblFav.addMouseListener(new MouseListener() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						ImageIcon estrela2 = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-								+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavDourada.png");
-						
-						JLabel lblFavDourada = new JLabel(estrela2);
-						lblFavDourada.setLocation(coordenadas);
-						lp.add(lblFavDourada, new Integer(300));
-
-					}
-
-					@Override
-					public void mousePressed(MouseEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mouseReleased(MouseEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						// TODO Auto-generated method stub
-						ImageIcon estrela3 = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-								+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavCinza.png");
-						JLabel lblFavDourada = new JLabel(estrela3);
-						lblFavDourada.setLocation(coordenadas);
-						lp.add(lblFavDourada, new Integer(300));
-						
-					}
-
-					@Override
-					public void mouseExited(MouseEvent e) {
-						// TODO Auto-generated method stub
-						ImageIcon estrela = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-								+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavVazia.png");
-						
-						JLabel lblFavDourada = new JLabel(estrela);
-						lblFavDourada.setLocation(coordenadas);
-						lp.add(lblFavDourada, new Integer(300));
-						
-					}
-					
-				});
-				
-				
-				labelFavoritar.add(lblFav);
-				lp.add(lblFav, new Integer(camada));
-				contentPane.revalidate();
-		        contentPane.repaint();
-		        
-		        camada+=1;
-		        if(limiteBotoes==6) {
-		        	y+=250;
-		        	x=100;
-		        	limiteBotoes=0;
-		        }else{
-			        x+=150;
-		        }
-		        limiteBotoes++;
-		        camada+=1;
-		}
+			}	
 	
 	}
 		
@@ -363,75 +347,7 @@ public class TelaLivrosAluno extends JFrame{
 				}
 		    	lp.repaint();
 		    	
-				if (numeros.length() == 13) {
-					ehIsbn=true;
-			    } else {
-			    	ehIsbn=false;
-			    }
 		    	
-		    	
-			    if (ehIsbn==true) {
-			        LivroCONTROLLER controller = new LivroCONTROLLER();
-			        ArrayList<Livro> lista = controller.consultarLivrosPorIsbn(numeros, olimp);
-			        
-			        int numeroResultados=lista.size();
-			        JLabel[] EspacoLivroR;
-			    	EspacoLivro = new JLabel[numeroResultados];
-			    	int camadasEL = 30;
-			    	int linhaEL = 100;
-			    	int colunaEL = 200;
-			    	int limite = 6;
-			    	//
-			    	JLabel[] espacoTituloR;
-			    	espacoTitulo = new JLabel[numeroResultados];
-			    	int camadas = 60;
-			    	int linha = 100;
-			    	int coluna = 350;
-			    	
-					//JLabels dos espaços para a capa;
-					for(int i=0;i < numeroResultados; i++) {
-						Livro livroDaLista = lista.get(i);
-						EspacoLivro[i] = new JLabel (livroDaLista.getTitulo());
-						EspacoLivro[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
-						EspacoLivro[i].setHorizontalAlignment(SwingConstants.CENTER);
-						EspacoLivro[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
-						EspacoLivro[i].setBackground(Color.WHITE);
-						EspacoLivro[i].setForeground(Color.BLACK);
-						if(i >= limite) {
-							colunaEL = colunaEL+250;
-							limite = limite + 6;
-							linhaEL = 100;
-						}
-						EspacoLivro[i].setBounds(linhaEL,colunaEL,150,150);
-						lp.add(EspacoLivro[i], new Integer(camadasEL));
-						linhaEL= linhaEL+200;
-						camadasEL++;
-						
-					}
-					
-					
-					//JLabels dos espaços para titulos
-					limite = 6;
-					for(int i=0;i < numeroResultados; i++) {
-						Livro livroDaLista = lista.get(i);
-						espacoTitulo[i] = new JLabel(livroDaLista.getIsbn());
-						espacoTitulo[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 18));
-						espacoTitulo[i].setHorizontalAlignment(SwingConstants.CENTER);
-						espacoTitulo[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
-						espacoTitulo[i].setBackground(Color.WHITE);
-						espacoTitulo[i].setForeground(Color.BLACK);
-						if(i >= limite) {
-							coluna = colunaEL+150;
-							limite = limite + 6;
-							linha = 100;
-						}
-						espacoTitulo[i].setBounds(linha,coluna,150,40);
-						lp.add(espacoTitulo[i], new Integer(camadas));
-						linha= linha+200;
-						camadas++;
-					}
-					
-			    } else if(isInteger(tituloIsbn)==false){
 			        LivroCONTROLLER controller = new LivroCONTROLLER();
 			        ArrayList<Livro> lista = controller.consultarLivrosPorNome(tituloIsbn, olimp);
 
@@ -458,6 +374,13 @@ public class TelaLivrosAluno extends JFrame{
 						EspacoLivro[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
 						EspacoLivro[i].setBackground(Color.WHITE);
 						EspacoLivro[i].setForeground(Color.BLACK);
+						
+						btnFav[i]= new JButton(estrela);
+						btnFav[i].setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+						btnFav[i].setBorderPainted(false); // Remove a borda
+						btnFav[i].setFocusPainted(false); //37 25
+						
+					
 						if(i >= limite) {
 							colunaEL = colunaEL+250;
 							limite = limite + 6;
@@ -465,6 +388,52 @@ public class TelaLivrosAluno extends JFrame{
 						}
 						EspacoLivro[i].setBounds(linhaEL,colunaEL,150,150);
 						lp.add(EspacoLivro[i], new Integer(camadasEL));
+						
+						btnFav[i].setBounds(linhaEL,colunaEL,37,25);
+						lp.add(btnFav[i], new Integer(camadasEL+1));
+						int conta =i;
+						
+						btnFav[i].addMouseListener(new MouseListener() {
+							@Override
+							public void mouseClicked(MouseEvent e) {
+								
+								btnFav[conta].setIcon(estrela2);
+								lp.revalidate();
+								lp.repaint();
+							}
+
+							@Override
+							public void mousePressed(MouseEvent e) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void mouseReleased(MouseEvent e) {
+								// TODO Auto-generated method stub
+								
+							}
+
+							@Override
+							public void mouseEntered(MouseEvent e) {
+								// TODO Auto-generated method stub
+								
+								btnFav[conta].setIcon(estrela3);
+								lp.revalidate();
+								lp.repaint();								
+							}
+
+							@Override
+							public void mouseExited(MouseEvent e) {
+								// TODO Auto-generated method stub
+								
+								btnFav[conta].setIcon(estrela);
+								lp.revalidate();
+								lp.repaint();								
+							}
+							
+						});
+						
 						linhaEL= linhaEL+200;
 						camadasEL++;
 						
@@ -491,7 +460,6 @@ public class TelaLivrosAluno extends JFrame{
 						linha= linha+200;
 						camadas++;
 					}
-			    }
 				
 			}
 
@@ -505,7 +473,8 @@ public class TelaLivrosAluno extends JFrame{
 			@Override
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				lp.remove(lblPesquisar);
-                repaint();			}
+                repaint();			
+            }
 			@Override
 			public void mousePressed(java.awt.event.MouseEvent e) {
 			}
@@ -687,12 +656,83 @@ public class TelaLivrosAluno extends JFrame{
 		});
 	}
 	
-	public static boolean isInteger(String input) {
-	    try {
-	        Integer.parseInt(input);
-	        return true;
-	    } catch (NumberFormatException e) {
-	        return false;
-	    }
-	}
+	/*//favoritar
+			limite = 6;
+			ImageIcon estrela = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+					+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavVazia.png");
+			
+			for(int i=0;i < numeroLabels; i++) {
+				btnFav[i]= new JButton(estrela);
+				btnFav[i].setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+				btnFav[i].setBorderPainted(false); // Remove a borda
+				btnFav[i].setFocusPainted(false);
+				btnFav[i].setBounds(xFav, yFav, 37, 25);
+				Point coordenadas = btnFav[i].getLocation();
+			
+				btnFav[i].addMouseListener(new MouseListener() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						ImageIcon estrela2 = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+								+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavDourada.png");
+						
+						JLabel lblFavDourada = new JLabel(estrela2);
+						lblFavDourada.setLocation(coordenadas);
+						lp.add(lblFavDourada, new Integer(300));
+
+					}
+
+					@Override
+					public void mousePressed(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						// TODO Auto-generated method stub
+						ImageIcon estrela3 = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+								+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavCinza.png");
+						JLabel lblFavDourada = new JLabel(estrela3);
+						lblFavDourada.setLocation(coordenadas);
+						lp.add(lblFavDourada, new Integer(300));
+						
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e) {
+						// TODO Auto-generated method stub
+						ImageIcon estrela = new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+								+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//estrelaFavVazia.png");
+						
+						JLabel lblFavDourada = new JLabel(estrela);
+						lblFavDourada.setLocation(coordenadas);
+						lp.add(lblFavDourada, new Integer(300));
+						
+					}
+					
+				});
+				
+				
+				labelFavoritar.add(lblFav);
+				lp.add(lblFav, new Integer(camada));
+				contentPane.revalidate();
+		        contentPane.repaint();
+		        
+		        camada+=1;
+		        if(limiteBotoes==6) {
+		        	y+=250;
+		        	x=100;
+		        	limiteBotoes=0;
+		        }else{
+			        x+=150;
+		        }
+		        limiteBotoes++;
+		        camada+=1;
+			}*/
 }
