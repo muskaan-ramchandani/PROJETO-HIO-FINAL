@@ -19,13 +19,10 @@ public class TelaFavoritos extends JFrame{
 	private JLayeredPane lp;
 	private JMenuBar barra;
 	private JButton btnFavoritos;
-	private JLabel lblPesquisar;
-	private JLabel lblFiltro;
 	private JLabel txtLivro;
 	private JLabel txtVideo;
 	private JLabel txtFlashcard;
 	private JButton btnVoltar;
-    private JTextField txtFiltro;
 	
 	private int numeroMaxLabels = 14;
 	
@@ -95,9 +92,7 @@ public class TelaFavoritos extends JFrame{
     
 
         barra= new JMenuBar();
-        btnFavoritos = new JButton("Favoritos");
-        lblPesquisar= new JLabel("Procurar por título");
-	    txtFiltro= new JTextField(300);
+        btnFavoritos = new JButton("Favoritos de "+aluno.getNomeUsuario());
         livroScrollButton = new JButton(">");
         livroScrollButton2 = new JButton("<");
         videoScrollButton = new JButton(">");
@@ -105,9 +100,7 @@ public class TelaFavoritos extends JFrame{
         txtLivro = new JLabel ("LIVROS:");
     	txtVideo = new JLabel ("VIDEOS:");
     	txtFlashcard = new JLabel ("FLASHCARDS:");
-        
-        lblFiltro= new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
-				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//funilPequeno.png"));
+ 
         
 
 		
@@ -120,8 +113,8 @@ public class TelaFavoritos extends JFrame{
         
         Color roxoEscuro=new Color(75,0,130);
         barra.setBackground(roxoEscuro);
-        btnFavoritos.setBackground(roxoEscuro);
-        btnFavoritos.setForeground(Color.WHITE);
+        btnFavoritos.setBackground(Color.WHITE);
+        btnFavoritos.setForeground(roxoEscuro);
         livroScrollButton.setBackground(roxoEscuro);
         livroScrollButton.setForeground(Color.WHITE);
         livroScrollButton2.setBackground(roxoEscuro);
@@ -136,7 +129,7 @@ public class TelaFavoritos extends JFrame{
     	
     	
         
-        Font fonteBarra = new Font( "Trebuchet MS", Font.PLAIN, 20);
+        Font fonteBarra = new Font( "Trebuchet MS", Font.BOLD, 35);
 		btnFavoritos.setFont(fonteBarra);
 		
         Font fontePasse = new Font( "Trebuchet MS", Font.PLAIN, 25);
@@ -151,15 +144,11 @@ public class TelaFavoritos extends JFrame{
     	txtVideo.setFont(separadores);
     	txtFlashcard.setFont(separadores);
 		
-    	txtFiltro.setFont(new Font("Trebuchet  MS", Font.PLAIN, 25));
-	    lblPesquisar.setFont(new Font("Trebuchet  MS", Font.PLAIN, 25));
+    
 		
 		lp.setBounds(0, 0, screenSize.width, screenSize.height-40);
 	    barra.setBounds(0,0,screenSize.width, 50);
-	    btnFavoritos.setBounds(60, 7, 140, 35);
-	    lblFiltro.setBounds(180, 105, 23, 25);
-		txtFiltro.setBounds(209, 100, 960, 35);
-		lblPesquisar.setBounds(225, 100, 950, 35);
+	    btnFavoritos.setBounds(390, 85, 600, 45);
 	    livroScrollButton.setBounds(1280,260,55,55);
 	    livroScrollButton2.setBounds(10,260,55,55);
 	    videoScrollButton.setBounds(1280,510,55,55);
@@ -172,9 +161,6 @@ public class TelaFavoritos extends JFrame{
 	    contentPane.add(lp);
 	    lp.add(barra, new Integer(1));
 	    lp.add(btnFavoritos, new Integer(2));
-	    lp.add(txtFiltro, new Integer(3));
-	    lp.add(lblFiltro, new Integer(4));
-	    lp.add(lblPesquisar, new Integer(5));
 	    lp.add(livroScrollButton, new Integer(1000)); 
 	    lp.add(livroScrollButton2, new Integer(1000 )); 
 	    lp.add(videoScrollButton, new Integer(1000)); 
@@ -319,32 +305,6 @@ public class TelaFavoritos extends JFrame{
 	}
 	
 	public void definirEventos(Aluno aluno) {
-	    
-	    lblPesquisar.addMouseListener(new MouseListener() {	
-			@Override
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				lp.remove(lblPesquisar);
-                repaint();			}
-			@Override
-			public void mousePressed(java.awt.event.MouseEvent e) {
-			}
-			@Override
-			public void mouseReleased(java.awt.event.MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			@Override
-			public void mouseEntered(java.awt.event.MouseEvent e) {
-			}
-			@Override
-			public void mouseExited(java.awt.event.MouseEvent e) {
-				if (!lp.isAncestorOf(lblPesquisar)) {
-					lp.add(lblPesquisar, new Integer(26));
-                    repaint();
-                }
-			}
-        });
-        getContentPane().add(lp);
         
         btnVoltar.addActionListener(new ActionListener() {
 			@Override
