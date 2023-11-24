@@ -1,8 +1,103 @@
+package view;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class TelaSobreNos extends JFrame{
+	private Container contentPane;
+	private JLayeredPane lp;
+	private JMenuBar barra;
+	private JLabel lblLogo;
+	private JLabel lblSobreNos;
+	private JLabel lblQuemSomos;
+	private JLabel lblTexto;
+	private JLabel lblImagem;
+	private JButton btnVoltar;
+	
 	public TelaSobreNos() {
+		inicializarComponentes();
+		definirEventos();
+	}
+	
+	public void inicializarComponentes() {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Dimension screenSize = toolkit.getScreenSize();
+		setBounds(0, 0, screenSize.width, screenSize.height-40);
+        contentPane=getContentPane();
+        contentPane.setBackground(Color.white);
+        
+        lp= new JLayeredPane();
+        barra = new JMenuBar();
+		lblLogo  = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//bonequinhoSFMEDIO.png"));
 		
+        btnVoltar = new JButton(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//setaPequenaRoxa.png"));
+		btnVoltar.setContentAreaFilled(false); // Deixa a área de preenchimento transparente
+		btnVoltar.setBorderPainted(false); // Remove a borda
+		btnVoltar.setFocusPainted(false);
+		
+		lblSobreNos = new JLabel("Sobre nós");
+		lblQuemSomos = new JLabel("Qual nosso objetivo?");
+		
+		String txt = "A equipe responsável pelo projeto Helper in Olympics (HIO) é composta por alunos que "
+				+ "buscaram uma maneira de contribuir com a educação, visando auxiliar os estudantes, por meio de "
+				+ "um ambiente agradável e de fácil acesso, a obterem melhores resultados nas olímpiadas cientificas, "
+				+ "tendo assim a disponibilidade de livros, vídeos, flashcards e muito mais.";
+		
+        String textoResumo="<html><div style='text-align: justify;'>"+txt+"</div></html>";
+
+		lblTexto = new JLabel(textoResumo);
+		lblImagem = new JLabel(new ImageIcon("C://Users//maria//OneDrive//Área de Trabalho//"
+				+"Projeto HIO//PROJETO-HIO-FINAL//PROJETO-HIO-FINAL//Imagens HIO//telaSN.png"));
+    	
+		//cores
+		Color roxoIndigo = new Color(75,0,130);		
+		barra.setBackground(roxoIndigo);
+		lblSobreNos.setBackground(roxoIndigo);
+		lblSobreNos.setForeground(Color.WHITE);
+		lblQuemSomos.setForeground(Color.BLACK);
+		lblQuemSomos.setBackground(Color.WHITE);
+		lblTexto.setBackground(Color.WHITE);
+		lblTexto.setForeground(Color.BLACK);
+		
+		//formatações
+		lblSobreNos.setFont(new Font("Trebuchet MS", Font.PLAIN, 25));
+		lblQuemSomos.setFont(new Font("Trebuchet MS", Font.BOLD, 45));
+		lblTexto.setFont(new Font("Trebuchet MS", Font.PLAIN, 30));
+
+		//coodenadas
+        barra.setBounds(0,0,screenSize.width, 50);
+        lblLogo.setBounds(10,5,44,35);
+		lblSobreNos.setBounds(80, 15, 250, 20);
+		lblQuemSomos.setBounds(80, 125, 500, 55);
+		lblTexto.setBounds(85, 170, 580, 460);
+    	lblImagem.setBounds(780, 170, 456, 425);
+    	btnVoltar.setBounds(10, 650, 28,25);
+    	
+    	contentPane.add(lp);
+    	lp.add(barra, new Integer(1));
+    	lp.add(lblLogo, new Integer(2));
+    	lp.add(lblSobreNos, new Integer(3));
+    	lp.add(lblQuemSomos, new Integer(4));
+    	lp.add(lblTexto, new Integer(5));
+    	lp.add(lblImagem, new Integer(6));
+    	lp.add(btnVoltar, new Integer(7));
+
+    	setVisible(true);
+	}
+	
+	public void definirEventos() {
+		btnVoltar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TelaBoasVindas telaBV = new TelaBoasVindas();
+				setVisible(false);
+			}
+		});
 	}
 }
