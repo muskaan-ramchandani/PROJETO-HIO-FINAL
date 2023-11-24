@@ -566,6 +566,7 @@ public class TelaAssuntosAluno extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				 TelaFlashcardsAluno flash = new TelaFlashcardsAluno(olimp, aluno);
+				 flash.setVisible(true);
 			     setVisible(false);
 			}
 		});
