@@ -76,11 +76,3 @@ public class AssuntosDAO {
     }
 }
 
-/*CREATE TABLE Assunto(
-	id INT AUTO_INCREMENT NOT NULL,
-	tituloAssunto VARCHAR(100) NOT NULL,
-	nomeOlimpiada VARCHAR(10) NOT NULL,
-	CONSTRAINT TopicoNRepeteOlimp UNIQUE (nomeOlimpiada, tituloAssunto),
-	FOREIGN KEY(nomeOlimpiada) REFERENCES Olimpiada(nome),
-	PRIMARY KEY(id)
- );*/
