@@ -577,13 +577,8 @@ public class TelaLivrosProf extends JFrame{
 					}else if(LivroCadastrou==true&&RelacionouLivro==true&&Historico==true) { //cadastrou
 						
 						JOptionPane.showMessageDialog(null, "Livro cadastrado com sucesso!");
-						txtIsbn.setText(null);
-						txtTitulo.setText(null);
-						txtEditora.setText(null);
-						txtAutor.setText(null);
-						txtDataPublicacao.setText(null);   
-						lblArquivoPDF.setText("Selecione um arquivo PDF");
-						lp.repaint();
+						TelaLivrosProf telaa = new TelaLivrosProf(olimp, prof);
+						fecharTodasJFramesExcetoEspecifica(telaa);
 					}
                 }
 			}
@@ -783,5 +778,13 @@ public class TelaLivrosProf extends JFrame{
 	        return false;
 	    }
 	}
-		
+	
+	private static void fecharTodasJFramesExcetoEspecifica(JFrame frameParaManterAberta) {
+        Window[] windows = Window.getWindows();
+        for (Window window : windows) {
+            if (window instanceof JFrame && window != frameParaManterAberta) {
+                window.dispose();
+            }
+        }
+	}
 }
