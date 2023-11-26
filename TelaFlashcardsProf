@@ -687,11 +687,8 @@ public class TelaFlashcardsProf extends JFrame{
 						}else if(FlashCadastrou==true&&RelacionouFlash==true) { //cadastrou
 							
 							JOptionPane.showMessageDialog(null, "Flashcard cadastrado com sucesso!");
-				            txtResumo.setText(null);
-				            txtTitulo.setText(null);
-				            txtPalavrasChave.setText(null);  
-				      		lblArquivoPNG.setText("Selecione um arquivo PNG:");
-							lp.repaint();
+				            TelaFlashcardsProf telaa = new TelaFlashcardsProf(olimp, prof);
+				            fecharTodasJFramesExcetoEspecifica(telaa);
 						}
 	                }
 				}catch (IOException e1) {
@@ -886,6 +883,15 @@ public class TelaFlashcardsProf extends JFrame{
 				}
 			});
 		
+	}
+	
+	private static void fecharTodasJFramesExcetoEspecifica(JFrame frameParaManterAberta) {
+        Window[] windows = Window.getWindows();
+        for (Window window : windows) {
+            if (window instanceof JFrame && window != frameParaManterAberta) {
+                window.dispose();
+            }
+        }
 	}
 
 }
