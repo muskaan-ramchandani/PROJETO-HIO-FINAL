@@ -569,12 +569,8 @@ public class TelaVideosProf extends JFrame{
 					}else if(VideoCadastrou==true&&RelacionouVideo==true&&Historico==true) { //cadastrou
 						
 						JOptionPane.showMessageDialog(null, "Vídeo cadastrado com sucesso!");
-			            txtProdutor.setText(null);
-			            txtTitulo.setText(null);
-			            txtDataPublicacao.setText(null);  
-			            txtUPC.setText(null);
-			      		lblArquivoVideo.setText("Selecione o arquivo de vídeo:");
-						lp.repaint();
+			            TelaVideosProf telaa = new TelaVideosProf(olimp, prof);
+			            fecharTodasJFramesExcetoEspecifica(telaa);
 					}
                 }
 			}
@@ -774,5 +770,14 @@ public class TelaVideosProf extends JFrame{
 	        return false;
 	    }
 	}
+	
+	private static void fecharTodasJFramesExcetoEspecifica(JFrame frameParaManterAberta) {
+        Window[] windows = Window.getWindows();
+        for (Window window : windows) {
+            if (window instanceof JFrame && window != frameParaManterAberta) {
+                window.dispose();
+            }
+        }
+ }
 		
 }
