@@ -181,7 +181,26 @@ public class TelaCronogramaAluno extends JFrame{
 			comecoPremiacoes= formatter.format(cronograma.getComecoPremiacoes());
 			fimPremiacoes= formatter.format(cronograma.getFimPremiacoes());
 			
-			
+			for(int i = 0; i< 7;i++) {
+				TabelaEvento[0] = new JLabel("Evento");
+				TabelaEvento[1] = new JLabel("Inscrições");
+				TabelaEvento[2] = new JLabel("Fase 1");
+				TabelaEvento[3] = new JLabel("Fase 2");
+				TabelaEvento[4] = new JLabel("Fase 3");
+				TabelaEvento[5] = new JLabel("Fase 4");
+				TabelaEvento[6] = new JLabel("Premiações");
+
+				
+				TabelaEvento[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
+				TabelaEvento[i].setHorizontalAlignment(SwingConstants.CENTER);
+				TabelaEvento[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
+				TabelaEvento[i].setBackground(Color.WHITE);
+				TabelaEvento[i].setForeground(Color.BLACK);
+				TabelaEvento[i].setBounds(270,colunaE,270,50);
+				lp.add(TabelaEvento[i], new Integer(100));
+				colunaE += 50;
+				
+			}
 			for(int i = 0;i < tamanho;i++) { //tamanho é 14
 				TabelaData[0] = new JLabel("Começo");
 				TabelaData[1] = new JLabel("Fim");
@@ -217,46 +236,10 @@ public class TelaCronogramaAluno extends JFrame{
 			
 		} else if(cronograma==null) { //cronograma n existe
 			
-			for(int i = 0;i < tamanho;i++) { //tamanho é 14
-				TabelaData[i] = new JLabel("");
-				TabelaData[0] = new JLabel("Começo");
-				TabelaData[1] = new JLabel("Fim");
-				TabelaData[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
-				TabelaData[i].setHorizontalAlignment(SwingConstants.CENTER);
-				TabelaData[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
-				TabelaData[i].setBackground(Color.WHITE);
-				TabelaData[i].setForeground(Color.BLACK);
-				if(i >= limite) { //2 colunas = limite
-					colunaD = colunaD+50;
-					limite = limite + 2;
-					linhaD = 270;
-				}
-				TabelaData[i].setBounds(linhaD+270,colunaD,270,50);
-				lp.add(TabelaData[i], new Integer(100));
-				linhaD = linhaD + 270;
-			}
+			
 		}
 		
-		for(int i = 0; i< 7;i++) {
-			TabelaEvento[0] = new JLabel("Evento");
-			TabelaEvento[1] = new JLabel("Inscrições");
-			TabelaEvento[2] = new JLabel("Fase 1");
-			TabelaEvento[3] = new JLabel("Fase 2");
-			TabelaEvento[4] = new JLabel("Fase 3");
-			TabelaEvento[5] = new JLabel("Fase 4");
-			TabelaEvento[6] = new JLabel("Premiações");
-
-			
-			TabelaEvento[i].setFont(new Font("Trebuchet MS", Font.PLAIN, 20));
-			TabelaEvento[i].setHorizontalAlignment(SwingConstants.CENTER);
-			TabelaEvento[i].setBorder(javax.swing.BorderFactory.createLineBorder(new Color(75,0,130), 3));
-			TabelaEvento[i].setBackground(Color.WHITE);
-			TabelaEvento[i].setForeground(Color.BLACK);
-			TabelaEvento[i].setBounds(270,colunaE,270,50);
-			lp.add(TabelaEvento[i], new Integer(100));
-			colunaE += 50;
-			
-		}
+		
 		//tirar bordar
         setLayout(new BorderLayout());
         add(lp, BorderLayout.CENTER);
